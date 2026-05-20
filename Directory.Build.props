@@ -1,0 +1,12 @@
+<Project>
+  <!--
+    ═══════════════════════════════════════════════════════════════
+    CONFIGURACIÓN GLOBAL DE DEVEXPRESS
+    Cambiar esta ruta a donde estén instalados los DLLs de DevExpress
+    en tu máquina. Aplica automáticamente a todos los proyectos.
+    ═══════════════════════════════════════════════════════════════
+  -->
+  <PropertyGroup>
+    <DevExpressPath>C:\Program Files (x86)\DevExpress 20.1\Components\Bin\Framework</DevExpressPath>
+  </PropertyGroup>
+</Project>

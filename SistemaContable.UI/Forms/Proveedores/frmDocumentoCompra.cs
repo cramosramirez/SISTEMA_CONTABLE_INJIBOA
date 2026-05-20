@@ -1,0 +1,721 @@
+﻿using SistemaContable.DAL;
+using SistemaContable.UI.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Drawing;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
+using System.Globalization;
+
+namespace SistemaContable.UI.Forms.Proveedores
+{
+    public partial class frmDocumentoCompra : Form
+    {
+        #region Campos privados
+
+        private readonly DALBase _dal = new DALBase();
+        private static readonly HttpClient _http = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(10)
+        };
+
+        private int _idEntidad = 0;
+        private string _codigoEntidad = string.Empty;
+        private int _idCCF = 0;
+        private string _idTipoContribProveedor = "";
+
+        #endregion
+        public frmDocumentoCompra()
+        {
+            InitializeComponent();
+        }      
+
+        private void frmDocumentoCompra_Load(object sender, EventArgs e)
+        {
+            FormHelper.Inicializar(this);
+            CargarSiguienteNumQuedan();
+            CargarCombos();
+            cbxSUCURSAL.SelectedIndex = 1; 
+            // Cargar de Combos Reuqeridos por MH
+            CargarTipoServicio();   // Independiente 
+            CargarTipoOperacion();  // Independiente (al cambiar dispara cascada)
+            CargarTipoRenta();
+            LimpiarCombo(cbxCLASIFICACION, "ID_CLASIFICA");
+            LimpiarCombo(cbxSECTOR, "ID_SECTOR");
+            LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
+
+            // Búsqueda * + Enter en txtPROVEEDOR
+            FormHelper.RegistrarBusqueda(
+                txtPROVEEDOR,
+                new BusquedaConfig
+                {
+                    StoredProcedure = "SP_ENTIDAD",
+                    Accion = "BUSCAR",
+                    Columnas = new Dictionary<string, string>
+                    {
+                        { "CODIGO_ENTIDAD", "PROVEEDOR" },
+                        { "NOMBRE",         "NOMBRE"    },
+                        { "NIT",            "NIT"       }
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
+                        { "CODIGO_ENTIDAD", 100 },
+                        { "NOMBRE",         300 },
+                        { "NIT",            120 }
+                    },
+                    ParametrosExtra = new { ROL = "PRO" }
+                },
+                fila => AsignarProveedor(fila)
+            );            
+            txtPROVEEDOR.Leave += txtPROVEEDOR_Leave;            
+            txtCONSULTA_MH.Leave += txtCONSULTA_MH_Leave;
+
+            ConfigurarTextBoxDecimal(
+                txtGRAVADA, txtEXENTA, txtEXCLUIDO, txtPERCEPCION,
+                txtIVA, txtFOVIAL, txtCONTRANS, txtTOTAL,
+                txtCARGO, txtABONO, txtAPLICABLE_RENTA, txtRENTA,
+                txtIVAR, txtSALDO
+            );
+
+            // GRAVADA y EXENTA: handlers que calculan APLICABLE_RENTA/RENTA y luego recalculan totales
+            txtGRAVADA.Leave += txtBaseRenta_Leave;
+            txtEXENTA.Leave += txtBaseRenta_Leave;
+            txtAPLICABLE_RENTA.Leave += txtAplicableRenta_Leave;
+
+            EngancharRecalculo(
+                txtEXCLUIDO, txtPERCEPCION, txtFOVIAL, txtCONTRANS,
+                txtCARGO, txtABONO
+            );
+        }
+
+        private void CargarSiguienteNumQuedan()
+        {
+            var num = _dal.ObtenerNumeracionPrevia("QD",null);   // sin año -> corrido
+            if (num == null)
+            {
+                MessageBox.Show(
+                    "No existe numeración activa para el Quedan (QD).\n" +
+                    "Configúrela en DOCUMENTO_NUMERACION antes de continuar.",
+                    "Numeración no encontrada",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                lblNUM_QUEDAN.Text = "";
+                return;
+            }
+            lblNUM_QUEDAN.Text = num.SiguienteNumeroFormateado();
+        }
+
+        #region Carga de combos
+
+        private void CargarCombos()
+        {
+            CargarCombo("SP_TIPO_DTE", "BUSCAR_FISCAL_COMPRAS_CREDITO", "TIPO_DTE", "ABREVIATURA", cbxTIPO_DTE);                          
+            CargarCombo("SP_SUCURSAL", "BUSCAR", "ID_SUCURSAL", "NOMBRE", cbxSUCURSAL);         
+        }
+
+        private void CargarCombo(string sp, string accion, string valueMember,
+            string displayMember, ComboBox combo)
+        {
+            try
+            {
+                var dt = _dal.EjecutarConsulta(sp, new { ACCION = accion });
+                var filaVacia = dt.NewRow();
+                filaVacia[valueMember] = DBNull.Value;
+                filaVacia[displayMember] = "-- Seleccione --";
+                dt.Rows.InsertAt(filaVacia, 0);
+
+                combo.DataSource = dt;
+                combo.ValueMember = valueMember;
+                combo.DisplayMember = displayMember;
+            }
+            catch { }
+        }
+
+        private void CargarTipoServicio()
+        {
+            DataTable dt = _dal.EjecutarConsulta("SP_COMPRA_TIPO_SERVICIO",
+                new { ACCION = "COMBO" });
+
+            InsertarFilaSeleccione(dt, "ID_TIPO_SERVI");
+
+            cbxTIPO_SERVICIO.DataSource = dt;
+            cbxTIPO_SERVICIO.ValueMember = "ID_TIPO_SERVI";
+            cbxTIPO_SERVICIO.DisplayMember = "NOMBRE";
+        }
+        private void CargarTipoOperacion()
+        {
+            DataTable dt = _dal.EjecutarConsulta("SP_COMPRA_TIPO_OPERACION",
+                new { ACCION = "COMBO" });
+
+            InsertarFilaSeleccione(dt, "ID_TIPO_OPERA");
+            cbxTIPO_OPERACION.DataSource = dt;
+            cbxTIPO_OPERACION.ValueMember = "ID_TIPO_OPERA";
+            cbxTIPO_OPERACION.DisplayMember = "NOMBRE";
+        }
+        private void CargarClasificacion(int idTipoOpera)
+        {
+            DataTable dt = _dal.EjecutarConsulta("SP_COMPRA_CLASIFICACION",
+                new
+                {
+                    ACCION = "COMBO",
+                    ID_TIPO_OPERA = idTipoOpera
+                });
+            InsertarFilaSeleccione(dt, "ID_CLASIFICA");
+            cbxCLASIFICACION.DataSource = dt;
+            cbxCLASIFICACION.ValueMember = "ID_CLASIFICA";
+            cbxCLASIFICACION.DisplayMember = "NOMBRE";
+        }
+        private void CargarSector(int idTipoOpera, int idClasifica)
+        {
+            DataTable dt = _dal.EjecutarConsulta("SP_COMPRA_SECTOR",
+                new
+                {
+                    ACCION = "COMBO",
+                    ID_TIPO_OPERA = idTipoOpera,
+                    ID_CLASIFICA = idClasifica
+                });
+            InsertarFilaSeleccione(dt, "ID_SECTOR");
+            cbxSECTOR.DataSource = dt;
+            cbxSECTOR.ValueMember = "ID_SECTOR";
+            cbxSECTOR.DisplayMember = "NOMBRE";
+        }
+        private void CargarTipoCosto(int idTipoOpera, int idClasifica, int idSector)
+        {
+            DataTable dt = _dal.EjecutarConsulta("SP_COMPRA_TIPO_COSTO",
+                new
+                {
+                    ACCION = "COMBO",
+                    ID_TIPO_OPERA = idTipoOpera,
+                    ID_CLASIFICA = idClasifica,
+                    ID_SECTOR = idSector
+                });
+            InsertarFilaSeleccione(dt, "ID_TIPO_COSTO");
+            cbxTIPO_COSTO.DataSource = dt;
+            cbxTIPO_COSTO.ValueMember = "ID_TIPO_COSTO";
+            cbxTIPO_COSTO.DisplayMember = "NOMBRE";
+        }
+
+        private void CargarTipoRenta()
+        {
+            DataTable dt = _dal.EjecutarConsulta("SP_TIPO_RENTA",
+                new
+                {
+                    ACCION = "COMBO",
+                    QUEDAN = true        // filtra por QUEDAN = 1
+                });            
+            cbxTIPO_RENTA.DataSource = dt;
+            cbxTIPO_RENTA.ValueMember = "ID_TIPO_RENTA";
+            cbxTIPO_RENTA.DisplayMember = "DESCRIPCION";
+        }
+
+        private void InsertarFilaSeleccione(DataTable dt, string idField)
+        {
+            DataRow fila = dt.NewRow();
+            fila[idField] = DBNull.Value;
+            fila["CODIGO"] = "";
+            fila["NOMBRE"] = "-- Seleccione --";
+            dt.Rows.InsertAt(fila, 0);
+        }
+        private void LimpiarCombo(ComboBox cbx, string idField)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add(idField, typeof(int));
+            dt.Columns.Add("CODIGO", typeof(string));
+            dt.Columns.Add("NOMBRE", typeof(string));
+            DataRow fila = dt.NewRow();
+            fila[idField] = DBNull.Value;
+            fila["CODIGO"] = "";
+            fila["NOMBRE"] = "-- Seleccione --";
+            dt.Rows.Add(fila);
+            cbx.DataSource = dt;
+            cbx.ValueMember = idField;
+            cbx.DisplayMember = "NOMBRE";
+        }
+        private bool TieneSeleccion(ComboBox cbx)
+        {
+            if (cbx.SelectedValue == null) return false;
+            if (cbx.SelectedValue == DBNull.Value) return false;
+            if (cbx.SelectedValue is DataRowView) return false;
+            return true;
+        }       
+        private void cbxCLASIFICACION_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LimpiarCombo(cbxSECTOR, "ID_SECTOR");
+            LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
+            if (!TieneSeleccion(cbxCLASIFICACION)) return;
+            if (!TieneSeleccion(cbxTIPO_OPERACION)) return;
+            int idTipoOpera = Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue);
+            int idClasifica = Convert.ToInt32(cbxCLASIFICACION.SelectedValue);
+            CargarSector(idTipoOpera, idClasifica);
+        }     
+        #endregion
+
+        private void txtPROVEEDOR_Leave(object sender, EventArgs e)
+        {
+            string codigo = txtPROVEEDOR.Text.Trim();
+            if (codigo == "*") return;
+            if (string.IsNullOrWhiteSpace(codigo))
+            {
+                LimpiarProveedor();
+                return;
+            }
+
+            try
+            {
+                var dt = _dal.EjecutarConsulta("SP_ENTIDAD", new
+                {
+                    ACCION = "BUSCAR_POR_CODIGO",
+                    FILTRO = codigo,
+                    ROL = "PRO"
+                });
+
+                if (dt.Rows.Count > 0)
+                    AsignarProveedor(dt.Rows[0]);
+                else
+                {
+                    LimpiarProveedor();
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        $"No se encontró el proveedor con código '{codigo}'.",
+                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPROVEEDOR.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    $"Error al buscar proveedor: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void AsignarProveedor(DataRow fila)
+        {
+            _idEntidad = Convert.ToInt32(fila["ID_ENTIDAD"]);
+            _codigoEntidad = fila["CODIGO_ENTIDAD"].ToString();
+            txtPROVEEDOR.Text = fila["CODIGO_ENTIDAD"].ToString();
+            txtNOMBRE_PROVEEDOR.Text = fila["NOMBRE"].ToString();
+            txtNRC.Text = fila["NRC"].ToString();
+            txtNIT.Text = fila["NIT"].ToString();
+            txtTELEFONO.Text = fila["CELULAR"].ToString();
+            txtCORREO.Text = fila["CORREO"].ToString();
+            txtACTIVIDAD_PRIMARIA.Text = fila["ACTIVIDAD_PRIMARIA"].ToString();
+            txtTIPO_CONTRIBUYENTE.Text = fila["TIPO_CONTRIBUYENTE"].ToString(); 
+            txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
+            _idTipoContribProveedor = fila["ID_TIPO_CONTRIB"].ToString();
+            RecalcularTotales();
+        }
+        private void LimpiarProveedor()
+        {
+            _idEntidad = 0;
+            _codigoEntidad = string.Empty;
+            txtNOMBRE_PROVEEDOR.Text = string.Empty;
+            txtNRC.Text = string.Empty;
+            txtNIT.Text = string.Empty;
+            txtTELEFONO.Text = string.Empty;
+            txtCORREO.Text = string.Empty;
+            txtACTIVIDAD_PRIMARIA.Text = string.Empty;
+            txtTIPO_CONTRIBUYENTE.Text = string.Empty;
+            txtDIRECCION.Text = string.Empty;
+        }
+
+        private void txtCONSULTA_MH_Leave(object sender, EventArgs e)
+        {
+            string url = txtCONSULTA_MH.Text.Trim();
+            if (string.IsNullOrWhiteSpace(url)) return;
+            lblESTADO_MH.Text = "Consultando...";
+            lblESTADO_MH.ForeColor = Color.Gray;
+            // Ejecutar de forma asíncrona sin bloquear la UI
+            Task.Run(() => ConsultarMH(url))
+                .ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                        BeginInvoke(new Action(() =>
+                        {
+                            lblESTADO_MH.Text = "No se obtuvo respuesta, intente consulta manual en el sitio Web del M.H.";
+                            lblESTADO_MH.ForeColor = Color.Red;
+                        }));
+                }, TaskContinuationOptions.OnlyOnFaulted);
+        }
+
+        private async Task ConsultarMH(string urlConsultaOficial)
+        {
+            try
+            {
+                // Construir URL con la base desde App.config + parámetros de la URL pegada                
+                string urlFinal = ConstruirUrlAPI(urlConsultaOficial);               
+                var response = await _http.GetAsync(urlFinal);
+                response.EnsureSuccessStatusCode();
+                string json = await response.Content.ReadAsStringAsync();
+                var data = JObject.Parse(json);
+                BeginInvoke(new Action(() => AsignarDatosMH(data)));
+            }
+            catch (TaskCanceledException)
+            {
+                BeginInvoke(new Action(() =>
+                {
+                    lblESTADO_MH.Text = "No se obtuvo respuesta, intente consulta manual en el sitio Web del M.H.";
+                    lblESTADO_MH.ForeColor = Color.Red;
+                }));
+            }
+            catch (Exception)
+            {
+                BeginInvoke(new Action(() =>
+                {
+                    lblESTADO_MH.Text = "No se obtuvo respuesta, intente consulta manual en el sitio Web del M.H.";
+                    lblESTADO_MH.ForeColor = Color.Red;
+                }));
+            }
+            string ConstruirUrlAPI(string urlUsuario)
+            {
+                try
+                {
+                    Uri uri = new Uri(urlUsuario.ToUpper());
+                    var parametros = System.Web.HttpUtility.ParseQueryString(uri.Query);
+                    string codGen = parametros["CODGEN"] ?? string.Empty;
+                    string fechaEmi = parametros["FECHAEMI"] ?? string.Empty;
+                    string ambiente = parametros["AMBIENTE"] ?? string.Empty;
+                    string baseUrl = ConfigurationManager.AppSettings["UrlConsultaMH"];
+                    return $"{baseUrl}codigoGeneracion={codGen}&fechaEmi={fechaEmi}&ambiente={ambiente}";
+                }
+                catch
+                {
+                    return urlUsuario;
+                }
+            }
+            void AsignarDatosMH(JObject data)
+            {
+                try
+                {
+                    string estadoDoc = data["estadoDoc"]?.ToString() ?? string.Empty;
+                    string descripcionEstado = data["descripcionEstado"]?.ToString() ?? string.Empty;
+                    var ajustes = data["ajustes"] as JArray;
+
+                    // Armar texto del estado
+                    string textoEstado = $"{estadoDoc} - {descripcionEstado}";
+                    Color colorEstado = Color.Green;
+
+                    if (ajustes != null && ajustes.Count > 0)
+                    {
+                        textoEstado += " - Documento posee ajustes";
+                        colorEstado = Color.Red;
+                    }
+
+                    if (estadoDoc.Equals("Error", StringComparison.OrdinalIgnoreCase))
+                        colorEstado = Color.Red;
+
+                    lblESTADO_MH.Text = textoEstado;
+                    lblESTADO_MH.ForeColor = colorEstado;
+
+                    // Tipo DTE — buscar en el combo
+                    string tipoDte = data["tipoDte"]?.ToString() ?? string.Empty;
+                    if (!string.IsNullOrWhiteSpace(tipoDte) && tipoDte.Equals("03"))
+                    {
+                        SeleccionarComboPorCodigo(cbxTIPO_DTE, "TIPO_DTE", tipoDte);
+                    }
+                    else
+                    {
+                        lblESTADO_MH.Text = "EL documento no es un crédito fiscal sino una " + data["nombDte"]?.ToString().ToLower() ?? string.Empty; ;
+                        lblESTADO_MH.ForeColor = Color.Red;
+                        return;
+                    }
+                        
+                    // Campos simples
+                    txtSELLO_RECIBIDO.Text = data["selloVal"]?.ToString() ?? string.Empty;
+                    txtCOD_GENERACION.Text = data["codGen"]?.ToString() ?? string.Empty;
+
+                    // Datos del documento
+                    var identificacion = data["documento"]?["identificacion"];
+                    if (identificacion != null)
+                    {
+                        txtNUM_CONTROL.Text = identificacion["numeroControl"]?.ToString() ?? string.Empty;
+                        string fecEmi = identificacion["fecEmi"]?.ToString() ?? string.Empty;
+                        if (!string.IsNullOrWhiteSpace(fecEmi) &&
+                            DateTime.TryParse(fecEmi, out DateTime fechaEmi))
+                            mskFECHA_EMISION.Text = fechaEmi.ToString("dd/MM/yyyy");
+                    }
+
+                    // Descripción del primer ítem del cuerpo del documento
+                    var cuerpo = data["documento"]?["cuerpoDocumento"] as JArray;
+                    //if (cuerpo != null && cuerpo.Count > 0)
+                        //txtOBSERVACION.Text = cuerpo[0]["descripcion"]?.ToString() ?? string.Empty;
+                    mskFECHA_RECIBIDO.Focus();  
+                }
+                catch (Exception ex)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        $"Error al procesar respuesta del MH: {ex.Message}",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            void SeleccionarComboPorCodigo(ComboBox combo, string campoCodigo, string valor)
+            {
+                try
+                {
+                    var dt = combo.DataSource as DataTable;
+                    if (dt == null) return;
+                    foreach (DataRow fila in dt.Rows)
+                    {
+                        if (fila[campoCodigo]?.ToString() == valor)
+                        {
+                            combo.SelectedValue = fila[combo.ValueMember];
+                            break;
+                        }
+                    }
+                }
+                catch { }
+            }
+        }
+       
+        private void CargarComboFiltrado(int idClasifica)
+        {
+            try
+            {
+                var dt = _dal.EjecutarConsulta("SP_COMPRA_TIPO_COSTO", new
+                {
+                    ACCION = "BUSCAR_POR_CLASIFICACION",
+                    ID_CLASIFICA = idClasifica
+                });
+
+                var filaVacia = dt.NewRow();
+                filaVacia["ID_TIPO_COSTO"] = DBNull.Value;
+                filaVacia["NOMBRE"] = "-- Seleccione --";
+                dt.Rows.InsertAt(filaVacia, 0);
+
+                cbxTIPO_COSTO.DataSource = dt;
+                cbxTIPO_COSTO.ValueMember = "ID_TIPO_COSTO";
+                cbxTIPO_COSTO.DisplayMember = "NOMBRE";
+            }
+            catch { }
+        }
+
+        private void cbxTIPO_OPERACION_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            LimpiarCombo(cbxCLASIFICACION, "ID_CLASIFICA");
+            LimpiarCombo(cbxSECTOR, "ID_SECTOR");
+            LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
+            if (!TieneSeleccion(cbxTIPO_OPERACION)) return;
+            int idTipoOpera = Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue);
+            CargarClasificacion(idTipoOpera);
+        }
+
+        private void cbxCLASIFICACION_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            LimpiarCombo(cbxSECTOR, "ID_SECTOR");
+            LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
+            if (!TieneSeleccion(cbxCLASIFICACION)) return;
+            if (!TieneSeleccion(cbxTIPO_OPERACION)) return;
+            int idTipoOpera = Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue);
+            int idClasifica = Convert.ToInt32(cbxCLASIFICACION.SelectedValue);
+            CargarSector(idTipoOpera, idClasifica);
+        }
+
+        private void cbxSECTOR_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
+            if (!TieneSeleccion(cbxSECTOR)) return;
+            if (!TieneSeleccion(cbxCLASIFICACION)) return;
+            if (!TieneSeleccion(cbxTIPO_OPERACION)) return;
+            int idTipoOpera = Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue);
+            int idClasifica = Convert.ToInt32(cbxCLASIFICACION.SelectedValue);
+            int idSector = Convert.ToInt32(cbxSECTOR.SelectedValue);
+            CargarTipoCosto(idTipoOpera, idClasifica, idSector);
+        }
+
+
+        //********************************************************************************************
+        private void ConfigurarTextBoxDecimal(params TextBox[] textboxes)
+        {
+            foreach (var tb in textboxes)
+            {
+                tb.Enter += TxtDecimal_Enter;
+                tb.KeyPress += TxtDecimal_KeyPress;
+                tb.Leave += TxtDecimal_Leave;
+            }
+        }
+
+        private void EngancharRecalculo(params TextBox[] textboxes)
+        {
+            foreach (var tb in textboxes)
+                tb.Leave += (s, e) => RecalcularTotales();
+        }
+        private void TxtDecimal_Enter(object sender, EventArgs e)
+        {
+            ((TextBox)sender).SelectAll();
+        }
+
+        private void TxtDecimal_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;            
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '\b')
+            {
+                e.Handled = true;
+                return;
+            }
+            // Solo un punto decimal
+            if (e.KeyChar == '.' && tb.Text.Contains("."))
+                e.Handled = true;
+        }
+        private void TxtDecimal_Leave(object sender, EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+
+            // Vacío -> limpio
+            if (string.IsNullOrWhiteSpace(tb.Text))
+            {
+                tb.Text = "";
+                return;
+            }
+            // Parsea (si no parsea, limpia)
+            if (!decimal.TryParse(tb.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal valor))
+            {
+                tb.Text = "";
+                return;
+            }
+            // Cero -> limpio (cubre "0", "0.", "0.0", "0.00", "00", etc.)
+            if (valor == 0m)
+            {
+                tb.Text = "";
+                return;
+            }
+            // Valor válido -> formato N2
+            tb.Text = valor.ToString("N2");
+        }
+
+        // Solo GRAVADA y EXENTA recalculan APLICABLE_RENTA y RENTA.
+        // Después de eso, todo lo demás (TOTAL, SALDO, IVA, IVAR) sigue su curso normal.
+        private void txtBaseRenta_Leave(object sender, EventArgs e)
+        {
+            if (ObtenerIdTipoRenta() != 0)
+            {
+                decimal aplicable = ObtenerDecimal(txtGRAVADA) + ObtenerDecimal(txtEXENTA);
+                decimal renta = Math.Round(aplicable * ObtenerValorTipoRenta(), 2);
+
+                AsignarDecimal(txtAPLICABLE_RENTA, aplicable);
+                AsignarDecimal(txtRENTA, renta);
+            }
+            else
+            {
+                AsignarDecimal(txtAPLICABLE_RENTA, 0);
+                AsignarDecimal(txtRENTA, 0);
+            }
+
+            RecalcularTotales();
+        }
+
+        // El usuario sobreescribe APLICABLE_RENTA -> recalcular solo la RENTA en base a eso
+        private void txtAplicableRenta_Leave(object sender, EventArgs e)
+        {
+            if (ObtenerIdTipoRenta() != 0)
+            {
+                decimal aplicable = ObtenerDecimal(txtAPLICABLE_RENTA);
+                decimal renta = Math.Round(aplicable * ObtenerValorTipoRenta(), 2);
+                AsignarDecimal(txtRENTA, renta);
+            }
+
+            RecalcularTotales();
+        }
+
+        private decimal ObtenerDecimal(TextBox tb)
+        {
+            if (string.IsNullOrWhiteSpace(tb.Text)) return 0;
+            return decimal.TryParse(tb.Text, out decimal v) ? v : 0;
+        }
+        private decimal ObtenerValorTipoRenta()
+        {
+            if (cbxTIPO_RENTA.SelectedItem is DataRowView fila)
+            {
+                object v = fila["VALOR"];
+                if (v != null && v != DBNull.Value)
+                    return Convert.ToDecimal(v);
+            }
+            return 0;
+        }
+        private int ObtenerIdTipoRenta()
+        {
+            if (cbxTIPO_RENTA.SelectedValue == null) return 0;
+            if (cbxTIPO_RENTA.SelectedValue == DBNull.Value) return 0;
+            if (cbxTIPO_RENTA.SelectedValue is DataRowView) return 0;
+            return Convert.ToInt32(cbxTIPO_RENTA.SelectedValue);
+        }
+
+        /// <summary>Asigna un decimal a un TextBox; si es 0 lo deja limpio</summary>
+        private void AsignarDecimal(TextBox tb, decimal valor)
+        {
+            tb.Text = valor == 0 ? "" : valor.ToString("N2");
+        }
+        private void RecalcularTotales()
+        {
+            decimal gravada = ObtenerDecimal(txtGRAVADA);
+            decimal exenta = ObtenerDecimal(txtEXENTA);
+            decimal excluido = ObtenerDecimal(txtEXCLUIDO);
+            decimal percepcion = ObtenerDecimal(txtPERCEPCION);
+            decimal fovial = ObtenerDecimal(txtFOVIAL);
+            decimal contrans = ObtenerDecimal(txtCONTRANS);
+            decimal cargo = ObtenerDecimal(txtCARGO);
+            decimal abono = ObtenerDecimal(txtABONO);
+            decimal renta = ObtenerDecimal(txtRENTA);   // lee, no calcula
+            // IVA = 13% de la base gravada
+            decimal iva = Math.Round(gravada * 0.13m, 2);
+            // IVAR (1%): solo si gravada >= 100 y proveedor NO es Gran Contribuyente
+            decimal ivar = 0;
+            bool retieneIva = gravada >= 100m
+                              && _idTipoContribProveedor != "3"
+                              && _idTipoContribProveedor != "0";
+            if (retieneIva)
+                ivar = Math.Round(gravada * 0.01m, 2);
+
+            decimal total = gravada + exenta + excluido + percepcion + iva + fovial + contrans;
+            decimal saldo = total - cargo - abono - renta - ivar;
+
+            AsignarDecimal(txtIVA, iva);
+            AsignarDecimal(txtIVAR, ivar);
+            AsignarDecimal(txtTOTAL, total);
+            AsignarDecimal(txtSALDO, saldo);
+        }
+
+        private void mskFECHA_RECIBIDO_Leave(object sender, EventArgs e)
+        {
+            if (DateTime.TryParseExact(mskFECHA_RECIBIDO.Text, "dd/MM/yyyy",
+            CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fecha))
+            {
+                mskFECHA_VENCE.Text = fecha.AddDays(30).ToString("dd/MM/yyyy");
+            }
+        }
+
+        private void cbxTIPO_SERVICIO_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (!(cbxTIPO_SERVICIO.SelectedItem is DataRowView fila)) return;
+            object valorRenta = fila["ID_TIPO_RENTA"];
+            if (valorRenta == DBNull.Value)
+                cbxTIPO_RENTA.SelectedIndex = 0;
+            else
+                cbxTIPO_RENTA.SelectedValue = Convert.ToInt32(valorRenta);
+            RecalcularTotales();   // refleja el cambio de renta sugerida
+        }
+
+        private void cbxTIPO_RENTA_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (ObtenerIdTipoRenta() != 0)
+            {
+                decimal aplicable = ObtenerDecimal(txtAPLICABLE_RENTA);
+                decimal renta = Math.Round(aplicable * ObtenerValorTipoRenta(), 2);
+                AsignarDecimal(txtRENTA, renta);
+            }
+            else
+            {
+                AsignarDecimal(txtRENTA, 0);
+            }
+
+            RecalcularTotales();
+        }
+
+        private void btnFinalizar_Click(object sender, EventArgs e)
+        {
+            this.Close(); 
+        }
+    }
+}
+

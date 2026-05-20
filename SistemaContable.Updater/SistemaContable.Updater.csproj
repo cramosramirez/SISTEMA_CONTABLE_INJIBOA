@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ProjectGuid>{D4E5F6A7-B8C9-0123-DEF0-234567890123}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SistemaContable.Updater</RootNamespace>
+    <AssemblyName>Updater</AssemblyName>
+    <TargetFramework>net48</TargetFramework>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>

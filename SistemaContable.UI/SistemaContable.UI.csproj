@@ -1,0 +1,98 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ProjectGuid>{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SistemaContable.UI</RootNamespace>
+    <AssemblyName>SistemaContable</AssemblyName>
+    <TargetFramework>net48</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Deterministic>true</Deterministic>
+    <ApplicationIcon />
+    <StartupObject>SistemaContable.UI.Program</StartupObject>
+  </PropertyGroup>
+
+  <!-- Referencias del sistema -->
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+
+  <!--
+  ═══════════════════════════════════════════════════════════════════
+  REFERENCIAS DEVEXPRESS 20.1.17.0
+  Ajustar HintPath a la carpeta donde están instalados los DLLs.
+  Ruta típica: C:\Program Files (x86)\DevExpress 20.1\Components\Bin\Framework4.0\
+  ═══════════════════════════════════════════════════════════════════
+  -->
+  <PropertyGroup>
+	<DevExpressPath>C:\Program Files (x86)\DevExpress 20.1\Components\Bin\Framework</DevExpressPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v20.1">
+      <HintPath>$(DevExpressPath)\DevExpress.Data.v20.1.dll</HintPath>
+    </Reference>
+	<Reference Include="DevExpress.Data.Data.Desktop.v20.1">
+      <HintPath>$(DevExpressPath)\DevExpress.Data.Desktop.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v20.1">
+      <HintPath>$(DevExpressPath)\DevExpress.Utils.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v20.1">
+      <HintPath>$(DevExpressPath)\DevExpress.XtraEditors.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v20.1">
+      <HintPath>$(DevExpressPath)\DevExpress.XtraGrid.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v20.1">
+      <HintPath>$(DevExpressPath)\DevExpress.XtraBars.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v20.1">
+      <HintPath>$(DevExpressPath)\DevExpress.XtraLayout.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Skins.v20.1">
+      <HintPath>$(DevExpressPath)\DevExpress.Skins.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.UserSkins.v20.1">
+      <HintPath>$(DevExpressPath)\DevExpress.UserSkins.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v20.1">
+      <HintPath>$(DevExpressPath)\DevExpress.XtraPrinting.v20.1.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Referencias a proyectos -->
+  <ItemGroup>
+    <ProjectReference Include="..\SistemaContable.DAL\SistemaContable.DAL.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Forms\Catalogos\" />
+    <Folder Include="Forms\CxP\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
