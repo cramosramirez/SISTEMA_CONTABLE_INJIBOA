@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using SistemaContable.UI.Forms.Proveedores;
+using System.Reflection;
 
 namespace SistemaContable.UI.Forms
 {
@@ -109,29 +111,81 @@ namespace SistemaContable.UI.Forms
                 }
             }
         }
+                
 
+        // Cache para mejorar rendimiento (opcional pero recomendado)
+        private static readonly Dictionary<string, Type> _formCache = new Dictionary<string, Type>();
+
+        // ==================== MÉTODO AUXILIAR ====================
+        private Type ObtenerTipoFormulario(string nombreFormulario)
+        {
+            if (string.IsNullOrWhiteSpace(nombreFormulario))
+                return null;
+
+            // Buscar en caché
+            if (_formCache.TryGetValue(nombreFormulario, out var tipoCache))
+                return tipoCache;
+
+            // Buscar el tipo
+            string nombreCompleto = $"SistemaContable.UI.Forms.{nombreFormulario}";
+            var assembly = Assembly.GetExecutingAssembly();
+
+            Type tipo = assembly.GetType(nombreCompleto, false, true); // false = no throw, true = ignoreCase
+
+            // Guardar en caché (aunque sea null, para no buscar de nuevo)
+            _formCache[nombreFormulario] = tipo;
+
+            return tipo;
+        }
+
+        // ==================== MÉTODO PRINCIPAL ====================
         private void AbrirFormulario(string nombreFormulario)
         {
+            if (string.IsNullOrWhiteSpace(nombreFormulario))
+            {
+                XtraMessageBox.Show("El nombre del formulario no puede estar vacío.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
-                // Buscar el tipo por nombre en el ensamblado actual
-                string nombreCompleto = $"SistemaContable.UI.Forms.{nombreFormulario}";
-                Type tipo = Type.GetType(nombreCompleto);
+                Type tipo = ObtenerTipoFormulario(nombreFormulario);
 
                 if (tipo == null)
                 {
-                    XtraMessageBox.Show(
-                        $"Formulario '{nombreFormulario}' no encontrado.",
+                    XtraMessageBox.Show($"Formulario '{nombreFormulario}' no encontrado.",
                         "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
-                }                
-                Form frm = Activator.CreateInstance(tipo) as Form;
-                frm?.ShowDialog(this);
+                }
+
+                if (!typeof(Form).IsAssignableFrom(tipo))
+                {
+                    XtraMessageBox.Show($"El tipo '{nombreFormulario}' no es un formulario válido.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                using (Form frm = Activator.CreateInstance(tipo) as Form)
+                {
+                    if (frm == null) return;
+                    
+                    if (frm is frmConsultaQuedan quedanForm)
+                    {                        
+                        quedanForm.Width = this.ClientRectangle.Width;
+                        quedanForm.Height = this.ClientRectangle.Height - this.Ribbon.Height - this.StatusBar.Height;
+                        quedanForm.Top = this.Ribbon.Height;           // Justo debajo del ribbon
+                        quedanForm.Left = 0;
+                        quedanForm.StartPosition = FormStartPosition.Manual;
+                    }
+                    else
+                        frm.StartPosition = FormStartPosition.CenterParent;
+                    frm.ShowDialog(this);
+                }
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show(
-                    $"Error al abrir el formulario: {ex.Message}",
+                XtraMessageBox.Show($"Error al abrir el formulario '{nombreFormulario}':\n{ex.Message}",
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

@@ -10,12 +10,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
+using DevExpress.XtraEditors;
+using ComboBox = System.Windows.Forms.ComboBox;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
     public partial class frmDocumentoCompra : Form
     {
         #region Campos privados
+
+        private enum EstadoFormulario
+        {
+            Nuevo,
+            Guardado,
+            Validado
+        } 
 
         private readonly DALBase _dal = new DALBase();
         private static readonly HttpClient _http = new HttpClient
@@ -24,22 +33,23 @@ namespace SistemaContable.UI.Forms.Proveedores
         };
 
         private int _idEntidad = 0;
-        private string _codigoEntidad = string.Empty;
-        private int _idCCF = 0;
+        private string _codigoEntidad = string.Empty;        
         private string _idTipoContribProveedor = "";
+        private string _idTipoPersona = "";
+        public int IdCcfCompra { get; set; } = 0;
 
         #endregion
         public frmDocumentoCompra()
         {
             InitializeComponent();
-        }      
+        }
+
 
         private void frmDocumentoCompra_Load(object sender, EventArgs e)
         {
-            FormHelper.Inicializar(this);
-            CargarSiguienteNumQuedan();
+            FormHelper.Inicializar(this);            
             CargarCombos();
-            cbxSUCURSAL.SelectedIndex = 1; 
+            cbxSUCURSAL.SelectedIndex = 1;
             // Cargar de Combos Reuqeridos por MH
             CargarTipoServicio();   // Independiente 
             CargarTipoOperacion();  // Independiente (al cambiar dispara cascada)
@@ -70,8 +80,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                     ParametrosExtra = new { ROL = "PRO" }
                 },
                 fila => AsignarProveedor(fila)
-            );            
-            txtPROVEEDOR.Leave += txtPROVEEDOR_Leave;            
+            );
+            txtPROVEEDOR.Leave += txtPROVEEDOR_Leave;
             txtCONSULTA_MH.Leave += txtCONSULTA_MH_Leave;
 
             ConfigurarTextBoxDecimal(
@@ -79,7 +89,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtIVA, txtFOVIAL, txtCONTRANS, txtTOTAL,
                 txtCARGO, txtABONO, txtAPLICABLE_RENTA, txtRENTA,
                 txtIVAR, txtSALDO
-            );
+            );        
+
 
             // GRAVADA y EXENTA: handlers que calculan APLICABLE_RENTA/RENTA y luego recalculan totales
             txtGRAVADA.Leave += txtBaseRenta_Leave;
@@ -90,8 +101,171 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtEXCLUIDO, txtPERCEPCION, txtFOVIAL, txtCONTRANS,
                 txtCARGO, txtABONO
             );
+
+            if (IdCcfCompra > 0)
+            {
+                ConfigurarCRUD(EstadoFormulario.Guardado);
+                CargarCcfExistente(IdCcfCompra);
+            }                
+            else
+            {
+                ConfigurarCRUD(EstadoFormulario.Nuevo);
+                CargarSiguienteNumQuedan();
+            }
+                
         }
 
+        private void ConfigurarCRUD(EstadoFormulario estado)
+        {
+
+            switch (estado)
+            {
+                case EstadoFormulario.Nuevo:
+                    txtPROVEEDOR.Enabled = true; 
+                    btnGuardar.Visible = true;
+                    btnValidar.Visible = false;
+                    btnAdicionar.Visible = false;
+                    btnImprimirQuedan.Visible = false;
+                    btnImprimirRetencion.Visible = false;
+                    btnCorreo.Visible = false;
+                    btnProvision.Visible = false;
+                    break;
+                case EstadoFormulario.Guardado:
+                    txtPROVEEDOR.Enabled = false;
+                    btnGuardar.Visible = true;
+                    btnValidar.Visible = true;
+                    btnAdicionar.Visible = _codigoEntidad.Equals(Configuracion.CodigoCCJIBOA); // solo para CC Jiboa
+                    btnImprimirQuedan.Visible = false;
+                    btnImprimirRetencion.Visible = false;
+                    btnCorreo.Visible = false;
+                    btnProvision.Visible = false;
+                    break;
+                case EstadoFormulario.Validado:
+                    txtPROVEEDOR.Enabled = false;
+                    btnGuardar.Visible = true;
+                    btnValidar.Visible = false;
+                    btnAdicionar.Visible = false;
+                    btnImprimirQuedan.Visible = true;
+                    btnImprimirRetencion.Visible = true;
+                    btnCorreo.Visible = true;
+                    btnProvision.Visible = true;
+                    break;
+            }
+        }
+
+        private void CargarCcfExistente(int idCcfCompra)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                DataTable dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",
+                    new
+                    {
+                        ACCION = "OBTENER",
+                        ID_CCF_COMPRA = idCcfCompra
+                    });
+
+                if (dt.Rows.Count == 0)
+                {
+                    XtraMessageBox.Show("No se encontró el documento solicitado.",
+                        "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Close();
+                    return;
+                }
+
+                DataRow r = dt.Rows[0];
+
+                // ---------- Estado del form ----------                
+                _idQuedanActual = Convert.ToInt32(r["ID_QUEDAN"]);
+
+                // ---------- Quedan ----------
+                lblNUM_QUEDAN.Text = r["NUM_QUEDAN"].ToString();
+
+                // ---------- Proveedor ----------
+                _idEntidad = Convert.ToInt32(r["ID_ENTIDAD"]);
+                _codigoEntidad = r["CODIGO_ENTIDAD"].ToString();
+                _idTipoContribProveedor = r["ID_TIPO_CONTRIB"] == DBNull.Value
+                                          ? "0"
+                                          : r["ID_TIPO_CONTRIB"].ToString();
+                txtPROVEEDOR.Text = _codigoEntidad; 
+                txtNOMBRE_PROVEEDOR.Text = r["NOMBRE_ENTIDAD"]?.ToString();
+                txtNRC.Text = r["NRC"].ToString();
+                txtNIT.Text = r["NIT"].ToString();
+                txtTELEFONO.Text = r["CELULAR"].ToString();
+                txtCORREO.Text = r["CORREO"].ToString();
+                txtACTIVIDAD_PRIMARIA.Text = r["ACTIVIDAD_PRIMARIA"].ToString();
+                txtTIPO_CONTRIBUYENTE.Text = r["TIPO_CONTRIBUYENTE"].ToString();
+                txtDIRECCION.Text = r["COMPLEMENTO"].ToString();
+
+                // ---------- Documento fiscal ----------
+                cbxTIPO_DTE.SelectedValue = Convert.ToInt32(r["ID_TIPO_DTE"]);
+                txtNUM_CONTROL.Text = AsString(r["NUM_CONTROL"]);
+                txtCOD_GENERACION.Text = AsString(r["COD_GENERACION"]);
+                txtSELLO_RECIBIDO.Text = AsString(r["SELLO_RECIBIDO"]);
+                mskFECHA_EMISION.Text = AsFecha(r["FECHA_EMISION"]);
+                mskFECHA_RECIBIDO.Text = AsFecha(r["FECHA_RECIBIDO"]);
+                mskFECHA_VENCE.Text = AsFecha(r["FECHA_VENCE"]);
+                txtORDEN.Text = AsString(r["ORDEN"]);
+
+                cbxSUCURSAL.SelectedValue = Convert.ToInt32(r["ID_SUCURSAL"]);
+
+                // ---------- Cascada de clasificación ----------
+                // IMPORTANTE: orden estricto. Cargar el combo hijo con el filtro
+                // del padre antes de asignarle el SelectedValue.
+                int idTipoServi = ToInt(r["ID_TIPO_SERVI"]);
+                int idTipoOpera = ToInt(r["ID_TIPO_OPERA"]);
+                int idClasifica = ToInt(r["ID_CLASIFICA"]);
+                int idSector = ToInt(r["ID_SECTOR"]);
+                int idTipoCosto = ToInt(r["ID_TIPO_COSTO"]);
+
+                // Independientes
+                cbxTIPO_SERVICIO.SelectedValue = idTipoServi;
+                cbxTIPO_OPERACION.SelectedValue = idTipoOpera;
+
+                // Dependientes (cargar + asignar)
+                CargarClasificacion(idTipoOpera);
+                cbxCLASIFICACION.SelectedValue = idClasifica;
+
+                CargarSector(idTipoOpera, idClasifica);
+                cbxSECTOR.SelectedValue = idSector;
+
+                CargarTipoCosto(idTipoOpera, idClasifica, idSector);
+                cbxTIPO_COSTO.SelectedValue = idTipoCosto;
+
+                // ---------- Tipo de renta ----------
+                if (r["ID_TIPO_RENTA"] != DBNull.Value)
+                    cbxTIPO_RENTA.SelectedValue = Convert.ToInt32(r["ID_TIPO_RENTA"]);
+
+                // ---------- Montos ----------
+                AsignarDecimal(txtGRAVADA, ToDecimal(r["GRAVADA"]));
+                AsignarDecimal(txtEXENTA, ToDecimal(r["EXENTA"]));
+                AsignarDecimal(txtEXCLUIDO, ToDecimal(r["NO_SUJETA"]));
+                AsignarDecimal(txtPERCEPCION, ToDecimal(r["PERCEPCION"]));
+                AsignarDecimal(txtIVA, ToDecimal(r["IVA"]));
+                AsignarDecimal(txtFOVIAL, ToDecimal(r["FOVIAL"]));
+                AsignarDecimal(txtCONTRANS, ToDecimal(r["COTRANS"]));
+                AsignarDecimal(txtTOTAL, ToDecimal(r["TOTAL"]));
+                AsignarDecimal(txtCARGO, ToDecimal(r["CARGO"]));
+                AsignarDecimal(txtABONO, ToDecimal(r["ABONO"]));
+                AsignarDecimal(txtAPLICABLE_RENTA, ToDecimal(r["APLICABLE_RENTA"]));
+                AsignarDecimal(txtRENTA, ToDecimal(r["RENTA"]));
+                AsignarDecimal(txtIVAR, ToDecimal(r["IVAR"]));
+                AsignarDecimal(txtSALDO, ToDecimal(r["SALDO"]));
+
+                // ---------- Observación ----------
+                txtOBSERVACION.Text = AsString(r["OBSERVACION"]);             
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al cargar el documento:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
         private void CargarSiguienteNumQuedan()
         {
             var num = _dal.ObtenerNumeracionPrevia("QD",null);   // sin año -> corrido
@@ -112,7 +286,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void CargarCombos()
         {
-            CargarCombo("SP_TIPO_DTE", "BUSCAR_FISCAL_COMPRAS_CREDITO", "TIPO_DTE", "ABREVIATURA", cbxTIPO_DTE);                          
+            CargarCombo("SP_TIPO_DTE", "BUSCAR_FISCAL_COMPRAS_CREDITO", "ID_TIPO_DTE", "ABREVIATURA", cbxTIPO_DTE);                          
             CargarCombo("SP_SUCURSAL", "BUSCAR", "ID_SUCURSAL", "NOMBRE", cbxSUCURSAL);         
         }
 
@@ -304,6 +478,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtTIPO_CONTRIBUYENTE.Text = fila["TIPO_CONTRIBUYENTE"].ToString(); 
             txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
             _idTipoContribProveedor = fila["ID_TIPO_CONTRIB"].ToString();
+            _idTipoPersona = fila["ID_TIPO_ENTIDAD"].ToString();
             RecalcularTotales();
         }
         private void LimpiarProveedor()
@@ -689,7 +864,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             if (!(cbxTIPO_SERVICIO.SelectedItem is DataRowView fila)) return;
             object valorRenta = fila["ID_TIPO_RENTA"];
-            if (valorRenta == DBNull.Value)
+            if (valorRenta == DBNull.Value || _idTipoPersona.Equals("2"))
                 cbxTIPO_RENTA.SelectedIndex = 0;
             else
                 cbxTIPO_RENTA.SelectedValue = Convert.ToInt32(valorRenta);
@@ -715,6 +890,301 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
             this.Close(); 
+        }
+
+        // ================================================================
+        //  frmDocumentoCompra - Operación GUARDAR (atómica vía SP)
+        //
+        //  El SP_CREDITO_FISCAL_COMPRA.GUARDAR maneja internamente:
+        //    - Si @ID_CCF_COMPRA = 0 y @ID_QUEDAN = 0  -> crea Quedan + CCF
+        //    - Si @ID_CCF_COMPRA = 0 y @ID_QUEDAN > 0  -> solo CCF (mismo Quedan)
+        //    - Si @ID_CCF_COMPRA > 0                   -> UPDATE del CCF
+        //
+        //  El front se reduce a UNA sola llamada. Ya no hay rollback manual.
+        // ================================================================
+
+
+        #region === VARIABLES DE ESTADO ===
+
+        // ID del Quedan al que pertenece la operación actual.
+        //   0  = el SP lo creará al guardar el primer CCF
+        //  > 0 = ya existe (se reutiliza para CCFs adicionales del mismo proveedor)
+        private int _idQuedanActual = 0;
+
+        #endregion
+
+
+
+        #region === VALIDACIONES ===
+
+        private bool ValidarCampos()
+        {
+            if (_idEntidad == 0)
+            {
+                XtraMessageBox.Show("Debe seleccionar un proveedor.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPROVEEDOR.Focus();
+                return false;
+            }
+
+            if (!TieneSeleccion(cbxTIPO_DTE))
+            {
+                XtraMessageBox.Show("Debe seleccionar el tipo de documento.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbxTIPO_DTE.Focus();
+                return false;
+            }
+
+            if (!TieneSeleccion(cbxSUCURSAL))
+            {
+                XtraMessageBox.Show("Debe seleccionar la sucursal.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbxSUCURSAL.Focus();
+                return false;
+            }
+
+            if (!DateTime.TryParseExact(mskFECHA_EMISION.Text, "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+            {
+                XtraMessageBox.Show("Ingrese una fecha de emisión válida.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mskFECHA_EMISION.Focus();
+                return false;
+            }
+
+            if (!DateTime.TryParseExact(mskFECHA_RECIBIDO.Text, "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+            {
+                XtraMessageBox.Show("Ingrese una fecha de recibido válida.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mskFECHA_RECIBIDO.Focus();
+                return false;
+            }
+
+            // Cascada de clasificación
+            if (!TieneSeleccion(cbxTIPO_SERVICIO)) { AvisoValidacion(cbxTIPO_SERVICIO, "tipo de servicio"); return false; }
+            if (!TieneSeleccion(cbxTIPO_OPERACION)) { AvisoValidacion(cbxTIPO_OPERACION, "tipo de operación"); return false; }
+            if (!TieneSeleccion(cbxCLASIFICACION)) { AvisoValidacion(cbxCLASIFICACION, "clasificación"); return false; }
+            if (!TieneSeleccion(cbxSECTOR)) { AvisoValidacion(cbxSECTOR, "sector"); return false; }
+            if (!TieneSeleccion(cbxTIPO_COSTO)) { AvisoValidacion(cbxTIPO_COSTO, "tipo de costo"); return false; }
+
+            if (ObtenerDecimal(txtTOTAL) <= 0)
+            {
+                XtraMessageBox.Show("El total del documento debe ser mayor a cero.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtGRAVADA.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void AvisoValidacion(System.Windows.Forms.ComboBox cbx, string nombre)
+        {
+            XtraMessageBox.Show($"Debe seleccionar el {nombre}.", "Validación",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            cbx.Focus();
+        }
+
+        #endregion
+
+
+        #region === GUARDADO (una sola llamada al SP) ===
+
+        private void GuardarDocumento()
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                var parametros = new
+                {
+                    ACCION = "GUARDAR",
+                    ID_CCF_COMPRA = IdCcfCompra,
+                    ID_QUEDAN = _idQuedanActual,          // 0 -> el SP creará el Quedan
+                    NUM_QUEDAN = (int?)null,               // lo asigna el SP
+                    ID_TIPO_DTE = ObtenerIdCombo(cbxTIPO_DTE),                    
+                    NUM_CONTROL = NullIfEmpty(txtNUM_CONTROL.Text),
+                    COD_GENERACION = NullIfEmpty(txtCOD_GENERACION.Text),
+                    SELLO_RECIBIDO = NullIfEmpty(txtSELLO_RECIBIDO.Text),
+                    FECHA_EMISION = ParsearFecha(mskFECHA_EMISION.Text),
+                    TIPO_MONEDA = "USD",
+                    ID_ENTIDAD = _idEntidad,
+                    CODIGO_ENTIDAD = _codigoEntidad,
+                    FECHA_RECIBIDO = ParsearFecha(mskFECHA_RECIBIDO.Text),
+                    FECHA_VENCE = ParsearFechaOpcional(mskFECHA_VENCE.Text),
+                    ORDEN = NullIfEmpty(txtORDEN.Text),
+                    ID_SUCURSAL = Convert.ToInt32(cbxSUCURSAL.SelectedValue),
+                    ID_TIPO_SERVI = ObtenerIdCombo(cbxTIPO_SERVICIO),
+                    ID_TIPO_OPERA = ObtenerIdCombo(cbxTIPO_OPERACION),
+                    ID_CLASIFICA = ObtenerIdCombo(cbxCLASIFICACION),
+                    ID_SECTOR = ObtenerIdCombo(cbxSECTOR),
+                    ID_TIPO_COSTO = ObtenerIdCombo(cbxTIPO_COSTO),
+                    NO_SUJETA = ObtenerDecimal(txtEXCLUIDO),
+                    EXENTA = ObtenerDecimal(txtEXENTA),
+                    GRAVADA = ObtenerDecimal(txtGRAVADA),
+                    PERCEPCION = ObtenerDecimal(txtPERCEPCION),
+                    IVA = ObtenerDecimal(txtIVA),
+                    FOVIAL = ObtenerDecimal(txtFOVIAL),
+                    COTRANS = ObtenerDecimal(txtCONTRANS),
+                    TOTAL = ObtenerDecimal(txtTOTAL),
+                    CARGO = ObtenerDecimal(txtCARGO),
+                    ABONO = ObtenerDecimal(txtABONO),
+                    RENTA = ObtenerDecimal(txtRENTA),
+                    IVAR = ObtenerDecimal(txtIVAR),
+                    SALDO = ObtenerDecimal(txtSALDO),
+                    OBSERVACION = NullIfEmpty(txtOBSERVACION.Text),
+                    USUARIO = Configuracion.UsuarioActual,                    
+                    ID_TIPO_RENTA = ObtenerIdCombo(cbxTIPO_RENTA),
+                    APLICABLE_RENTA = ObtenerDecimal(txtAPLICABLE_RENTA)
+                };
+
+                DataTable dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA", parametros);
+
+                if (dt.Rows.Count == 0)
+                    throw new Exception("El SP no devolvió los IDs generados.");
+
+                // El SP devuelve siempre los tres campos:
+                DataRow row = dt.Rows[0];
+                IdCcfCompra = Convert.ToInt32(row["ID_GENERADO"]);
+                _idQuedanActual = Convert.ToInt32(row["ID_QUEDAN_GENERADO"]);
+                int numQuedan = Convert.ToInt32(row["NUM_QUEDAN_GENERADO"]);
+                lblNUM_QUEDAN.Text = numQuedan.ToString();
+                ConfigurarCRUD(EstadoFormulario.Guardado);
+                XtraMessageBox.Show("Documento guardado correctamente.",
+                    "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Ocurrió un error al guardar el documento:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        #endregion
+
+
+        #region === BOTÓN "NUEVO CCF MISMO QUEDAN" ===
+
+        private void btnADICIONAR_Click(object sender, EventArgs e)
+        {
+            if (_idQuedanActual == 0)
+            {
+                XtraMessageBox.Show(
+                    "Aún no se ha guardado ningún documento. Primero guarde uno para crear el Quedan.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (XtraMessageBox.Show(
+                    "¿Agregar otro documento al mismo Quedan y proveedor?",
+                    "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                != DialogResult.Yes) return;
+
+            LimpiarParaNuevoCcf();
+        }
+
+        private void LimpiarParaNuevoCcf()
+        {            
+
+            IdCcfCompra = 0;
+
+            cbxTIPO_DTE.SelectedIndex = 0;
+            txtNUM_CONTROL.Text = "";
+            txtCOD_GENERACION.Text = "";
+            txtSELLO_RECIBIDO.Text = "";
+            mskFECHA_EMISION.Text = "";
+            mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            mskFECHA_VENCE.Text = "";
+            txtORDEN.Text = "";
+
+            cbxTIPO_SERVICIO.SelectedIndex = 0;
+            cbxTIPO_OPERACION.SelectedIndex = 0;
+            LimpiarCombo(cbxCLASIFICACION, "ID_CLASIFICA");
+            LimpiarCombo(cbxSECTOR, "ID_SECTOR");
+            LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
+            cbxTIPO_RENTA.SelectedIndex = 0;
+
+            foreach (var tb in new[] {
+                txtGRAVADA, txtEXENTA, txtEXCLUIDO, txtPERCEPCION,
+                txtIVA,     txtFOVIAL, txtCONTRANS, txtTOTAL,
+                txtCARGO,   txtABONO,  txtAPLICABLE_RENTA, txtRENTA,
+                txtIVAR,    txtSALDO })
+            {
+                tb.Text = "";
+            }
+
+            txtOBSERVACION.Text = "";
+
+            cbxTIPO_DTE.Focus();
+        }
+
+        #endregion
+
+
+        #region === HELPERS DE PARSEO ===
+
+        private static DateTime ParsearFecha(string texto)
+        {
+            return DateTime.ParseExact(texto, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        }
+
+        private static DateTime? ParsearFechaOpcional(string texto)
+        {
+            if (DateTime.TryParseExact(texto, "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime f))
+                return f;
+            return null;
+        }
+
+        private static string NullIfEmpty(string texto)
+        {
+            return string.IsNullOrWhiteSpace(texto) ? null : texto.Trim();
+        }
+
+        private static string AsString(object valor)
+        {
+            return valor == null || valor == DBNull.Value ? "" : valor.ToString();
+        }
+
+        private static string AsFecha(object valor)
+        {
+            if (valor == null || valor == DBNull.Value) return "";
+            return Convert.ToDateTime(valor).ToString("dd/MM/yyyy");
+        }
+
+        private static int ToInt(object valor)
+        {
+            if (valor == null || valor == DBNull.Value) return 0;
+            return Convert.ToInt32(valor);
+        }
+
+        private static decimal ToDecimal(object valor)
+        {
+            if (valor == null || valor == DBNull.Value) return 0;
+            return Convert.ToDecimal(valor);
+        }
+
+        private int? ObtenerIdCombo(ComboBox cbx)
+        {
+            if (cbx.SelectedValue == null) return null;
+            if (cbx.SelectedValue == DBNull.Value) return null;
+            if (cbx.SelectedValue is DataRowView) return null;
+            return Convert.ToInt32(cbx.SelectedValue);
+        }
+
+        #endregion
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            if (!ValidarCampos()) return;
+            GuardarDocumento();
+            ConfigurarCRUD(EstadoFormulario.Guardado);
         }
     }
 }

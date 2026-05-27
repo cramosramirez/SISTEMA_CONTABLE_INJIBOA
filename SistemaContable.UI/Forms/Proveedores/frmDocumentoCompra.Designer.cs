@@ -33,6 +33,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtDIRECCION = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.panelQUEDAN = new System.Windows.Forms.Panel();
+            this.lblNUM_QUEDAN = new System.Windows.Forms.Label();
             this.lblQuedan = new System.Windows.Forms.Label();
             this.label40 = new System.Windows.Forms.Label();
             this.cbxTIPO_RENTA = new System.Windows.Forms.ComboBox();
@@ -113,19 +114,21 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNRC = new System.Windows.Forms.TextBox();
             this.txtPROVEEDOR = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnAdicionar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnBuscar = new DevExpress.XtraEditors.SimpleButton();
-            this.lblNUM_QUEDAN = new System.Windows.Forms.Label();
-            this.btnCancelar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnProvision = new DevExpress.XtraEditors.SimpleButton();
+            this.btnCorreo = new DevExpress.XtraEditors.SimpleButton();
+            this.btnImprimirRetencion = new DevExpress.XtraEditors.SimpleButton();
+            this.btnImprimirQuedan = new DevExpress.XtraEditors.SimpleButton();
             this.btnValidar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnAdicionar = new DevExpress.XtraEditors.SimpleButton();
             this.groupBox1.SuspendLayout();
             this.panelQUEDAN.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox1.Controls.Add(this.txtDIRECCION);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.panelQUEDAN);
@@ -244,6 +247,16 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panelQUEDAN.Name = "panelQUEDAN";
             this.panelQUEDAN.Size = new System.Drawing.Size(266, 34);
             this.panelQUEDAN.TabIndex = 112;
+            // 
+            // lblNUM_QUEDAN
+            // 
+            this.lblNUM_QUEDAN.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNUM_QUEDAN.ForeColor = System.Drawing.Color.Blue;
+            this.lblNUM_QUEDAN.Location = new System.Drawing.Point(95, 8);
+            this.lblNUM_QUEDAN.Name = "lblNUM_QUEDAN";
+            this.lblNUM_QUEDAN.Size = new System.Drawing.Size(142, 18);
+            this.lblNUM_QUEDAN.TabIndex = 115;
+            this.lblNUM_QUEDAN.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblQuedan
             // 
@@ -1010,6 +1023,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // txtPROVEEDOR
             // 
+            this.txtPROVEEDOR.BackColor = System.Drawing.SystemColors.Window;
             this.txtPROVEEDOR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPROVEEDOR.Location = new System.Drawing.Point(98, 45);
             this.txtPROVEEDOR.Name = "txtPROVEEDOR";
@@ -1026,89 +1040,127 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label1.TabIndex = 16;
             this.label1.Text = "Proveedor";
             // 
-            // btnAdicionar
-            // 
-            this.btnAdicionar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAdicionar.Appearance.Options.UseFont = true;
-            this.btnAdicionar.Appearance.Options.UseTextOptions = true;
-            this.btnAdicionar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnAdicionar.Location = new System.Drawing.Point(490, 702);
-            this.btnAdicionar.Name = "btnAdicionar";
-            this.btnAdicionar.Size = new System.Drawing.Size(163, 47);
-            this.btnAdicionar.TabIndex = 5;
-            this.btnAdicionar.Text = "Adicionar otro documento al Quedan";
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardar.Appearance.Options.UseFont = true;
-            this.btnGuardar.Location = new System.Drawing.Point(242, 702);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(85, 47);
-            this.btnGuardar.TabIndex = 6;
-            this.btnGuardar.Text = "Guardar";
-            // 
             // btnFinalizar
             // 
-            this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFinalizar.Appearance.Options.UseFont = true;
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnFinalizar.Location = new System.Drawing.Point(1010, 702);
+            this.btnFinalizar.Location = new System.Drawing.Point(1011, 704);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(108, 47);
             this.btnFinalizar.TabIndex = 7;
             this.btnFinalizar.Text = "Finalizar";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
             // 
-            // btnBuscar
+            // btnProvision
             // 
-            this.btnBuscar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBuscar.Appearance.Options.UseFont = true;
-            this.btnBuscar.Location = new System.Drawing.Point(671, 702);
-            this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(91, 47);
-            this.btnBuscar.TabIndex = 8;
-            this.btnBuscar.Text = "Buscar";
+            this.btnProvision.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProvision.Appearance.Options.UseFont = true;
+            this.btnProvision.Appearance.Options.UseTextOptions = true;
+            this.btnProvision.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnProvision.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.provision32x32;
+            this.btnProvision.ImageOptions.ImageToTextIndent = 10;
+            this.btnProvision.Location = new System.Drawing.Point(872, 704);
+            this.btnProvision.Name = "btnProvision";
+            this.btnProvision.Size = new System.Drawing.Size(110, 47);
+            this.btnProvision.TabIndex = 14;
+            this.btnProvision.Text = "Provisión";
             // 
-            // lblNUM_QUEDAN
+            // btnCorreo
             // 
-            this.lblNUM_QUEDAN.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNUM_QUEDAN.ForeColor = System.Drawing.Color.Blue;
-            this.lblNUM_QUEDAN.Location = new System.Drawing.Point(95, 8);
-            this.lblNUM_QUEDAN.Name = "lblNUM_QUEDAN";
-            this.lblNUM_QUEDAN.Size = new System.Drawing.Size(142, 18);
-            this.lblNUM_QUEDAN.TabIndex = 115;
-            this.lblNUM_QUEDAN.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCorreo.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCorreo.Appearance.Options.UseFont = true;
+            this.btnCorreo.Appearance.Options.UseTextOptions = true;
+            this.btnCorreo.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnCorreo.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.correo32x32;
+            this.btnCorreo.ImageOptions.ImageToTextIndent = 10;
+            this.btnCorreo.Location = new System.Drawing.Point(729, 704);
+            this.btnCorreo.Name = "btnCorreo";
+            this.btnCorreo.Size = new System.Drawing.Size(102, 47);
+            this.btnCorreo.TabIndex = 13;
+            this.btnCorreo.Text = "Correo";
             // 
-            // btnCancelar
+            // btnImprimirRetencion
             // 
-            this.btnCancelar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancelar.Appearance.Options.UseFont = true;
-            this.btnCancelar.Location = new System.Drawing.Point(796, 702);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(92, 47);
-            this.btnCancelar.TabIndex = 9;
-            this.btnCancelar.Text = "Cancelar";
+            this.btnImprimirRetencion.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnImprimirRetencion.Appearance.Options.UseFont = true;
+            this.btnImprimirRetencion.Appearance.Options.UseTextOptions = true;
+            this.btnImprimirRetencion.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnImprimirRetencion.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.imprimir32x32;
+            this.btnImprimirRetencion.ImageOptions.ImageToTextIndent = 10;
+            this.btnImprimirRetencion.Location = new System.Drawing.Point(602, 704);
+            this.btnImprimirRetencion.Name = "btnImprimirRetencion";
+            this.btnImprimirRetencion.Size = new System.Drawing.Size(116, 47);
+            this.btnImprimirRetencion.TabIndex = 12;
+            this.btnImprimirRetencion.Text = "Imprimir Retención";
+            // 
+            // btnImprimirQuedan
+            // 
+            this.btnImprimirQuedan.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnImprimirQuedan.Appearance.Options.UseFont = true;
+            this.btnImprimirQuedan.Appearance.Options.UseTextOptions = true;
+            this.btnImprimirQuedan.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnImprimirQuedan.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.imprimir32x32;
+            this.btnImprimirQuedan.ImageOptions.ImageToTextIndent = 10;
+            this.btnImprimirQuedan.Location = new System.Drawing.Point(474, 704);
+            this.btnImprimirQuedan.Name = "btnImprimirQuedan";
+            this.btnImprimirQuedan.Size = new System.Drawing.Size(116, 47);
+            this.btnImprimirQuedan.TabIndex = 11;
+            this.btnImprimirQuedan.Text = "Imprimir Quedan";
             // 
             // btnValidar
             // 
-            this.btnValidar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnValidar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnValidar.Appearance.Options.UseFont = true;
-            this.btnValidar.Location = new System.Drawing.Point(367, 702);
+            this.btnValidar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.validar3_32x32;
+            this.btnValidar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnValidar.ImageOptions.ImageToTextIndent = 10;
+            this.btnValidar.Location = new System.Drawing.Point(149, 704);
             this.btnValidar.Name = "btnValidar";
-            this.btnValidar.Size = new System.Drawing.Size(86, 47);
+            this.btnValidar.Size = new System.Drawing.Size(123, 47);
             this.btnValidar.TabIndex = 10;
             this.btnValidar.Text = "Validar";
+            // 
+            // btnGuardar
+            // 
+            this.btnGuardar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGuardar.Appearance.Options.UseFont = true;
+            this.btnGuardar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.guardar2_32x32;
+            this.btnGuardar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnGuardar.ImageOptions.ImageToTextIndent = 10;
+            this.btnGuardar.Location = new System.Drawing.Point(14, 704);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(123, 47);
+            this.btnGuardar.TabIndex = 6;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            // 
+            // btnAdicionar
+            // 
+            this.btnAdicionar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdicionar.Appearance.Options.UseFont = true;
+            this.btnAdicionar.Appearance.Options.UseTextOptions = true;
+            this.btnAdicionar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnAdicionar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
+            this.btnAdicionar.ImageOptions.ImageToTextIndent = 10;
+            this.btnAdicionar.Location = new System.Drawing.Point(284, 704);
+            this.btnAdicionar.Name = "btnAdicionar";
+            this.btnAdicionar.Size = new System.Drawing.Size(123, 47);
+            this.btnAdicionar.TabIndex = 5;
+            this.btnAdicionar.Text = "Adicionar documento";
+            this.btnAdicionar.Click += new System.EventHandler(this.btnADICIONAR_Click);
             // 
             // frmDocumentoCompra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1140, 759);
+            this.Controls.Add(this.btnProvision);
+            this.Controls.Add(this.btnCorreo);
+            this.Controls.Add(this.btnImprimirRetencion);
+            this.Controls.Add(this.btnImprimirQuedan);
             this.Controls.Add(this.btnValidar);
-            this.Controls.Add(this.btnCancelar);
-            this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.btnFinalizar);
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.btnAdicionar);
@@ -1219,9 +1271,11 @@ namespace SistemaContable.UI.Forms.Proveedores
         private DevExpress.XtraEditors.SimpleButton btnAdicionar;
         private DevExpress.XtraEditors.SimpleButton btnGuardar;
         private DevExpress.XtraEditors.SimpleButton btnFinalizar;
-        private DevExpress.XtraEditors.SimpleButton btnBuscar;
         private System.Windows.Forms.Label lblNUM_QUEDAN;
-        private DevExpress.XtraEditors.SimpleButton btnCancelar;
         private DevExpress.XtraEditors.SimpleButton btnValidar;
+        private DevExpress.XtraEditors.SimpleButton btnImprimirQuedan;
+        private DevExpress.XtraEditors.SimpleButton btnImprimirRetencion;
+        private DevExpress.XtraEditors.SimpleButton btnCorreo;
+        private DevExpress.XtraEditors.SimpleButton btnProvision;
     }
 }

@@ -20,6 +20,11 @@ namespace SistemaContable.DAL
             get { return ConfigurationManager.AppSettings["NombreEmpresa"] ?? "INJIBOA"; }
         }
 
+        public static string CodigoCCJIBOA
+        {
+            get { return ConfigurationManager.AppSettings["CodigoCCJIBOA"] ?? string.Empty; }
+        }
+
         public static string RutaServidor
         {
             get { return ConfigurationManager.AppSettings["RutaServidor"] ?? string.Empty; }
