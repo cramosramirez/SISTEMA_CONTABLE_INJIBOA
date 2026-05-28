@@ -27,10 +27,14 @@ namespace SistemaContable.DAL
             {
                 using (var cn = new SqlConnection(CadenaConexion))
                 {
-                    var resultado = cn.Query(sp, parametros,
-                                    commandType: CommandType.StoredProcedure)
-                                    .ToList();
-                    return ConvertirADataTable(resultado);
+                    cn.Open();
+                    using (var reader = cn.ExecuteReader(sp, parametros,
+                                            commandType: CommandType.StoredProcedure))
+                    {
+                        var dt = new DataTable();
+                        dt.Load(reader);   // Load() respeta los tipos del reader (DateTime, decimal, int, etc.)
+                        return dt;
+                    }
                 }
             }
             catch (Exception ex)
@@ -109,30 +113,7 @@ namespace SistemaContable.DAL
             }
         }
 
-        // Convierte lista dinámica Dapper a DataTable para DevExpress
-        private DataTable ConvertirADataTable(List<dynamic> lista)
-        {
-            var dt = new DataTable();
-            if (lista == null || lista.Count == 0) return dt;
-
-            var primera = lista[0] as IDictionary<string, object>;
-            if (primera == null) return dt;
-
-            foreach (var col in primera.Keys)
-                dt.Columns.Add(col);
-
-            foreach (var item in lista)
-            {
-                var fila = item as IDictionary<string, object>;
-                if (fila != null)
-                    dt.Rows.Add(fila.Values.ToArray());
-            }
-
-            return dt;
-        }
-
-
-
+        
 
         #region === NUMERACIÓN DE DOCUMENTOS ===
 

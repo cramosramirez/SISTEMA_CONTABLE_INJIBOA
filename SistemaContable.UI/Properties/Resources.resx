@@ -121,6 +121,9 @@
   <data name="validar2_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\validar2_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="locked-with-key1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\locked-with-key1.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
   <data name="login48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\login48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -139,17 +142,17 @@
   <data name="locked-with-key" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\locked-with-key.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
   </data>
-  <data name="agregarDoc32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\agregarDoc32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="nuevo32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nuevo32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="quedan2_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\quedan2_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="guardar2_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\guardar2_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="login" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\login.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="locked-with-key1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\locked-with-key1.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
   </data>
   <data name="edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\edit.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
@@ -169,8 +172,8 @@
   <data name="editar2_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\editar2_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="quedan2_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\quedan2_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="agregarDoc32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\agregarDoc32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="banco" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\banco1.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
@@ -193,13 +196,16 @@
   <data name="provision32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\provision32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="retencion32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\retencion32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="edit1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\edit1.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
   </data>
   <data name="cheque48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cheque48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="retencion32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\retencion32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="editar3_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\editar3_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

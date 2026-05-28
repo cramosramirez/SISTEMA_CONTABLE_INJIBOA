@@ -183,6 +183,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap editar3_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("editar3_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap guardar2_32x32 {
             get {
                 object obj = ResourceManager.GetObject("guardar2_32x32", resourceCulture);
@@ -246,6 +256,16 @@ namespace SistemaContable.UI.Properties {
         internal static System.Drawing.Bitmap login48x48 {
             get {
                 object obj = ResourceManager.GetObject("login48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nuevo32x32 {
+            get {
+                object obj = ResourceManager.GetObject("nuevo32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

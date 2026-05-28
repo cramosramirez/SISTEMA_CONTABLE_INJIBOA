@@ -45,6 +45,7 @@ namespace SistemaContable.UI.Forms
             // btnCancelar
             // 
             this.btnCancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancelar.Location = new System.Drawing.Point(283, 153);
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.btnCancelar.Name = "btnCancelar";
@@ -55,6 +56,7 @@ namespace SistemaContable.UI.Forms
             // 
             // btnIngresar
             // 
+            this.btnIngresar.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnIngresar.Location = new System.Drawing.Point(125, 153);
             this.btnIngresar.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.btnIngresar.Name = "btnIngresar";
@@ -118,7 +120,7 @@ namespace SistemaContable.UI.Forms
             this.Appearance.Options.UseFont = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(448, 230);
+            this.ClientSize = new System.Drawing.Size(464, 246);
             this.ControlBox = false;
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnCancelar);

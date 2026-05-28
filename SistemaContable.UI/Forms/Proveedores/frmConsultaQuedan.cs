@@ -75,11 +75,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             nav.Buttons.Edit.Visible = false;
             nav.Buttons.EndEdit.Visible = false;
             nav.Buttons.CancelEdit.Visible = false;                     
-
-            // --- Botones por fila ---
-           // ConfigurarBoton("riEditar", "Editar");
-            //ConfigurarBoton(riVerQ, "Ver Q");
-            //ConfigurarBoton(riVerR, "Ver R");            
         }
  
         private void GvDetalle_CustomDrawGroupRow(object sender, RowObjectCustomDrawEventArgs e)
@@ -131,21 +126,18 @@ namespace SistemaContable.UI.Forms.Proveedores
         }
 
         #endregion
+               
+      
 
         private void riEditar_ButtonClick(object sender, ButtonPressedEventArgs e)
-        {
+        {            
             int? id = ObtenerIdCcfFilaActiva();
-            if (id.HasValue) AbrirDocumentoCompra(id.Value);
+            if (id.HasValue) AbrirDocumentoCompra(id.Value);            
         }
 
-        private void riVerQ_ButtonClick(object sender, ButtonPressedEventArgs e)
+        private void btnNuevoQuedan_Click(object sender, EventArgs e)
         {
-            XtraMessageBox.Show("Ver Quedan", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void riVerR_ButtonClick(object sender, ButtonPressedEventArgs e)
-        {
-            XtraMessageBox.Show("Ver Retencion", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            AbrirDocumentoCompra(idCcfCompra: 0);
         }
     }
 }

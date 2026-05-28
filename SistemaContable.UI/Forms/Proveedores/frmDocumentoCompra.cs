@@ -36,6 +36,8 @@ namespace SistemaContable.UI.Forms.Proveedores
         private string _codigoEntidad = string.Empty;        
         private string _idTipoContribProveedor = "";
         private string _idTipoPersona = "";
+        private bool _validarCompIVAR = false;
+
         public int IdCcfCompra { get; set; } = 0;
 
         #endregion
@@ -49,7 +51,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             FormHelper.Inicializar(this);            
             CargarCombos();
-            cbxSUCURSAL.SelectedIndex = 1;
+            cbxSUCURSAL.SelectedValue = 1;
             // Cargar de Combos Reuqeridos por MH
             CargarTipoServicio();   // Independiente 
             CargarTipoOperacion();  // Independiente (al cambiar dispara cascada)
@@ -104,13 +106,14 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             if (IdCcfCompra > 0)
             {
-                ConfigurarCRUD(EstadoFormulario.Guardado);
                 CargarCcfExistente(IdCcfCompra);
+                ConfigurarCRUD(EstadoFormulario.Guardado);
+                
             }                
             else
             {
-                ConfigurarCRUD(EstadoFormulario.Nuevo);
                 CargarSiguienteNumQuedan();
+                ConfigurarCRUD(EstadoFormulario.Nuevo);                
             }
                 
         }
@@ -133,10 +136,10 @@ namespace SistemaContable.UI.Forms.Proveedores
                 case EstadoFormulario.Guardado:
                     txtPROVEEDOR.Enabled = false;
                     btnGuardar.Visible = true;
-                    btnValidar.Visible = true;
+                    btnValidar.Visible = _validarCompIVAR;
                     btnAdicionar.Visible = _codigoEntidad.Equals(Configuracion.CodigoCCJIBOA); // solo para CC Jiboa
-                    btnImprimirQuedan.Visible = false;
-                    btnImprimirRetencion.Visible = false;
+                    btnImprimirQuedan.Visible = true;
+                    btnImprimirRetencion.Visible = true;
                     btnCorreo.Visible = false;
                     btnProvision.Visible = false;
                     break;
@@ -184,10 +187,12 @@ namespace SistemaContable.UI.Forms.Proveedores
 
                 // ---------- Proveedor ----------
                 _idEntidad = Convert.ToInt32(r["ID_ENTIDAD"]);
+                _idTipoPersona = r["ID_TIPO_ENTIDAD"].ToString();
                 _codigoEntidad = r["CODIGO_ENTIDAD"].ToString();
                 _idTipoContribProveedor = r["ID_TIPO_CONTRIB"] == DBNull.Value
                                           ? "0"
                                           : r["ID_TIPO_CONTRIB"].ToString();
+                _validarCompIVAR = Convert.ToInt32(r["VALIDAR_COMPIVAR"]) == 1 ? true : false; 
                 txtPROVEEDOR.Text = _codigoEntidad; 
                 txtNOMBRE_PROVEEDOR.Text = r["NOMBRE_ENTIDAD"]?.ToString();
                 txtNRC.Text = r["NRC"].ToString();
@@ -297,7 +302,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 var dt = _dal.EjecutarConsulta(sp, new { ACCION = accion });
                 var filaVacia = dt.NewRow();
-                filaVacia[valueMember] = DBNull.Value;
+                filaVacia[valueMember] = -1;
                 filaVacia[displayMember] = "-- Seleccione --";
                 dt.Rows.InsertAt(filaVacia, 0);
 
@@ -388,7 +393,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void InsertarFilaSeleccione(DataTable dt, string idField)
         {
             DataRow fila = dt.NewRow();
-            fila[idField] = DBNull.Value;
+            fila[idField] = -1;
             fila["CODIGO"] = "";
             fila["NOMBRE"] = "-- Seleccione --";
             dt.Rows.InsertAt(fila, 0);
@@ -400,7 +405,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             dt.Columns.Add("CODIGO", typeof(string));
             dt.Columns.Add("NOMBRE", typeof(string));
             DataRow fila = dt.NewRow();
-            fila[idField] = DBNull.Value;
+            fila[idField] = -1;
             fila["CODIGO"] = "";
             fila["NOMBRE"] = "-- Seleccione --";
             dt.Rows.Add(fila);
@@ -1002,7 +1007,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     ACCION = "GUARDAR",
                     ID_CCF_COMPRA = IdCcfCompra,
                     ID_QUEDAN = _idQuedanActual,          // 0 -> el SP creará el Quedan
-                    NUM_QUEDAN = (int?)null,               // lo asigna el SP
+                    NUM_QUEDAN = (int?)Convert.ToInt32(lblNUM_QUEDAN.Text),
                     ID_TIPO_DTE = ObtenerIdCombo(cbxTIPO_DTE),                    
                     NUM_CONTROL = NullIfEmpty(txtNUM_CONTROL.Text),
                     COD_GENERACION = NullIfEmpty(txtCOD_GENERACION.Text),
@@ -1048,6 +1053,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 DataRow row = dt.Rows[0];
                 IdCcfCompra = Convert.ToInt32(row["ID_GENERADO"]);
                 _idQuedanActual = Convert.ToInt32(row["ID_QUEDAN_GENERADO"]);
+                _validarCompIVAR = ObtenerDecimal(txtIVAR) > 0 ? true : false;
                 int numQuedan = Convert.ToInt32(row["NUM_QUEDAN_GENERADO"]);
                 lblNUM_QUEDAN.Text = numQuedan.ToString();
                 ConfigurarCRUD(EstadoFormulario.Guardado);
@@ -1094,7 +1100,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             IdCcfCompra = 0;
 
-            cbxTIPO_DTE.SelectedIndex = 0;
+            cbxTIPO_DTE.SelectedValue = -1;
             txtNUM_CONTROL.Text = "";
             txtCOD_GENERACION.Text = "";
             txtSELLO_RECIBIDO.Text = "";
@@ -1103,8 +1109,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             mskFECHA_VENCE.Text = "";
             txtORDEN.Text = "";
 
-            cbxTIPO_SERVICIO.SelectedIndex = 0;
-            cbxTIPO_OPERACION.SelectedIndex = 0;
+            cbxTIPO_SERVICIO.SelectedValue = -1;
+            cbxTIPO_OPERACION.SelectedValue = -1;
             LimpiarCombo(cbxCLASIFICACION, "ID_CLASIFICA");
             LimpiarCombo(cbxSECTOR, "ID_SECTOR");
             LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
@@ -1114,14 +1120,11 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtGRAVADA, txtEXENTA, txtEXCLUIDO, txtPERCEPCION,
                 txtIVA,     txtFOVIAL, txtCONTRANS, txtTOTAL,
                 txtCARGO,   txtABONO,  txtAPLICABLE_RENTA, txtRENTA,
-                txtIVAR,    txtSALDO })
+                txtIVAR,    txtSALDO, txtOBSERVACION })
             {
                 tb.Text = "";
-            }
-
-            txtOBSERVACION.Text = "";
-
-            cbxTIPO_DTE.Focus();
+            }            
+            txtCONSULTA_MH.Focus();
         }
 
         #endregion
