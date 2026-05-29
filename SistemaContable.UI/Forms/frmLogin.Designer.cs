@@ -29,24 +29,23 @@ namespace SistemaContable.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnIngresar = new System.Windows.Forms.Button();
             this.txtCLAVE = new System.Windows.Forms.TextBox();
             this.txtUSUARIO = new System.Windows.Forms.TextBox();
             this.Label2 = new System.Windows.Forms.Label();
             this.Label1 = new System.Windows.Forms.Label();
-            this.behaviorManager1 = new DevExpress.Utils.Behaviors.BehaviorManager(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).BeginInit();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancelar
             // 
             this.btnCancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancelar.Location = new System.Drawing.Point(283, 153);
+            this.btnCancelar.Location = new System.Drawing.Point(276, 162);
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(113, 34);
@@ -57,7 +56,7 @@ namespace SistemaContable.UI.Forms
             // btnIngresar
             // 
             this.btnIngresar.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnIngresar.Location = new System.Drawing.Point(125, 153);
+            this.btnIngresar.Location = new System.Drawing.Point(118, 162);
             this.btnIngresar.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.btnIngresar.Name = "btnIngresar";
             this.btnIngresar.Size = new System.Drawing.Size(113, 34);
@@ -68,7 +67,7 @@ namespace SistemaContable.UI.Forms
             // 
             // txtCLAVE
             // 
-            this.txtCLAVE.Location = new System.Drawing.Point(219, 95);
+            this.txtCLAVE.Location = new System.Drawing.Point(212, 80);
             this.txtCLAVE.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txtCLAVE.Name = "txtCLAVE";
             this.txtCLAVE.PasswordChar = '*';
@@ -79,7 +78,7 @@ namespace SistemaContable.UI.Forms
             // 
             // txtUSUARIO
             // 
-            this.txtUSUARIO.Location = new System.Drawing.Point(219, 55);
+            this.txtUSUARIO.Location = new System.Drawing.Point(212, 40);
             this.txtUSUARIO.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txtUSUARIO.Name = "txtUSUARIO";
             this.txtUSUARIO.Size = new System.Drawing.Size(177, 24);
@@ -89,7 +88,7 @@ namespace SistemaContable.UI.Forms
             // Label2
             // 
             this.Label2.AutoSize = true;
-            this.Label2.Location = new System.Drawing.Point(154, 99);
+            this.Label2.Location = new System.Drawing.Point(147, 84);
             this.Label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.Label2.Name = "Label2";
             this.Label2.Size = new System.Drawing.Size(48, 18);
@@ -99,7 +98,7 @@ namespace SistemaContable.UI.Forms
             // Label1
             // 
             this.Label1.AutoSize = true;
-            this.Label1.Location = new System.Drawing.Point(154, 59);
+            this.Label1.Location = new System.Drawing.Point(147, 44);
             this.Label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.Label1.Name = "Label1";
             this.Label1.Size = new System.Drawing.Size(61, 18);
@@ -108,27 +107,36 @@ namespace SistemaContable.UI.Forms
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(22, 31);
+            this.pictureBox1.Location = new System.Drawing.Point(15, 16);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(112, 105);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 13;
             this.pictureBox1.TabStop = false;
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.Label1);
+            this.panel1.Controls.Add(this.btnCancelar);
+            this.panel1.Controls.Add(this.Label2);
+            this.panel1.Controls.Add(this.btnIngresar);
+            this.panel1.Controls.Add(this.txtUSUARIO);
+            this.panel1.Controls.Add(this.txtCLAVE);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(480, 238);
+            this.panel1.TabIndex = 14;
+            // 
             // frmLogin
             // 
             this.Appearance.Options.UseFont = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(464, 246);
+            this.ClientSize = new System.Drawing.Size(480, 238);
             this.ControlBox = false;
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.btnCancelar);
-            this.Controls.Add(this.btnIngresar);
-            this.Controls.Add(this.txtCLAVE);
-            this.Controls.Add(this.txtUSUARIO);
-            this.Controls.Add(this.Label2);
-            this.Controls.Add(this.Label1);
+            this.Controls.Add(this.panel1);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -136,10 +144,10 @@ namespace SistemaContable.UI.Forms
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Inicio de Sesión";
             this.Load += new System.EventHandler(this.frmLogin_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -151,7 +159,7 @@ namespace SistemaContable.UI.Forms
         internal System.Windows.Forms.TextBox txtUSUARIO;
         internal System.Windows.Forms.Label Label2;
         internal System.Windows.Forms.Label Label1;
-        private DevExpress.Utils.Behaviors.BehaviorManager behaviorManager1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Panel panel1;
     }
 }
