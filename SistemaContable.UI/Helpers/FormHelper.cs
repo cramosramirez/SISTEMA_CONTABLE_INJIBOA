@@ -41,6 +41,7 @@ namespace SistemaContable.UI.Helpers
             {
                 // Controles DevExpress
                 if (ctrl is TextEdit ||
+                    ctrl is TextBox  ||
                     ctrl is ButtonEdit ||
                     ctrl is LookUpEdit ||
                     ctrl is SearchLookUpEdit ||

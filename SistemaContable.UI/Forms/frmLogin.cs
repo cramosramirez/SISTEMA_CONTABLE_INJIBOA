@@ -2,24 +2,17 @@
 using SistemaContable.DAL;
 using SistemaContable.UI.Helpers;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace SistemaContable.UI.Forms
 {
-    public partial class frmLogin : DevExpress.XtraEditors.XtraForm
+    public partial class frmLogin : Form
     {
         public frmLogin()
         {
-            InitializeComponent();           
+            InitializeComponent();
         }
-
         private void btnIngresar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtUSUARIO.Text))
@@ -33,9 +26,9 @@ namespace SistemaContable.UI.Forms
 
             if (string.IsNullOrWhiteSpace(txtCLAVE.Text))
             {
-               XtraMessageBox.Show(
-                    "Ingrese su contraseña.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                XtraMessageBox.Show(
+                     "Ingrese su contraseña.", "Validación",
+                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtCLAVE.Focus();
                 return;
             }
@@ -72,7 +65,7 @@ namespace SistemaContable.UI.Forms
             {
                 XtraMessageBox.Show($"Error al conectar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }      
+        }
 
         private string HashClave(string clave)
         {
@@ -88,7 +81,7 @@ namespace SistemaContable.UI.Forms
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
-            FormHelper.AplicarEnterComoTab(this);           
+            FormHelper.AplicarEnterComoTab(this);
             txtCLAVE.KeyDown += txtCLAVE_KeyDown;
             this.pictureBox1.Image = global::SistemaContable.UI.Properties.Resources.login;
         }
@@ -101,5 +94,8 @@ namespace SistemaContable.UI.Forms
                 btnIngresar_Click(sender, e);
             }
         }
-    }
+
+      
+    }      
 }
+
