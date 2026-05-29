@@ -177,11 +177,12 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colEDITAR.ColumnEdit = this.riEditar;
             this.colEDITAR.MinWidth = 24;
             this.colEDITAR.Name = "colEDITAR";
+            this.colEDITAR.OptionsColumn.FixedWidth = true;
             this.colEDITAR.OptionsColumn.ShowCaption = false;
             this.colEDITAR.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colEDITAR.Visible = true;
             this.colEDITAR.VisibleIndex = 1;
-            this.colEDITAR.Width = 25;
+            this.colEDITAR.Width = 40;
             // 
             // riEditar
             // 
@@ -201,10 +202,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colVER_Q.ColumnEdit = this.riVerQ;
             this.colVER_Q.MinWidth = 24;
             this.colVER_Q.Name = "colVER_Q";
+            this.colVER_Q.OptionsColumn.FixedWidth = true;
             this.colVER_Q.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colVER_Q.Visible = true;
             this.colVER_Q.VisibleIndex = 2;
-            this.colVER_Q.Width = 25;
+            this.colVER_Q.Width = 40;
             // 
             // riVerQ
             // 
@@ -223,10 +225,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colVER_R.ColumnEdit = this.riVerR;
             this.colVER_R.MinWidth = 24;
             this.colVER_R.Name = "colVER_R";
+            this.colVER_R.OptionsColumn.FixedWidth = true;
             this.colVER_R.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colVER_R.Visible = true;
             this.colVER_R.VisibleIndex = 3;
-            this.colVER_R.Width = 25;
+            this.colVER_R.Width = 40;
             // 
             // riVerR
             // 
@@ -248,7 +251,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colNOMBRE_ENTIDAD.OptionsColumn.AllowEdit = false;
             this.colNOMBRE_ENTIDAD.Visible = true;
             this.colNOMBRE_ENTIDAD.VisibleIndex = 4;
-            this.colNOMBRE_ENTIDAD.Width = 266;
+            this.colNOMBRE_ENTIDAD.Width = 252;
             // 
             // colTIPO_DTE
             // 
@@ -259,7 +262,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colTIPO_DTE.OptionsColumn.AllowEdit = false;
             this.colTIPO_DTE.Visible = true;
             this.colTIPO_DTE.VisibleIndex = 5;
-            this.colTIPO_DTE.Width = 64;
+            this.colTIPO_DTE.Width = 61;
             // 
             // colCOD_GENERACION
             // 
@@ -270,7 +273,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colCOD_GENERACION.OptionsColumn.AllowEdit = false;
             this.colCOD_GENERACION.Visible = true;
             this.colCOD_GENERACION.VisibleIndex = 6;
-            this.colCOD_GENERACION.Width = 206;
+            this.colCOD_GENERACION.Width = 195;
             // 
             // colSALDO
             // 
@@ -286,7 +289,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colSALDO.OptionsColumn.AllowEdit = false;
             this.colSALDO.Visible = true;
             this.colSALDO.VisibleIndex = 7;
-            this.colSALDO.Width = 125;
+            this.colSALDO.Width = 119;
             // 
             // colFECHA_EMISION
             // 
@@ -303,7 +306,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colFECHA_EMISION.OptionsColumn.AllowEdit = false;
             this.colFECHA_EMISION.Visible = true;
             this.colFECHA_EMISION.VisibleIndex = 8;
-            this.colFECHA_EMISION.Width = 125;
+            this.colFECHA_EMISION.Width = 119;
             // 
             // colFECHA_RECIBIDO
             // 
@@ -319,7 +322,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colFECHA_RECIBIDO.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colFECHA_RECIBIDO.Visible = true;
             this.colFECHA_RECIBIDO.VisibleIndex = 9;
-            this.colFECHA_RECIBIDO.Width = 241;
+            this.colFECHA_RECIBIDO.Width = 236;
             // 
             // frmConsultaQuedan
             // 
