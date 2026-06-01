@@ -531,14 +531,17 @@ namespace SistemaContable.UI.Forms.Proveedores
             decimal renta = ObtenerDecimal(txtRENTA);   // lee, no calcula
             // IVA = 13% de la base gravada
             decimal iva = Math.Round(gravada * 0.13m, 2);
-            // IVAR (1%): solo si gravada >= 100 y proveedor NO es Gran Contribuyente
+
+            
+             // IVAR (1%): solo si gravada >= 100 y proveedor NO es Gran Contribuyente
             decimal ivar = 0;
             bool retieneIva = gravada >= 100m
                               && _idTipoContribProveedor != "3"
                               && _idTipoContribProveedor != "0";
             if (retieneIva)
                 ivar = Math.Round(gravada * 0.01m, 2);
-
+            
+            //decimal ivar = ObtenerDecimal(txtIVAR);
             decimal total = gravada + exenta + excluido + percepcion + iva + fovial + contrans;
             decimal saldo = total - cargo - abono - renta - ivar;
 
@@ -562,6 +565,11 @@ namespace SistemaContable.UI.Forms.Proveedores
                 actualizarCodGeneracion: (texto) => txtCOD_GENERACION.Text = texto,
                 actualizarNumControl: (texto) => txtNUM_CONTROL.Text = texto,
                 actualizarFechaEmision: (fecha) => mskFECHA_EMISION.Text = fecha,
+                actualizarGravada: (texto) => txtGRAVADA.Text = texto,
+                actualizarExenta: (texto) => txtEXENTA.Text = texto,
+                actualizarFOVIAL: (texto) => txtFOVIAL.Text = texto,
+                actualizarCOTRANS: (texto) => txtCONTRANS.Text = texto,
+                actualizarIVAR: (texto) => txtIVAR.Text = texto,
                 actualizarComboTipoDte: (campo, codigo) =>
                 {                
                     SeleccionarComboPorCodigo(cbxTIPO_DTE, campo, codigo);
@@ -569,7 +577,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                 null,
                 onConsultaExitosa: () =>
                 {                    
-                    mskFECHA_RECIBIDO.Focus();                    
+                    mskFECHA_RECIBIDO.Focus();
+                    RecalcularTotales();
                 },
                 "05", "06" // CÓDIGOS DE NOTA DE CRÉDITO Y DÉBITO
             );
@@ -577,8 +586,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         
         private void txtCONSULTA_MH_Leave(object sender, EventArgs e)
         {
-            _mhHelper.OnTxtConsultaLeave(txtCONSULTA_MH.Text);
-            int i = 0;
+            _mhHelper.OnTxtConsultaLeave(txtCONSULTA_MH.Text);            
         }
 
         private void txtNUM_QUEDAN_Leave(object sender, EventArgs e)

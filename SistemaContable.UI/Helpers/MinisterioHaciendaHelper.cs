@@ -24,7 +24,12 @@ namespace SistemaContable.UI.Helpers
         private readonly Action<string> _actualizarCodGeneracion;
         private readonly Action<string> _actualizarNumControl;
         private readonly Action<string> _actualizarFechaEmision;
-        private readonly Action<string, string> _actualizarComboTipoDte;
+        private readonly Action<string> _actualizarGravada;
+        private readonly Action<string> _actualizarExenta;
+        private readonly Action<string> _actualizarFOVIAL;
+        private readonly Action<string> _actualizarCOTRANS;
+        private readonly Action<string> _actualizarIVAR;
+        private readonly Action<string, string> _actualizarComboTipoDte;       
         private readonly Action<string> _actualizarObservacion;
         private readonly Action _onConsultaExitosa;
 
@@ -35,7 +40,12 @@ namespace SistemaContable.UI.Helpers
             Action<string> actualizarCodGeneracion,
             Action<string> actualizarNumControl,
             Action<string> actualizarFechaEmision,
-            Action<string, string> actualizarComboTipoDte,
+            Action<string> actualizarGravada,
+            Action<string> actualizarExenta,
+            Action<string> actualizarFOVIAL,
+            Action<string> actualizarCOTRANS,
+            Action<string> actualizarIVAR,
+            Action<string, string> actualizarComboTipoDte,            
             Action<string> actualizarObservacion = null,
             Action onConsultaExitosa = null,
             params string[] tiposDtePermitidos) // Parámetro params para los tipos DTE
@@ -48,7 +58,12 @@ namespace SistemaContable.UI.Helpers
             _actualizarCodGeneracion = actualizarCodGeneracion;
             _actualizarNumControl = actualizarNumControl;
             _actualizarFechaEmision = actualizarFechaEmision;
-            _actualizarComboTipoDte = actualizarComboTipoDte;
+            _actualizarGravada = actualizarGravada;
+            _actualizarExenta = actualizarExenta;
+            _actualizarFOVIAL = actualizarFOVIAL;
+            _actualizarCOTRANS = actualizarCOTRANS;
+            _actualizarIVAR = actualizarIVAR;
+            _actualizarComboTipoDte = actualizarComboTipoDte;           
             _actualizarObservacion = actualizarObservacion;
             _onConsultaExitosa = onConsultaExitosa;
             // Si no se especifican tipos, usar "03" por defecto (crédito fiscal)
@@ -212,7 +227,38 @@ namespace SistemaContable.UI.Helpers
                     if (!string.IsNullOrWhiteSpace(fecEmi) && DateTime.TryParse(fecEmi, out DateTime fechaEmi))
                         _actualizarFechaEmision(fechaEmi.ToString("dd/MM/yyyy"));
                 }
+                var resumen = data["documento"]?["resumen"];
+                if (resumen != null)
+                {
+                    _actualizarGravada(resumen.Value<decimal?>("totalGravada") is decimal totalGravada && totalGravada != 0
+                         ? totalGravada.ToString("#,###,##0.00")
+                         : string.Empty);
 
+                    decimal totalNoGravada = 0;
+                    totalNoGravada += resumen.Value<decimal?>("totalNoGravado") ?? 0;
+                    totalNoGravada += resumen.Value<decimal?>("totalExenta") ?? 0;
+                    _actualizarExenta(totalNoGravada > 0 ? totalNoGravada.ToString("#,###,##0.00") : string.Empty);
+
+                    _actualizarIVAR(resumen.Value<decimal?>("ivaRete1") is decimal ivaRete1 && ivaRete1 != 0
+                        ? ivaRete1.ToString("#,###,##0.00")
+                        : string.Empty);
+
+                    var tributos = resumen["tributos"] as JArray;
+                    if (tributos != null && tributos.Count > 0)
+                    {
+                        for (int i = 0; i < tributos.Count; i++)
+                        {
+                            if (tributos[i]["codigo"].ToString().Equals("C8"))  // CONTRANS
+                            {
+                                _actualizarCOTRANS(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);                               
+                            }
+                            else if (tributos[i]["codigo"].ToString().Equals("D1"))  // FOVIAL
+                            {
+                                _actualizarFOVIAL(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);                                
+                            }
+                        }
+                    }                    
+                }
                 var cuerpo = data["documento"]?["cuerpoDocumento"] as JArray;
                 if (cuerpo != null && cuerpo.Count > 0 && _actualizarObservacion != null)
                     _actualizarObservacion(cuerpo[0]["descripcion"]?.ToString() ?? string.Empty);
