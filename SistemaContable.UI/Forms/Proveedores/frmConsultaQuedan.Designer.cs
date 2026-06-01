@@ -177,6 +177,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colEDITAR.ColumnEdit = this.riEditar;
             this.colEDITAR.MinWidth = 24;
             this.colEDITAR.Name = "colEDITAR";
+            this.colEDITAR.OptionsColumn.AllowSize = false;
             this.colEDITAR.OptionsColumn.FixedWidth = true;
             this.colEDITAR.OptionsColumn.ShowCaption = false;
             this.colEDITAR.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
@@ -191,7 +192,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.riEditar.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions4, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riEditar.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
-            this.riEditar.ContextImageOptions.Image = global::SistemaContable.UI.Properties.Resources.editar3_32x32;
             this.riEditar.Name = "riEditar";
             this.riEditar.UseReadOnlyAppearance = false;
             this.riEditar.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.riEditar_ButtonClick);
@@ -202,6 +202,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colVER_Q.ColumnEdit = this.riVerQ;
             this.colVER_Q.MinWidth = 24;
             this.colVER_Q.Name = "colVER_Q";
+            this.colVER_Q.OptionsColumn.AllowSize = false;
             this.colVER_Q.OptionsColumn.FixedWidth = true;
             this.colVER_Q.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colVER_Q.Visible = true;
@@ -215,7 +216,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.riVerQ.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions5, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riVerQ.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
-            this.riVerQ.ContextImageOptions.Image = global::SistemaContable.UI.Properties.Resources.quedan2_32x32;
             this.riVerQ.Name = "riVerQ";
             this.riVerQ.UseReadOnlyAppearance = false;
             // 
@@ -225,6 +225,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colVER_R.ColumnEdit = this.riVerR;
             this.colVER_R.MinWidth = 24;
             this.colVER_R.Name = "colVER_R";
+            this.colVER_R.OptionsColumn.AllowSize = false;
             this.colVER_R.OptionsColumn.FixedWidth = true;
             this.colVER_R.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colVER_R.Visible = true;
@@ -238,7 +239,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.riVerR.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions6, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riVerR.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
-            this.riVerR.ContextImageOptions.Image = global::SistemaContable.UI.Properties.Resources.retencion32x32;
             this.riVerR.Name = "riVerR";
             this.riVerR.UseReadOnlyAppearance = false;
             // 

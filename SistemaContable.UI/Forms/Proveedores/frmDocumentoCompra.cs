@@ -27,6 +27,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         } 
 
         private readonly DALBase _dal = new DALBase();
+        private MinisterioHaciendaHelper _mhHelper;
         private static readonly HttpClient _http = new HttpClient
         {
             Timeout = TimeSpan.FromSeconds(10)
@@ -49,7 +50,8 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void frmDocumentoCompra_Load(object sender, EventArgs e)
         {
-            FormHelper.Inicializar(this);            
+            FormHelper.Inicializar(this);
+            InicializarHelperMinisterioHacienda();
             CargarCombos();
             cbxSUCURSAL.SelectedValue = 1;
             // Cargar de Combos Reuqeridos por MH
@@ -501,156 +503,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void txtCONSULTA_MH_Leave(object sender, EventArgs e)
         {
-            string url = txtCONSULTA_MH.Text.Trim();
-            if (string.IsNullOrWhiteSpace(url)) return;
-            lblESTADO_MH.Text = "Consultando...";
-            lblESTADO_MH.ForeColor = Color.Gray;
-            // Ejecutar de forma asíncrona sin bloquear la UI
-            Task.Run(() => ConsultarMH(url))
-                .ContinueWith(t =>
-                {
-                    if (t.Exception != null)
-                        BeginInvoke(new Action(() =>
-                        {
-                            lblESTADO_MH.Text = "No se obtuvo respuesta, intente consulta manual en el sitio Web del M.H.";
-                            lblESTADO_MH.ForeColor = Color.Red;
-                        }));
-                }, TaskContinuationOptions.OnlyOnFaulted);
-        }
-
-        private async Task ConsultarMH(string urlConsultaOficial)
-        {
-            try
-            {
-                // Construir URL con la base desde App.config + parámetros de la URL pegada                
-                string urlFinal = ConstruirUrlAPI(urlConsultaOficial);               
-                var response = await _http.GetAsync(urlFinal);
-                response.EnsureSuccessStatusCode();
-                string json = await response.Content.ReadAsStringAsync();
-                var data = JObject.Parse(json);
-                BeginInvoke(new Action(() => AsignarDatosMH(data)));
-            }
-            catch (TaskCanceledException)
-            {
-                BeginInvoke(new Action(() =>
-                {
-                    lblESTADO_MH.Text = "No se obtuvo respuesta, intente consulta manual en el sitio Web del M.H.";
-                    lblESTADO_MH.ForeColor = Color.Red;
-                }));
-            }
-            catch (Exception)
-            {
-                BeginInvoke(new Action(() =>
-                {
-                    lblESTADO_MH.Text = "No se obtuvo respuesta, intente consulta manual en el sitio Web del M.H.";
-                    lblESTADO_MH.ForeColor = Color.Red;
-                }));
-            }
-            string ConstruirUrlAPI(string urlUsuario)
-            {
-                try
-                {
-                    Uri uri = new Uri(urlUsuario.ToUpper());
-                    var parametros = System.Web.HttpUtility.ParseQueryString(uri.Query);
-                    string codGen = parametros["CODGEN"] ?? string.Empty;
-                    string fechaEmi = parametros["FECHAEMI"] ?? string.Empty;
-                    string ambiente = parametros["AMBIENTE"] ?? string.Empty;
-                    string baseUrl = ConfigurationManager.AppSettings["UrlConsultaMH"];
-                    return $"{baseUrl}codigoGeneracion={codGen}&fechaEmi={fechaEmi}&ambiente={ambiente}";
-                }
-                catch
-                {
-                    return urlUsuario;
-                }
-            }
-            void AsignarDatosMH(JObject data)
-            {
-                try
-                {
-                    string estadoDoc = data["estadoDoc"]?.ToString() ?? string.Empty;
-                    string descripcionEstado = data["descripcionEstado"]?.ToString() ?? string.Empty;
-                    var ajustes = data["ajustes"] as JArray;
-
-                    // Armar texto del estado
-                    string textoEstado = $"{estadoDoc} - {descripcionEstado}";
-                    Color colorEstado = Color.Green;
-
-                    if (ajustes != null && ajustes.Count > 0)
-                    {
-                        textoEstado += " - Documento posee ajustes";
-                        colorEstado = Color.Red;
-                    }
-
-                    if (estadoDoc.Equals("Error", StringComparison.OrdinalIgnoreCase))
-                    {                       
-                        colorEstado = Color.Red;
-                        lblESTADO_MH.Text = textoEstado;
-                        lblESTADO_MH.ForeColor = colorEstado;
-                        return;
-                    }                       
-
-                    lblESTADO_MH.Text = textoEstado;
-                    lblESTADO_MH.ForeColor = colorEstado;
-
-                    // Tipo DTE — buscar en el combo
-                    string tipoDte = data["tipoDte"]?.ToString() ?? string.Empty;
-                    if (!string.IsNullOrWhiteSpace(tipoDte) && tipoDte.Equals("03"))
-                    {
-                        SeleccionarComboPorCodigo(cbxTIPO_DTE, "TIPO_DTE", tipoDte);
-                    }
-                    else
-                    {
-                        lblESTADO_MH.Text = "EL documento no es un crédito fiscal sino una " + data["nombDte"]?.ToString().ToLower() ?? string.Empty; ;
-                        lblESTADO_MH.ForeColor = Color.Red;
-                        return;
-                    }
-                        
-                    // Campos simples
-                    txtSELLO_RECIBIDO.Text = data["selloVal"]?.ToString() ?? string.Empty;
-                    txtCOD_GENERACION.Text = data["codGen"]?.ToString() ?? string.Empty;
-
-                    // Datos del documento
-                    var identificacion = data["documento"]?["identificacion"];
-                    if (identificacion != null)
-                    {
-                        txtNUM_CONTROL.Text = identificacion["numeroControl"]?.ToString() ?? string.Empty;
-                        string fecEmi = identificacion["fecEmi"]?.ToString() ?? string.Empty;
-                        if (!string.IsNullOrWhiteSpace(fecEmi) &&
-                            DateTime.TryParse(fecEmi, out DateTime fechaEmi))
-                            mskFECHA_EMISION.Text = fechaEmi.ToString("dd/MM/yyyy");
-                    }
-
-                    // Descripción del primer ítem del cuerpo del documento
-                    var cuerpo = data["documento"]?["cuerpoDocumento"] as JArray;
-                    //if (cuerpo != null && cuerpo.Count > 0)
-                        //txtOBSERVACION.Text = cuerpo[0]["descripcion"]?.ToString() ?? string.Empty;
-                    mskFECHA_RECIBIDO.Focus();  
-                }
-                catch (Exception ex)
-                {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        $"Error al procesar respuesta del MH: {ex.Message}",
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-
-            void SeleccionarComboPorCodigo(ComboBox combo, string campoCodigo, string valor)
-            {
-                try
-                {
-                    var dt = combo.DataSource as DataTable;
-                    if (dt == null) return;
-                    foreach (DataRow fila in dt.Rows)
-                    {
-                        if (fila[campoCodigo]?.ToString() == valor)
-                        {
-                            combo.SelectedValue = fila[combo.ValueMember];
-                            break;
-                        }
-                    }
-                }
-                catch { }
-            }
+            _mhHelper.OnTxtConsultaLeave(txtCONSULTA_MH.Text);
         }
        
         private void CargarComboFiltrado(int idClasifica)
@@ -877,7 +730,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                 cbxTIPO_RENTA.SelectedIndex = 0;
             else
                 cbxTIPO_RENTA.SelectedValue = Convert.ToInt32(valorRenta);
-            RecalcularTotales();   // refleja el cambio de renta sugerida
+            txtBaseRenta_Leave(sender, e);
+            //RecalcularTotales();   // refleja el cambio de renta sugerida
         }
 
         private void cbxTIPO_RENTA_SelectionChangeCommitted(object sender, EventArgs e)
@@ -1192,6 +1046,56 @@ namespace SistemaContable.UI.Forms.Proveedores
             if (!ValidarCampos()) return;
             GuardarDocumento();
             ConfigurarCRUD(EstadoFormulario.Guardado);
+        }
+
+        private void InicializarHelperMinisterioHacienda()
+        {
+            _mhHelper = new MinisterioHaciendaHelper(
+                ownerControl: this,
+                actualizarEstado: (texto, color) =>
+                {
+                    lblESTADO_MH.Text = texto;
+                    lblESTADO_MH.ForeColor = color;
+                },
+                actualizarSelloRecibido: (texto) => txtSELLO_RECIBIDO.Text = texto,
+                actualizarCodGeneracion: (texto) => txtCOD_GENERACION.Text = texto,
+                actualizarNumControl: (texto) => txtNUM_CONTROL.Text = texto,
+                actualizarFechaEmision: (fecha) => mskFECHA_EMISION.Text = fecha,
+                actualizarGravada: (texto) => txtGRAVADA.Text = texto,
+                actualizarExenta: (texto) => txtEXENTA.Text = texto,
+                actualizarFOVIAL: (texto) => txtFOVIAL.Text = texto,
+                actualizarCOTRANS: (texto) => txtCONTRANS.Text = texto,
+                actualizarIVAR: (texto) => txtIVAR.Text = texto,
+                actualizarComboTipoDte: (campo, codigo) =>
+                {
+                    SeleccionarComboPorCodigo(cbxTIPO_DTE, campo, codigo);                     
+                },
+                null,
+                onConsultaExitosa: () =>
+                {
+                    mskFECHA_RECIBIDO.Focus();
+                    RecalcularTotales();
+                },
+                "03" // CÓDIGO DE CCF ELECTRONICO
+            );
+        }
+
+        void SeleccionarComboPorCodigo(ComboBox combo, string campoCodigo, string valor)
+        {
+            try
+            {
+                var dt = combo.DataSource as DataTable;
+                if (dt == null) return;
+                foreach (DataRow fila in dt.Rows)
+                {
+                    if (fila[campoCodigo]?.ToString() == valor)
+                    {
+                        combo.SelectedValue = fila[combo.ValueMember];
+                        break;
+                    }
+                }
+            }
+            catch { }
         }
     }
 }
