@@ -263,6 +263,26 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap nota_deb_cred32x32 {
+            get {
+                object obj = ResourceManager.GetObject("nota_deb_cred32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap nota_deb_cred48x48 {
+            get {
+                object obj = ResourceManager.GetObject("nota_deb_cred48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap nuevo32x32 {
             get {
                 object obj = ResourceManager.GetObject("nuevo32x32", resourceCulture);

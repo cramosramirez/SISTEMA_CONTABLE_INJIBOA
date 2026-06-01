@@ -13,7 +13,7 @@ namespace SistemaContable.UI.Helpers
 
         public static void Inicializar(Form formulario)
         {
-            AplicarPropiedadesEstandar(formulario);
+            //AplicarPropiedadesEstandar(formulario);
             AplicarEnterComoTab(formulario);
             AplicarMayusculas(formulario);            
         }

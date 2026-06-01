@@ -56,7 +56,7 @@ namespace SistemaContable.UI.Forms
             this.groupControl1.Location = new System.Drawing.Point(0, 0);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
-            this.groupControl1.Size = new System.Drawing.Size(432, 217);
+            this.groupControl1.Size = new System.Drawing.Size(432, 235);
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "groupControl1";
             // 
@@ -138,7 +138,7 @@ namespace SistemaContable.UI.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(432, 217);
+            this.ClientSize = new System.Drawing.Size(432, 235);
             this.ControlBox = false;
             this.Controls.Add(this.groupControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

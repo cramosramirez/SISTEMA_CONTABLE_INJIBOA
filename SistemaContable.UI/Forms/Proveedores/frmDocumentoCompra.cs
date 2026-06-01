@@ -441,7 +441,6 @@ namespace SistemaContable.UI.Forms.Proveedores
                 LimpiarProveedor();
                 return;
             }
-
             try
             {
                 var dt = _dal.EjecutarConsulta("SP_ENTIDAD", new
@@ -583,7 +582,12 @@ namespace SistemaContable.UI.Forms.Proveedores
                     }
 
                     if (estadoDoc.Equals("Error", StringComparison.OrdinalIgnoreCase))
+                    {                       
                         colorEstado = Color.Red;
+                        lblESTADO_MH.Text = textoEstado;
+                        lblESTADO_MH.ForeColor = colorEstado;
+                        return;
+                    }                       
 
                     lblESTADO_MH.Text = textoEstado;
                     lblESTADO_MH.ForeColor = colorEstado;

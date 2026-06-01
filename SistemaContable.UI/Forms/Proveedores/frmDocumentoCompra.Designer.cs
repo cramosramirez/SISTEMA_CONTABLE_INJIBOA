@@ -221,12 +221,14 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // txtDIRECCION
             // 
-            this.txtDIRECCION.Enabled = false;
+            this.txtDIRECCION.BackColor = System.Drawing.SystemColors.Control;
             this.txtDIRECCION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDIRECCION.Location = new System.Drawing.Point(98, 105);
             this.txtDIRECCION.Name = "txtDIRECCION";
+            this.txtDIRECCION.ReadOnly = true;
             this.txtDIRECCION.Size = new System.Drawing.Size(422, 24);
             this.txtDIRECCION.TabIndex = 114;
+            this.txtDIRECCION.TabStop = false;
             // 
             // label6
             // 
@@ -291,12 +293,14 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // txtTIPO_CONTRIBUYENTE
             // 
-            this.txtTIPO_CONTRIBUYENTE.Enabled = false;
+            this.txtTIPO_CONTRIBUYENTE.BackColor = System.Drawing.SystemColors.Control;
             this.txtTIPO_CONTRIBUYENTE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTIPO_CONTRIBUYENTE.Location = new System.Drawing.Point(676, 108);
             this.txtTIPO_CONTRIBUYENTE.Name = "txtTIPO_CONTRIBUYENTE";
+            this.txtTIPO_CONTRIBUYENTE.ReadOnly = true;
             this.txtTIPO_CONTRIBUYENTE.Size = new System.Drawing.Size(443, 24);
             this.txtTIPO_CONTRIBUYENTE.TabIndex = 109;
+            this.txtTIPO_CONTRIBUYENTE.TabStop = false;
             // 
             // label39
             // 
@@ -311,12 +315,14 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // txtACTIVIDAD_PRIMARIA
             // 
-            this.txtACTIVIDAD_PRIMARIA.Enabled = false;
+            this.txtACTIVIDAD_PRIMARIA.BackColor = System.Drawing.SystemColors.Control;
             this.txtACTIVIDAD_PRIMARIA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtACTIVIDAD_PRIMARIA.Location = new System.Drawing.Point(676, 75);
             this.txtACTIVIDAD_PRIMARIA.Name = "txtACTIVIDAD_PRIMARIA";
+            this.txtACTIVIDAD_PRIMARIA.ReadOnly = true;
             this.txtACTIVIDAD_PRIMARIA.Size = new System.Drawing.Size(443, 24);
             this.txtACTIVIDAD_PRIMARIA.TabIndex = 107;
+            this.txtACTIVIDAD_PRIMARIA.TabStop = false;
             // 
             // label38
             // 
@@ -340,12 +346,14 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // txtCORREO
             // 
-            this.txtCORREO.Enabled = false;
+            this.txtCORREO.BackColor = System.Drawing.SystemColors.Control;
             this.txtCORREO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCORREO.Location = new System.Drawing.Point(312, 75);
             this.txtCORREO.Name = "txtCORREO";
+            this.txtCORREO.ReadOnly = true;
             this.txtCORREO.Size = new System.Drawing.Size(263, 24);
             this.txtCORREO.TabIndex = 104;
+            this.txtCORREO.TabStop = false;
             // 
             // label13
             // 
@@ -359,12 +367,14 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // txtTELEFONO
             // 
-            this.txtTELEFONO.Enabled = false;
+            this.txtTELEFONO.BackColor = System.Drawing.SystemColors.Control;
             this.txtTELEFONO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTELEFONO.Location = new System.Drawing.Point(98, 75);
             this.txtTELEFONO.Name = "txtTELEFONO";
+            this.txtTELEFONO.ReadOnly = true;
             this.txtTELEFONO.Size = new System.Drawing.Size(153, 24);
             this.txtTELEFONO.TabIndex = 102;
+            this.txtTELEFONO.TabStop = false;
             // 
             // label36
             // 
@@ -976,21 +986,25 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // txtNOMBRE_PROVEEDOR
             // 
-            this.txtNOMBRE_PROVEEDOR.Enabled = false;
+            this.txtNOMBRE_PROVEEDOR.BackColor = System.Drawing.SystemColors.Control;
             this.txtNOMBRE_PROVEEDOR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNOMBRE_PROVEEDOR.Location = new System.Drawing.Point(252, 45);
             this.txtNOMBRE_PROVEEDOR.Name = "txtNOMBRE_PROVEEDOR";
+            this.txtNOMBRE_PROVEEDOR.ReadOnly = true;
             this.txtNOMBRE_PROVEEDOR.Size = new System.Drawing.Size(456, 24);
             this.txtNOMBRE_PROVEEDOR.TabIndex = 1;
+            this.txtNOMBRE_PROVEEDOR.TabStop = false;
             // 
             // txtNIT
             // 
-            this.txtNIT.Enabled = false;
+            this.txtNIT.BackColor = System.Drawing.SystemColors.Control;
             this.txtNIT.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNIT.Location = new System.Drawing.Point(909, 45);
             this.txtNIT.Name = "txtNIT";
+            this.txtNIT.ReadOnly = true;
             this.txtNIT.Size = new System.Drawing.Size(210, 24);
             this.txtNIT.TabIndex = 3;
+            this.txtNIT.TabStop = false;
             // 
             // label4
             // 
@@ -1014,12 +1028,14 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // txtNRC
             // 
-            this.txtNRC.Enabled = false;
+            this.txtNRC.BackColor = System.Drawing.SystemColors.Control;
             this.txtNRC.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNRC.Location = new System.Drawing.Point(757, 45);
             this.txtNRC.Name = "txtNRC";
+            this.txtNRC.ReadOnly = true;
             this.txtNRC.Size = new System.Drawing.Size(106, 24);
             this.txtNRC.TabIndex = 2;
+            this.txtNRC.TabStop = false;
             // 
             // txtPROVEEDOR
             // 
