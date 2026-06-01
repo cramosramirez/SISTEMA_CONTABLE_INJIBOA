@@ -173,6 +173,11 @@ namespace SistemaContable.DAL
             };
         }
 
+        public static string NuevoGUID()
+        {            
+            return Guid.NewGuid().ToString().ToUpper();
+        }
+
         #endregion
     }
 }
