@@ -9,20 +9,20 @@ using SistemaContable.DAL;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
-    public partial class frmConsultaQuedan : Form
+    public partial class frmConsultaNotaDebCred : Form
     {
         private readonly DALBase _dal = new DALBase();
-        private DataTable _dtDetalle; 
-
-        public frmConsultaQuedan()
+        private DataTable _dtDetalle;
+        public frmConsultaNotaDebCred()
         {
             InitializeComponent();
         }
 
 
+
         #region === CARGA INICIAL ===
-        private void frmConsultaQuedan_Load(object sender, EventArgs e)
-        {            
+        private void frmConsultaNotaDebCred_Load(object sender, EventArgs e)
+        {
             ConfigurarGrid();
             CargarDatos();
         }
@@ -38,12 +38,12 @@ namespace SistemaContable.UI.Forms.Proveedores
             gvDetalle.OptionsView.ShowAutoFilterRow = true;
             gvDetalle.OptionsBehavior.AutoExpandAllGroups = true;
             gvDetalle.OptionsBehavior.Editable = true;   // necesario para los botones por fila
-            
+
 
             // --- Buscador global ---
             gvDetalle.OptionsFind.AlwaysVisible = true;
             gvDetalle.OptionsFind.FindNullPrompt = "Introduzca el texto a buscar...";
-            
+
             gvDetalle.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             gvDetalle.OptionsSelection.EnableAppearanceFocusedCell = false;
             gvDetalle.OptionsSelection.EnableAppearanceFocusedRow = true;
@@ -55,28 +55,14 @@ namespace SistemaContable.UI.Forms.Proveedores
             gvDetalle.Appearance.Row.Font = new Font("Segoe UI", 9f);
             gvDetalle.Appearance.Row.Options.UseFont = true;
 
-            // --- Agrupación por NUM_QUEDAN ---
-            colNUM_QUEDAN.GroupIndex = 0;
-
-            // Personaliza el texto del header del grupo: "N° Quedan: 24337"
-            gvDetalle.CustomDrawGroupRow += GvDetalle_CustomDrawGroupRow;
-
             // --- Embedded Navigator: solo Nuevo ---
             gridControl1.UseEmbeddedNavigator = true;
-            var nav = gridControl1.EmbeddedNavigator;            
+            var nav = gridControl1.EmbeddedNavigator;
             nav.Buttons.Append.Visible = false;
             nav.Buttons.Remove.Visible = false;
             nav.Buttons.Edit.Visible = false;
             nav.Buttons.EndEdit.Visible = false;
-            nav.Buttons.CancelEdit.Visible = false;                     
-        }
- 
-        private void GvDetalle_CustomDrawGroupRow(object sender, RowObjectCustomDrawEventArgs e)
-        {
-            if (e.Info is GridGroupRowInfo info)
-            {
-                info.GroupText = $"N° Quedan: {info.EditValue}";
-            }
+            nav.Buttons.CancelEdit.Visible = false;
         }
         #endregion
 
@@ -85,11 +71,11 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void CargarDatos()
         {
             _dtDetalle = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",
-                new { ACCION = "QUEDAN_DETALLE_LISTAR" });
+                new { ACCION = "NOTA_CRED_DEB_DETALLE_LISTAR" });
             gridControl1.DataSource = _dtDetalle;
         }
         #endregion
-                      
+
 
         #region === HELPERS ===
 
@@ -103,27 +89,27 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void AbrirDocumento(int idCcfCompra)
         {
-            using (var frm = new frmDocumentoCompra())
-            {               
-                frm.IdCcfCompra = idCcfCompra;                
+            using (var frm = new frmNotaDebCred())
+            {
+                frm.IdCcfCompra = idCcfCompra;
                 frm.ShowDialog(this);
             }
             CargarDatos();
         }
 
         #endregion
-               
-      
+
+
 
         private void riEditar_ButtonClick(object sender, ButtonPressedEventArgs e)
-        {            
+        {
             int? id = ObtenerIdFilaActiva();
-            if (id.HasValue) AbrirDocumento(id.Value);            
+            if (id.HasValue) AbrirDocumento(id.Value);
         }
 
         private void btnNuevoQuedan_Click(object sender, EventArgs e)
         {
             AbrirDocumento(idCcfCompra: 0);
-        }
+        }       
     }
 }

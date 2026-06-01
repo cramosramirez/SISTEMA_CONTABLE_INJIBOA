@@ -22,7 +22,7 @@ namespace SistemaContable.UI.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace SistemaContable.UI.Properties {
         ///   Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SistemaContable.UI.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace SistemaContable.UI.Properties {
         ///   búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap agregarDoc2_32x32 {
+        public static System.Drawing.Bitmap agregarDoc2_32x32 {
             get {
                 object obj = ResourceManager.GetObject("agregarDoc2_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +73,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap agregarDoc32x32 {
+        public static System.Drawing.Bitmap agregarDoc32x32 {
             get {
                 object obj = ResourceManager.GetObject("agregarDoc32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +83,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo DevExpress.Utils.Svg.SvgImage.
         /// </summary>
-        internal static DevExpress.Utils.Svg.SvgImage banco {
+        public static DevExpress.Utils.Svg.SvgImage banco {
             get {
                 object obj = ResourceManager.GetObject("banco", resourceCulture);
                 return ((DevExpress.Utils.Svg.SvgImage)(obj));
@@ -93,7 +93,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap banco48x48 {
+        public static System.Drawing.Bitmap banco48x48 {
             get {
                 object obj = ResourceManager.GetObject("banco48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -103,7 +103,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cheque48x48 {
+        public static System.Drawing.Bitmap cheque48x48 {
             get {
                 object obj = ResourceManager.GetObject("cheque48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -113,7 +113,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap correo32x32 {
+        public static System.Drawing.Bitmap correo32x32 {
             get {
                 object obj = ResourceManager.GetObject("correo32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -123,7 +123,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cuentaBancaria48x48 {
+        public static System.Drawing.Bitmap cuentaBancaria48x48 {
             get {
                 object obj = ResourceManager.GetObject("cuentaBancaria48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -133,7 +133,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo DevExpress.Utils.Svg.SvgImage.
         /// </summary>
-        internal static DevExpress.Utils.Svg.SvgImage cuentabanco {
+        public static DevExpress.Utils.Svg.SvgImage cuentabanco {
             get {
                 object obj = ResourceManager.GetObject("cuentabanco", resourceCulture);
                 return ((DevExpress.Utils.Svg.SvgImage)(obj));
@@ -143,7 +143,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo DevExpress.Utils.Svg.SvgImage.
         /// </summary>
-        internal static DevExpress.Utils.Svg.SvgImage edit {
+        public static DevExpress.Utils.Svg.SvgImage edit {
             get {
                 object obj = ResourceManager.GetObject("edit", resourceCulture);
                 return ((DevExpress.Utils.Svg.SvgImage)(obj));
@@ -153,7 +153,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo DevExpress.Utils.Svg.SvgImage.
         /// </summary>
-        internal static DevExpress.Utils.Svg.SvgImage edit1 {
+        public static DevExpress.Utils.Svg.SvgImage edit1 {
             get {
                 object obj = ResourceManager.GetObject("edit1", resourceCulture);
                 return ((DevExpress.Utils.Svg.SvgImage)(obj));
@@ -163,7 +163,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap editar16x16 {
+        public static System.Drawing.Bitmap editar16x16 {
             get {
                 object obj = ResourceManager.GetObject("editar16x16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -173,7 +173,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap editar2_32x32 {
+        public static System.Drawing.Bitmap editar2_32x32 {
             get {
                 object obj = ResourceManager.GetObject("editar2_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -183,7 +183,17 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap guardar2_32x32 {
+        public static System.Drawing.Bitmap editar3_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("editar3_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap guardar2_32x32 {
             get {
                 object obj = ResourceManager.GetObject("guardar2_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -193,7 +203,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap guardar32x32 {
+        public static System.Drawing.Bitmap guardar32x32 {
             get {
                 object obj = ResourceManager.GetObject("guardar32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -203,7 +213,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap imprimir32x32 {
+        public static System.Drawing.Bitmap imprimir32x32 {
             get {
                 object obj = ResourceManager.GetObject("imprimir32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -213,7 +223,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo DevExpress.Utils.Svg.SvgImage.
         /// </summary>
-        internal static DevExpress.Utils.Svg.SvgImage locked_with_key {
+        public static DevExpress.Utils.Svg.SvgImage locked_with_key {
             get {
                 object obj = ResourceManager.GetObject("locked-with-key", resourceCulture);
                 return ((DevExpress.Utils.Svg.SvgImage)(obj));
@@ -223,7 +233,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo DevExpress.Utils.Svg.SvgImage.
         /// </summary>
-        internal static DevExpress.Utils.Svg.SvgImage locked_with_key1 {
+        public static DevExpress.Utils.Svg.SvgImage locked_with_key1 {
             get {
                 object obj = ResourceManager.GetObject("locked-with-key1", resourceCulture);
                 return ((DevExpress.Utils.Svg.SvgImage)(obj));
@@ -233,7 +243,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap login {
+        public static System.Drawing.Bitmap login {
             get {
                 object obj = ResourceManager.GetObject("login", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -243,7 +253,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap login48x48 {
+        public static System.Drawing.Bitmap login48x48 {
             get {
                 object obj = ResourceManager.GetObject("login48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -253,7 +263,37 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap provision32x32 {
+        public static System.Drawing.Bitmap nota_deb_cred32x32 {
+            get {
+                object obj = ResourceManager.GetObject("nota_deb_cred32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap nota_deb_cred48x48 {
+            get {
+                object obj = ResourceManager.GetObject("nota_deb_cred48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap nuevo32x32 {
+            get {
+                object obj = ResourceManager.GetObject("nuevo32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap provision32x32 {
             get {
                 object obj = ResourceManager.GetObject("provision32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -263,7 +303,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap provisionCheque48x48 {
+        public static System.Drawing.Bitmap provisionCheque48x48 {
             get {
                 object obj = ResourceManager.GetObject("provisionCheque48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -273,7 +313,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap quedan2_32x32 {
+        public static System.Drawing.Bitmap quedan2_32x32 {
             get {
                 object obj = ResourceManager.GetObject("quedan2_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -283,7 +323,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap quedan32x32 {
+        public static System.Drawing.Bitmap quedan32x32 {
             get {
                 object obj = ResourceManager.GetObject("quedan32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -293,7 +333,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap quedan48x48 {
+        public static System.Drawing.Bitmap quedan48x48 {
             get {
                 object obj = ResourceManager.GetObject("quedan48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -303,7 +343,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap retencion32x32 {
+        public static System.Drawing.Bitmap retencion32x32 {
             get {
                 object obj = ResourceManager.GetObject("retencion32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -313,7 +353,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap validar2_32x32 {
+        public static System.Drawing.Bitmap validar2_32x32 {
             get {
                 object obj = ResourceManager.GetObject("validar2_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -323,7 +363,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap validar3_32x32 {
+        public static System.Drawing.Bitmap validar3_32x32 {
             get {
                 object obj = ResourceManager.GetObject("validar3_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -333,7 +373,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap validar32x32 {
+        public static System.Drawing.Bitmap validar32x32 {
             get {
                 object obj = ResourceManager.GetObject("validar32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

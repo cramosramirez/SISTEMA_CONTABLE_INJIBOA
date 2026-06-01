@@ -13,7 +13,7 @@ namespace SistemaContable.UI.Helpers
 
         public static void Inicializar(Form formulario)
         {
-            AplicarPropiedadesEstandar(formulario);
+            //AplicarPropiedadesEstandar(formulario);
             AplicarEnterComoTab(formulario);
             AplicarMayusculas(formulario);            
         }
@@ -41,6 +41,7 @@ namespace SistemaContable.UI.Helpers
             {
                 // Controles DevExpress
                 if (ctrl is TextEdit ||
+                    ctrl is TextBox  ||
                     ctrl is ButtonEdit ||
                     ctrl is LookUpEdit ||
                     ctrl is SearchLookUpEdit ||

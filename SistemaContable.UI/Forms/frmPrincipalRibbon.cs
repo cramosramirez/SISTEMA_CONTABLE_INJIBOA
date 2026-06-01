@@ -169,14 +169,17 @@ namespace SistemaContable.UI.Forms
                 using (Form frm = Activator.CreateInstance(tipo) as Form)
                 {
                     if (frm == null) return;
-                    
-                    if (frm is frmConsultaQuedan quedanForm)
-                    {                        
-                        quedanForm.Width = this.ClientRectangle.Width;
-                        quedanForm.Height = this.ClientRectangle.Height - this.Ribbon.Height - this.StatusBar.Height;
-                        quedanForm.Top = this.Ribbon.Height;           // Justo debajo del ribbon
-                        quedanForm.Left = 0;
-                        quedanForm.StartPosition = FormStartPosition.Manual;
+
+                    if (frm is frmConsultaQuedan quedanForm ||
+                        frm is frmConsultaNotaDebCred notaDebCredForm)
+                    {
+                        Form formulario = (Form)frm;
+
+                        formulario.Width = this.ClientRectangle.Width;
+                        formulario.Height = this.ClientRectangle.Height - this.Ribbon.Height - this.StatusBar.Height;
+                        formulario.Top = this.Ribbon.Height;
+                        formulario.Left = 0;
+                        formulario.StartPosition = FormStartPosition.Manual;
                     }
                     else
                         frm.StartPosition = FormStartPosition.CenterParent;
