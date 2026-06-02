@@ -100,30 +100,53 @@ namespace SistemaContable.UI.Forms.Proveedores
             if (val == null || val == DBNull.Value) return null;
             return Convert.ToInt32(val);
         }
-
-        private void AbrirDocumento(int idCcfCompra)
+        private int? ObtenerTipoDTEFilaActiva()
         {
-            using (var frm = new frmDocumentoCompra())
-            {               
-                frm.IdCcfCompra = idCcfCompra;                
-                frm.ShowDialog(this);
-            }
-            CargarDatos();
+            if (gvDetalle.FocusedRowHandle < 0) return null;
+            object val = gvDetalle.GetRowCellValue(gvDetalle.FocusedRowHandle, "ID_TIPO_DTE");
+            if (val == null || val == DBNull.Value) return null;
+            return Convert.ToInt32(val);
         }
 
+        private void AbrirDocumento(int idCcfCompra, bool esCCF)
+        {
+            if (esCCF)
+            {
+                using (var frm = new frmDocumentoCompra())
+                {
+                    frm.IdCcfCompra = idCcfCompra;
+                    frm.ShowDialog(this);
+                }
+                CargarDatos();
+            }
+            else
+            {
+                using (var frm = new frmNotaDebCred())
+                {
+                    frm.IdCcfCompra = idCcfCompra;
+                    frm.ShowDialog(this);
+                }
+                CargarDatos();
+            }
+                
+        }
         #endregion
-               
-      
-
+          
         private void riEditar_ButtonClick(object sender, ButtonPressedEventArgs e)
         {            
             int? id = ObtenerIdFilaActiva();
-            if (id.HasValue) AbrirDocumento(id.Value);            
+            int? idTipo_dte = ObtenerTipoDTEFilaActiva();
+            bool esCCF = false;
+
+            if (idTipo_dte == 2 || idTipo_dte == 21)            
+                esCCF = true;           
+                
+            if (id.HasValue) AbrirDocumento(id.Value, esCCF);            
         }
 
         private void btnNuevoQuedan_Click(object sender, EventArgs e)
         {
-            AbrirDocumento(idCcfCompra: 0);
+            AbrirDocumento(0, true);
         }
     }
 }

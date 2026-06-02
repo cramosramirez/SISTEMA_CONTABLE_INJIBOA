@@ -353,6 +353,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap salir32x32 {
+            get {
+                object obj = ResourceManager.GetObject("salir32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap validar2_32x32 {
             get {
                 object obj = ResourceManager.GetObject("validar2_32x32", resourceCulture);
