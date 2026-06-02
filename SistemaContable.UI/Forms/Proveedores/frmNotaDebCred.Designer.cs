@@ -29,16 +29,12 @@ namespace SistemaContable.UI.Forms.Proveedores
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmNotaDebCred));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblESTADO_MH = new System.Windows.Forms.Label();
             this.label49 = new System.Windows.Forms.Label();
             this.txtSUCURSAL = new System.Windows.Forms.TextBox();
-            this.btnProvision = new DevExpress.XtraEditors.SimpleButton();
-            this.btnCorreo = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnImprimirRetencion = new DevExpress.XtraEditors.SimpleButton();
-            this.btnValidar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.label41 = new System.Windows.Forms.Label();
             this.label40 = new System.Windows.Forms.Label();
             this.cbxTIPO_RENTA = new System.Windows.Forms.ComboBox();
@@ -135,6 +131,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label2 = new System.Windows.Forms.Label();
             this.txtNUM_QUEDAN = new System.Windows.Forms.TextBox();
             this.lblNUM_QUEDAN = new System.Windows.Forms.Label();
+            this.btnProvision = new DevExpress.XtraEditors.SimpleButton();
+            this.btnCorreo = new DevExpress.XtraEditors.SimpleButton();
+            this.btnImprimirRetencion = new DevExpress.XtraEditors.SimpleButton();
+            this.btnValidar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).BeginInit();
             this.SuspendLayout();
@@ -285,86 +286,20 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtSUCURSAL.TabIndex = 26;
             this.txtSUCURSAL.TabStop = false;
             // 
-            // btnProvision
-            // 
-            this.btnProvision.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnProvision.Appearance.Options.UseFont = true;
-            this.btnProvision.Appearance.Options.UseTextOptions = true;
-            this.btnProvision.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnProvision.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.provision32x32;
-            this.btnProvision.ImageOptions.ImageToTextIndent = 10;
-            this.btnProvision.Location = new System.Drawing.Point(1139, 491);
-            this.btnProvision.Name = "btnProvision";
-            this.btnProvision.Size = new System.Drawing.Size(110, 47);
-            this.btnProvision.TabIndex = 52;
-            this.btnProvision.Text = "Provisión";
-            // 
-            // btnCorreo
-            // 
-            this.btnCorreo.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCorreo.Appearance.Options.UseFont = true;
-            this.btnCorreo.Appearance.Options.UseTextOptions = true;
-            this.btnCorreo.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnCorreo.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.correo32x32;
-            this.btnCorreo.ImageOptions.ImageToTextIndent = 10;
-            this.btnCorreo.Location = new System.Drawing.Point(1137, 428);
-            this.btnCorreo.Name = "btnCorreo";
-            this.btnCorreo.Size = new System.Drawing.Size(111, 47);
-            this.btnCorreo.TabIndex = 51;
-            this.btnCorreo.Text = "Correo";
-            // 
             // btnFinalizar
             // 
             this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFinalizar.Appearance.Options.UseFont = true;
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnFinalizar.Location = new System.Drawing.Point(1139, 624);
+            this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
+            this.btnFinalizar.Location = new System.Drawing.Point(1141, 642);
             this.btnFinalizar.Name = "btnFinalizar";
-            this.btnFinalizar.Size = new System.Drawing.Size(108, 47);
+            this.btnFinalizar.Size = new System.Drawing.Size(113, 47);
             this.btnFinalizar.TabIndex = 53;
+            this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
-            // 
-            // btnImprimirRetencion
-            // 
-            this.btnImprimirRetencion.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnImprimirRetencion.Appearance.Options.UseFont = true;
-            this.btnImprimirRetencion.Appearance.Options.UseTextOptions = true;
-            this.btnImprimirRetencion.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnImprimirRetencion.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.imprimir32x32;
-            this.btnImprimirRetencion.ImageOptions.ImageToTextIndent = 10;
-            this.btnImprimirRetencion.Location = new System.Drawing.Point(1138, 352);
-            this.btnImprimirRetencion.Name = "btnImprimirRetencion";
-            this.btnImprimirRetencion.Size = new System.Drawing.Size(111, 60);
-            this.btnImprimirRetencion.TabIndex = 50;
-            this.btnImprimirRetencion.Text = "Imprimir Retención";
-            // 
-            // btnValidar
-            // 
-            this.btnValidar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnValidar.Appearance.Options.UseFont = true;
-            this.btnValidar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.validar3_32x32;
-            this.btnValidar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnValidar.ImageOptions.ImageToTextIndent = 10;
-            this.btnValidar.Location = new System.Drawing.Point(1137, 290);
-            this.btnValidar.Name = "btnValidar";
-            this.btnValidar.Size = new System.Drawing.Size(111, 47);
-            this.btnValidar.TabIndex = 49;
-            this.btnValidar.Text = "Validar";
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardar.Appearance.Options.UseFont = true;
-            this.btnGuardar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.guardar2_32x32;
-            this.btnGuardar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnGuardar.ImageOptions.ImageToTextIndent = 10;
-            this.btnGuardar.Location = new System.Drawing.Point(1135, 229);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(113, 47);
-            this.btnGuardar.TabIndex = 48;
-            this.btnGuardar.Text = "Guardar";
             // 
             // label41
             // 
@@ -825,11 +760,13 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.cbxTIPO_DTE.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxTIPO_DTE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbxTIPO_DTE.ForeColor = System.Drawing.Color.Blue;
             this.cbxTIPO_DTE.FormattingEnabled = true;
             this.cbxTIPO_DTE.Location = new System.Drawing.Point(152, 109);
             this.cbxTIPO_DTE.Name = "cbxTIPO_DTE";
             this.cbxTIPO_DTE.Size = new System.Drawing.Size(376, 25);
             this.cbxTIPO_DTE.TabIndex = 3;
+            this.cbxTIPO_DTE.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbxTIPO_DTE_DrawItem);
             // 
             // label7
             // 
@@ -844,6 +781,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // mskFECHA_RECIBIDO
             // 
             this.mskFECHA_RECIBIDO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mskFECHA_RECIBIDO.ForeColor = System.Drawing.Color.Blue;
             this.mskFECHA_RECIBIDO.Location = new System.Drawing.Point(406, 170);
             this.mskFECHA_RECIBIDO.Mask = "00/00/0000";
             this.mskFECHA_RECIBIDO.Name = "mskFECHA_RECIBIDO";
@@ -863,6 +801,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // mskFECHA_EMISION
             // 
             this.mskFECHA_EMISION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mskFECHA_EMISION.ForeColor = System.Drawing.Color.Blue;
             this.mskFECHA_EMISION.Location = new System.Drawing.Point(152, 170);
             this.mskFECHA_EMISION.Mask = "00/00/0000";
             this.mskFECHA_EMISION.Name = "mskFECHA_EMISION";
@@ -872,6 +811,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // txtNUM_CONTROL
             // 
             this.txtNUM_CONTROL.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNUM_CONTROL.ForeColor = System.Drawing.Color.Blue;
             this.txtNUM_CONTROL.Location = new System.Drawing.Point(679, 141);
             this.txtNUM_CONTROL.Name = "txtNUM_CONTROL";
             this.txtNUM_CONTROL.Size = new System.Drawing.Size(448, 24);
@@ -890,6 +830,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // txtSELLO_RECIBIDO
             // 
             this.txtSELLO_RECIBIDO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSELLO_RECIBIDO.ForeColor = System.Drawing.Color.Blue;
             this.txtSELLO_RECIBIDO.Location = new System.Drawing.Point(679, 111);
             this.txtSELLO_RECIBIDO.Name = "txtSELLO_RECIBIDO";
             this.txtSELLO_RECIBIDO.Size = new System.Drawing.Size(448, 24);
@@ -908,6 +849,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // txtCOD_GENERACION
             // 
             this.txtCOD_GENERACION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCOD_GENERACION.ForeColor = System.Drawing.Color.Blue;
             this.txtCOD_GENERACION.Location = new System.Drawing.Point(152, 139);
             this.txtCOD_GENERACION.Name = "txtCOD_GENERACION";
             this.txtCOD_GENERACION.Size = new System.Drawing.Size(376, 24);
@@ -937,11 +879,12 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.Blue;
             this.label5.Location = new System.Drawing.Point(12, 84);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(150, 18);
+            this.label5.Size = new System.Drawing.Size(154, 18);
             this.label5.TabIndex = 151;
-            this.label5.Text = "Datos de (NC/ND):";
+            this.label5.Text = "Datos de (NC/ND) :";
             // 
             // txtORDEN
             // 
@@ -1330,6 +1273,75 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblNUM_QUEDAN.Size = new System.Drawing.Size(87, 18);
             this.lblNUM_QUEDAN.TabIndex = 15;
             this.lblNUM_QUEDAN.Text = "No. Quedan";
+            // 
+            // btnProvision
+            // 
+            this.btnProvision.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProvision.Appearance.Options.UseFont = true;
+            this.btnProvision.Appearance.Options.UseTextOptions = true;
+            this.btnProvision.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnProvision.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnProvision.ImageOptions.Image")));
+            this.btnProvision.ImageOptions.ImageToTextIndent = 10;
+            this.btnProvision.Location = new System.Drawing.Point(1141, 584);
+            this.btnProvision.Name = "btnProvision";
+            this.btnProvision.Size = new System.Drawing.Size(113, 47);
+            this.btnProvision.TabIndex = 52;
+            this.btnProvision.Text = "Provisión";
+            // 
+            // btnCorreo
+            // 
+            this.btnCorreo.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCorreo.Appearance.Options.UseFont = true;
+            this.btnCorreo.Appearance.Options.UseTextOptions = true;
+            this.btnCorreo.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnCorreo.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnCorreo.ImageOptions.Image")));
+            this.btnCorreo.ImageOptions.ImageToTextIndent = 10;
+            this.btnCorreo.Location = new System.Drawing.Point(1137, 332);
+            this.btnCorreo.Name = "btnCorreo";
+            this.btnCorreo.Size = new System.Drawing.Size(113, 47);
+            this.btnCorreo.TabIndex = 51;
+            this.btnCorreo.Text = "Correo";
+            // 
+            // btnImprimirRetencion
+            // 
+            this.btnImprimirRetencion.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnImprimirRetencion.Appearance.Options.UseFont = true;
+            this.btnImprimirRetencion.Appearance.Options.UseTextOptions = true;
+            this.btnImprimirRetencion.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnImprimirRetencion.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimirRetencion.ImageOptions.Image")));
+            this.btnImprimirRetencion.ImageOptions.ImageToTextIndent = 10;
+            this.btnImprimirRetencion.Location = new System.Drawing.Point(1137, 262);
+            this.btnImprimirRetencion.Name = "btnImprimirRetencion";
+            this.btnImprimirRetencion.Size = new System.Drawing.Size(113, 60);
+            this.btnImprimirRetencion.TabIndex = 50;
+            this.btnImprimirRetencion.Text = "Imprimir Retención";
+            // 
+            // btnValidar
+            // 
+            this.btnValidar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnValidar.Appearance.Options.UseFont = true;
+            this.btnValidar.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnValidar.ImageOptions.Image")));
+            this.btnValidar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnValidar.ImageOptions.ImageToTextIndent = 10;
+            this.btnValidar.Location = new System.Drawing.Point(1137, 391);
+            this.btnValidar.Name = "btnValidar";
+            this.btnValidar.Size = new System.Drawing.Size(113, 47);
+            this.btnValidar.TabIndex = 49;
+            this.btnValidar.Text = "Validar";
+            // 
+            // btnGuardar
+            // 
+            this.btnGuardar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGuardar.Appearance.Options.UseFont = true;
+            this.btnGuardar.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardar.ImageOptions.Image")));
+            this.btnGuardar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnGuardar.ImageOptions.ImageToTextIndent = 10;
+            this.btnGuardar.Location = new System.Drawing.Point(1135, 204);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(113, 47);
+            this.btnGuardar.TabIndex = 48;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // frmNotaDebCred
             // 

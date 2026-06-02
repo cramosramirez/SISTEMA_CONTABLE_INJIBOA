@@ -127,33 +127,33 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 case EstadoFormulario.Nuevo:
                     txtPROVEEDOR.Enabled = true; 
-                    btnGuardar.Visible = true;
-                    btnValidar.Visible = false;
-                    btnAdicionar.Visible = false;
-                    btnImprimirQuedan.Visible = false;
-                    btnImprimirRetencion.Visible = false;
-                    btnCorreo.Visible = false;
-                    btnProvision.Visible = false;
+                    btnGuardar.Enabled = true;
+                    btnValidar.Enabled = false;
+                    btnAdicionar.Enabled = false;
+                    btnImprimirQuedan.Enabled = false;
+                    btnImprimirRetencion.Enabled = false;
+                    btnCorreo.Enabled = false;
+                    btnProvision.Enabled = false;
                     break;
                 case EstadoFormulario.Guardado:
                     txtPROVEEDOR.Enabled = false;
-                    btnGuardar.Visible = true;
-                    btnValidar.Visible = _validarCompIVAR;
-                    btnAdicionar.Visible = _codigoEntidad.Equals(Configuracion.CodigoCCJIBOA); // solo para CC Jiboa
-                    btnImprimirQuedan.Visible = true;
-                    btnImprimirRetencion.Visible = true;
-                    btnCorreo.Visible = false;
-                    btnProvision.Visible = false;
+                    btnGuardar.Enabled = true;
+                    btnValidar.Enabled = _validarCompIVAR;
+                    btnAdicionar.Enabled = _codigoEntidad.Equals(Configuracion.CodigoCCJIBOA); // solo para CC Jiboa
+                    btnImprimirQuedan.Enabled = true;
+                    btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
+                    btnCorreo.Enabled = false;
+                    btnProvision.Enabled = true;
                     break;
                 case EstadoFormulario.Validado:
                     txtPROVEEDOR.Enabled = false;
-                    btnGuardar.Visible = true;
-                    btnValidar.Visible = false;
-                    btnAdicionar.Visible = false;
-                    btnImprimirQuedan.Visible = true;
-                    btnImprimirRetencion.Visible = true;
-                    btnCorreo.Visible = true;
-                    btnProvision.Visible = true;
+                    btnGuardar.Enabled = true;
+                    btnValidar.Enabled = false;
+                    btnAdicionar.Enabled = false;
+                    btnImprimirQuedan.Enabled = true;
+                    btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
+                    btnCorreo.Enabled = true;
+                    btnProvision.Enabled = true;
                     break;
             }
         }
