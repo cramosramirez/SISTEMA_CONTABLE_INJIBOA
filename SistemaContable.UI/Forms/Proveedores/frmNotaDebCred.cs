@@ -28,11 +28,14 @@ namespace SistemaContable.UI.Forms.Proveedores
         private readonly DALBase _dal = new DALBase();
         private MinisterioHaciendaHelper _mhHelper;
         private int _idEntidad = 0;
+        private int _idQuedanActual = 0;
+        private int _idCCFAsociado = 0;
         private string _codigoEntidad = string.Empty;
         private string _idTipoContribProveedor = "";
         private string _idTipoPersona = "";
         private bool _validarCompIVAR = false;
-        public int IdCcfCompra { get; set; } = 0;        
+        public int IdCcfCompra { get; set; } = 0;
+        
 
         #endregion
         public frmNotaDebCred()
@@ -43,7 +46,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void frmNotaDebCred_Load(object sender, EventArgs e)
         {
             FormHelper.Inicializar(this);
-            InicializarHelperMinisterioHacienda();
+            InicializarHelperMinisterioHacienda();            
             CargarCombos();
             
             // Cargar de Combos Reuqeridos por MH
@@ -84,7 +87,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             {                
                 ConfigurarCRUD(EstadoFormulario.Nuevo);
             }
-
+            cbxTIPO_DTE.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
         }
 
         private void txtAplicableRenta_Leave(object sender, EventArgs e)
@@ -123,7 +126,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 DataRow r = dt.Rows[0];                              
 
                 // ---------- Quedan ----------
-                lblNUM_QUEDAN.Text = r["NUM_QUEDAN"].ToString();
+                txtNUM_QUEDAN.Text = r["NUM_QUEDAN"].ToString();
 
                 // ---------- Proveedor ----------
                 _idEntidad = Convert.ToInt32(r["ID_ENTIDAD"]);
@@ -143,16 +146,24 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtTIPO_CONTRIBUYENTE.Text = r["TIPO_CONTRIBUYENTE"].ToString();
                 txtDIRECCION.Text = r["COMPLEMENTO"].ToString();
 
-                // ---------- Documento fiscal ----------
+                // ---------- Documento fiscal NC/ND ----------
                 cbxTIPO_DTE.SelectedValue = Convert.ToInt32(r["ID_TIPO_DTE"]);
                 txtNUM_CONTROL.Text = AsString(r["NUM_CONTROL"]);
                 txtCOD_GENERACION.Text = AsString(r["COD_GENERACION"]);
                 txtSELLO_RECIBIDO.Text = AsString(r["SELLO_RECIBIDO"]);
                 mskFECHA_EMISION.Text = AsFecha(r["FECHA_EMISION"]);
                 mskFECHA_RECIBIDO.Text = AsFecha(r["FECHA_RECIBIDO"]);
+
+                // ---------- Documento fiscal CCF al que aplica ----------
+                txtTIPO_DTE_CCF.Text = AsString(r["TIPO_DTE_CCF"]); ;
+                txtSELLO_RECIBIDO_CCF.Text = AsString(r["SELLO_RECIBIDO_CCF"]);
+                txtCOD_GENERACION_CCF.Text = AsString(r["COD_GENERACION_CCF"]);
+                txtNUM_CONTROL_CCF.Text = AsString(r["NUM_CONTROL_CCF"]);
+                mskFECHA_EMISION_CCF.Text = AsFecha(r["FECHA_EMISION_CCF"]);
+                mskFECHA_RECIBIDO_CCF.Text = AsFecha(r["FECHA_RECIBIDO_CCF"]);
                 mskFECHA_VENCE_CCF.Text = AsFecha(r["FECHA_VENCE_CCF"]);
-                txtORDEN.Text = AsString(r["ORDEN"]);
-                txtSUCURSAL.Text = AsString(r["SUCURSAL"]);
+                txtORDEN.Text = AsString(r["ORDEN_CCF"]);
+                txtSUCURSAL.Text = AsString(r["SUCURSAL_CCF"]);
 
                 // ---------- Cascada de clasificación ----------
                 // IMPORTANTE: orden estricto. Cargar el combo hijo con el filtro
@@ -282,28 +293,28 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             switch (estado)
             {
-                case EstadoFormulario.Nuevo:                    
-                    btnGuardar.Visible = true;
-                    btnValidar.Visible = false;                   
-                    btnImprimirRetencion.Visible = false;
-                    btnCorreo.Visible = false;
-                    btnProvision.Visible = false;
+                case EstadoFormulario.Nuevo:
+                    txtNUM_QUEDAN.ReadOnly = false;
+                    btnGuardar.Enabled = true;
+                    btnValidar.Enabled = false;                   
+                    btnImprimirRetencion.Enabled = false;
+                    btnCorreo.Enabled = false;
+                    btnProvision.Enabled = false;
                     break;
                 case EstadoFormulario.Guardado:
-                    txtPROVEEDOR.Enabled = false;
-                    btnGuardar.Visible = true;
-                    btnValidar.Visible = _validarCompIVAR;                    
-                    btnImprimirRetencion.Visible = true;
-                    btnCorreo.Visible = false;
-                    btnProvision.Visible = false;
+                    txtNUM_QUEDAN.ReadOnly = true;                     
+                    btnGuardar.Enabled = true;
+                    btnValidar.Enabled = _validarCompIVAR;                    
+                    btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
+                    btnCorreo.Enabled = false;
+                    btnProvision.Enabled = true;
                     break;
-                case EstadoFormulario.Validado:
-                    txtPROVEEDOR.Enabled = false;
-                    btnGuardar.Visible = true;
-                    btnValidar.Visible = false;                    
-                    btnImprimirRetencion.Visible = true;
-                    btnCorreo.Visible = true;
-                    btnProvision.Visible = true;
+                case EstadoFormulario.Validado:                    
+                    btnGuardar.Enabled = true;
+                    btnValidar.Enabled = false;                    
+                    btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
+                    btnCorreo.Enabled = true;
+                    btnProvision.Enabled = true;
                     break;
             }
         }
@@ -530,9 +541,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             decimal abono = ObtenerDecimal(txtABONO);
             decimal renta = ObtenerDecimal(txtRENTA);   // lee, no calcula
             // IVA = 13% de la base gravada
-            decimal iva = Math.Round(gravada * 0.13m, 2);
-
-            
+            decimal iva = Math.Round(gravada * 0.13m, 2);            
              // IVAR (1%): solo si gravada >= 100 y proveedor NO es Gran Contribuyente
             decimal ivar = 0;
             bool retieneIva = gravada >= 100m
@@ -628,6 +637,8 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void AsignarQuedan(DataRow fila)
         {
             _idEntidad = Convert.ToInt32(fila["ID_ENTIDAD"]);
+            _idQuedanActual = Convert.ToInt32(fila["ID_QUEDAN"]);
+            _idCCFAsociado = Convert.ToInt32(fila["ID_CCF_COMPRA"]);
             _codigoEntidad = fila["CODIGO_ENTIDAD"].ToString();
             _idTipoPersona = fila["ID_TIPO_ENTIDAD"].ToString();
             _idTipoContribProveedor = fila["ID_TIPO_CONTRIB"].ToString();
@@ -715,6 +726,173 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             _mhHelper?.Dispose();
             base.OnFormClosed(e);
+        }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            if (!ValidarCampos()) return;
+            GuardarDocumento();
+            ConfigurarCRUD(EstadoFormulario.Guardado);
+        }
+
+        private bool ValidarCampos()
+        {
+            if (_idEntidad == 0)
+            {
+                XtraMessageBox.Show("Debe seleccionar un proveedor.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPROVEEDOR.Focus();
+                return false;
+            }
+
+            if (!TieneSeleccion(cbxTIPO_DTE))
+            {
+                XtraMessageBox.Show("Debe seleccionar el tipo de documento.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbxTIPO_DTE.Focus();
+                return false;
+            }
+
+            if (!DateTime.TryParseExact(mskFECHA_EMISION.Text, "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+            {
+                XtraMessageBox.Show("Ingrese una fecha de emisión válida.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mskFECHA_EMISION.Focus();
+                return false;
+            }
+
+            if (!DateTime.TryParseExact(mskFECHA_RECIBIDO.Text, "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+            {
+                XtraMessageBox.Show("Ingrese una fecha de recibido válida.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mskFECHA_RECIBIDO.Focus();
+                return false;
+            }
+        
+            if (ObtenerDecimal(txtTOTAL) <= 0)
+            {
+                XtraMessageBox.Show("El total del documento debe ser mayor a cero.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtGRAVADA.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void GuardarDocumento()
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                var parametros = new
+                {
+                    ACCION = "GUARDAR_NC_ND",
+                    ID_CCF_COMPRA = IdCcfCompra,
+                    ID_QUEDAN = _idQuedanActual,
+                    NUM_QUEDAN = (int?)Convert.ToInt32(txtNUM_QUEDAN.Text),
+                    ID_TIPO_DTE = ObtenerIdCombo(cbxTIPO_DTE),
+                    NUM_CONTROL = NullIfEmpty(txtNUM_CONTROL.Text),
+                    COD_GENERACION = NullIfEmpty(txtCOD_GENERACION.Text),
+                    SELLO_RECIBIDO = NullIfEmpty(txtSELLO_RECIBIDO.Text),
+                    FECHA_EMISION = ParsearFecha(mskFECHA_EMISION.Text),
+                    TIPO_MONEDA = "USD",
+                    ID_ENTIDAD = _idEntidad,
+                    CODIGO_ENTIDAD = _codigoEntidad,
+                    FECHA_RECIBIDO = ParsearFecha(mskFECHA_RECIBIDO.Text),
+                    FECHA_VENCE = (DateTime?)null,
+                    ORDEN = (string)null,
+                    ID_SUCURSAL = (int?)null,
+                    ID_TIPO_SERVI = ObtenerIdCombo(cbxTIPO_SERVICIO),
+                    ID_TIPO_OPERA = ObtenerIdCombo(cbxTIPO_OPERACION),
+                    ID_CLASIFICA = ObtenerIdCombo(cbxCLASIFICACION),
+                    ID_SECTOR = ObtenerIdCombo(cbxSECTOR),
+                    ID_TIPO_COSTO = ObtenerIdCombo(cbxTIPO_COSTO),
+                    NO_SUJETA = ObtenerDecimal(txtEXCLUIDO),
+                    EXENTA = ObtenerDecimal(txtEXENTA),
+                    GRAVADA = ObtenerDecimal(txtGRAVADA),
+                    PERCEPCION = ObtenerDecimal(txtPERCEPCION),
+                    IVA = ObtenerDecimal(txtIVA),
+                    FOVIAL = ObtenerDecimal(txtFOVIAL),
+                    COTRANS = ObtenerDecimal(txtCONTRANS),
+                    TOTAL = ObtenerDecimal(txtTOTAL),
+                    CARGO = ObtenerDecimal(txtCARGO),
+                    ABONO = ObtenerDecimal(txtABONO),
+                    RENTA = ObtenerDecimal(txtRENTA),
+                    IVAR = ObtenerDecimal(txtIVAR),
+                    SALDO = ObtenerDecimal(txtSALDO),
+                    OBSERVACION = NullIfEmpty(txtOBSERVACION.Text),
+                    USUARIO = Configuracion.UsuarioActual,
+                    ID_TIPO_RENTA = ObtenerIdCombo(cbxTIPO_RENTA),
+                    APLICABLE_RENTA = ObtenerDecimal(txtAPLICABLE_RENTA),
+                    ID_CCF_COMPRA_ASOCIADO = _idCCFAsociado
+                };
+
+                DataTable dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA", parametros);
+
+                if (dt.Rows.Count == 0)
+                    throw new Exception("El SP no devolvió los IDs generados.");
+
+                // El SP devuelve siempre los tres campos:
+                DataRow row = dt.Rows[0];
+                IdCcfCompra = Convert.ToInt32(row["ID_GENERADO"]);                
+                _validarCompIVAR = ObtenerDecimal(txtIVAR) > 0 ? true : false;                
+                ConfigurarCRUD(EstadoFormulario.Guardado);
+                XtraMessageBox.Show("Documento guardado correctamente.",
+                    "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Ocurrió un error al guardar el documento:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private int? ObtenerIdCombo(ComboBox cbx)
+        {
+            if (cbx.SelectedValue == null) return null;
+            if (cbx.SelectedValue == DBNull.Value) return null;
+            if (cbx.SelectedValue is DataRowView) return null;
+            return Convert.ToInt32(cbx.SelectedValue);
+        }
+
+        private static DateTime ParsearFecha(string texto)
+        {
+            return DateTime.ParseExact(texto, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        }
+
+        private static DateTime? ParsearFechaOpcional(string texto)
+        {
+            if (DateTime.TryParseExact(texto, "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime f))
+                return f;
+            return null;
+        }
+        private void cbxTIPO_DTE_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0) return;
+            ComboBox combo = (ComboBox)sender;
+            // Obtener el objeto DataRowView del elemento actual
+            DataRowView rowView = combo.Items[e.Index] as DataRowView;
+            if (rowView != null)
+            {                
+                string textoAMostrar = rowView[combo.DisplayMember].ToString();
+                e.DrawBackground();                
+                Color colorTexto = Color.Blue;
+                using (SolidBrush brush = new SolidBrush(colorTexto))
+                {
+                    e.Graphics.DrawString(textoAMostrar, e.Font, brush, e.Bounds);
+                }
+                e.DrawFocusRectangle();
+            }
         }
     }
 }
