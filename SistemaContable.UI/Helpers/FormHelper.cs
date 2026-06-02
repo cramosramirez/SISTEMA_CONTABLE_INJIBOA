@@ -260,7 +260,21 @@ namespace SistemaContable.UI.Helpers
                 return fecha;
             return null;
         }
-               
+
+        public static string ObtenerSalfec(MaskedTextBox campo)
+        {
+            if (string.IsNullOrWhiteSpace(campo.Text.Replace("/", "").Trim()))
+                return null;
+
+            if (DateTime.TryParseExact(campo.Text, "dd/MM/yyyy",
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out DateTime fecha))
+            {
+                return fecha.ToString("yyyyMM");
+            }
+
+            return null;
+        }
         #endregion
     }
 }
