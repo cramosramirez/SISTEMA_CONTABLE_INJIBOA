@@ -23,6 +23,8 @@ namespace SistemaContable.UI.Helpers
         // Anchos opcionales — Key = nombre del campo, Value = ancho en pixels
         public Dictionary<string, int> Anchos { get; set; }
 
+        public List<string> ColumnasOcultas { get; set; } = new List<string>();
+
         /// <summary>
         /// Parámetros adicionales que se envían al SP
         /// además de ACCION y FILTRO.

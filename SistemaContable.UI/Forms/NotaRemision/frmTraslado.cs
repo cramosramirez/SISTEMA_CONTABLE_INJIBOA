@@ -29,13 +29,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDeta;  // DataTable que alimenta el grid
+        private int _idNR = 0;
         private int _idEntidad = 0;
         private string _codigoEntidad = string.Empty;
         private string _columnaAnteriorGrid = string.Empty;
         public int IdTraslado { get; set; } = 0;
 
-       
-        
+
+
         public frmTraslado()
         {
             InitializeComponent();
@@ -79,21 +80,23 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 fila => AsignarProveedor(fila)
             );
             txtPROVEEDOR.Leave += txtPROVEEDOR_Leave;
-            
+
 
             ConfigurarTextBoxDecimal(
-                txtGRAVADA,  txtTOTAL
+                txtGRAVADA, txtTOTAL
             );
 
 
-           
-           
+
+
         }
 
         private void CargarTipoDte()
         {
             DataTable dt = _dal.EjecutarConsulta("SP_TIPO_DTE",
-                new { ACCION = "OBTENER",
+                new
+                {
+                    ACCION = "OBTENER",
                     ID_TIPO_DTE = 3
                 });
 
@@ -117,7 +120,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             }
             txtNumero_NR.Text = num.SiguienteNumeroFormateado();
         }
-       
+
         private void txtPROVEEDOR_Leave(object sender, EventArgs e)
         {
             string codigo = txtPROVEEDOR.Text.Trim();
@@ -165,9 +168,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             txtTELEFONO.Text = fila["CELULAR"].ToString();
             txtCORREO.Text = fila["CORREO"].ToString();
             txtACTIVIDAD_PRIMARIA.Text = fila["ACTIVIDAD_PRIMARIA"].ToString();
-            
+
             txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
-         
+
         }
         private void LimpiarProveedor()
         {
@@ -179,7 +182,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             txtTELEFONO.Text = string.Empty;
             txtCORREO.Text = string.Empty;
             txtACTIVIDAD_PRIMARIA.Text = string.Empty;
-           
+
             txtDIRECCION.Text = string.Empty;
         }
         private void ConfigurarTextBoxDecimal(params TextBox[] textboxes)
@@ -235,19 +238,21 @@ namespace SistemaContable.UI.Forms.NotaRemision
         }
 
         #region Grid detalle
-       
+
         private void InicializarGridDetalle()
         {
             // Crear DataTable con las columnas de CHEQUE_PARTIDA
-            _dtDeta = new DataTable();           
-           
+            _dtDeta = new DataTable();
+
+            _dtDeta.Columns.Add("ID_PRODUCTO", typeof(int));
             _dtDeta.Columns.Add("COD_REF", typeof(string));
             _dtDeta.Columns.Add("DESCRIPCION", typeof(string));
+            _dtDeta.Columns.Add("ID_UNIDAD_MEDIDA", typeof(int));
             _dtDeta.Columns.Add("UNIDAD_MEDIDA", typeof(string));
             _dtDeta.Columns.Add("CANTIDAD", typeof(decimal));
-          
+
             _dtDeta.Columns.Add("PRECIO", typeof(decimal));
-           
+
             _dtDeta.Columns.Add("TOTAL", typeof(decimal));
 
             // Agregar fila vacía inicial
@@ -263,13 +268,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
             view.Columns.Clear();
             view.PopulateColumns();
 
-            ConfigurarColumna(view, "COD_REF", "COD_REF", 80, false);
-            ConfigurarColumna(view, "DESCRIPCION", "DESCRIPCION", 350, false);
-            ConfigurarColumna(view, "UNIDAD_MEDIDA", "UM", 100, true);
-            ConfigurarColumna(view, "CANTIDAD", "CANTIDAD", 75, false);
-            ConfigurarColumna(view, "PRECIO", "PRECIO", 75, true);
-           
-            ConfigurarColumna(view, "TOTAL", "TOTAL", 75, true);
+            ConfigurarColumna(view, "ID_PRODUCTO", "ID_PRODUCTO", 80, false, false);
+            ConfigurarColumna(view, "COD_REF", "COD_REF", 80, false, true);
+            ConfigurarColumna(view, "DESCRIPCION", "DESCRIPCION", 350, false, true);
+            ConfigurarColumna(view, "ID_UNIDAD_MEDIDA", "ID_UNIDAD_MEDIDA", 80, false, false);
+            ConfigurarColumna(view, "UNIDAD_MEDIDA", "UM", 100, true, true);
+            ConfigurarColumna(view, "CANTIDAD", "CANTIDAD", 75, false, true);
+            ConfigurarColumna(view, "PRECIO", "PRECIO", 75, true, true);
+            ConfigurarColumna(view, "TOTAL", "TOTAL", 75, true, true);
 
             // Opciones del grid
             view.OptionsView.ShowGroupPanel = false;
@@ -288,7 +294,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // Formatear columnas numéricas
             view.CustomColumnDisplayText += (s, ev) =>
             {
-                if (ev.Column.FieldName == "CANTIDAD" )
+                if (ev.Column.FieldName == "CANTIDAD")
                 {
                     if (ev.Value == null || ev.Value == DBNull.Value ||
                         string.IsNullOrWhiteSpace(ev.Value.ToString()))
@@ -307,7 +313,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 if (ev.Column.FieldName == "CANTIDAD" || ev.Column.FieldName == "PRECIO")
                 { ActualizarCuadre(); }
-                   
+
             };
 
             // Selección de fila completa
@@ -326,21 +332,10 @@ namespace SistemaContable.UI.Forms.NotaRemision
             //ActualizarCuadre();
         }
 
-        /*private void ConfigurarColumna(GridView view, string fieldName,
-            string caption, int width, bool readOnly)
-        {
-            if (!view.Columns.ColumnByFieldName(fieldName).Equals(null))
-            {
-                var col = view.Columns[fieldName];
-                col.Caption = caption;
-                col.Width = width;
-                col.Visible = true;
-                col.ReadOnly = readOnly;
-            }
-        }*/
+
 
         private void ConfigurarColumna(GridView view, string fieldName,
-        string caption, int width, bool readOnly)
+        string caption, int width, bool readOnly, bool visible)
         {
             var col = view.Columns.ColumnByFieldName(fieldName);
 
@@ -348,7 +343,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 col.Caption = caption;
                 col.Width = width;
-                col.Visible = true;
+                // ✅ usar el parámetro visible
+                col.Visible = visible;
 
                 // ✅ validación correcta
                 col.OptionsColumn.ReadOnly = readOnly;
@@ -362,19 +358,21 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private void AgregarFilaVacia()
         {
             var fila = _dtDeta.NewRow();
-           
+
+            fila["ID_PRODUCTO"] = DBNull.Value;
             fila["COD_REF"] = string.Empty;
             fila["DESCRIPCION"] = string.Empty;
+            fila["ID_UNIDAD_MEDIDA"] = DBNull.Value;
             fila["UNIDAD_MEDIDA"] = string.Empty;
             fila["CANTIDAD"] = 0m;
             fila["PRECIO"] = 0m;
-            
+
             fila["TOTAL"] = 0m;
             _dtDeta.Rows.Add(fila);
         }
 
-        
-           
+
+
         private void AgregarFilaPartida(string cod_ref)
         {
             // Limpiar filas vacías antes de agregar
@@ -389,9 +387,13 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
             // Agregar fila con la cuenta contable
             var fila = _dtDeta.NewRow();
+
+
+
+            fila["ID_PRODUCTO"] = DBNull.Value;
             fila["COD_REF"] = cod_ref;
-            
             fila["DESCRIPCION"] = string.Empty;
+            fila["ID_UNIDAD_MEDIDA"] = DBNull.Value;
             fila["UNIDAD_MEDIDA"] = string.Empty;
             fila["CANTIDAD"] = string.Empty;
             fila["PRECIO"] = 0m;
@@ -506,18 +508,27 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 StoredProcedure = "[EINVENTARIO].[SP_PRODUCTO]",
                 Columnas = new Dictionary<string, string>
-        {
-            { "COD_REF",        "COD_REF" },
-            { "DESCRIPCION", "NOMBRE" },
-            { "UNIMEDIDA", "UNIMEDIDA" }
-        },
+                {
+                    { "ID_PRODUCTO",        "ID_PRODUCTO" },
+                    { "COD_REF",        "COD_REF" },
+                    { "DESCRIPCION", "NOMBRE" },
+                    { "ID_UNIDAD_MEDIDA",        "ID_UNIDAD_MEDIDA" },
+                    { "UNIMEDIDA", "UNIMEDIDA" }
+                },
                 Anchos = new Dictionary<string, int>
                     {
                         { "COD_REF", 100 },
                         { "DESCRIPCION",         300 },
                         { "UNIMEDIDA",            120 }
                     },
+                ColumnasOcultas = new List<string>
+                {
+                    "ID_PRODUCTO",
+                    "ID_UNIDAD_MEDIDA"
+                },
             };
+
+           
 
             using (var frm = new frmBusquedaGenerica(config))
             {
@@ -578,16 +589,16 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 // Leer directo como decimal sin pasar por ToString
                 if (fila["TOTAL"] != DBNull.Value)
                     totalN += Convert.ToDecimal(fila["TOTAL"]);
-              
+
             }
 
 
 
             txtGRAVADA.Text = $"{totalN:N2}";
             txtTOTAL.Text = $"{totalN:N2}";
-           
 
-           
+
+
         }
         #endregion
 
@@ -605,7 +616,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             if (!FormHelper.ValidarFecha(mskFECHA_EMISION, "Fecha de la Nota Remision"))
                 return false;
 
-            
+
 
             // Verificar que haya al menos una línea en la partida
             bool tieneLineas = false;
@@ -639,30 +650,30 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
             try
             {
-                // 1. Guardar encabezado del CHEQUE
-                var dtCheque = _dal.EjecutarConsulta("[EDTE].SP_NOTA_REMISION", new
+                // 1. Guardar encabezado del NR
+                var dtNR = _dal.EjecutarConsulta("[EDTE].SP_NOTA_REMISION", new
                 {
                     ACCION = "GUARDAR",
-                    ID_NTREMISIONENC= IdTraslado,
-                    ID_EMISOR=1,
-                    ID_SUCURSAL=1,
-                    ID_ALMACEN= Configuracion.Id_Almacen,
-                    ID_CAJERO= Configuracion.Id_Cajero,
-                    ID_CONDPAGO=1,
-                    ID_CLIENTE= _idEntidad,
-                    COD_REF= _codigoEntidad,
-                    TPDOC= "NRE",
-                    FECHA= FormHelper.ObtenerFecha(mskFECHA_EMISION),
-                    SALFEC = FormHelper.ObtenerSalfec(mskFECHA_EMISION), /*,
-                    NUMDOC,
-                    CODGENERACION,
-                    NUMCONTROL,
-                    NUMINTERNO,
-                    AFECTA,
-                    TOTALVENTA,
-                    TOTALLETRAS,
-                    OBSERVACIONES,
-                    TPCONTRIBUYENTE, */                   
+                    ID_NTREMISIONENC = IdTraslado,
+                    ID_EMISOR = 1,
+                    ID_SUCURSAL = 1,
+                    ID_ALMACEN = Configuracion.Id_Almacen,
+                    ID_CAJERO = Configuracion.Id_Cajero,
+                    ID_CONDPAGO = 1,
+                    ID_CLIENTE = _idEntidad,
+                    COD_REF = _codigoEntidad,
+                    TPDOC = "NRE",
+                    FECHA = FormHelper.ObtenerFecha(mskFECHA_EMISION),
+                    SALFEC = FormHelper.ObtenerSalfec(mskFECHA_EMISION),
+                    NUMDOC = txtNumero_NR.Text,
+                    CODGENERACION = txtCOD_GENERACION.Text,
+                    NUMCONTROL = txtNUM_CONTROL.Text,
+                    NUMINTERNO = txtNumero_NR.Text,
+                    AFECTA = txtGRAVADA.Text,
+                    TOTALVENTA = txtTOTAL.Text,
+                    TOTALLETRAS = string.Empty,
+                    OBSERVACIONES = txtObservacion.Text,
+                    TPCONTRIBUYENTE = string.Empty,
                     USER_CREA = Configuracion.UsuarioActual,
                     TPCONTRIBUYENTEEMISOR = string.Empty,
                     TPDOCRECTOR = string.Empty,
@@ -672,44 +683,39 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     LICENCIA = string.Empty,
                     PLACA = string.Empty,
                     MARCHAMOS = string.Empty,
-                    OPCIONNR ="NR",
-                    ID_ZAFRA=string.Empty,
-                    USUARIO_CREA = Configuracion.UsuarioActual,
-                    USUARIO_ACT = Configuracion.UsuarioActual
+                    OPCIONNR = "NR",
+                    ID_ZAFRA = string.Empty
+
+
                 });
 
-              /*  if (dtCheque.Rows.Count == 0) return;
-                _idCheque = Convert.ToInt32(dtCheque.Rows[0]["ID_GENERADO"]);
+                if (dtNR.Rows.Count == 0) return;
+                _idNR = Convert.ToInt32(dtNR.Rows[0]["ID_GENERADO"]);
+                txtNUM_CONTROL.Text = Convert.ToString(dtNR.Rows[0]["NCONT"]);
+                txtNumero_NR.Text = Convert.ToString(dtNR.Rows[0]["INTERN"]);
 
-                // 2. Eliminar partidas anteriores si es edición
-                _dal.EjecutarSinRetorno("SP_CHEQUE_PARTIDA", new
-                {
-                    ACCION = "ELIMINAR_POR_CHEQUE",
-                    ID_CHEQUE = _idCheque
-                });
+                /*   // 3. Guardar líneas de la partida contable
+               foreach (DataRow fila in _dtPartida.Rows)
+               {
+                   string cta = fila["CTACONTABLE"].ToString().Trim();
+                   if (string.IsNullOrWhiteSpace(cta)) continue;
 
-                // 3. Guardar líneas de la partida contable
-                foreach (DataRow fila in _dtPartida.Rows)
-                {
-                    string cta = fila["CTACONTABLE"].ToString().Trim();
-                    if (string.IsNullOrWhiteSpace(cta)) continue;
-
-                    _dal.EjecutarSinRetorno("SP_CHEQUE_PARTIDA", new
-                    {
-                        ACCION = "GUARDAR",
-                        ID_CHEQUE_PAR = 0,
-                        ID_CHEQUE = _idCheque,
-                        CTACONTABLE = cta,
-                        DETALLE = fila["DETALLE"].ToString().Trim(),
-                        CARGO = Convert.ToDecimal(fila["CARGO"]),
-                        ABONO = Convert.ToDecimal(fila["ABONO"]),
-                        USUARIO_CREA = Configuracion.UsuarioActual,
-                        USUARIO_ACT = Configuracion.UsuarioActual
-                    });
-                }*/
+                   _dal.EjecutarSinRetorno("SP_CHEQUE_PARTIDA", new
+                   {
+                       ACCION = "GUARDAR",
+                       ID_CHEQUE_PAR = 0,
+                       ID_CHEQUE = _idCheque,
+                       CTACONTABLE = cta,
+                       DETALLE = fila["DETALLE"].ToString().Trim(),
+                       CARGO = Convert.ToDecimal(fila["CARGO"]),
+                       ABONO = Convert.ToDecimal(fila["ABONO"]),
+                       USUARIO_CREA = Configuracion.UsuarioActual,
+                       USUARIO_ACT = Configuracion.UsuarioActual
+                   });
+               }*/
 
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Cheque guardado correctamente.",
+                    "Nota Remision guarda correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
