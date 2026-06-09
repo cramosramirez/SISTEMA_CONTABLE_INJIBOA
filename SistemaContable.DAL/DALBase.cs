@@ -14,9 +14,7 @@ namespace SistemaContable.DAL
         {
             get
             {
-                return ConfigurationManager
-                       .ConnectionStrings["SistemaContable"]
-                       .ConnectionString;
+                return ConfigurationManager.ConnectionStrings["SistemaContable"].ConnectionString;
             }
         }
 
@@ -113,7 +111,36 @@ namespace SistemaContable.DAL
             }
         }
 
-        
+        // CASO 4: TVP sin retorno — UPDATE, DELETE, ANULAR
+        public int EjecutarConsultaConTVP(
+                 string sp,
+                 string nombreParametroTVP,   // nombre del parámetro
+                 string tipoTVP,              // nombre del TYPE
+                 DataTable tvp,
+                 object parametrosAdicionales = null)
+        {
+            using (var cn = new SqlConnection(CadenaConexion))
+            using (var cmd = new SqlCommand(sp, cn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@" + nombreParametroTVP, SqlDbType.Structured)
+                {
+                    TypeName = "dbo." + tipoTVP,
+                    Value = tvp
+                });
+                if (parametrosAdicionales != null)
+                {
+                    foreach (var prop in parametrosAdicionales.GetType().GetProperties())
+                        cmd.Parameters.AddWithValue("@" + prop.Name,
+                            prop.GetValue(parametrosAdicionales) ?? DBNull.Value);
+                }
+                cn.Open();
+                var resultado = cmd.ExecuteScalar();
+                return resultado == null || resultado == DBNull.Value ? 0 : Convert.ToInt32(resultado);
+            }
+        }
+
+
 
         #region === NUMERACIÓN DE DOCUMENTOS ===
 

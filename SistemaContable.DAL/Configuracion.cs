@@ -52,9 +52,11 @@ namespace SistemaContable.DAL
 
         /// <summary>Nombre del rol asignado al usuario</summary>
         public static string NombreRolActual { get; set; }
+        public static int Id_Almacen { get; set; }
+        public static int Id_Cajero { get; set; }
 
         #endregion
 
-     
+
     }
 }

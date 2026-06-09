@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraGrid.Columns;
 using SistemaContable.DAL;
 using System.Drawing;
 
@@ -22,12 +21,7 @@ namespace SistemaContable.UI.Forms.Bancos
         #endregion
 
         public frmCheques()
-        {
-            this.SetStyle(
-               ControlStyles.OptimizedDoubleBuffer |
-               ControlStyles.AllPaintingInWmPaint,
-               true);
-            this.UpdateStyles();
+        {            
             InitializeComponent();
         }
 

@@ -64,6 +64,17 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnModificar = new DevExpress.XtraEditors.SimpleButton();
             this.btnEliminar = new DevExpress.XtraEditors.SimpleButton();
             this.btnBuscar = new DevExpress.XtraEditors.SimpleButton();
+            this.groupControl4 = new DevExpress.XtraEditors.GroupControl();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
+            this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
+            this.simpleButton3 = new DevExpress.XtraEditors.SimpleButton();
+            this.simpleButton4 = new DevExpress.XtraEditors.SimpleButton();
+            this.simpleButton5 = new DevExpress.XtraEditors.SimpleButton();
+            this.simpleButton6 = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
@@ -72,6 +83,8 @@ namespace SistemaContable.UI.Forms.Bancos
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).BeginInit();
             this.groupControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl4)).BeginInit();
+            this.groupControl4.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtNOMBRE
@@ -443,12 +456,133 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnBuscar.TabIndex = 1;
             this.btnBuscar.Text = "Buscar";
             // 
+            // groupControl4
+            // 
+            this.groupControl4.Controls.Add(this.label10);
+            this.groupControl4.Controls.Add(this.label11);
+            this.groupControl4.Controls.Add(this.label12);
+            this.groupControl4.Controls.Add(this.label13);
+            this.groupControl4.Controls.Add(this.simpleButton1);
+            this.groupControl4.Controls.Add(this.simpleButton2);
+            this.groupControl4.Controls.Add(this.simpleButton3);
+            this.groupControl4.Controls.Add(this.simpleButton4);
+            this.groupControl4.Controls.Add(this.simpleButton5);
+            this.groupControl4.Controls.Add(this.simpleButton6);
+            this.groupControl4.Location = new System.Drawing.Point(22, 618);
+            this.groupControl4.Name = "groupControl4";
+            this.groupControl4.ShowCaption = false;
+            this.groupControl4.Size = new System.Drawing.Size(1063, 101);
+            this.groupControl4.TabIndex = 2;
+            this.groupControl4.Text = "groupControl3";
+            // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(803, 30);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(258, 23);
+            this.label10.TabIndex = 19;
+            this.label10.Text = "0.00";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(944, 3);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(117, 23);
+            this.label11.TabIndex = 18;
+            this.label11.Text = "0.00";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label12
+            // 
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(799, 3);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(143, 23);
+            this.label12.TabIndex = 17;
+            this.label12.Text = "0.00";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label13
+            // 
+            this.label13.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(420, 29);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(377, 21);
+            this.label13.TabIndex = 13;
+            this.label13.Text = "-";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // simpleButton1
+            // 
+            this.simpleButton1.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.simpleButton1.Appearance.Options.UseFont = true;
+            this.simpleButton1.Location = new System.Drawing.Point(920, 59);
+            this.simpleButton1.Name = "simpleButton1";
+            this.simpleButton1.Size = new System.Drawing.Size(125, 31);
+            this.simpleButton1.TabIndex = 5;
+            this.simpleButton1.Text = "Finalizar";
+            // 
+            // simpleButton2
+            // 
+            this.simpleButton2.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.simpleButton2.Appearance.Options.UseFont = true;
+            this.simpleButton2.Location = new System.Drawing.Point(24, 59);
+            this.simpleButton2.Name = "simpleButton2";
+            this.simpleButton2.Size = new System.Drawing.Size(110, 31);
+            this.simpleButton2.TabIndex = 0;
+            this.simpleButton2.Text = "Imprimir";
+            // 
+            // simpleButton3
+            // 
+            this.simpleButton3.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.simpleButton3.Appearance.Options.UseFont = true;
+            this.simpleButton3.Location = new System.Drawing.Point(250, 59);
+            this.simpleButton3.Name = "simpleButton3";
+            this.simpleButton3.Size = new System.Drawing.Size(106, 31);
+            this.simpleButton3.TabIndex = 4;
+            this.simpleButton3.Text = "Grabar";
+            this.simpleButton3.Click += new System.EventHandler(this.btnGuardar_Click_1);
+            // 
+            // simpleButton4
+            // 
+            this.simpleButton4.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.simpleButton4.Appearance.Options.UseFont = true;
+            this.simpleButton4.Location = new System.Drawing.Point(362, 59);
+            this.simpleButton4.Name = "simpleButton4";
+            this.simpleButton4.Size = new System.Drawing.Size(106, 31);
+            this.simpleButton4.TabIndex = 3;
+            this.simpleButton4.Text = "Modificar";
+            // 
+            // simpleButton5
+            // 
+            this.simpleButton5.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.simpleButton5.Appearance.Options.UseFont = true;
+            this.simpleButton5.Location = new System.Drawing.Point(586, 59);
+            this.simpleButton5.Name = "simpleButton5";
+            this.simpleButton5.Size = new System.Drawing.Size(106, 31);
+            this.simpleButton5.TabIndex = 2;
+            this.simpleButton5.Text = "Eliminar";
+            // 
+            // simpleButton6
+            // 
+            this.simpleButton6.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.simpleButton6.Appearance.Options.UseFont = true;
+            this.simpleButton6.Location = new System.Drawing.Point(474, 59);
+            this.simpleButton6.Name = "simpleButton6";
+            this.simpleButton6.Size = new System.Drawing.Size(106, 31);
+            this.simpleButton6.TabIndex = 1;
+            this.simpleButton6.Text = "Buscar";
+            // 
             // frmCheques
             // 
             this.Appearance.Options.UseFont = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1098, 734);
+            this.Controls.Add(this.groupControl4);
             this.Controls.Add(this.groupControl3);
             this.Controls.Add(this.groupControl2);
             this.Controls.Add(this.groupControl1);
@@ -472,6 +606,8 @@ namespace SistemaContable.UI.Forms.Bancos
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).EndInit();
             this.groupControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl4)).EndInit();
+            this.groupControl4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -498,8 +634,6 @@ namespace SistemaContable.UI.Forms.Bancos
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtNUMERO_PARTIDA;
         private System.Windows.Forms.Label label8;
-        private DevExpress.XtraGrid.GridControl gridControl1;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraEditors.GroupControl groupControl3;
         private DevExpress.XtraEditors.SimpleButton btnImprimir;
         private DevExpress.XtraEditors.SimpleButton btnGuardar;
@@ -512,5 +646,18 @@ namespace SistemaContable.UI.Forms.Bancos
         private System.Windows.Forms.Label lblDIFERENCIA;
         private System.Windows.Forms.Label lblTOTAL_ABONO;
         private System.Windows.Forms.Label lblTOTAL_CARGO;
+        private DevExpress.XtraGrid.GridControl gridControl1;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraEditors.GroupControl groupControl4;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private DevExpress.XtraEditors.SimpleButton simpleButton1;
+        private DevExpress.XtraEditors.SimpleButton simpleButton2;
+        private DevExpress.XtraEditors.SimpleButton simpleButton3;
+        private DevExpress.XtraEditors.SimpleButton simpleButton4;
+        private DevExpress.XtraEditors.SimpleButton simpleButton5;
+        private DevExpress.XtraEditors.SimpleButton simpleButton6;
     }
 }
