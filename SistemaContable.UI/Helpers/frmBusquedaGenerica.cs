@@ -133,6 +133,14 @@ namespace SistemaContable.UI.Helpers
                 if (_config.Anchos != null && _config.Anchos.ContainsKey(col.Key))
                     gridCol.Width = _config.Anchos[col.Key];
             }
+
+
+            foreach (var col in _config.ColumnasOcultas)
+            {
+                if (gridView1.Columns[col] != null)
+                    gridView1.Columns[col].Visible = false;
+            }
+
         }
 
         private void Buscar(string filtro)

@@ -43,7 +43,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label26 = new System.Windows.Forms.Label();
             this.txtGRAVADA = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtObservacion = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtNumero_NR = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -89,7 +89,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Controls.Add(this.label26);
             this.panel1.Controls.Add(this.txtGRAVADA);
             this.panel1.Controls.Add(this.label22);
-            this.panel1.Controls.Add(this.textBox2);
+            this.panel1.Controls.Add(this.txtObservacion);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.txtNumero_NR);
             this.panel1.Controls.Add(this.label2);
@@ -268,13 +268,13 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label22.TabIndex = 147;
             this.label22.Text = "Afecta";
             // 
-            // textBox2
+            // txtObservacion
             // 
-            this.textBox2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(161, 205);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(964, 22);
-            this.textBox2.TabIndex = 143;
+            this.txtObservacion.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtObservacion.Location = new System.Drawing.Point(161, 205);
+            this.txtObservacion.Name = "txtObservacion";
+            this.txtObservacion.Size = new System.Drawing.Size(964, 22);
+            this.txtObservacion.TabIndex = 143;
             // 
             // label5
             // 
@@ -582,7 +582,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private System.Windows.Forms.TextBox txtNRC;
         private System.Windows.Forms.TextBox txtPROVEEDOR;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtObservacion;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtNumero_NR;
         private System.Windows.Forms.Label label2;
