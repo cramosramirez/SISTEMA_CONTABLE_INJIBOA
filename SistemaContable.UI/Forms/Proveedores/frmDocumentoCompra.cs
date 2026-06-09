@@ -1097,6 +1097,15 @@ namespace SistemaContable.UI.Forms.Proveedores
             }
             catch { }
         }
+
+        private void btnProvision_Click(object sender, EventArgs e)
+        {
+            using (var frm = new frmDocumentoCompraProvision())
+            {
+                frm.IdCcfCompra = IdCcfCompra;
+                frm.ShowDialog(this);
+            }
+        }
     }
 }
 
