@@ -55,6 +55,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             gvDetalle.Appearance.Row.Font = new Font("Segoe UI", 9f);
             gvDetalle.Appearance.Row.Options.UseFont = true;
 
+            gvDetalle.Appearance.HeaderPanel.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+            gvDetalle.Appearance.HeaderPanel.Options.UseFont = true;
+            gvDetalle.Appearance.Row.Font = new Font("Segoe UI", 9f);
+            gvDetalle.Appearance.Row.Options.UseFont = true;
+
             // --- Agrupación por NUM_QUEDAN ---
             colNUM_QUEDAN.GroupIndex = 0;
 

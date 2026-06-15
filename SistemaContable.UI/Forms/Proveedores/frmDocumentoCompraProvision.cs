@@ -419,11 +419,11 @@ namespace SistemaContable.UI.Forms.Proveedores
                 // Cuenta sin detalle
                 // ============================================================
                 if (tieneCta && !tieneDetalle)
-                {
-                    EnfocarCelda(view, rowHandle, "DETALLE");
+                {                    
                     XtraMessageBox.Show(
                         $"Fila {numeroFila}: tiene cuenta contable pero falta el detalle.",
                         "Datos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    EnfocarCelda(view, rowHandle, "DETALLE");
                     return false;
                 }
 
@@ -431,11 +431,11 @@ namespace SistemaContable.UI.Forms.Proveedores
                 // Detalle sin cuenta
                 // ============================================================
                 if (!tieneCta && tieneDetalle)
-                {
-                    EnfocarCelda(view, rowHandle, "CTACONTABLE");
+                {                    
                     XtraMessageBox.Show(
                         $"Fila {numeroFila}: tiene detalle pero falta la cuenta contable.",
                         "Datos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    EnfocarCelda(view, rowHandle, "CTACONTABLE");
                     return false;
                 }
 
@@ -573,6 +573,105 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 Cursor = Cursors.Default;
             }            
+        }
+
+        private void btnBorrarFila_Click(object sender, EventArgs e)
+        {
+            BorrarFila();
+        }
+
+        private void BorrarFila()
+        {
+            var view = gridControl1.MainView as GridView;
+            if (view == null) return;
+
+            // ============================================================
+            // 1) Validar que haya una fila seleccionada
+            // ============================================================
+            if (view.FocusedRowHandle < 0 || view.RowCount == 0)
+            {
+                XtraMessageBox.Show("Debe seleccionar una fila para borrar.",
+                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Cerrar el editor si está abierto para que los valores estén persistidos
+            view.CloseEditor();
+            view.UpdateCurrentRow();
+
+            int filaActual = view.FocusedRowHandle;
+            DataRow fila = view.GetDataRow(filaActual);
+            if (fila == null) return;
+
+            // ============================================================
+            // 2) Si la fila está vacía, no preguntar — solo eliminar
+            // ============================================================
+            string cta = fila["CTACONTABLE"]?.ToString()?.Trim() ?? string.Empty;
+            string detalle = fila["DETALLE"]?.ToString()?.Trim() ?? string.Empty;
+            decimal cargo = fila["CARGO"] == DBNull.Value ? 0 : Convert.ToDecimal(fila["CARGO"]);
+            decimal abono = fila["ABONO"] == DBNull.Value ? 0 : Convert.ToDecimal(fila["ABONO"]);
+
+            bool filaVacia = string.IsNullOrWhiteSpace(cta)
+                             && string.IsNullOrWhiteSpace(detalle)
+                             && cargo == 0
+                             && abono == 0;
+
+            // ============================================================
+            // 3) Si tiene datos, confirmar antes de borrar
+            // ============================================================
+            if (!filaVacia)
+            {
+                var rta = XtraMessageBox.Show(
+                    $"¿Está seguro de eliminar la fila seleccionada?\n\n" +
+                    $"Cuenta: {cta}\n" +
+                    $"Detalle: {detalle}\n" +
+                    $"Cargo: {cargo:N2}\n" +
+                    $"Abono: {abono:N2}",
+                    "Confirmar eliminación",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (rta != DialogResult.Yes) return;
+            }
+
+            // ============================================================
+            // 4) Borrar la fila del DataTable
+            // ============================================================
+            _dtPartida.Rows.Remove(fila);
+
+            // ============================================================
+            // 5) Asegurar que siempre haya una fila vacía al final para captura
+            // ============================================================
+            if (_dtPartida.Rows.Count == 0)
+            {
+                AgregarFilaVacia();
+            }
+            else
+            {
+                // Verificar si la última fila está vacía. Si no, agregar una nueva.
+                DataRow ultima = _dtPartida.Rows[_dtPartida.Rows.Count - 1];
+                string ctaUlt = ultima["CTACONTABLE"]?.ToString()?.Trim() ?? string.Empty;
+                decimal cargoUlt = ultima["CARGO"] == DBNull.Value ? 0 : Convert.ToDecimal(ultima["CARGO"]);
+                decimal abonoUlt = ultima["ABONO"] == DBNull.Value ? 0 : Convert.ToDecimal(ultima["ABONO"]);
+
+                if (!string.IsNullOrWhiteSpace(ctaUlt) || cargoUlt != 0 || abonoUlt != 0)
+                    AgregarFilaVacia();
+            }
+
+            // ============================================================
+            // 6) Reposicionar el foco
+            // ============================================================
+            int nuevaFila = Math.Min(filaActual, view.RowCount - 1);
+            if (nuevaFila >= 0)
+            {
+                view.FocusedRowHandle = nuevaFila;
+                var col = view.Columns.ColumnByFieldName("CTACONTABLE");
+                if (col != null) view.FocusedColumn = col;
+            }
+
+            // ============================================================
+            // 7) Refrescar totales y cuadre
+            // ============================================================
+            ActualizarCuadre();
         }
     }
 }

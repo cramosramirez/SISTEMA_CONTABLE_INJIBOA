@@ -193,6 +193,66 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap eliminarFila32x32 {
+            get {
+                object obj = ResourceManager.GetObject("eliminarFila32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap flechaAbajo32x32 {
+            get {
+                object obj = ResourceManager.GetObject("flechaAbajo32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap flechaAbajoTodos32x32 {
+            get {
+                object obj = ResourceManager.GetObject("flechaAbajoTodos32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap flechaArriba32x32 {
+            get {
+                object obj = ResourceManager.GetObject("flechaArriba32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap flechaArribaTodos32x32 {
+            get {
+                object obj = ResourceManager.GetObject("flechaArribaTodos32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap generar32x32 {
+            get {
+                object obj = ResourceManager.GetObject("generar32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap guardar2_32x32 {
             get {
                 object obj = ResourceManager.GetObject("guardar2_32x32", resourceCulture);
@@ -293,6 +353,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap procesar32x32 {
+            get {
+                object obj = ResourceManager.GetObject("procesar32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap provision32x32 {
             get {
                 object obj = ResourceManager.GetObject("provision32x32", resourceCulture);
@@ -346,6 +416,16 @@ namespace SistemaContable.UI.Properties {
         public static System.Drawing.Bitmap retencion32x32 {
             get {
                 object obj = ResourceManager.GetObject("retencion32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap retornar32x32 {
+            get {
+                object obj = ResourceManager.GetObject("retornar32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

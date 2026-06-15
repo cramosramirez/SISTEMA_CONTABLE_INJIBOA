@@ -171,7 +171,8 @@ namespace SistemaContable.UI.Forms
                     if (frm == null) return;
 
                     if (frm is frmConsultaQuedan quedanForm ||
-                        frm is frmConsultaNotaDebCred notaDebCredForm)
+                        frm is frmConsultaNotaDebCred notaDebCredForm ||
+                        frm is frmProvisionDiaria provisionDiaria)
                     {
                         Form formulario = (Form)frm;
 
