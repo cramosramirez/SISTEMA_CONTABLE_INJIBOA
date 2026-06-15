@@ -34,6 +34,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnBorrarFila = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.lblDIFERENCIA = new System.Windows.Forms.Label();
@@ -62,7 +63,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.Size = new System.Drawing.Size(1082, 446);
-            this.gridControl1.TabIndex = 5;
+            this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
             // 
@@ -73,6 +74,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnBorrarFila);
             this.panel2.Controls.Add(this.btnFinalizar);
             this.panel2.Controls.Add(this.btnGuardar);
             this.panel2.Controls.Add(this.lblDIFERENCIA);
@@ -83,7 +85,21 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel2.Location = new System.Drawing.Point(0, 444);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1082, 86);
-            this.panel2.TabIndex = 1;
+            this.panel2.TabIndex = 0;
+            // 
+            // btnBorrarFila
+            // 
+            this.btnBorrarFila.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBorrarFila.Appearance.Options.UseFont = true;
+            this.btnBorrarFila.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminarFila32x32;
+            this.btnBorrarFila.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnBorrarFila.ImageOptions.ImageToTextIndent = 10;
+            this.btnBorrarFila.Location = new System.Drawing.Point(148, 20);
+            this.btnBorrarFila.Name = "btnBorrarFila";
+            this.btnBorrarFila.Size = new System.Drawing.Size(119, 47);
+            this.btnBorrarFila.TabIndex = 2;
+            this.btnBorrarFila.Text = "Borrar fila";
+            this.btnBorrarFila.Click += new System.EventHandler(this.btnBorrarFila_Click);
             // 
             // btnFinalizar
             // 
@@ -92,10 +108,10 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(157, 20);
+            this.btnFinalizar.Location = new System.Drawing.Point(336, 22);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
-            this.btnFinalizar.TabIndex = 25;
+            this.btnFinalizar.TabIndex = 3;
             this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
@@ -110,7 +126,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnGuardar.Location = new System.Drawing.Point(12, 20);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(119, 47);
-            this.btnGuardar.TabIndex = 24;
+            this.btnGuardar.TabIndex = 1;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
@@ -188,5 +204,6 @@ namespace SistemaContable.UI.Forms.Proveedores
         private System.Windows.Forms.Label lblCUADRE;
         private DevExpress.XtraEditors.SimpleButton btnGuardar;
         private DevExpress.XtraEditors.SimpleButton btnFinalizar;
+        private DevExpress.XtraEditors.SimpleButton btnBorrarFila;
     }
 }

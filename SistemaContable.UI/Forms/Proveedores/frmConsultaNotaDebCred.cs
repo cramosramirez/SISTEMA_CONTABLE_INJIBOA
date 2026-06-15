@@ -55,6 +55,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             gvDetalle.Appearance.Row.Font = new Font("Segoe UI", 9f);
             gvDetalle.Appearance.Row.Options.UseFont = true;
 
+            gvDetalle.Appearance.HeaderPanel.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+            gvDetalle.Appearance.HeaderPanel.Options.UseFont = true;
+            gvDetalle.Appearance.Row.Font = new Font("Segoe UI", 9f);
+            gvDetalle.Appearance.Row.Options.UseFont = true;
+
             // --- Embedded Navigator: solo Nuevo ---
             gridControl1.UseEmbeddedNavigator = true;
             var nav = gridControl1.EmbeddedNavigator;

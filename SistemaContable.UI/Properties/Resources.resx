@@ -121,14 +121,26 @@
   <data name="validar2_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\validar2_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="locked-with-key1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\locked-with-key1.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  <data name="salir32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\salir32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="flechaAbajoTodos32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flechaAbajoTodos32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="procesar32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\procesar32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="imprimir32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\imprimir32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="flechaAbajo32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flechaAbajo32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="validar3_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\validar3_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="login48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\login48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="agregarDoc2_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\agregarDoc2_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -138,9 +150,6 @@
   </data>
   <data name="editar3_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\editar3_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cheque48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cheque48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="locked-with-key" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\locked-with-key.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
@@ -162,6 +171,12 @@
   </data>
   <data name="login" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\login.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="locked-with-key1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\locked-with-key1.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
+  <data name="flechaArribaTodos32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flechaArribaTodos32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\edit.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
@@ -190,8 +205,8 @@
   <data name="editar16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\editar16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="quedan32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\quedan32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="eliminarFila32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eliminarFila32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="correo32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\correo32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -199,8 +214,14 @@
   <data name="quedan48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\quedan48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="quedan32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\quedan32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="cuentaBancaria48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cuentaBancaria48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="generar32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\generar32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="provision32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\provision32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -208,13 +229,16 @@
   <data name="retencion32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\retencion32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="flechaArriba32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flechaArriba32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="edit1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\edit1.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
   </data>
-  <data name="login48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\login48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="cheque48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cheque48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="salir32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\salir32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="retornar32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\retornar32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

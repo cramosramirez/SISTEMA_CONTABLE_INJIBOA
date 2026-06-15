@@ -852,6 +852,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.mskFECHA_RECIBIDO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mskFECHA_RECIBIDO.ForeColor = System.Drawing.Color.Blue;
+            this.mskFECHA_RECIBIDO.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
             this.mskFECHA_RECIBIDO.Location = new System.Drawing.Point(406, 170);
             this.mskFECHA_RECIBIDO.Mask = "00/00/0000";
             this.mskFECHA_RECIBIDO.Name = "mskFECHA_RECIBIDO";
@@ -872,6 +873,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.mskFECHA_EMISION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mskFECHA_EMISION.ForeColor = System.Drawing.Color.Blue;
+            this.mskFECHA_EMISION.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
             this.mskFECHA_EMISION.Location = new System.Drawing.Point(152, 170);
             this.mskFECHA_EMISION.Mask = "00/00/0000";
             this.mskFECHA_EMISION.Name = "mskFECHA_EMISION";

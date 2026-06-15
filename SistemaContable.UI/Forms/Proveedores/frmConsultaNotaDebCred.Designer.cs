@@ -133,7 +133,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colEDITAR.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colEDITAR.Visible = true;
             this.colEDITAR.VisibleIndex = 0;
-            this.colEDITAR.Width = 45;
+            this.colEDITAR.Width = 40;
             // 
             // gvDetalle
             // 
