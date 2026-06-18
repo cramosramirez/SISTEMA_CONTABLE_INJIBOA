@@ -15,6 +15,7 @@ using ComboBox = System.Windows.Forms.ComboBox;
 using System.ComponentModel;
 using System.Linq;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraEditors.Repository;
 
 namespace SistemaContable.UI.Forms.NotaRemision
 {
@@ -51,9 +52,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
         {
             FormHelper.Inicializar(this);
             CargarTipoDte();
-            CargarSiguienteNumNotaRemision();
+            
             mskFECHA_EMISION.Text = DateTime.Now.ToString("dd/MM/yyyy");
-            txtCOD_GENERACION.Text = DALBase.NuevoGUID();
+            
 
             InicializarGridDetalle();
             // Búsqueda * + Enter en txtPROVEEDOR
@@ -87,10 +88,220 @@ namespace SistemaContable.UI.Forms.NotaRemision
             );
 
 
+            if (IdTraslado > 0)
+            {
+                CargarNRExistente(IdTraslado);
+                CargarNR_DTExistente(IdTraslado);
+                
 
+            }
+            else
+            {
+                txtCOD_GENERACION.Text = DALBase.NuevoGUID();
+                CargarSiguienteNumNotaRemision();
+
+                ConfigurarCRUD(EstadoFormulario.Nuevo);
+            }
 
         }
 
+        private void ConfigurarCRUD(EstadoFormulario estado)
+        {
+
+            switch (estado)
+            {
+                case EstadoFormulario.Nuevo:
+                    txtPROVEEDOR.Enabled = true;
+                    btnGuardar.Enabled = true;
+                    btnValidar.Enabled = false;
+                    btnImprimir.Enabled = false;
+                    btnCorreo.Enabled = false;
+                   
+                    break;
+                case EstadoFormulario.Guardado:
+                    txtPROVEEDOR.Enabled = false;
+                    btnGuardar.Enabled = true;
+                    btnValidar.Enabled = true;
+                    btnImprimir.Enabled = true;                    
+                    btnCorreo.Enabled = false;
+                    break;
+                case EstadoFormulario.Validado:
+                    txtPROVEEDOR.Enabled = false;
+                    btnGuardar.Enabled = false;
+                    btnValidar.Enabled = false;                    
+                    btnImprimir.Enabled = true;                  
+                    btnCorreo.Enabled = true;
+                    
+                    break;
+            }
+        }
+
+        private void CargarNRExistente(int IdTraslado)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                DataTable dt = _dal.EjecutarConsulta("[EDTE].SP_NOTA_REMISION",
+                    new
+                    {
+                        ACCION = "OBTENER",
+                        ID_NTREMISIONENC = IdTraslado
+                    });
+
+                if (dt.Rows.Count == 0)
+                {
+                    XtraMessageBox.Show("No se encontró el documento solicitado.",
+                        "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Close();
+                    return;
+                }
+
+                DataRow r = dt.Rows[0];
+
+              // ---------- Proveedor ----------
+                _idEntidad = Convert.ToInt32(r["ID_CLIENTE"]);
+                
+                _codigoEntidad = r["COD_REF"].ToString();
+               
+               
+                txtPROVEEDOR.Text = _codigoEntidad;
+                txtNOMBRE_PROVEEDOR.Text = r["NOMBRE_ENTIDAD"]?.ToString();
+                txtNRC.Text = r["NRC"].ToString();
+                txtNIT.Text = r["NIT"].ToString();
+                txtTELEFONO.Text = r["CELULAR"].ToString();
+                txtCORREO.Text = r["CORREO"].ToString();
+                txtACTIVIDAD_PRIMARIA.Text = r["ACTIVIDAD_PRIMARIA"].ToString();                
+                txtDIRECCION.Text = r["COMPLEMENTO"].ToString();
+
+                // ---------- Documento fiscal ----------
+
+               mskFECHA_EMISION.Text = AsFecha(r["FECHA"]);
+
+                txtNumero_NR.Text = AsString(r["NUMDOC"]);
+                txtSELLO_RECIBIDO.Text = AsString(r["SELLORECEPCION"]);
+                txtCOD_GENERACION.Text = AsString(r["CODGENERACION"]);
+                txtNUM_CONTROL.Text = AsString(r["NUMCONTROL"]);
+                txtObservacion.Text = AsString(r["OBSERVACIONES"]);
+
+                txtGRAVADA.Text = AsString(r["AFECTA"]);
+               txtTOTAL.Text = AsString(r["TOTALVENTA"]);
+
+
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al cargar el documento:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                if (string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text))
+                {
+                    ConfigurarCRUD(EstadoFormulario.Guardado);
+                }
+                else
+                {
+                    ConfigurarCRUD(EstadoFormulario.Validado);
+                }
+
+
+            }
+        }
+        private void CargarNR_DTExistente(int IdTraslado)
+        {
+            try
+            {
+                DataTable dt2 = _dal.EjecutarConsulta("[EDTE].SP_NOTAREMISION_DET",
+                    new
+                    {
+                        ACCION = "OBTENER",
+                        ID_NTREMISIONENC = IdTraslado
+                    });
+
+                if (dt2.Rows.Count > 0)
+                {
+                    _dtDeta.Rows.Clear();
+
+                    foreach (DataRow row in dt2.Rows)
+                    {
+                        DataRow nueva = _dtDeta.NewRow();
+
+                        nueva["ID_PRODUCTO"] = row["ID_PRODUCTO"];
+                        nueva["COD_REF"] = row["COD_REF"];
+                        nueva["DESCRIPCION"] = row["DESCRIPCION"];
+                        nueva["ID_UNIDAD_MEDIDA"] = row["ID_UNIDAD_MEDIDA"];
+                        nueva["UNIDAD_MEDIDA"] = row["UNIDAD_MEDIDA"];
+                        nueva["CANTIDAD"] = row["CANTIDAD"];
+                        nueva["PRECIO"] = row["PRECIO"];
+                        nueva["TOTAL"] = row["TOTAL"];
+
+                        _dtDeta.Rows.Add(nueva);
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text))
+                {
+                    AgregarFilaVacia();
+                }
+
+                //var view = gridControl1.MainView as GridView;
+                //view.Columns["ELIMINAR"].OptionsColumn.AllowEdit =
+                //    string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text);
+
+
+                var view = gridControl1.MainView as GridView;
+
+                bool editable = string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text);
+
+                view.OptionsBehavior.Editable = editable;
+                view.OptionsBehavior.ReadOnly = !editable;
+
+                view.Appearance.Row.BackColor = editable
+                                    ? Color.White
+                                    : Color.LightGray;
+
+
+                gridControl1.RefreshDataSource();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al cargar el documento:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void AsignarDecimal(TextBox tb, decimal valor)
+        {
+            tb.Text = valor == 0 ? "" : valor.ToString("N2");
+        }
+        private static string NullIfEmpty(string texto)
+        {
+            return string.IsNullOrWhiteSpace(texto) ? null : texto.Trim();
+        }
+
+        private static string AsString(object valor)
+        {
+            return valor == null || valor == DBNull.Value ? "" : valor.ToString();
+        }
+
+        private static string AsFecha(object valor)
+        {
+            if (valor == null || valor == DBNull.Value) return "";
+            return Convert.ToDateTime(valor).ToString("dd/MM/yyyy");
+        }
+
+        private static int ToInt(object valor)
+        {
+            if (valor == null || valor == DBNull.Value) return 0;
+            return Convert.ToInt32(valor);
+        }
+
+        private static decimal ToDecimal(object valor)
+        {
+            if (valor == null || valor == DBNull.Value) return 0;
+            return Convert.ToDecimal(valor);
+        }
         private void CargarTipoDte()
         {
             DataTable dt = _dal.EjecutarConsulta("SP_TIPO_DTE",
@@ -277,6 +488,75 @@ namespace SistemaContable.UI.Forms.NotaRemision
             ConfigurarColumna(view, "PRECIO", "PRECIO", 75, true, true);
             ConfigurarColumna(view, "TOTAL", "TOTAL", 75, true, true);
 
+            // Crear columna de botón eliminar
+            var colEliminar = view.Columns.AddField("ELIMINAR");
+            colEliminar.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            colEliminar.Visible = true;
+            colEliminar.Width = 50;
+            colEliminar.Caption = " ";
+
+            RepositoryItemButtonEdit btnEliminar = new RepositoryItemButtonEdit();
+            btnEliminar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // Configurar botón
+            btnEliminar.Buttons[0].Kind = DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph;
+            btnEliminar.Buttons[0].ImageOptions.Image = Properties.Resources.eliminarFila32x32;
+            btnEliminar.Buttons[0].Caption = "";
+
+            btnEliminar.Buttons[0].ToolTip = "Eliminar";
+
+            // Evento click
+            btnEliminar.ButtonClick += (s, e) =>
+            {
+                var view_item = gridControl1.MainView as GridView;
+                int fila = view_item.FocusedRowHandle;
+
+                if (fila >= 0)
+                {
+                    var result = MessageBox.Show(
+                        "¿Desea eliminar esta fila?",
+                        "Confirmar",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+
+
+                        object valor = view_item.GetRowCellValue(fila, "ID_PRODUCTO");
+
+                        // ✅ Si es fila nueva (no existe en BD)
+                        if (valor == null || valor == DBNull.Value)
+                        {
+                            view_item.DeleteRow(fila);
+                            ActualizarCuadre();
+                            return;
+                        }
+
+                        int idProducto = Convert.ToInt32(valor);
+
+                        // ⚠️ Si ya está guardado en BD → eliminar en BD
+                        if (IdTraslado > 0)
+                        {
+                            
+
+                            _dal.EjecutarSinRetorno("[EDTE].SP_NOTAREMISION_DET", new
+                            {
+                                ACCION = "ELIMINAR",
+                                ID_NTREMISIONENC = IdTraslado,
+                                ID_PRODUCTO = idProducto
+                            });
+                        }
+
+                        view_item.DeleteRow(fila);
+                        ActualizarCuadre();
+                    }
+                }
+            };
+
+
+            gridControl1.RepositoryItems.Add(btnEliminar);
+            colEliminar.ColumnEdit = btnEliminar;
+
             // Opciones del grid
             view.OptionsView.ShowGroupPanel = false;
             view.OptionsBehavior.Editable = true;
@@ -330,6 +610,11 @@ namespace SistemaContable.UI.Forms.NotaRemision
             view.Appearance.HeaderPanel.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
             view.Appearance.HeaderPanel.Options.UseFont = true;
             //ActualizarCuadre();
+
+           
+
+            
+
         }
 
 
@@ -357,7 +642,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
         private void AgregarFilaVacia()
         {
-            var fila = _dtDeta.NewRow();
+            if (string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text))
+            {   
+                var fila = _dtDeta.NewRow();
 
             fila["ID_PRODUCTO"] = DBNull.Value;
             fila["COD_REF"] = string.Empty;
@@ -369,6 +656,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
             fila["TOTAL"] = 0m;
             _dtDeta.Rows.Add(fila);
+            }
         }
 
 
@@ -548,12 +836,17 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 if (frm.ShowDialog() == DialogResult.OK
                     && frm.FilaSeleccionada != null)
                 {
+                    view.SetFocusedRowCellValue("ID_PRODUCTO",
+                        frm.FilaSeleccionada["ID_PRODUCTO"].ToString());
+
                     view.SetFocusedRowCellValue("COD_REF",
                         frm.FilaSeleccionada["COD_REF"].ToString());
 
                     view.SetFocusedRowCellValue("DESCRIPCION",
                         frm.FilaSeleccionada["DESCRIPCION"].ToString());
 
+                    view.SetFocusedRowCellValue("ID_UNIDAD_MEDIDA",
+                        frm.FilaSeleccionada["ID_UNIDAD_MEDIDA"].ToString());
 
                     view.SetFocusedRowCellValue("UNIDAD_MEDIDA",
                        frm.FilaSeleccionada["UNIMEDIDA"].ToString());
@@ -690,30 +983,49 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 });
 
                 if (dtNR.Rows.Count == 0) return;
+                IdTraslado = Convert.ToInt32(dtNR.Rows[0]["ID_GENERADO"]);
                 _idNR = Convert.ToInt32(dtNR.Rows[0]["ID_GENERADO"]);
                 txtNUM_CONTROL.Text = Convert.ToString(dtNR.Rows[0]["NCONT"]);
                 txtNumero_NR.Text = Convert.ToString(dtNR.Rows[0]["INTERN"]);
 
-                /*   // 3. Guardar líneas de la partida contable
-               foreach (DataRow fila in _dtPartida.Rows)
-               {
-                   string cta = fila["CTACONTABLE"].ToString().Trim();
-                   if (string.IsNullOrWhiteSpace(cta)) continue;
+                // 3. Guardar líneas detalle
+                foreach (DataRow fila in _dtDeta.Rows)
+                {
+                    string cta = fila["ID_PRODUCTO"].ToString().Trim();
+                    if (string.IsNullOrWhiteSpace(cta)) continue;
 
-                   _dal.EjecutarSinRetorno("SP_CHEQUE_PARTIDA", new
-                   {
-                       ACCION = "GUARDAR",
-                       ID_CHEQUE_PAR = 0,
-                       ID_CHEQUE = _idCheque,
-                       CTACONTABLE = cta,
-                       DETALLE = fila["DETALLE"].ToString().Trim(),
-                       CARGO = Convert.ToDecimal(fila["CARGO"]),
-                       ABONO = Convert.ToDecimal(fila["ABONO"]),
-                       USUARIO_CREA = Configuracion.UsuarioActual,
-                       USUARIO_ACT = Configuracion.UsuarioActual
-                   });
-               }*/
+                    _dal.EjecutarSinRetorno("[EDTE].SP_NOTAREMISION_DET", new
+                    {
+                        ACCION = "GUARDAR",
+                        ID_NTREMISIONDT=0,
+                        ID_NTREMISIONENC=_idNR,
+                        ID_EMISOR=1,
+                        CODGENERACION=txtCOD_GENERACION.Text,
+                        ID_PRODUCTO=Convert.ToInt32(fila["ID_PRODUCTO"]),
+                        COD_REF= fila["COD_REF"],
+                        DESCRIPCION = fila["DESCRIPCION"],
+                        CANTIDAD = Convert.ToDecimal(fila["CANTIDAD"]),
+                        ID_UNIDAD_MEDIDA = Convert.ToInt32(fila["ID_UNIDAD_MEDIDA"]),
+                        UNIDAD_MEDIDA = fila["UNIDAD_MEDIDA"],
+                        PRECIO = Convert.ToDecimal(fila["PRECIO"]),
+                        EXENTA = 0,
+                        GRAVADA = Convert.ToDecimal(fila["TOTAL"]),
+                        TOTAL = Convert.ToDecimal(fila["TOTAL"]),
+                        USER_CREA = Configuracion.UsuarioActual,
+                    });
+                }
 
+             
+                _dal.EjecutarSinRetorno("[EDTE].SP_NOTAREMISION_JSON", new
+                {
+                    ID_NTREMISIONENC = IdTraslado
+                });
+
+              
+                if (_idNR !=0)
+                {
+                    ConfigurarCRUD(EstadoFormulario.Guardado);
+                }
                 DevExpress.XtraEditors.XtraMessageBox.Show(
                     "Nota Remision guarda correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -740,6 +1052,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
         {
 
         }
+
+        
     }
 
 
