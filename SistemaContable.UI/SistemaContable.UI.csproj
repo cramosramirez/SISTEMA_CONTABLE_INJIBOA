@@ -72,6 +72,7 @@
 
   <!-- Referencias a proyectos -->
   <ItemGroup>
+    <ProjectReference Include="..\SistemaContable.RP\SistemaContable.RP.csproj" />
     <ProjectReference Include="..\SistemaContable.DAL\SistemaContable.DAL.csproj" />
   </ItemGroup>
   <ItemGroup>

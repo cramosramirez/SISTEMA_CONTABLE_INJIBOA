@@ -208,8 +208,8 @@ namespace SistemaContable.UI.Forms.Bancos
             decimal total = 0;
             foreach (DataRow r in _dtPagar.Rows)
             {
-                if (r["PAGO_PENDIENTE"] != DBNull.Value)
-                    total += Convert.ToDecimal(r["PAGO_PENDIENTE"]);
+                if (r["SALDO"] != DBNull.Value)
+                    total += Convert.ToDecimal(r["SALDO"]);
             }
             txtValorAPagar.Text = total.ToString("N2");
         }
@@ -232,8 +232,8 @@ namespace SistemaContable.UI.Forms.Bancos
             TotalAPagar = 0;
             foreach (DataRow r in DocumentosAPagar.Rows)
             {
-                if (r["PAGO_PENDIENTE"] != DBNull.Value)
-                    TotalAPagar += Convert.ToDecimal(r["PAGO_PENDIENTE"]);
+                if (r["SALDO"] != DBNull.Value)
+                    TotalAPagar += Convert.ToDecimal(r["SALDO"]);
             }
 
             DialogResult = DialogResult.OK;

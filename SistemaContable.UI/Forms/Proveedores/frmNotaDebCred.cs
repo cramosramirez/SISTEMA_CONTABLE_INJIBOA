@@ -95,7 +95,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             if (ObtenerIdTipoRenta() != 0)
             {
                 decimal aplicable = ObtenerDecimal(txtAPLICABLE_RENTA);
-                decimal renta = Math.Round(aplicable * ObtenerValorTipoRenta(), 2);
+                decimal renta = Calculo.Redondear(aplicable * ObtenerValorTipoRenta(), 2);
                 AsignarDecimal(txtRENTA, renta);
             }
 
@@ -227,7 +227,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             if (ObtenerIdTipoRenta() != 0)
             {
                 decimal aplicable = ObtenerDecimal(txtGRAVADA) + ObtenerDecimal(txtEXENTA);
-                decimal renta = Math.Round(aplicable * ObtenerValorTipoRenta(), 2);
+                decimal renta = Calculo.Redondear(aplicable * ObtenerValorTipoRenta(), 2);
 
                 AsignarDecimal(txtAPLICABLE_RENTA, aplicable);
                 AsignarDecimal(txtRENTA, renta);
@@ -541,14 +541,14 @@ namespace SistemaContable.UI.Forms.Proveedores
             decimal abono = ObtenerDecimal(txtABONO);
             decimal renta = ObtenerDecimal(txtRENTA);   // lee, no calcula
             // IVA = 13% de la base gravada
-            decimal iva = Math.Round(gravada * 0.13m, 2);            
+            decimal iva = Calculo.Redondear(gravada * 0.13m, 2);            
              // IVAR (1%): solo si gravada >= 100 y proveedor NO es Gran Contribuyente
             decimal ivar = 0;
             bool retieneIva = gravada >= 100m
                               && _idTipoContribProveedor != "3"
                               && _idTipoContribProveedor != "0";
             if (retieneIva)
-                ivar = Math.Round(gravada * 0.01m, 2);
+                ivar = Calculo.Redondear(gravada * 0.01m, 2);
             
             //decimal ivar = ObtenerDecimal(txtIVAR);
             decimal total = gravada + exenta + excluido + percepcion + iva + fovial + contrans;

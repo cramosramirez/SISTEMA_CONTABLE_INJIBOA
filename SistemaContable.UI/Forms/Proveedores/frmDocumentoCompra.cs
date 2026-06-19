@@ -38,8 +38,10 @@ namespace SistemaContable.UI.Forms.Proveedores
         private string _idTipoContribProveedor = "";
         private string _idTipoPersona = "";
         private bool _validarCompIVAR = false;
-
+        
         public int IdCcfCompra { get; set; } = 0;
+        public bool EsContado { get; set; } = false;
+        public string UidEnlaceCheque { get; set; } = string.Empty;
 
         #endregion
         public frmDocumentoCompra()
@@ -51,6 +53,11 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void frmDocumentoCompra_Load(object sender, EventArgs e)
         {
             FormHelper.Inicializar(this);
+            if (EsContado)
+            {
+                Text = "Compras al Contado";
+                panelQUEDAN.Visible = false;
+            }
             InicializarHelperMinisterioHacienda();
             CargarCombos();
             cbxSUCURSAL.SelectedValue = 1;
@@ -114,7 +121,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             }                
             else
             {
-                CargarSiguienteNumQuedan();
+                if (!EsContado)
+                    CargarSiguienteNumQuedan();
                 ConfigurarCRUD(EstadoFormulario.Nuevo);                
             }
                 
@@ -138,12 +146,12 @@ namespace SistemaContable.UI.Forms.Proveedores
                 case EstadoFormulario.Guardado:
                     txtPROVEEDOR.Enabled = false;
                     btnGuardar.Enabled = true;
-                    btnValidar.Enabled = _validarCompIVAR;
-                    btnAdicionar.Enabled = _codigoEntidad.Equals(Configuracion.CodigoCCJIBOA); // solo para CC Jiboa
-                    btnImprimirQuedan.Enabled = true;
+                    btnValidar.Enabled = _validarCompIVAR;                    
+                    btnAdicionar.Enabled = !EsContado && _codigoEntidad.Equals(Configuracion.CodigoCCJIBOA);
+                    btnImprimirQuedan.Enabled = !EsContado;
                     btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
                     btnCorreo.Enabled = false;
-                    btnProvision.Enabled = true;
+                    btnProvision.Enabled = !EsContado;
                     break;
                 case EstadoFormulario.Validado:
                     txtPROVEEDOR.Enabled = false;
@@ -152,8 +160,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                     btnAdicionar.Enabled = false;
                     btnImprimirQuedan.Enabled = true;
                     btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
-                    btnCorreo.Enabled = true;
-                    btnProvision.Enabled = true;
+                    btnCorreo.Enabled = (ObtenerDecimal(txtIVAR) > 0);
+                    btnProvision.Enabled = !EsContado;
                     break;
             }
         }
@@ -628,7 +636,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             if (ObtenerIdTipoRenta() != 0)
             {
                 decimal aplicable = ObtenerDecimal(txtGRAVADA) + ObtenerDecimal(txtEXENTA);
-                decimal renta = Math.Round(aplicable * ObtenerValorTipoRenta(), 2);
+                decimal renta = Calculo.Redondear(aplicable * ObtenerValorTipoRenta(), 2);
 
                 AsignarDecimal(txtAPLICABLE_RENTA, aplicable);
                 AsignarDecimal(txtRENTA, renta);
@@ -648,7 +656,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             if (ObtenerIdTipoRenta() != 0)
             {
                 decimal aplicable = ObtenerDecimal(txtAPLICABLE_RENTA);
-                decimal renta = Math.Round(aplicable * ObtenerValorTipoRenta(), 2);
+                decimal renta = Calculo.Redondear(aplicable * ObtenerValorTipoRenta(), 2);
                 AsignarDecimal(txtRENTA, renta);
             }
 
@@ -695,14 +703,14 @@ namespace SistemaContable.UI.Forms.Proveedores
             decimal abono = ObtenerDecimal(txtABONO);
             decimal renta = ObtenerDecimal(txtRENTA);   // lee, no calcula
             // IVA = 13% de la base gravada
-            decimal iva = Math.Round(gravada * 0.13m, 2);
+            decimal iva = Calculo.Redondear(gravada * 0.13m, 2);
             // IVAR (1%): solo si gravada >= 100 y proveedor NO es Gran Contribuyente
             decimal ivar = 0;
             bool retieneIva = gravada >= 100m
                               && _idTipoContribProveedor != "3"
                               && _idTipoContribProveedor != "0";
             if (retieneIva)
-                ivar = Math.Round(gravada * 0.01m, 2);
+                ivar = Calculo.Redondear(gravada * 0.01m, 2);
 
             decimal total = gravada + exenta + excluido + percepcion + iva + fovial + contrans;
             decimal saldo = total - cargo - abono - renta - ivar;
@@ -739,7 +747,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             if (ObtenerIdTipoRenta() != 0)
             {
                 decimal aplicable = ObtenerDecimal(txtAPLICABLE_RENTA);
-                decimal renta = Math.Round(aplicable * ObtenerValorTipoRenta(), 2);
+                decimal renta = Calculo.Redondear(aplicable * ObtenerValorTipoRenta(), 2);
                 AsignarDecimal(txtRENTA, renta);
             }
             else
@@ -864,8 +872,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                 {
                     ACCION = "GUARDAR",
                     ID_CCF_COMPRA = IdCcfCompra,
-                    ID_QUEDAN = _idQuedanActual,          // 0 -> el SP creará el Quedan
-                    NUM_QUEDAN = (int?)Convert.ToInt32(lblNUM_QUEDAN.Text),
+                    ID_QUEDAN = EsContado ? 0 : _idQuedanActual,
+                    NUM_QUEDAN = EsContado || string.IsNullOrWhiteSpace(lblNUM_QUEDAN.Text) ? (int?)null : (int?)Convert.ToInt32(lblNUM_QUEDAN.Text),
                     ID_TIPO_DTE = ObtenerIdCombo(cbxTIPO_DTE),                    
                     NUM_CONTROL = NullIfEmpty(txtNUM_CONTROL.Text),
                     COD_GENERACION = NullIfEmpty(txtCOD_GENERACION.Text),
@@ -899,7 +907,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                     OBSERVACION = NullIfEmpty(txtOBSERVACION.Text),
                     USUARIO = Configuracion.UsuarioActual,                    
                     ID_TIPO_RENTA = ObtenerIdCombo(cbxTIPO_RENTA),
-                    APLICABLE_RENTA = ObtenerDecimal(txtAPLICABLE_RENTA)
+                    APLICABLE_RENTA = ObtenerDecimal(txtAPLICABLE_RENTA),
+                    UID_ENLACE_CHEQUE = EsContado ? UidEnlaceCheque : string.Empty
                 };
 
                 DataTable dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA", parametros);
@@ -909,15 +918,23 @@ namespace SistemaContable.UI.Forms.Proveedores
 
                 // El SP devuelve siempre los tres campos:
                 DataRow row = dt.Rows[0];
-                IdCcfCompra = Convert.ToInt32(row["ID_GENERADO"]);
-                _idQuedanActual = Convert.ToInt32(row["ID_QUEDAN_GENERADO"]);
+                IdCcfCompra = Convert.ToInt32(row["ID_GENERADO"]);                
                 _validarCompIVAR = ObtenerDecimal(txtIVAR) > 0 ? true : false;
-                int numQuedan = Convert.ToInt32(row["NUM_QUEDAN_GENERADO"]);
-                lblNUM_QUEDAN.Text = numQuedan.ToString();
+                if (!EsContado)
+                {
+                    _idQuedanActual = Convert.ToInt32(row["ID_QUEDAN_GENERADO"]);
+                    int numQuedan = Convert.ToInt32(row["NUM_QUEDAN_GENERADO"]);
+                    lblNUM_QUEDAN.Text = numQuedan.ToString();
+                }
                 ConfigurarCRUD(EstadoFormulario.Guardado);
                 XtraMessageBox.Show("Documento guardado correctamente.",
                     "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                if (EsContado)
+                {
+                    DialogResult = DialogResult.OK;
+                    Close();
+                    return;
+                }
             }
             catch (Exception ex)
             {

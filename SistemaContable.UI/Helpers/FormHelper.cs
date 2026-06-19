@@ -179,6 +179,11 @@ namespace SistemaContable.UI.Helpers
             }
         }
 
+        public static string ObtenerUUID()
+        {
+            return Guid.NewGuid().ToString().ToUpper();    
+        } 
+
         #region Operaciones de formulario
 
         /// <summary>

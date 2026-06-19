@@ -47,7 +47,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colSELLO_RECIBIDO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colFECHA_VENCE = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colNUM_QUEDAN = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colVALOR_POR_PAGAR = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSALDO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.btnRetornar = new DevExpress.XtraEditors.SimpleButton();
             this.label3 = new System.Windows.Forms.Label();
             this.btnBajarTodos = new DevExpress.XtraEditors.SimpleButton();
@@ -184,7 +184,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.gridColumn6.Caption = "Valor";
             this.gridColumn6.DisplayFormat.FormatString = "N2";
             this.gridColumn6.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn6.FieldName = "PAGO_PENDIENTE";
+            this.gridColumn6.FieldName = "SALDO";
             this.gridColumn6.MinWidth = 120;
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowSize = false;
@@ -236,7 +236,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colSELLO_RECIBIDO,
             this.colFECHA_VENCE,
             this.colNUM_QUEDAN,
-            this.colVALOR_POR_PAGAR});
+            this.colSALDO});
             this.gridViewPendientePago.GridControl = this.gridControl1;
             this.gridViewPendientePago.Name = "gridViewPendientePago";
             // 
@@ -310,19 +310,19 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colNUM_QUEDAN.VisibleIndex = 4;
             this.colNUM_QUEDAN.Width = 130;
             // 
-            // colVALOR_POR_PAGAR
+            // colSALDO
             // 
-            this.colVALOR_POR_PAGAR.Caption = "Valor";
-            this.colVALOR_POR_PAGAR.DisplayFormat.FormatString = "N2";
-            this.colVALOR_POR_PAGAR.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.colVALOR_POR_PAGAR.FieldName = "PAGO_PENDIENTE";
-            this.colVALOR_POR_PAGAR.MinWidth = 120;
-            this.colVALOR_POR_PAGAR.Name = "colVALOR_POR_PAGAR";
-            this.colVALOR_POR_PAGAR.OptionsColumn.AllowSize = false;
-            this.colVALOR_POR_PAGAR.OptionsColumn.FixedWidth = true;
-            this.colVALOR_POR_PAGAR.Visible = true;
-            this.colVALOR_POR_PAGAR.VisibleIndex = 5;
-            this.colVALOR_POR_PAGAR.Width = 150;
+            this.colSALDO.Caption = "Valor";
+            this.colSALDO.DisplayFormat.FormatString = "N2";
+            this.colSALDO.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.colSALDO.FieldName = "SALDO";
+            this.colSALDO.MinWidth = 120;
+            this.colSALDO.Name = "colSALDO";
+            this.colSALDO.OptionsColumn.AllowSize = false;
+            this.colSALDO.OptionsColumn.FixedWidth = true;
+            this.colSALDO.Visible = true;
+            this.colSALDO.VisibleIndex = 5;
+            this.colSALDO.Width = 150;
             // 
             // btnRetornar
             // 
@@ -451,7 +451,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.label1.TabIndex = 122;
             this.label1.Text = "Proveedor";
             // 
-            // frmChequeSeleccionPago
+            // frmChequeSeleccionQuedan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -460,7 +460,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmChequeSeleccionPago";
+            this.Name = "frmChequeSeleccionQuedan";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Selección de documentos";
             this.Load += new System.EventHandler(this.frmChequeSeleccionPago_Load);
@@ -496,7 +496,7 @@ namespace SistemaContable.UI.Forms.Bancos
         private DevExpress.XtraGrid.Columns.GridColumn colSELLO_RECIBIDO;
         private DevExpress.XtraGrid.Columns.GridColumn colFECHA_VENCE;
         private DevExpress.XtraGrid.Columns.GridColumn colNUM_QUEDAN;
-        private DevExpress.XtraGrid.Columns.GridColumn colVALOR_POR_PAGAR;
+        private DevExpress.XtraGrid.Columns.GridColumn colSALDO;
         private DevExpress.XtraGrid.GridControl gridControl2;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewPagar;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;

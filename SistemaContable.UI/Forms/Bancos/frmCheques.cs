@@ -18,7 +18,7 @@ namespace SistemaContable.UI.Forms.Bancos
         private int _idCheque = 0;     // 0 = nuevo, >0 = edición
         private string _columnaAnteriorGrid = string.Empty;
         private DataTable _documentosPago; // Documentos a pagar mediante Quedan
-
+        private string _uidEnlaceCheque = string.Empty;
 
         #endregion
 
@@ -31,6 +31,11 @@ namespace SistemaContable.UI.Forms.Bancos
         {
             FormHelper.Inicializar(this);
             mskFECHA_CHEQUE.Text = DateTime.Today.ToString("dd/MM/yyyy");
+
+            if (!VerificarCCFsHuerfanos())
+            {
+                _uidEnlaceCheque = FormHelper.ObtenerUUID();  
+            }
 
             InicializarGridPartida();
 
@@ -198,6 +203,93 @@ namespace SistemaContable.UI.Forms.Bancos
         {
             _documentosPago = null;
             txtCANTIDAD.Text = "";
+        }
+
+        /// <summary>
+        /// Verifica si hay CCFs al contado huérfanos del usuario actual y pregunta
+        /// si los quiere retomar. Si acepta, asigna ese UID y abre directamente
+        /// el formulario frmChequeDocumentosContado.
+        /// Retorna true si retomó, false en caso contrario.
+        /// </summary>
+        private bool VerificarCCFsHuerfanos()
+        {
+            try
+            {
+                var dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA", new
+                {
+                    ACCION = "LISTAR_UIDS_HUERFANOS",
+                    USUARIO = Configuracion.UsuarioActual
+                });
+
+                if (dt.Rows.Count == 0) return false;
+
+                // Tomar el más reciente (si hay varios)
+                DataRow rowMasReciente = dt.Rows[0];
+                string uid = rowMasReciente["UID_ENLACE_CHEQUE"].ToString();
+                int cantidad = Convert.ToInt32(rowMasReciente["CANTIDAD_DOCUMENTOS"]);
+
+                var resp = DevExpress.XtraEditors.XtraMessageBox.Show(
+                    $"Existen {cantidad} documento(s) al contado pendiente(s) de un cheque anterior.\n\n" +
+                    "¿Desea retomarlos?",
+                    "Documentos pendientes",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (resp == DialogResult.Yes)
+                {
+                    _uidEnlaceCheque = uid;
+                    // Abrir directamente frmChequeDocumentosContado con el UID
+                    this.BeginInvoke(new Action(() => AbrirContadoConUid()));
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Error al verificar CCFs pendientes:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Abre frmChequeDocumentosContado con el UID actual (ya asignado).
+        /// Reutiliza la misma lógica que el botón CCF Contado, pero sin validar
+        /// la cuenta bancaria (porque aún no se ha seleccionado).
+        /// </summary>
+        private void AbrirContadoConUid()
+        {
+            try
+            {
+                using (var frm = new frmChequeDocumentosContado())
+                {
+                    frm.UidEnlaceCheque = _uidEnlaceCheque;
+                    var principal = Application.OpenForms["frmPrincipalRibbon"];
+
+                    if (principal != null)
+                    {
+                        var ribbon = principal.Controls.Find("Ribbon", true);
+                        var statusBar = principal.Controls.Find("StatusBar", true);
+                        int alturaRibbon = ribbon.Length > 0 ? ribbon[0].Height : 0;
+                        int alturaStatus = statusBar.Length > 0 ? statusBar[0].Height : 0;
+                        frm.Width = principal.ClientRectangle.Width;
+                        frm.Top = principal.Top + alturaRibbon;
+                        frm.Left = principal.Left;
+                        frm.StartPosition = FormStartPosition.CenterScreen;
+                    }
+
+                    if (frm.ShowDialog(principal ?? (Form)this) == DialogResult.OK)
+                    {
+                        // ... lógica ...
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Error al abrir documentos al contado:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
@@ -549,71 +641,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
         #region Guardar
 
-        private void btnGuardar_Click(object sender, EventArgs e)
-        {
-            if (!ValidarCampos()) return;
-
-            try
-            {
-                // 1. Guardar encabezado del CHEQUE
-                var dtCheque = _dal.EjecutarConsulta("SP_CHEQUE", new
-                {
-                    ACCION = "GUARDAR",
-                    ID_CHEQUE = _idCheque,
-                    ID_CTA_BANCO = Convert.ToInt32(txtNUM_CUENTA.Tag ?? 0),
-                    NUM_CHEQUE = Convert.ToInt32(txtNUMERO_CHEQUE.Text),
-                    FECHA_CHEQUE = FormHelper.ObtenerFecha(mskFECHA_CHEQUE),
-                    MONTO = CalcularTotalCargo(),
-                    NOMBRE_CHEQUE = txtNOMBRE_CHEQUE.Text.Trim(),
-                    CONCEPTO = txtCONCEPTO.Text.Trim(),
-                    ID_ENTIDAD = DBNull.Value,
-                    CODIGO_ENTIDAD = string.Empty,
-                    USUARIO_CREA = Configuracion.UsuarioActual,
-                    USUARIO_ACT = Configuracion.UsuarioActual
-                });
-
-                if (dtCheque.Rows.Count == 0) return;
-                _idCheque = Convert.ToInt32(dtCheque.Rows[0]["ID_GENERADO"]);
-
-                // 2. Eliminar partidas anteriores si es edición
-                _dal.EjecutarSinRetorno("SP_CHEQUE_PARTIDA", new
-                {
-                    ACCION = "ELIMINAR_POR_CHEQUE",
-                    ID_CHEQUE = _idCheque
-                });
-
-                // 3. Guardar líneas de la partida contable
-                foreach (DataRow fila in _dtPartida.Rows)
-                {
-                    string cta = fila["CTACONTABLE"].ToString().Trim();
-                    if (string.IsNullOrWhiteSpace(cta)) continue;
-
-                    _dal.EjecutarSinRetorno("SP_CHEQUE_PARTIDA", new
-                    {
-                        ACCION = "GUARDAR",
-                        ID_CHEQUE_PAR = 0,
-                        ID_CHEQUE = _idCheque,
-                        CTACONTABLE = cta,
-                        DETALLE = fila["DETALLE"].ToString().Trim(),
-                        CARGO = Convert.ToDecimal(fila["CARGO"]),
-                        ABONO = Convert.ToDecimal(fila["ABONO"]),
-                        USUARIO_CREA = Configuracion.UsuarioActual,
-                        USUARIO_ACT = Configuracion.UsuarioActual
-                    });
-                }
-
-                DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Cheque guardado correctamente.",
-                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                DevExpress.XtraEditors.XtraMessageBox.Show(
-                    $"Error al guardar: {ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
+    
         private bool ValidarCampos()
         {
             if (string.IsNullOrWhiteSpace(txtNUM_CUENTA.Text))
@@ -719,7 +747,7 @@ namespace SistemaContable.UI.Forms.Bancos
             ActualizarCuadre();
         }
 
-        private void btnSalir_Click(object sender, EventArgs e)
+        private void btnFinalizar_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -823,6 +851,9 @@ namespace SistemaContable.UI.Forms.Bancos
             }));
         }
 
-
+        private void btnCCF_Contado_Click(object sender, EventArgs e)
+        {
+            AbrirContadoConUid();
+        }
     }
 }
