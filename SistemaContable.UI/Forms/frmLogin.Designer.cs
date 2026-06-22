@@ -44,10 +44,10 @@ namespace SistemaContable.UI.Forms
             // pictureBox1
             // 
             this.pictureBox1.Image = global::SistemaContable.UI.Properties.Resources.login;
-            this.pictureBox1.Location = new System.Drawing.Point(26, 23);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox1.Location = new System.Drawing.Point(20, 19);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(82, 87);
+            this.pictureBox1.Size = new System.Drawing.Size(62, 71);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 20;
             this.pictureBox1.TabStop = false;
@@ -55,10 +55,10 @@ namespace SistemaContable.UI.Forms
             // Label1
             // 
             this.Label1.AutoSize = true;
-            this.Label1.Location = new System.Drawing.Point(125, 28);
-            this.Label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.Label1.Location = new System.Drawing.Point(94, 23);
+            this.Label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Label1.Name = "Label1";
-            this.Label1.Size = new System.Drawing.Size(61, 17);
+            this.Label1.Size = new System.Drawing.Size(46, 13);
             this.Label1.TabIndex = 14;
             this.Label1.Text = "Usuario:";
             // 
@@ -66,10 +66,10 @@ namespace SistemaContable.UI.Forms
             // 
             this.btnCancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancelar.Location = new System.Drawing.Point(211, 129);
-            this.btnCancelar.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.btnCancelar.Location = new System.Drawing.Point(158, 105);
+            this.btnCancelar.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(113, 34);
+            this.btnCancelar.Size = new System.Drawing.Size(85, 28);
             this.btnCancelar.TabIndex = 3;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
@@ -77,20 +77,20 @@ namespace SistemaContable.UI.Forms
             // Label2
             // 
             this.Label2.AutoSize = true;
-            this.Label2.Location = new System.Drawing.Point(139, 74);
-            this.Label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.Label2.Location = new System.Drawing.Point(104, 60);
+            this.Label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Label2.Name = "Label2";
-            this.Label2.Size = new System.Drawing.Size(47, 17);
+            this.Label2.Size = new System.Drawing.Size(37, 13);
             this.Label2.TabIndex = 15;
             this.Label2.Text = "Clave:";
             // 
             // btnIngresar
             // 
             this.btnIngresar.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnIngresar.Location = new System.Drawing.Point(69, 129);
-            this.btnIngresar.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.btnIngresar.Location = new System.Drawing.Point(52, 105);
+            this.btnIngresar.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnIngresar.Name = "btnIngresar";
-            this.btnIngresar.Size = new System.Drawing.Size(113, 34);
+            this.btnIngresar.Size = new System.Drawing.Size(85, 28);
             this.btnIngresar.TabIndex = 2;
             this.btnIngresar.Text = "Ingresar";
             this.btnIngresar.UseVisualStyleBackColor = true;
@@ -98,21 +98,21 @@ namespace SistemaContable.UI.Forms
             // 
             // txtUSUARIO
             // 
-            this.txtUSUARIO.Location = new System.Drawing.Point(186, 25);
-            this.txtUSUARIO.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.txtUSUARIO.Location = new System.Drawing.Point(140, 20);
+            this.txtUSUARIO.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtUSUARIO.Name = "txtUSUARIO";
-            this.txtUSUARIO.Size = new System.Drawing.Size(148, 22);
+            this.txtUSUARIO.Size = new System.Drawing.Size(112, 20);
             this.txtUSUARIO.TabIndex = 0;
             this.txtUSUARIO.Tag = "Usuario";
             this.txtUSUARIO.Text = "admin";
             // 
             // txtCLAVE
             // 
-            this.txtCLAVE.Location = new System.Drawing.Point(186, 71);
-            this.txtCLAVE.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.txtCLAVE.Location = new System.Drawing.Point(140, 58);
+            this.txtCLAVE.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtCLAVE.Name = "txtCLAVE";
             this.txtCLAVE.PasswordChar = '*';
-            this.txtCLAVE.Size = new System.Drawing.Size(148, 22);
+            this.txtCLAVE.Size = new System.Drawing.Size(112, 20);
             this.txtCLAVE.TabIndex = 1;
             this.txtCLAVE.Tag = "Clave";
             this.txtCLAVE.Text = "Admin123";
@@ -129,19 +129,20 @@ namespace SistemaContable.UI.Forms
             this.panel1.Controls.Add(this.Label2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(363, 183);
+            this.panel1.Size = new System.Drawing.Size(274, 164);
             this.panel1.TabIndex = 1;
             // 
             // frmLogin
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 183);
+            this.ClientSize = new System.Drawing.Size(274, 164);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmLogin";
