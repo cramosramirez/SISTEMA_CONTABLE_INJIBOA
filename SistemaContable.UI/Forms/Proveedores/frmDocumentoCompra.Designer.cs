@@ -353,8 +353,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label40
             // 
-            this.label40.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label40.AutoSize = true;
             this.label40.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label40.Location = new System.Drawing.Point(825, 479);
             this.label40.Name = "label40";
@@ -532,8 +530,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label33
             // 
-            this.label33.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label33.Location = new System.Drawing.Point(883, 603);
             this.label33.Name = "label33";
@@ -554,8 +550,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label34
             // 
-            this.label34.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label34.AutoSize = true;
             this.label34.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label34.Location = new System.Drawing.Point(804, 541);
             this.label34.Name = "label34";
@@ -576,8 +570,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label35
             // 
-            this.label35.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label35.AutoSize = true;
             this.label35.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label35.Location = new System.Drawing.Point(879, 511);
             this.label35.Name = "label35";
@@ -596,8 +588,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label30
             // 
-            this.label30.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label30.Location = new System.Drawing.Point(757, 449);
             this.label30.Name = "label30";
@@ -616,8 +606,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label31
             // 
-            this.label31.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label31.AutoSize = true;
             this.label31.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label31.Location = new System.Drawing.Point(876, 419);
             this.label31.Name = "label31";
@@ -636,8 +624,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label32
             // 
-            this.label32.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label32.AutoSize = true;
             this.label32.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label32.Location = new System.Drawing.Point(879, 389);
             this.label32.Name = "label32";
@@ -658,8 +644,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label26
             // 
-            this.label26.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label26.Location = new System.Drawing.Point(554, 603);
             this.label26.Name = "label26";
@@ -678,8 +662,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label27
             // 
-            this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label27.AutoSize = true;
             this.label27.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label27.Location = new System.Drawing.Point(521, 573);
             this.label27.Name = "label27";
@@ -698,8 +680,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label28
             // 
-            this.label28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label28.AutoSize = true;
             this.label28.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label28.Location = new System.Drawing.Point(537, 543);
             this.label28.Name = "label28";
@@ -719,8 +699,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label29
             // 
-            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label29.AutoSize = true;
             this.label29.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label29.Location = new System.Drawing.Point(563, 513);
             this.label29.Name = "label29";
@@ -739,8 +717,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label25
             // 
-            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label25.Location = new System.Drawing.Point(518, 483);
             this.label25.Name = "label25";
@@ -759,8 +735,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label24
             // 
-            this.label24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label24.Location = new System.Drawing.Point(536, 453);
             this.label24.Name = "label24";
@@ -779,8 +753,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label23
             // 
-            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label23.Location = new System.Drawing.Point(542, 423);
             this.label23.Name = "label23";
@@ -799,8 +771,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label22
             // 
-            this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label22.Location = new System.Drawing.Point(545, 393);
             this.label22.Name = "label22";
@@ -858,8 +828,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label10
             // 
-            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.Location = new System.Drawing.Point(23, 513);
             this.label10.Name = "label10";
@@ -880,8 +848,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label9
             // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(96, 483);
             this.label9.Name = "label9";
@@ -902,8 +868,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label8
             // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.Location = new System.Drawing.Point(62, 453);
             this.label8.Name = "label8";
@@ -924,8 +888,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label7
             // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(21, 423);
             this.label7.Name = "label7";
@@ -946,8 +908,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // label5
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(109, 393);
             this.label5.Name = "label5";
