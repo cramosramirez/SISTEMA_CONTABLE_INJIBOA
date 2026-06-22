@@ -29,6 +29,7 @@ namespace SistemaContable.UI.Forms.Bancos
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCheques));
             this.txtNOMBRE = new System.Windows.Forms.TextBox();
             this.txtNUM_CUENTA = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -54,16 +55,17 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNUMERO_PARTIDA = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.groupControl3 = new DevExpress.XtraEditors.GroupControl();
+            this.btnAgregar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnCCF_Contado = new DevExpress.XtraEditors.SimpleButton();
+            this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnBorrarFila = new DevExpress.XtraEditors.SimpleButton();
+            this.btnEliminar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnImprimir = new DevExpress.XtraEditors.SimpleButton();
             this.lblDIFERENCIA = new System.Windows.Forms.Label();
             this.lblTOTAL_ABONO = new System.Windows.Forms.Label();
             this.lblTOTAL_CARGO = new System.Windows.Forms.Label();
             this.lblCUADRE = new System.Windows.Forms.Label();
-            this.btnCerrar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnImprimir = new DevExpress.XtraEditors.SimpleButton();
-            this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnModificar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnEliminar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnBuscar = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
@@ -77,7 +79,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // txtNOMBRE
             // 
             this.txtNOMBRE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNOMBRE.Location = new System.Drawing.Point(539, 38);
+            this.txtNOMBRE.Location = new System.Drawing.Point(539, 39);
             this.txtNOMBRE.Name = "txtNOMBRE";
             this.txtNOMBRE.ReadOnly = true;
             this.txtNOMBRE.Size = new System.Drawing.Size(506, 24);
@@ -117,8 +119,10 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNUMERO_CHEQUE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNUMERO_CHEQUE.Location = new System.Drawing.Point(112, 72);
             this.txtNUMERO_CHEQUE.Name = "txtNUMERO_CHEQUE";
+            this.txtNUMERO_CHEQUE.ReadOnly = true;
             this.txtNUMERO_CHEQUE.Size = new System.Drawing.Size(142, 24);
             this.txtNUMERO_CHEQUE.TabIndex = 6;
+            this.txtNUMERO_CHEQUE.TabStop = false;
             // 
             // label3
             // 
@@ -266,17 +270,17 @@ namespace SistemaContable.UI.Forms.Bancos
             this.groupControl2.Controls.Add(this.label8);
             this.groupControl2.Location = new System.Drawing.Point(17, 157);
             this.groupControl2.Name = "groupControl2";
-            this.groupControl2.Size = new System.Drawing.Size(1063, 455);
+            this.groupControl2.Size = new System.Drawing.Size(1063, 437);
             this.groupControl2.TabIndex = 1;
             this.groupControl2.Text = "Comprobante contable";
             // 
             // gridControl1
             // 
             this.gridControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gridControl1.Location = new System.Drawing.Point(2, 117);
+            this.gridControl1.Location = new System.Drawing.Point(2, 103);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1059, 336);
+            this.gridControl1.Size = new System.Drawing.Size(1059, 332);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -292,7 +296,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtCONCEPTO.Location = new System.Drawing.Point(319, 41);
             this.txtCONCEPTO.Multiline = true;
             this.txtCONCEPTO.Name = "txtCONCEPTO";
-            this.txtCONCEPTO.Size = new System.Drawing.Size(726, 70);
+            this.txtCONCEPTO.Size = new System.Drawing.Size(726, 56);
             this.txtCONCEPTO.TabIndex = 3;
             this.txtCONCEPTO.Leave += new System.EventHandler(this.txtCONCEPTO_Leave);
             // 
@@ -326,22 +330,125 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // groupControl3
             // 
+            this.groupControl3.Controls.Add(this.btnAgregar);
+            this.groupControl3.Controls.Add(this.btnCCF_Contado);
+            this.groupControl3.Controls.Add(this.btnFinalizar);
+            this.groupControl3.Controls.Add(this.btnBorrarFila);
+            this.groupControl3.Controls.Add(this.btnEliminar);
+            this.groupControl3.Controls.Add(this.btnGuardar);
+            this.groupControl3.Controls.Add(this.btnImprimir);
             this.groupControl3.Controls.Add(this.lblDIFERENCIA);
             this.groupControl3.Controls.Add(this.lblTOTAL_ABONO);
             this.groupControl3.Controls.Add(this.lblTOTAL_CARGO);
             this.groupControl3.Controls.Add(this.lblCUADRE);
-            this.groupControl3.Controls.Add(this.btnCerrar);
-            this.groupControl3.Controls.Add(this.btnImprimir);
-            this.groupControl3.Controls.Add(this.btnGuardar);
-            this.groupControl3.Controls.Add(this.btnModificar);
-            this.groupControl3.Controls.Add(this.btnEliminar);
-            this.groupControl3.Controls.Add(this.btnBuscar);
-            this.groupControl3.Location = new System.Drawing.Point(17, 618);
+            this.groupControl3.Location = new System.Drawing.Point(17, 600);
             this.groupControl3.Name = "groupControl3";
             this.groupControl3.ShowCaption = false;
-            this.groupControl3.Size = new System.Drawing.Size(1063, 101);
+            this.groupControl3.Size = new System.Drawing.Size(1063, 119);
             this.groupControl3.TabIndex = 2;
             this.groupControl3.Text = "groupControl3";
+            // 
+            // btnAgregar
+            // 
+            this.btnAgregar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAgregar.Appearance.Options.UseFont = true;
+            this.btnAgregar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
+            this.btnAgregar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnAgregar.ImageOptions.ImageToTextIndent = 10;
+            this.btnAgregar.Location = new System.Drawing.Point(441, 64);
+            this.btnAgregar.Name = "btnAgregar";
+            this.btnAgregar.Size = new System.Drawing.Size(119, 47);
+            this.btnAgregar.TabIndex = 3;
+            this.btnAgregar.Text = "Agregar";
+            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
+            // 
+            // btnCCF_Contado
+            // 
+            this.btnCCF_Contado.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCCF_Contado.Appearance.Options.UseFont = true;
+            this.btnCCF_Contado.Appearance.Options.UseTextOptions = true;
+            this.btnCCF_Contado.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnCCF_Contado.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc32x32;
+            this.btnCCF_Contado.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnCCF_Contado.ImageOptions.ImageToTextIndent = 10;
+            this.btnCCF_Contado.Location = new System.Drawing.Point(304, 64);
+            this.btnCCF_Contado.Name = "btnCCF_Contado";
+            this.btnCCF_Contado.Size = new System.Drawing.Size(119, 47);
+            this.btnCCF_Contado.TabIndex = 2;
+            this.btnCCF_Contado.Text = "CCF Contado";
+            this.btnCCF_Contado.Click += new System.EventHandler(this.btnCCF_Contado_Click);
+            // 
+            // btnFinalizar
+            // 
+            this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFinalizar.Appearance.Options.UseFont = true;
+            this.btnFinalizar.Appearance.Options.UseTextOptions = true;
+            this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
+            this.btnFinalizar.Location = new System.Drawing.Point(939, 66);
+            this.btnFinalizar.Name = "btnFinalizar";
+            this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
+            this.btnFinalizar.TabIndex = 6;
+            this.btnFinalizar.TabStop = false;
+            this.btnFinalizar.Text = "Finalizar";
+            this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
+            // 
+            // btnBorrarFila
+            // 
+            this.btnBorrarFila.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBorrarFila.Appearance.Options.UseFont = true;
+            this.btnBorrarFila.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminarFila32x32;
+            this.btnBorrarFila.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnBorrarFila.ImageOptions.ImageToTextIndent = 10;
+            this.btnBorrarFila.Location = new System.Drawing.Point(573, 64);
+            this.btnBorrarFila.Name = "btnBorrarFila";
+            this.btnBorrarFila.Size = new System.Drawing.Size(119, 47);
+            this.btnBorrarFila.TabIndex = 4;
+            this.btnBorrarFila.Text = "Borrar fila";
+            this.btnBorrarFila.Click += new System.EventHandler(this.btnBorrarFila_Click);
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEliminar.Appearance.Options.UseFont = true;
+            this.btnEliminar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminar32x32;
+            this.btnEliminar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnEliminar.ImageOptions.ImageToTextIndent = 10;
+            this.btnEliminar.Location = new System.Drawing.Point(707, 64);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(119, 47);
+            this.btnEliminar.TabIndex = 5;
+            this.btnEliminar.Text = "Eliminar";
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            // 
+            // btnGuardar
+            // 
+            this.btnGuardar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGuardar.Appearance.Options.UseFont = true;
+            this.btnGuardar.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardar.ImageOptions.Image")));
+            this.btnGuardar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnGuardar.ImageOptions.ImageToTextIndent = 10;
+            this.btnGuardar.Location = new System.Drawing.Point(170, 64);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(119, 47);
+            this.btnGuardar.TabIndex = 1;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            // 
+            // btnImprimir
+            // 
+            this.btnImprimir.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnImprimir.Appearance.Options.UseFont = true;
+            this.btnImprimir.Appearance.Options.UseTextOptions = true;
+            this.btnImprimir.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnImprimir.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimir.ImageOptions.Image")));
+            this.btnImprimir.ImageOptions.ImageToTextIndent = 10;
+            this.btnImprimir.Location = new System.Drawing.Point(9, 64);
+            this.btnImprimir.Name = "btnImprimir";
+            this.btnImprimir.Size = new System.Drawing.Size(119, 47);
+            this.btnImprimir.TabIndex = 0;
+            this.btnImprimir.Text = "Imprimir";
+            this.btnImprimir.Click += new System.EventHandler(this.btnImprimir_Click);
             // 
             // lblDIFERENCIA
             // 
@@ -382,66 +489,6 @@ namespace SistemaContable.UI.Forms.Bancos
             this.lblCUADRE.TabIndex = 13;
             this.lblCUADRE.Text = "-";
             this.lblCUADRE.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // btnCerrar
-            // 
-            this.btnCerrar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCerrar.Appearance.Options.UseFont = true;
-            this.btnCerrar.Location = new System.Drawing.Point(920, 59);
-            this.btnCerrar.Name = "btnCerrar";
-            this.btnCerrar.Size = new System.Drawing.Size(125, 31);
-            this.btnCerrar.TabIndex = 5;
-            this.btnCerrar.Text = "Finalizar";
-            // 
-            // btnImprimir
-            // 
-            this.btnImprimir.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnImprimir.Appearance.Options.UseFont = true;
-            this.btnImprimir.Location = new System.Drawing.Point(24, 59);
-            this.btnImprimir.Name = "btnImprimir";
-            this.btnImprimir.Size = new System.Drawing.Size(110, 31);
-            this.btnImprimir.TabIndex = 0;
-            this.btnImprimir.Text = "Imprimir";
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardar.Appearance.Options.UseFont = true;
-            this.btnGuardar.Location = new System.Drawing.Point(250, 59);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(106, 31);
-            this.btnGuardar.TabIndex = 4;
-            this.btnGuardar.Text = "Grabar";
-            // 
-            // btnModificar
-            // 
-            this.btnModificar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnModificar.Appearance.Options.UseFont = true;
-            this.btnModificar.Location = new System.Drawing.Point(362, 59);
-            this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(106, 31);
-            this.btnModificar.TabIndex = 3;
-            this.btnModificar.Text = "Modificar";
-            // 
-            // btnEliminar
-            // 
-            this.btnEliminar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEliminar.Appearance.Options.UseFont = true;
-            this.btnEliminar.Location = new System.Drawing.Point(586, 59);
-            this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(106, 31);
-            this.btnEliminar.TabIndex = 2;
-            this.btnEliminar.Text = "Eliminar";
-            // 
-            // btnBuscar
-            // 
-            this.btnBuscar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBuscar.Appearance.Options.UseFont = true;
-            this.btnBuscar.Location = new System.Drawing.Point(474, 59);
-            this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(106, 31);
-            this.btnBuscar.TabIndex = 1;
-            this.btnBuscar.Text = "Buscar";
             // 
             // frmCheques
             // 
@@ -499,12 +546,6 @@ namespace SistemaContable.UI.Forms.Bancos
         private System.Windows.Forms.TextBox txtNUMERO_PARTIDA;
         private System.Windows.Forms.Label label8;
         private DevExpress.XtraEditors.GroupControl groupControl3;
-        private DevExpress.XtraEditors.SimpleButton btnImprimir;
-        private DevExpress.XtraEditors.SimpleButton btnGuardar;
-        private DevExpress.XtraEditors.SimpleButton btnModificar;
-        private DevExpress.XtraEditors.SimpleButton btnEliminar;
-        private DevExpress.XtraEditors.SimpleButton btnBuscar;
-        private DevExpress.XtraEditors.SimpleButton btnCerrar;
         private System.Windows.Forms.TextBox txtOPERACION;
         private System.Windows.Forms.Label lblCUADRE;
         private System.Windows.Forms.Label lblDIFERENCIA;
@@ -512,5 +553,12 @@ namespace SistemaContable.UI.Forms.Bancos
         private System.Windows.Forms.Label lblTOTAL_CARGO;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraEditors.SimpleButton btnImprimir;
+        private DevExpress.XtraEditors.SimpleButton btnGuardar;
+        private DevExpress.XtraEditors.SimpleButton btnEliminar;
+        private DevExpress.XtraEditors.SimpleButton btnBorrarFila;
+        private DevExpress.XtraEditors.SimpleButton btnFinalizar;
+        private DevExpress.XtraEditors.SimpleButton btnCCF_Contado;
+        private DevExpress.XtraEditors.SimpleButton btnAgregar;
     }
 }

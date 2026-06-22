@@ -2,6 +2,7 @@
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Base;
 using SistemaContable.DAL;
@@ -34,9 +35,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             //// --- Vista general ---
             gridControl1.ForceInitialize();
             gvDetalle.OptionsView.ShowGroupPanel = false;   // panel de agrupación visible
-            gvDetalle.OptionsView.ShowAutoFilterRow = true;
-            gvDetalle.OptionsBehavior.AutoExpandAllGroups = true;
-            gvDetalle.OptionsBehavior.Editable = true;   // necesario para los botones por fila
+            gvDetalle.OptionsView.ShowAutoFilterRow = false;
+            gvDetalle.OptionsBehavior.AutoExpandAllGroups = false;
+            gvDetalle.OptionsBehavior.Editable = false;   // necesario para los botones por fila
             gvDetalle.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
 
             // --- Buscador global ---
@@ -54,11 +55,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             gvDetalle.Appearance.Row.Font = new Font("Segoe UI", 9f);
             gvDetalle.Appearance.Row.Options.UseFont = true;
 
-            // --- Agrupación por NUM_QUEDAN ---
-            
 
-        
-            gvDetalle.CustomDrawGroupRow += GvDetalle_CustomDrawGroupRow;
 
             // --- Embedded Navigator: solo Nuevo ---
             gridControl1.UseEmbeddedNavigator = true;
@@ -83,22 +80,23 @@ namespace SistemaContable.UI.Forms.NotaRemision
         #region === CARGA DE DATOS ===
         private void CargarDatos()
         {
-            _dtDetalle = _dal.EjecutarConsulta("[EDTE].[SEL_NOTAREMISION]",
-                new { OPCIONNR = "NR" });
+            _dtDetalle = _dal.EjecutarConsulta("[EDTE].SP_NOTA_REMISION",
+                new { ACCION = "LIST_NR" });
             gridControl1.DataSource = _dtDetalle;
+            gridControl1.Refresh();
         }
         #endregion
 
 
         #region === HELPERS ===
 
-        //private int? ObtenerIdFilaActiva()
-        //{
-        //    if (gvDetalle.FocusedRowHandle < 0) return null;
-        //    object val = gvDetalle.GetRowCellValue(gvDetalle.FocusedRowHandle, "ID_CCF_COMPRA");
-        //    if (val == null || val == DBNull.Value) return null;
-        //    return Convert.ToInt32(val);
-        //}
+        private int? ObtenerIdFilaActiva()
+        {
+            if (gvDetalle.FocusedRowHandle < 0) return null;
+            object val = gvDetalle.GetRowCellValue(gvDetalle.FocusedRowHandle, "ID_NTREMISIONENC");
+            if (val == null || val == DBNull.Value) return null;
+            return Convert.ToInt32(val);
+        }
 
         private void AbrirDocumento(int IdTraslado)
         {
@@ -114,15 +112,38 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
 
 
-        private void riEditar_ButtonClick(object sender, ButtonPressedEventArgs e)
-        {
-            //int? id = ObtenerIdFilaActiva();
-            //if (id.HasValue) AbrirDocumento(id.Value);
-        }
+        //private void riEditar_ButtonClick(object sender, ButtonPressedEventArgs e)
+        //{
+        //    int? id = ObtenerIdFilaActiva();
+        //    if (id.HasValue) AbrirDocumento(id.Value);
+        //}
 
         private void btnNuevoNR_Click(object sender, EventArgs e)
         {
             AbrirDocumento(IdTraslado: 0);
+        }
+
+        private void btnFinalizar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        
+
+        private void gvDetalle_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
+        {
+
+            if (e.Column == colEDITAR)
+            {
+                int? id = ObtenerIdFilaActiva();
+                if (id.HasValue) AbrirDocumento(id.Value);
+            }
+            if (e.Column == colVER_Q)
+            {
+                int? id = ObtenerIdFilaActiva();
+                XtraMessageBox.Show("Reporte ",
+                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

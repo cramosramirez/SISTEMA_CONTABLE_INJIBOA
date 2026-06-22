@@ -24,8 +24,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         }
 
         private void frmProvisionDiaria_Load(object sender, EventArgs e)
-        {
-            //FormHelper.Inicializar(this);
+        {            
             InicializarDatos();
             InicializarGrids();
             CargarGrids();

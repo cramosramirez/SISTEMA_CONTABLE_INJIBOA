@@ -140,6 +140,38 @@ namespace SistemaContable.DAL
             }
         }
 
+        public DataTable EjecutarConsultaConTVPDataTable(
+            string storedProcedure,
+            string nombreParametroTVP,
+            string tipoTVP,
+            DataTable tvp,
+            object parametrosAdicionales = null)
+            {
+            using (var cn = new SqlConnection(CadenaConexion))
+            using (var cmd = new SqlCommand(storedProcedure, cn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@" + nombreParametroTVP, SqlDbType.Structured)
+                {
+                    TypeName = "dbo." + tipoTVP,
+                    Value = tvp
+                });
+                if (parametrosAdicionales != null)
+                {
+                    foreach (var prop in parametrosAdicionales.GetType().GetProperties())
+                        cmd.Parameters.AddWithValue("@" + prop.Name,
+                            prop.GetValue(parametrosAdicionales) ?? DBNull.Value);
+                }
+                cn.Open();
+                var dt = new DataTable();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    dt.Load(reader);
+                }
+                return dt;
+            }            
+        }
+
 
 
         #region === NUMERACIÓN DE DOCUMENTOS ===
@@ -203,7 +235,7 @@ namespace SistemaContable.DAL
         public static string NuevoGUID()
         {            
             return Guid.NewGuid().ToString().ToUpper();
-        }
+        }      
 
         #endregion
     }

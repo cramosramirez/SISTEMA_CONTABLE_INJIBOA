@@ -30,10 +30,10 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnCorreo = new DevExpress.XtraEditors.SimpleButton();
-            this.btnImprimirQuedan = new DevExpress.XtraEditors.SimpleButton();
-            this.btnValidar = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnCorreo = new DevExpress.XtraEditors.SimpleButton();
+            this.btnImprimir = new DevExpress.XtraEditors.SimpleButton();
+            this.btnValidar = new DevExpress.XtraEditors.SimpleButton();
             this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -77,10 +77,10 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.btnCorreo);
-            this.panel1.Controls.Add(this.btnImprimirQuedan);
-            this.panel1.Controls.Add(this.btnValidar);
             this.panel1.Controls.Add(this.btnFinalizar);
+            this.panel1.Controls.Add(this.btnCorreo);
+            this.panel1.Controls.Add(this.btnImprimir);
+            this.panel1.Controls.Add(this.btnValidar);
             this.panel1.Controls.Add(this.btnGuardar);
             this.panel1.Controls.Add(this.gridControl1);
             this.panel1.Controls.Add(this.label17);
@@ -122,6 +122,21 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Size = new System.Drawing.Size(1171, 625);
             this.panel1.TabIndex = 0;
             // 
+            // btnFinalizar
+            // 
+            this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFinalizar.Appearance.Options.UseFont = true;
+            this.btnFinalizar.Appearance.Options.UseTextOptions = true;
+            this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
+            this.btnFinalizar.Location = new System.Drawing.Point(522, 525);
+            this.btnFinalizar.Name = "btnFinalizar";
+            this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
+            this.btnFinalizar.TabIndex = 158;
+            this.btnFinalizar.TabStop = false;
+            this.btnFinalizar.Text = "Finalizar";
+            this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
+            // 
             // btnCorreo
             // 
             this.btnCorreo.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -137,20 +152,20 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.btnCorreo.Text = "Correo";
             this.btnCorreo.Click += new System.EventHandler(this.btnCorreo_Click);
             // 
-            // btnImprimirQuedan
+            // btnImprimir
             // 
-            this.btnImprimirQuedan.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnImprimirQuedan.Appearance.Options.UseFont = true;
-            this.btnImprimirQuedan.Appearance.Options.UseTextOptions = true;
-            this.btnImprimirQuedan.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnImprimirQuedan.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.imprimir32x32;
-            this.btnImprimirQuedan.ImageOptions.ImageToTextIndent = 10;
-            this.btnImprimirQuedan.Location = new System.Drawing.Point(292, 525);
-            this.btnImprimirQuedan.Name = "btnImprimirQuedan";
-            this.btnImprimirQuedan.Size = new System.Drawing.Size(116, 47);
-            this.btnImprimirQuedan.TabIndex = 156;
-            this.btnImprimirQuedan.Text = "Imprimir";
-            this.btnImprimirQuedan.Click += new System.EventHandler(this.btnImprimirQuedan_Click);
+            this.btnImprimir.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnImprimir.Appearance.Options.UseFont = true;
+            this.btnImprimir.Appearance.Options.UseTextOptions = true;
+            this.btnImprimir.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnImprimir.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.imprimir32x32;
+            this.btnImprimir.ImageOptions.ImageToTextIndent = 10;
+            this.btnImprimir.Location = new System.Drawing.Point(292, 525);
+            this.btnImprimir.Name = "btnImprimir";
+            this.btnImprimir.Size = new System.Drawing.Size(116, 47);
+            this.btnImprimir.TabIndex = 156;
+            this.btnImprimir.Text = "Imprimir";
+            this.btnImprimir.Click += new System.EventHandler(this.btnImprimirQuedan_Click);
             // 
             // btnValidar
             // 
@@ -165,19 +180,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.btnValidar.TabIndex = 155;
             this.btnValidar.Text = "Validar";
             this.btnValidar.Click += new System.EventHandler(this.btnValidar_Click);
-            // 
-            // btnFinalizar
-            // 
-            this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFinalizar.Appearance.Options.UseFont = true;
-            this.btnFinalizar.Appearance.Options.UseTextOptions = true;
-            this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnFinalizar.Location = new System.Drawing.Point(522, 525);
-            this.btnFinalizar.Name = "btnFinalizar";
-            this.btnFinalizar.Size = new System.Drawing.Size(108, 47);
-            this.btnFinalizar.TabIndex = 154;
-            this.btnFinalizar.Text = "Finalizar";
-            this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
             // 
             // btnGuardar
             // 
@@ -230,7 +232,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // txtTOTAL
             // 
             this.txtTOTAL.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTOTAL.Location = new System.Drawing.Point(982, 493);
+            this.txtTOTAL.Location = new System.Drawing.Point(970, 493);
             this.txtTOTAL.Name = "txtTOTAL";
             this.txtTOTAL.ReadOnly = true;
             this.txtTOTAL.Size = new System.Drawing.Size(155, 22);
@@ -242,7 +244,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(935, 498);
+            this.label26.Location = new System.Drawing.Point(923, 498);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(35, 14);
             this.label26.TabIndex = 149;
@@ -251,7 +253,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // txtGRAVADA
             // 
             this.txtGRAVADA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtGRAVADA.Location = new System.Drawing.Point(982, 455);
+            this.txtGRAVADA.Location = new System.Drawing.Point(970, 455);
             this.txtGRAVADA.Name = "txtGRAVADA";
             this.txtGRAVADA.ReadOnly = true;
             this.txtGRAVADA.Size = new System.Drawing.Size(155, 22);
@@ -262,7 +264,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(926, 460);
+            this.label22.Location = new System.Drawing.Point(914, 460);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(43, 14);
             this.label22.TabIndex = 147;
@@ -603,9 +605,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraEditors.SimpleButton btnCorreo;
-        private DevExpress.XtraEditors.SimpleButton btnImprimirQuedan;
+        private DevExpress.XtraEditors.SimpleButton btnImprimir;
         private DevExpress.XtraEditors.SimpleButton btnValidar;
-        private DevExpress.XtraEditors.SimpleButton btnFinalizar;
         private DevExpress.XtraEditors.SimpleButton btnGuardar;
+        private DevExpress.XtraEditors.SimpleButton btnFinalizar;
     }
 }

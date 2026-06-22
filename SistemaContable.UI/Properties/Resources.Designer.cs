@@ -103,6 +103,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap cancelar32x32 {
+            get {
+                object obj = ResourceManager.GetObject("cancelar32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap cheque48x48 {
             get {
                 object obj = ResourceManager.GetObject("cheque48x48", resourceCulture);
@@ -186,6 +196,16 @@ namespace SistemaContable.UI.Properties {
         public static System.Drawing.Bitmap editar3_32x32 {
             get {
                 object obj = ResourceManager.GetObject("editar3_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap eliminar32x32 {
+            get {
+                object obj = ResourceManager.GetObject("eliminar32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

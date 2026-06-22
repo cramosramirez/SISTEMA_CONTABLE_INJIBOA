@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using DevExpress.Utils;
 using DevExpress.XtraEditors;
 using ComboBox = System.Windows.Forms.ComboBox;
 
@@ -138,13 +139,23 @@ namespace SistemaContable.UI.Helpers
         private static void Campo_AsteriscoBusqueda_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter) return;
-
             var campo = sender as TextBox;
-            if (campo == null) return;            
-
+            if (campo == null) return;
             if (!_lookups.ContainsKey(campo)) return;
             if (campo.Text?.Trim() != "*") return;
+
             e.SuppressKeyPress = true;
+            AbrirBusqueda(campo);
+        }
+
+        /// <summary>
+        /// Abre el formulario de búsqueda asociado al campo sin que el usuario
+        /// tenga que digitar * + Enter. Reutiliza la misma lógica del KeyDown.
+        /// </summary>
+        public static void AbrirBusqueda(TextBox campo)
+        {
+            if (campo == null) return;
+            if (!_lookups.ContainsKey(campo)) return;
 
             var config = _lookups[campo];
 
@@ -157,19 +168,19 @@ namespace SistemaContable.UI.Helpers
 
                 if (posY + frm.Height > pantalla.Bottom)
                     posY = posicionCampo.Y - campo.Height - frm.Height;
-
                 if (posX + frm.Width > pantalla.Right)
                     posX = pantalla.Right - frm.Width;
 
                 frm.StartPosition = FormStartPosition.Manual;
                 frm.Location = new Point(posX, posY);
 
-                if (frm.ShowDialog() == DialogResult.OK
-                    && frm.FilaSeleccionada != null)
+                if (frm.ShowDialog() == DialogResult.OK && frm.FilaSeleccionada != null)
                 {
                     campo.Text = string.Empty;
+
                     if (_callbacks.ContainsKey(campo))
-                            _callbacks[campo].Invoke(frm.FilaSeleccionada);
+                        _callbacks[campo].Invoke(frm.FilaSeleccionada);
+
                     SendKeys.Send("{TAB}");
                 }
                 else
@@ -178,6 +189,11 @@ namespace SistemaContable.UI.Helpers
                 }
             }
         }
+
+        public static string ObtenerUUID()
+        {
+            return Guid.NewGuid().ToString().ToUpper();    
+        } 
 
         #region Operaciones de formulario
 
@@ -274,6 +290,29 @@ namespace SistemaContable.UI.Helpers
             }
 
             return null;
+        }
+
+        public static DialogResult MostrarMensajeHtml(
+            string mensaje,
+            string titulo = "Información",
+            MessageBoxIcon icono = MessageBoxIcon.Information)
+        {
+            var iconoSys = icono == MessageBoxIcon.Warning ? SystemIcons.Warning :
+                           icono == MessageBoxIcon.Error ? SystemIcons.Error :
+                           icono == MessageBoxIcon.Question ? SystemIcons.Question :
+                                                             SystemIcons.Information;
+
+            var args = new XtraMessageBoxArgs
+            {
+                Caption = titulo,
+                Text = mensaje,
+                Buttons = new[] { DialogResult.OK },
+                DefaultButtonIndex = 0,
+                Icon = iconoSys,
+                AllowHtmlText = DefaultBoolean.True
+            };
+
+            return XtraMessageBox.Show(args);
         }
         #endregion
     }
