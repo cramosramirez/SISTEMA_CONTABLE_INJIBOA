@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using SistemaContable.UI.Forms.Proveedores;
 using System.Reflection;
+using SistemaContable.UI.Forms.NotaRemision;
 
 namespace SistemaContable.UI.Forms
 {
@@ -172,7 +173,10 @@ namespace SistemaContable.UI.Forms
 
                     if (frm is frmConsultaQuedan quedanForm ||
                         frm is frmConsultaNotaDebCred notaDebCredForm ||
-                        frm is frmProvisionDiaria provisionDiaria)
+                        frm is frmProvisionDiaria provisionDiaria ||
+                        frm is frmConsulta consultaForm ||
+                        frm is frmConsultabd Consultabd ||
+                        frm is frmConsultadz Consultadz )
                     {
                         Form formulario = (Form)frm;
 
