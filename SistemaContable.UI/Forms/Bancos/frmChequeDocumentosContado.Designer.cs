@@ -52,6 +52,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnRetornar = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdicionar = new DevExpress.XtraEditors.SimpleButton();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -64,7 +65,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1390, 415);
+            this.panel1.Size = new System.Drawing.Size(1390, 303);
             this.panel1.TabIndex = 0;
             // 
             // gridControl1
@@ -73,7 +74,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.gridControl1.Location = new System.Drawing.Point(0, 0);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1390, 415);
+            this.gridControl1.Size = new System.Drawing.Size(1390, 303);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -321,12 +322,13 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.btnRetornar);
             this.panel2.Controls.Add(this.btnAdicionar);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 415);
+            this.panel2.Location = new System.Drawing.Point(0, 303);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1390, 126);
+            this.panel2.Size = new System.Drawing.Size(1390, 104);
             this.panel2.TabIndex = 1;
             // 
             // btnRetornar
@@ -337,7 +339,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnRetornar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnRetornar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.retornar32x32;
             this.btnRetornar.ImageOptions.ImageToTextIndent = 10;
-            this.btnRetornar.Location = new System.Drawing.Point(169, 39);
+            this.btnRetornar.Location = new System.Drawing.Point(169, 42);
             this.btnRetornar.Name = "btnRetornar";
             this.btnRetornar.Size = new System.Drawing.Size(113, 47);
             this.btnRetornar.TabIndex = 130;
@@ -352,18 +354,29 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAdicionar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnAdicionar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
             this.btnAdicionar.ImageOptions.ImageToTextIndent = 10;
-            this.btnAdicionar.Location = new System.Drawing.Point(19, 39);
+            this.btnAdicionar.Location = new System.Drawing.Point(19, 42);
             this.btnAdicionar.Name = "btnAdicionar";
             this.btnAdicionar.Size = new System.Drawing.Size(119, 47);
             this.btnAdicionar.TabIndex = 6;
             this.btnAdicionar.Text = "Adicionar documento";
             this.btnAdicionar.Click += new System.EventHandler(this.btnAdicionar_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Green;
+            this.label1.Location = new System.Drawing.Point(17, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(396, 20);
+            this.label1.TabIndex = 131;
+            this.label1.Text = "Haga doble-clic sobre la fila deseada para abrir el editor";
+            // 
             // frmChequeDocumentosContado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1390, 541);
+            this.ClientSize = new System.Drawing.Size(1390, 407);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -377,6 +390,7 @@ namespace SistemaContable.UI.Forms.Bancos
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -406,5 +420,6 @@ namespace SistemaContable.UI.Forms.Bancos
         private DevExpress.XtraGrid.Columns.GridColumn colRENTA;
         private DevExpress.XtraGrid.Columns.GridColumn colRETENCION_IVA;
         private DevExpress.XtraGrid.Columns.GridColumn colSALDO;
+        private System.Windows.Forms.Label label1;
     }
 }

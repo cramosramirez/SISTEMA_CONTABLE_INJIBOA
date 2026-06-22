@@ -6,13 +6,20 @@ using System.Windows.Forms;
 using DevExpress.XtraGrid.Views.Grid;
 using SistemaContable.DAL;
 using System.Drawing;
+using DevExpress.XtraEditors;
+using DevExpress.Utils;
+using SistemaContable.RP;
 
 namespace SistemaContable.UI.Forms.Bancos
 {
     public partial class frmCheques : DevExpress.XtraEditors.XtraForm
     {
-        #region Campos privados
-
+        private enum EstadoFormulario
+        {
+            Nuevo,
+            Guardado,
+            Impreso
+        }
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtPartida;  // DataTable que alimenta el grid
         private int _idCheque = 0;     // 0 = nuevo, >0 = edición
@@ -20,7 +27,7 @@ namespace SistemaContable.UI.Forms.Bancos
         private DataTable _documentosPago; // Documentos a pagar mediante Quedan
         private string _uidEnlaceCheque = string.Empty;
 
-        #endregion
+     
 
         public frmCheques()
         {            
@@ -74,7 +81,11 @@ namespace SistemaContable.UI.Forms.Bancos
                     txtNUM_CUENTA.Tag = fila["ID_CTA_BANCO"].ToString();
                     txtNUM_CUENTA.Text = fila["NUM_CUENTA"].ToString();
                     txtNOMBRE.Text = fila["NOMBRE"].ToString();
-                    txtNUMERO_CHEQUE.Text = fila["CORRELATIVO_CHEQUE"].ToString();
+                    // Incrementar el correlativo en 1 para mostrar el siguiente número
+                    int correlativo = 0;
+                    if (fila["CORRELATIVO_CHEQUE"] != DBNull.Value)
+                        int.TryParse(fila["CORRELATIVO_CHEQUE"].ToString(), out correlativo);
+                    txtNUMERO_CHEQUE.Text = (correlativo + 1).ToString();
                     txtMONEDA.Text = "DOLARES";
 
                     // Al seleccionar cuenta bancaria agregar
@@ -106,7 +117,8 @@ namespace SistemaContable.UI.Forms.Bancos
                     ParametrosExtra = new { ROL = "PRO" }
                 },
                 fila => AsignarProveedor(fila)
-            );            
+            );
+            ConfigurarCRUD(EstadoFormulario.Nuevo);
         }
 
         
@@ -205,6 +217,62 @@ namespace SistemaContable.UI.Forms.Bancos
             txtCANTIDAD.Text = "";
         }
 
+        private void ConfigurarCRUD(EstadoFormulario estado)
+        {
+
+            switch (estado)
+            {
+                case EstadoFormulario.Nuevo:
+                    txtOPERACION.Enabled = true;
+                    txtNUM_CUENTA.Enabled = true;
+                    mskFECHA_CHEQUE.Enabled = true;
+                    txtPROVEEDOR.Enabled = true;
+                    txtNOMBRE.Enabled = true;
+                    txtNUMERO_CHEQUE.Enabled = true; 
+                    txtCANTIDAD.Enabled = true;
+                    txtNOMBRE_CHEQUE.Enabled = true;
+                    txtNUMERO_PARTIDA.Enabled = true;
+                    txtCONCEPTO.Enabled = true;
+                    gridControl1.Enabled = true;
+
+                    btnImprimir.Enabled = false;
+                    btnGuardar.Enabled = true;
+                    btnCCF_Contado.Enabled = true;
+                    btnAgregar.Enabled = false;
+                    btnBorrarFila.Enabled = true;
+                    btnEliminar.Enabled = false; 
+                    break;
+                case EstadoFormulario.Guardado:
+                    txtOPERACION.Enabled = false;
+                    txtNUM_CUENTA.Enabled = false;
+                    mskFECHA_CHEQUE.Enabled = false;
+                    txtPROVEEDOR.Enabled = false;
+                    txtNOMBRE.Enabled = false;
+                    txtNUMERO_CHEQUE.Enabled = false;
+                    txtCANTIDAD.Enabled = false;
+                    txtNOMBRE_CHEQUE.Enabled = false;
+                    txtNUMERO_PARTIDA.Enabled = false;
+                    txtCONCEPTO.Enabled = false;
+                    gridControl1.Enabled = false;  
+
+                    btnImprimir.Enabled = true;
+                    btnGuardar.Enabled = false;
+                    btnCCF_Contado.Enabled = false;
+                    btnAgregar.Enabled = true;
+                    btnBorrarFila.Enabled = false;
+                    btnEliminar.Enabled = true;
+                    break;
+                case EstadoFormulario.Impreso:
+                    btnImprimir.Enabled = true;
+                    btnGuardar.Enabled = false;
+                    btnCCF_Contado.Enabled = false;
+                    btnAgregar.Enabled = true;
+                    btnBorrarFila.Enabled = false;
+                    btnEliminar.Enabled = false;
+                    break;
+            }
+        }
+
         /// <summary>
         /// Verifica si hay CCFs al contado huérfanos del usuario actual y pregunta
         /// si los quiere retomar. Si acepta, asigna ese UID y abre directamente
@@ -299,6 +367,7 @@ namespace SistemaContable.UI.Forms.Bancos
         {
             // Crear DataTable con las columnas de CHEQUE_PARTIDA
             _dtPartida = new DataTable();
+            _dtPartida.Columns.Add("ORDEN", typeof(int));
             _dtPartida.Columns.Add("CTACONTABLE", typeof(string));
             _dtPartida.Columns.Add("DETALLE", typeof(string));
             _dtPartida.Columns.Add("CARGO", typeof(decimal));
@@ -321,6 +390,7 @@ namespace SistemaContable.UI.Forms.Bancos
             view.Columns.Clear();
             view.PopulateColumns();
 
+            ConfigurarColumna(view, "ORDEN", "ORDEN", 0, false);
             ConfigurarColumna(view, "CTACONTABLE", "CUENTA", 150);
             ConfigurarColumna(view, "DETALLE", "DETALLE DE LA APLICACION", 350);
             ConfigurarColumna(view, "CARGO", "CARGO", 75);
@@ -383,20 +453,21 @@ namespace SistemaContable.UI.Forms.Bancos
         }
 
         private void ConfigurarColumna(GridView view, string fieldName,
-            string caption, int width)
+            string caption, int width, bool visible = true)
         {
             if (!view.Columns.ColumnByFieldName(fieldName).Equals(null))
             {
                 var col = view.Columns[fieldName];
                 col.Caption = caption;
                 col.Width = width;
-                col.Visible = true;
+                col.Visible = visible;
             }
         }
 
         private void AgregarFilaVacia()
         {
             var fila = _dtPartida.NewRow();
+            fila["ORDEN"] = 0;
             fila["CTACONTABLE"] = string.Empty;
             fila["DETALLE"] = string.Empty;
             fila["CARGO"] = 0m;
@@ -420,6 +491,7 @@ namespace SistemaContable.UI.Forms.Bancos
             if (_dtPartida.Rows.Count == 0)
             {
                 var fila = _dtPartida.NewRow();
+                fila["ORDEN"] = 0;
                 fila["CTACONTABLE"] = ctaContable;
                 fila["DETALLE"] = string.Empty;
                 fila["CARGO"] = 0m;
@@ -467,6 +539,7 @@ namespace SistemaContable.UI.Forms.Bancos
             else
             {
                 var fila = _dtPartida.NewRow();
+                fila["ORDEN"] = 0;
                 fila["CTACONTABLE"] = cuentaPorPagar;
                 fila["DETALLE"] = detalle;
                 fila["CARGO"] = totalPago;
@@ -520,21 +593,53 @@ namespace SistemaContable.UI.Forms.Bancos
                 }
             }
 
-            // Si está en CARGO presiona Enter → saltar directo a CTACONTABLE de la siguiente fila
-            if (colActual == "CARGO")
+            // ✅ Caso especial: DETALLE de la fila 0 (cuenta del banco)
+            // → saltar directo a CTACONTABLE de la fila 1
+            if (colActual == "DETALLE" && view.FocusedRowHandle == 0)
             {
                 e.Handled = true;
                 view.CloseEditor();
-                int filaActual = view.FocusedRowHandle;
+                view.UpdateCurrentRow();
 
-                if (filaActual == _dtPartida.Rows.Count - 1)
+                if (_dtPartida.Rows.Count < 2)
                     AgregarFilaVacia();
 
-                view.FocusedRowHandle = filaActual + 1;
+                _columnaAnteriorGrid = "CTACONTABLE";
+
+                view.FocusedRowHandle = 1;
                 view.FocusedColumn = view.Columns["CTACONTABLE"];
                 view.ShowEditor();
                 return;
-            }            
+            }
+
+
+            // Si está en CARGO con valor > 0 → saltar a CTACONTABLE de la siguiente fila
+            // Si CARGO == 0 → comportamiento normal (pasa a ABONO)
+            if (colActual == "CARGO")
+            {
+                view.CloseEditor();
+                view.UpdateCurrentRow();
+
+                decimal cargoActual = 0;
+                object valorCargo = view.GetFocusedRowCellValue("CARGO");
+                if (valorCargo != null && valorCargo != DBNull.Value)
+                    decimal.TryParse(valorCargo.ToString(), out cargoActual);
+
+                if (cargoActual > 0)
+                {
+                    e.Handled = true;
+                    int filaActual = view.FocusedRowHandle;
+
+                    if (filaActual == _dtPartida.Rows.Count - 1)
+                        AgregarFilaVacia();
+
+                    view.FocusedRowHandle = filaActual + 1;
+                    view.FocusedColumn = view.Columns["CTACONTABLE"];
+                    view.ShowEditor();
+                    return;
+                }
+                // Si CARGO == 0 → caer al bloque general de Tab (avanza a ABONO)
+            }
 
             // Enter como Tab entre columnas
             int colIndex = view.FocusedColumn?.VisibleIndex ?? 0;
@@ -641,9 +746,18 @@ namespace SistemaContable.UI.Forms.Bancos
 
         #region Guardar
 
-    
+
         private bool ValidarCampos()
         {
+            if (string.IsNullOrWhiteSpace(txtOPERACION.Text))
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione una operación.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtOPERACION.Focus();
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(txtNUM_CUENTA.Text))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
@@ -656,12 +770,44 @@ namespace SistemaContable.UI.Forms.Bancos
             if (!FormHelper.ValidarFecha(mskFECHA_CHEQUE, "Fecha del Cheque"))
                 return false;
 
+            DateTime? fecha = FormHelper.ObtenerFecha(mskFECHA_CHEQUE);
+            if (fecha.HasValue)
+            {
+                if (fecha > DateTime.Today)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "La fecha no puede ser mayor a la fecha actual.",
+                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    mskFECHA_CHEQUE.Focus();
+                    return false;
+                }
+                else if (fecha < DateTime.Today.AddDays(-5))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "La fecha no puede ser menor a 5 días.",
+                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    mskFECHA_CHEQUE.Focus();
+                    return false;
+                }
+            }
+
             if (string.IsNullOrWhiteSpace(txtNOMBRE_CHEQUE.Text))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
                     "El nombre del cheque es requerido.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNOMBRE_CHEQUE.Focus();
+                return false;
+            }
+
+            // ✅ Validar que la cantidad sea mayor que cero
+            decimal cantidad = ObtenerDecimal(txtCANTIDAD);
+            if (cantidad <= 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "La cantidad del cheque debe ser mayor que cero.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCANTIDAD.Focus();
                 return false;
             }
 
@@ -681,6 +827,29 @@ namespace SistemaContable.UI.Forms.Bancos
                 DevExpress.XtraEditors.XtraMessageBox.Show(
                     "Debe ingresar al menos una línea en la partida contable.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // ✅ Validar que la partida esté cuadrada
+            decimal totalCargo = 0;
+            decimal totalAbono = 0;
+            foreach (DataRow fila in _dtPartida.Rows)
+            {
+                if (fila["CARGO"] != DBNull.Value)
+                    totalCargo += Convert.ToDecimal(fila["CARGO"]);
+                if (fila["ABONO"] != DBNull.Value)
+                    totalAbono += Convert.ToDecimal(fila["ABONO"]);
+            }
+
+            if (totalCargo != totalAbono)
+            {
+                decimal diferencia = Math.Abs(totalCargo - totalAbono);                
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    $"La partida contable no cuadra.\n\n" +
+                    $"Total Cargo: {totalCargo:N2}\n" +
+                    $"Total Abono: {totalAbono:N2}\n" +
+                    $"Diferencia: {diferencia:N2}",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);                
                 return false;
             }
 
@@ -736,17 +905,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
         #region Cancelar y Salir
 
-        private void btnCancelar_Click(object sender, EventArgs e)
-        {
-            _idCheque = 0;
-            FormHelper.LimpiarControles(this);
-            _dtPartida.Clear();
-            AgregarFilaVacia();
-            mskFECHA_CHEQUE.Text = DateTime.Today.ToString("dd/MM/yyyy");
-            txtOPERACION.Focus();
-            ActualizarCuadre();
-        }
-
+       
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -854,6 +1013,252 @@ namespace SistemaContable.UI.Forms.Bancos
         private void btnCCF_Contado_Click(object sender, EventArgs e)
         {
             AbrirContadoConUid();
+        }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            if (!ValidarCampos()) return;
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                               
+                if (_dtPartida.Rows.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Debe ingresar al menos una línea válida en la partida contable.",
+                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Parámetros del cheque
+                var parametros = new
+                {
+                    ACCION = "GUARDAR",
+                    ID_CHEQUE = 0,
+                    ID_CTA_BANCO = Convert.ToInt32(txtNUM_CUENTA.Tag ?? 0),
+                    NUM_CHEQUE = string.IsNullOrWhiteSpace(txtNUMERO_CHEQUE.Text)
+                                          ? (int?)null
+                                          : (int?)Convert.ToInt32(txtNUMERO_CHEQUE.Text),
+                    FECHA_CHEQUE = FormHelper.ObtenerFecha(mskFECHA_CHEQUE),
+                    MONTO = ObtenerDecimal(txtCANTIDAD),
+                    NOMBRE_CHEQUE = NullIfEmpty(txtNOMBRE_CHEQUE.Text),
+                    NUM_PARTIDA = string.IsNullOrWhiteSpace(txtNUMERO_PARTIDA.Text)
+                                          ? (int?)null
+                                          : (int?)Convert.ToInt32(txtNUMERO_PARTIDA.Text),
+                    CONCEPTO = NullIfEmpty(txtCONCEPTO.Text),
+                    ID_ENTIDAD = (int?)null,
+                    CODIGO_ENTIDAD = NullIfEmpty(txtPROVEEDOR.Text),
+                    UID_ENLACE_CHEQUE = _uidEnlaceCheque,
+                    USUARIO = Configuracion.UsuarioActual
+                };
+
+                // Llamada al SP con TVP
+                int idCheque = _dal.EjecutarConsultaConTVP(
+                    "SP_CHEQUE",
+                    "PARTIDA",
+                    "typeCHEQUE_PARTIDA",
+                    _dtPartida,
+                    parametros);
+
+                if (idCheque > 0)
+                {
+                    _idCheque = idCheque;
+                    ConfigurarCRUD(EstadoFormulario.Guardado);
+                }
+                else
+                    throw new Exception("El SP no devolvió el ID generado.");
+
+                var args = new XtraMessageBoxArgs
+                {
+                    Caption = "Guardado",
+                    Text = $"Cheque <b>N° {txtNUMERO_CHEQUE.Text.Trim()}</b> guardado correctamente.",
+                    Buttons = new[] { DialogResult.OK },
+                    Icon = SystemIcons.Information,
+                    AllowHtmlText = DefaultBoolean.True
+                };
+                XtraMessageBox.Show(args);                
+               
+            }
+            catch (Exception ex)
+            {
+                var args = new XtraMessageBoxArgs
+                {
+                    Caption = "Validación",
+                    Text = $"<b>{ex.Message}</b>",
+                    Buttons = new[] { DialogResult.OK },
+                    Icon = SystemIcons.Warning,
+                    AllowHtmlText = DefaultBoolean.True
+                };               
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private static string NullIfEmpty(string texto)
+        {
+            return string.IsNullOrWhiteSpace(texto) ? null : texto.Trim();
+        }
+
+        private decimal ObtenerDecimal(TextBox tb)
+        {
+            if (string.IsNullOrWhiteSpace(tb.Text)) return 0;
+            return decimal.TryParse(tb.Text, out decimal v) ? v : 0;
+        }
+
+        private void btnBorrarFila_Click(object sender, EventArgs e)
+        {
+            BorrarFila();
+        }
+
+        private void BorrarFila()
+        {
+            var view = gridControl1.MainView as GridView;
+            if (view == null) return;
+
+            // ============================================================
+            // 1) Validar que haya una fila seleccionada
+            // ============================================================
+            if (view.FocusedRowHandle < 0 || view.RowCount == 0)
+            {
+                XtraMessageBox.Show("Debe seleccionar una fila para borrar.",
+                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Cerrar el editor si está abierto para que los valores estén persistidos
+            view.CloseEditor();
+            view.UpdateCurrentRow();
+
+            int filaActual = view.FocusedRowHandle;
+            DataRow fila = view.GetDataRow(filaActual);
+            if (fila == null) return;
+
+            // ============================================================
+            // 2) Si la fila está vacía, no preguntar — solo eliminar
+            // ============================================================
+            string cta = fila["CTACONTABLE"]?.ToString()?.Trim() ?? string.Empty;
+            string detalle = fila["DETALLE"]?.ToString()?.Trim() ?? string.Empty;
+            decimal cargo = fila["CARGO"] == DBNull.Value ? 0 : Convert.ToDecimal(fila["CARGO"]);
+            decimal abono = fila["ABONO"] == DBNull.Value ? 0 : Convert.ToDecimal(fila["ABONO"]);
+
+            bool filaVacia = string.IsNullOrWhiteSpace(cta)
+                             && string.IsNullOrWhiteSpace(detalle)
+                             && cargo == 0
+                             && abono == 0;
+
+            // ============================================================
+            // 3) Si tiene datos, confirmar antes de borrar
+            // ============================================================
+            if (!filaVacia)
+            {
+                var rta = XtraMessageBox.Show(
+                    $"¿Está seguro de eliminar la fila seleccionada?\n\n" +
+                    $"Cuenta: {cta}\n" +
+                    $"Detalle: {detalle}\n" +
+                    $"Cargo: {cargo:N2}\n" +
+                    $"Abono: {abono:N2}",
+                    "Confirmar eliminación",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (rta != DialogResult.Yes) return;
+            }
+
+            // ============================================================
+            // 4) Borrar la fila del DataTable
+            // ============================================================
+            _dtPartida.Rows.Remove(fila);
+
+            // ============================================================
+            // 5) Asegurar que siempre haya una fila vacía al final para captura
+            // ============================================================
+            if (_dtPartida.Rows.Count == 0)
+            {
+                AgregarFilaVacia();
+            }
+            else
+            {
+                // Verificar si la última fila está vacía. Si no, agregar una nueva.
+                DataRow ultima = _dtPartida.Rows[_dtPartida.Rows.Count - 1];
+                string ctaUlt = ultima["CTACONTABLE"]?.ToString()?.Trim() ?? string.Empty;
+                decimal cargoUlt = ultima["CARGO"] == DBNull.Value ? 0 : Convert.ToDecimal(ultima["CARGO"]);
+                decimal abonoUlt = ultima["ABONO"] == DBNull.Value ? 0 : Convert.ToDecimal(ultima["ABONO"]);
+
+                if (!string.IsNullOrWhiteSpace(ctaUlt) || cargoUlt != 0 || abonoUlt != 0)
+                    AgregarFilaVacia();
+            }
+
+            // ============================================================
+            // 6) Reposicionar el foco
+            // ============================================================
+            int nuevaFila = Math.Min(filaActual, view.RowCount - 1);
+            if (nuevaFila >= 0)
+            {
+                view.FocusedRowHandle = nuevaFila;
+                var col = view.Columns.ColumnByFieldName("CTACONTABLE");
+                if (col != null) view.FocusedColumn = col;
+            }
+
+            // ============================================================
+            // 7) Refrescar totales y cuadre
+            // ============================================================
+            ActualizarCuadre();
+        }
+
+        private void btnImprimir_Click(object sender, EventArgs e)
+        {
+          
+            if (_idCheque == 0)
+            {
+                XtraMessageBox.Show("Debe guardar el cheque antes de imprimir.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                var reporte = new rptCheque { IdCheque = _idCheque };
+                reporte.CargarDatos();
+                reporte.ImprimirConDialogo();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+            
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            _idCheque = 0;
+            FormHelper.LimpiarControles(this);
+            _dtPartida.Clear();
+            AgregarFilaVacia();
+            mskFECHA_CHEQUE.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            txtOPERACION.Focus();
+            ActualizarCuadre();
+            ConfigurarCRUD(EstadoFormulario.Nuevo);
+
+            // Abrir automáticamente la búsqueda de Tipo de Operación
+            this.BeginInvoke(new Action(() =>
+            {
+                txtOPERACION.Focus();
+                FormHelper.AbrirBusqueda(txtOPERACION);
+            }));
         }
     }
 }

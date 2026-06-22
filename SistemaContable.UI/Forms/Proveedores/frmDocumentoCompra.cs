@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using System.Globalization;
 using DevExpress.XtraEditors;
 using ComboBox = System.Windows.Forms.ComboBox;
+using System.Data.SqlClient;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
@@ -188,13 +189,12 @@ namespace SistemaContable.UI.Forms.Proveedores
                 }
 
                 DataRow r = dt.Rows[0];
-
-                // ---------- Estado del form ----------                
-                _idQuedanActual = Convert.ToInt32(r["ID_QUEDAN"]);
-
-                // ---------- Quedan ----------
-                lblNUM_QUEDAN.Text = r["NUM_QUEDAN"].ToString();
-
+                if (!EsContado)
+                {
+                    // ---------- Quedan ----------
+                    _idQuedanActual = Convert.ToInt32(r["ID_QUEDAN"]);                    
+                    lblNUM_QUEDAN.Text = r["NUM_QUEDAN"].ToString();
+                }
                 // ---------- Proveedor ----------
                 _idEntidad = Convert.ToInt32(r["ID_ENTIDAD"]);
                 _idTipoPersona = r["ID_TIPO_ENTIDAD"].ToString();
@@ -760,7 +760,24 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
-            this.Close(); 
+            if(IdCcfCompra == 0 && !string.IsNullOrWhiteSpace(txtCOD_GENERACION.Text.Trim()) && !string.IsNullOrWhiteSpace(txtNUM_CONTROL.Text.Trim()))
+            {
+                var resp = DevExpress.XtraEditors.XtraMessageBox.Show(
+                    $"¿Esta seguro de salir? (Existen datos sin guardar)",
+                    "Información pendiente de guardar",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (resp != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+            if (EsContado)
+            {
+                // En modo contado, retornar OK para que el padre refresque
+                DialogResult = DialogResult.OK;
+            }
+            Close();
         }
 
         // ================================================================
@@ -928,13 +945,12 @@ namespace SistemaContable.UI.Forms.Proveedores
                 }
                 ConfigurarCRUD(EstadoFormulario.Guardado);
                 XtraMessageBox.Show("Documento guardado correctamente.",
-                    "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                if (EsContado)
-                {
-                    DialogResult = DialogResult.OK;
-                    Close();
-                    return;
-                }
+                    "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);               
+            }
+            catch (SqlException sqlEx)
+            {
+                XtraMessageBox.Show(sqlEx.Message,
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
