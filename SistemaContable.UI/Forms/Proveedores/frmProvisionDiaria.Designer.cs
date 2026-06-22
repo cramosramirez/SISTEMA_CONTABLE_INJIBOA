@@ -127,7 +127,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.dateEdit1.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dateEdit1.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dateEdit1.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.dateEdit1.Size = new System.Drawing.Size(123, 24);
+            this.dateEdit1.Size = new System.Drawing.Size(123, 20);
             this.dateEdit1.TabIndex = 0;
             this.dateEdit1.Leave += new System.EventHandler(this.dateEdit1_Leave);
             // 
@@ -165,29 +165,29 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCONCEPTO_PARTIDA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCONCEPTO_PARTIDA.Location = new System.Drawing.Point(141, 76);
             this.txtCONCEPTO_PARTIDA.Name = "txtCONCEPTO_PARTIDA";
-            this.txtCONCEPTO_PARTIDA.Size = new System.Drawing.Size(580, 24);
+            this.txtCONCEPTO_PARTIDA.Size = new System.Drawing.Size(580, 22);
             this.txtCONCEPTO_PARTIDA.TabIndex = 4;
             this.txtCONCEPTO_PARTIDA.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EnterComoTab);
             // 
             // label16
             // 
-            this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(66, 79);
+            this.label16.Location = new System.Drawing.Point(69, 79);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(69, 18);
+            this.label16.Size = new System.Drawing.Size(60, 14);
             this.label16.TabIndex = 111;
             this.label16.Text = "Concepto";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(317, 50);
+            this.label1.Location = new System.Drawing.Point(323, 50);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 18);
+            this.label1.Size = new System.Drawing.Size(50, 14);
             this.label1.TabIndex = 109;
             this.label1.Text = "Número";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtNUMERO_PARTIDA
             // 
@@ -196,19 +196,19 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNUMERO_PARTIDA.Location = new System.Drawing.Point(384, 46);
             this.txtNUMERO_PARTIDA.Name = "txtNUMERO_PARTIDA";
             this.txtNUMERO_PARTIDA.ReadOnly = true;
-            this.txtNUMERO_PARTIDA.Size = new System.Drawing.Size(337, 24);
+            this.txtNUMERO_PARTIDA.Size = new System.Drawing.Size(337, 22);
             this.txtNUMERO_PARTIDA.TabIndex = 3;
             this.txtNUMERO_PARTIDA.TabStop = false;
             // 
             // label37
             // 
-            this.label37.AutoSize = true;
             this.label37.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label37.Location = new System.Drawing.Point(83, 49);
+            this.label37.Location = new System.Drawing.Point(85, 49);
             this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(52, 18);
+            this.label37.Size = new System.Drawing.Size(44, 14);
             this.label37.TabIndex = 107;
             this.label37.Text = "Partida";
+            this.label37.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtTIPO_PARTIDA
             // 
@@ -217,7 +217,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtTIPO_PARTIDA.Location = new System.Drawing.Point(141, 46);
             this.txtTIPO_PARTIDA.Name = "txtTIPO_PARTIDA";
             this.txtTIPO_PARTIDA.ReadOnly = true;
-            this.txtTIPO_PARTIDA.Size = new System.Drawing.Size(124, 24);
+            this.txtTIPO_PARTIDA.Size = new System.Drawing.Size(124, 22);
             this.txtTIPO_PARTIDA.TabIndex = 2;
             this.txtTIPO_PARTIDA.TabStop = false;
             this.txtTIPO_PARTIDA.Text = "DI";
@@ -229,29 +229,29 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxTIPO_PROVEEDOR.FormattingEnabled = true;
             this.cbxTIPO_PROVEEDOR.Location = new System.Drawing.Point(384, 16);
             this.cbxTIPO_PROVEEDOR.Name = "cbxTIPO_PROVEEDOR";
-            this.cbxTIPO_PROVEEDOR.Size = new System.Drawing.Size(337, 25);
+            this.cbxTIPO_PROVEEDOR.Size = new System.Drawing.Size(337, 22);
             this.cbxTIPO_PROVEEDOR.TabIndex = 1;
             this.cbxTIPO_PROVEEDOR.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EnterComoTab);
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(270, 19);
+            this.label11.Location = new System.Drawing.Point(282, 19);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(107, 18);
+            this.label11.Size = new System.Drawing.Size(91, 14);
             this.label11.TabIndex = 58;
             this.label11.Text = "Tipo proveedor";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label18
             // 
-            this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(1, 19);
+            this.label18.Location = new System.Drawing.Point(19, 19);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(134, 18);
+            this.label18.Size = new System.Drawing.Size(110, 14);
             this.label18.TabIndex = 56;
             this.label18.Text = "Fecha a provisionar";
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // panel2
             // 
@@ -634,7 +634,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // frmProvisionDiaria
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1198, 649);
             this.Controls.Add(this.panel3);

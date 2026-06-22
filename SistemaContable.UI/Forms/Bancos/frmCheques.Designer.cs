@@ -82,7 +82,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNOMBRE.Location = new System.Drawing.Point(539, 39);
             this.txtNOMBRE.Name = "txtNOMBRE";
             this.txtNOMBRE.ReadOnly = true;
-            this.txtNOMBRE.Size = new System.Drawing.Size(506, 24);
+            this.txtNOMBRE.Size = new System.Drawing.Size(506, 22);
             this.txtNOMBRE.TabIndex = 4;
             this.txtNOMBRE.TabStop = false;
             // 
@@ -91,28 +91,28 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNUM_CUENTA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNUM_CUENTA.Location = new System.Drawing.Point(334, 39);
             this.txtNUM_CUENTA.Name = "txtNUM_CUENTA";
-            this.txtNUM_CUENTA.Size = new System.Drawing.Size(199, 24);
+            this.txtNUM_CUENTA.Size = new System.Drawing.Size(199, 22);
             this.txtNUM_CUENTA.TabIndex = 3;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(272, 40);
+            this.label2.Location = new System.Drawing.Point(281, 40);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 18);
+            this.label2.Size = new System.Drawing.Size(46, 14);
             this.label2.TabIndex = 2;
             this.label2.Text = "Cuenta";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(21, 40);
+            this.label1.Location = new System.Drawing.Point(42, 42);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(73, 18);
+            this.label1.Size = new System.Drawing.Size(62, 14);
             this.label1.TabIndex = 0;
             this.label1.Text = "Operacion";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtNUMERO_CHEQUE
             // 
@@ -120,19 +120,19 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNUMERO_CHEQUE.Location = new System.Drawing.Point(112, 72);
             this.txtNUMERO_CHEQUE.Name = "txtNUMERO_CHEQUE";
             this.txtNUMERO_CHEQUE.ReadOnly = true;
-            this.txtNUMERO_CHEQUE.Size = new System.Drawing.Size(142, 24);
+            this.txtNUMERO_CHEQUE.Size = new System.Drawing.Size(142, 22);
             this.txtNUMERO_CHEQUE.TabIndex = 6;
             this.txtNUMERO_CHEQUE.TabStop = false;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(21, 74);
+            this.label3.Location = new System.Drawing.Point(54, 76);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(60, 18);
+            this.label3.Size = new System.Drawing.Size(50, 14);
             this.label3.TabIndex = 5;
             this.label3.Text = "Número";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // mskFECHA_CHEQUE
             // 
@@ -140,35 +140,35 @@ namespace SistemaContable.UI.Forms.Bancos
             this.mskFECHA_CHEQUE.Location = new System.Drawing.Point(334, 74);
             this.mskFECHA_CHEQUE.Mask = "00/00/0000";
             this.mskFECHA_CHEQUE.Name = "mskFECHA_CHEQUE";
-            this.mskFECHA_CHEQUE.Size = new System.Drawing.Size(169, 24);
+            this.mskFECHA_CHEQUE.Size = new System.Drawing.Size(169, 22);
             this.mskFECHA_CHEQUE.TabIndex = 8;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(272, 75);
+            this.label4.Location = new System.Drawing.Point(288, 75);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 18);
+            this.label4.Size = new System.Drawing.Size(39, 14);
             this.label4.TabIndex = 7;
             this.label4.Text = "Fecha";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(509, 77);
+            this.label5.Location = new System.Drawing.Point(526, 77);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(42, 18);
+            this.label5.Size = new System.Drawing.Size(35, 14);
             this.label5.TabIndex = 9;
             this.label5.Text = "Prov.";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtPROVEEDOR
             // 
             this.txtPROVEEDOR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPROVEEDOR.Location = new System.Drawing.Point(567, 72);
             this.txtPROVEEDOR.Name = "txtPROVEEDOR";
-            this.txtPROVEEDOR.Size = new System.Drawing.Size(143, 24);
+            this.txtPROVEEDOR.Size = new System.Drawing.Size(143, 22);
             this.txtPROVEEDOR.TabIndex = 10;
             this.txtPROVEEDOR.Leave += new System.EventHandler(this.txtPROVEEDOR_Leave);
             // 
@@ -177,7 +177,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtCANTIDAD.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCANTIDAD.Location = new System.Drawing.Point(796, 72);
             this.txtCANTIDAD.Name = "txtCANTIDAD";
-            this.txtCANTIDAD.Size = new System.Drawing.Size(142, 24);
+            this.txtCANTIDAD.Size = new System.Drawing.Size(142, 22);
             this.txtCANTIDAD.TabIndex = 12;
             this.txtCANTIDAD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtCANTIDAD.Enter += new System.EventHandler(this.txtCANTIDAD_Enter);
@@ -186,13 +186,13 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(716, 77);
+            this.label6.Location = new System.Drawing.Point(736, 77);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(64, 18);
+            this.label6.Size = new System.Drawing.Size(54, 14);
             this.label6.TabIndex = 11;
             this.label6.Text = "Cantidad";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // groupControl1
             // 
@@ -228,7 +228,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtOPERACION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOPERACION.Location = new System.Drawing.Point(112, 38);
             this.txtOPERACION.Name = "txtOPERACION";
-            this.txtOPERACION.Size = new System.Drawing.Size(142, 24);
+            this.txtOPERACION.Size = new System.Drawing.Size(142, 22);
             this.txtOPERACION.TabIndex = 1;
             // 
             // txtMONEDA
@@ -237,7 +237,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtMONEDA.Location = new System.Drawing.Point(944, 72);
             this.txtMONEDA.Name = "txtMONEDA";
             this.txtMONEDA.ReadOnly = true;
-            this.txtMONEDA.Size = new System.Drawing.Size(101, 24);
+            this.txtMONEDA.Size = new System.Drawing.Size(101, 22);
             this.txtMONEDA.TabIndex = 13;
             this.txtMONEDA.TabStop = false;
             // 
@@ -246,18 +246,18 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNOMBRE_CHEQUE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNOMBRE_CHEQUE.Location = new System.Drawing.Point(334, 109);
             this.txtNOMBRE_CHEQUE.Name = "txtNOMBRE_CHEQUE";
-            this.txtNOMBRE_CHEQUE.Size = new System.Drawing.Size(711, 24);
+            this.txtNOMBRE_CHEQUE.Size = new System.Drawing.Size(711, 22);
             this.txtNOMBRE_CHEQUE.TabIndex = 15;
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(261, 114);
+            this.label7.Location = new System.Drawing.Point(277, 114);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(60, 18);
+            this.label7.Size = new System.Drawing.Size(50, 14);
             this.label7.TabIndex = 14;
             this.label7.Text = "Nombre";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // groupControl2
             // 
@@ -302,31 +302,31 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(236, 42);
+            this.label9.Location = new System.Drawing.Point(251, 42);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(69, 18);
+            this.label9.Size = new System.Drawing.Size(60, 14);
             this.label9.TabIndex = 2;
             this.label9.Text = "Concepto";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtNUMERO_PARTIDA
             // 
             this.txtNUMERO_PARTIDA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNUMERO_PARTIDA.Location = new System.Drawing.Point(112, 38);
             this.txtNUMERO_PARTIDA.Name = "txtNUMERO_PARTIDA";
-            this.txtNUMERO_PARTIDA.Size = new System.Drawing.Size(105, 24);
+            this.txtNUMERO_PARTIDA.Size = new System.Drawing.Size(105, 22);
             this.txtNUMERO_PARTIDA.TabIndex = 1;
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(21, 40);
+            this.label8.Location = new System.Drawing.Point(50, 40);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(60, 18);
+            this.label8.Size = new System.Drawing.Size(50, 14);
             this.label8.TabIndex = 0;
             this.label8.Text = "Número";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // groupControl3
             // 
@@ -493,7 +493,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // frmCheques
             // 
             this.Appearance.Options.UseFont = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1098, 734);
             this.Controls.Add(this.groupControl3);

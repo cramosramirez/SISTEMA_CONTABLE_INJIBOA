@@ -64,7 +64,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(132, 12);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(24, 25);
+            this.comboBox1.Size = new System.Drawing.Size(24, 21);
             this.comboBox1.TabIndex = 3;
             // 
             // searchLookUpEdit1View
@@ -96,33 +96,33 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             this.txtCTACONTABLE.Location = new System.Drawing.Point(442, 227);
             this.txtCTACONTABLE.Name = "txtCTACONTABLE";
-            this.txtCTACONTABLE.Size = new System.Drawing.Size(520, 29);
+            this.txtCTACONTABLE.Size = new System.Drawing.Size(520, 25);
             this.txtCTACONTABLE.TabIndex = 4;
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(226, 227);
+            this.label6.Location = new System.Drawing.Point(312, 227);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(136, 21);
+            this.label6.Size = new System.Drawing.Size(122, 19);
             this.label6.TabIndex = 8;
             this.label6.Text = "Cuenta contable: *";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(226, 181);
+            this.label5.Location = new System.Drawing.Point(312, 181);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(137, 21);
+            this.label5.Size = new System.Drawing.Size(122, 19);
             this.label5.TabIndex = 7;
             this.label5.Text = "Fecha de apertura:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // mskFECHA_APERTURA
             // 
             this.mskFECHA_APERTURA.Location = new System.Drawing.Point(442, 178);
             this.mskFECHA_APERTURA.Mask = "00/00/0000";
             this.mskFECHA_APERTURA.Name = "mskFECHA_APERTURA";
-            this.mskFECHA_APERTURA.Size = new System.Drawing.Size(520, 29);
+            this.mskFECHA_APERTURA.Size = new System.Drawing.Size(520, 25);
             this.mskFECHA_APERTURA.TabIndex = 3;
             // 
             // cbxBANCO
@@ -130,49 +130,49 @@ namespace SistemaContable.UI.Forms.Bancos
             this.cbxBANCO.FormattingEnabled = true;
             this.cbxBANCO.Location = new System.Drawing.Point(442, 130);
             this.cbxBANCO.Name = "cbxBANCO";
-            this.cbxBANCO.Size = new System.Drawing.Size(520, 29);
+            this.cbxBANCO.Size = new System.Drawing.Size(520, 25);
             this.cbxBANCO.TabIndex = 2;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(226, 135);
+            this.label4.Location = new System.Drawing.Point(385, 135);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(55, 21);
+            this.label4.Size = new System.Drawing.Size(49, 19);
             this.label4.TabIndex = 4;
             this.label4.Text = "Banco:";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtNOMBRE
             // 
             this.txtNOMBRE.Location = new System.Drawing.Point(442, 82);
             this.txtNOMBRE.Name = "txtNOMBRE";
-            this.txtNOMBRE.Size = new System.Drawing.Size(520, 29);
+            this.txtNOMBRE.Size = new System.Drawing.Size(520, 25);
             this.txtNOMBRE.TabIndex = 1;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(226, 82);
+            this.label3.Location = new System.Drawing.Point(294, 82);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(158, 21);
+            this.label3.Size = new System.Drawing.Size(140, 19);
             this.label3.TabIndex = 2;
             this.label3.Text = "Nombre de la cuenta:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtNUM_CUENTA
             // 
             this.txtNUM_CUENTA.Location = new System.Drawing.Point(442, 36);
             this.txtNUM_CUENTA.Name = "txtNUM_CUENTA";
-            this.txtNUM_CUENTA.Size = new System.Drawing.Size(520, 29);
+            this.txtNUM_CUENTA.Size = new System.Drawing.Size(520, 25);
             this.txtNUM_CUENTA.TabIndex = 0;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(226, 36);
+            this.label1.Location = new System.Drawing.Point(330, 36);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 21);
+            this.label1.Size = new System.Drawing.Size(104, 19);
             this.label1.TabIndex = 0;
             this.label1.Text = "N° de Cuenta: *";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnGuardar
             // 
@@ -210,7 +210,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // frmCuentasBancarias
             // 
             this.Appearance.Options.UseFont = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1098, 387);
             this.Controls.Add(this.btnSalir);
