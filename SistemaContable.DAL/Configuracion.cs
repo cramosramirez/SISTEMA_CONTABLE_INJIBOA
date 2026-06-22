@@ -1,3 +1,4 @@
+using System;
 using System.Configuration;
 using System.Reflection;
 
@@ -9,9 +10,15 @@ namespace SistemaContable.DAL
         {
             get
             {
-                return ConfigurationManager
-                       .ConnectionStrings["SistemaContable"]
-                       .ConnectionString;
+                var cs = ConfigurationManager.ConnectionStrings["SistemaContable"];
+                if (cs == null)
+                {
+                    throw new InvalidOperationException(
+                        "No se encontró la cadena de conexión 'SistemaContable' en el archivo de configuración. " +
+                        "Verifique que el archivo SistemaContable.exe.config exista en el folder de la aplicación " +
+                        "y contenga la sección <connectionStrings>.");
+                }
+                return cs.ConnectionString;
             }
         }
 

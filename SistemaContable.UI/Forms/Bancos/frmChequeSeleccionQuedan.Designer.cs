@@ -84,15 +84,15 @@ namespace SistemaContable.UI.Forms.Bancos
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1294, 630);
+            this.panel1.Size = new System.Drawing.Size(1277, 630);
             this.panel1.TabIndex = 0;
             // 
             // gridControl2
             // 
-            this.gridControl2.Location = new System.Drawing.Point(15, 347);
+            this.gridControl2.Location = new System.Drawing.Point(13, 347);
             this.gridControl2.MainView = this.gridViewPagar;
             this.gridControl2.Name = "gridControl2";
-            this.gridControl2.Size = new System.Drawing.Size(1267, 202);
+            this.gridControl2.Size = new System.Drawing.Size(1252, 202);
             this.gridControl2.TabIndex = 134;
             this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewPagar});
@@ -113,37 +113,37 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             this.gridColumn1.Caption = "Tipo Doc.";
             this.gridColumn1.FieldName = "TIPO_DTE";
-            this.gridColumn1.MinWidth = 24;
+            this.gridColumn1.MinWidth = 21;
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.OptionsColumn.AllowSize = false;
             this.gridColumn1.OptionsColumn.FixedWidth = true;
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 0;
-            this.gridColumn1.Width = 100;
+            this.gridColumn1.Width = 87;
             // 
             // gridColumn2
             // 
             this.gridColumn2.Caption = "No./Código generación";
             this.gridColumn2.FieldName = "COD_GENERACION";
-            this.gridColumn2.MinWidth = 320;
+            this.gridColumn2.MinWidth = 280;
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.AllowSize = false;
             this.gridColumn2.OptionsColumn.FixedWidth = true;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 1;
-            this.gridColumn2.Width = 320;
+            this.gridColumn2.Width = 280;
             // 
             // gridColumn3
             // 
             this.gridColumn3.Caption = "Serie/Sello recepción";
             this.gridColumn3.FieldName = "SELLO_RECIBIDO";
-            this.gridColumn3.MinWidth = 324;
+            this.gridColumn3.MinWidth = 283;
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.AllowSize = false;
             this.gridColumn3.OptionsColumn.FixedWidth = true;
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 2;
-            this.gridColumn3.Width = 330;
+            this.gridColumn3.Width = 289;
             // 
             // gridColumn4
             // 
@@ -155,13 +155,13 @@ namespace SistemaContable.UI.Forms.Bancos
             this.gridColumn4.DisplayFormat.FormatString = "dd/MM/yyyy";
             this.gridColumn4.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.gridColumn4.FieldName = "FECHA_VENCE";
-            this.gridColumn4.MinWidth = 120;
+            this.gridColumn4.MinWidth = 105;
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowSize = false;
             this.gridColumn4.OptionsColumn.FixedWidth = true;
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 3;
-            this.gridColumn4.Width = 130;
+            this.gridColumn4.Width = 114;
             // 
             // gridColumn5
             // 
@@ -171,13 +171,13 @@ namespace SistemaContable.UI.Forms.Bancos
             this.gridColumn5.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn5.Caption = "Quedan";
             this.gridColumn5.FieldName = "NUM_QUEDAN";
-            this.gridColumn5.MinWidth = 100;
+            this.gridColumn5.MinWidth = 87;
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.AllowSize = false;
             this.gridColumn5.OptionsColumn.FixedWidth = true;
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 4;
-            this.gridColumn5.Width = 130;
+            this.gridColumn5.Width = 114;
             // 
             // gridColumn6
             // 
@@ -185,24 +185,24 @@ namespace SistemaContable.UI.Forms.Bancos
             this.gridColumn6.DisplayFormat.FormatString = "N2";
             this.gridColumn6.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn6.FieldName = "SALDO";
-            this.gridColumn6.MinWidth = 120;
+            this.gridColumn6.MinWidth = 105;
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowSize = false;
             this.gridColumn6.OptionsColumn.FixedWidth = true;
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 5;
-            this.gridColumn6.Width = 150;
+            this.gridColumn6.Width = 131;
             // 
             // txtValorAPagar
             // 
             this.txtValorAPagar.BackColor = System.Drawing.Color.Teal;
             this.txtValorAPagar.Font = new System.Drawing.Font("Verdana", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtValorAPagar.ForeColor = System.Drawing.Color.White;
-            this.txtValorAPagar.Location = new System.Drawing.Point(362, 575);
+            this.txtValorAPagar.Location = new System.Drawing.Point(317, 575);
             this.txtValorAPagar.Multiline = true;
             this.txtValorAPagar.Name = "txtValorAPagar";
             this.txtValorAPagar.ReadOnly = true;
-            this.txtValorAPagar.Size = new System.Drawing.Size(153, 30);
+            this.txtValorAPagar.Size = new System.Drawing.Size(134, 30);
             this.txtValorAPagar.TabIndex = 133;
             this.txtValorAPagar.TabStop = false;
             this.txtValorAPagar.Text = "$ 0.00";
@@ -212,7 +212,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(222, 581);
+            this.label4.Location = new System.Drawing.Point(177, 579);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(134, 18);
             this.label4.TabIndex = 132;
@@ -220,10 +220,10 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // gridControl1
             // 
-            this.gridControl1.Location = new System.Drawing.Point(15, 73);
+            this.gridControl1.Location = new System.Drawing.Point(13, 73);
             this.gridControl1.MainView = this.gridViewPendientePago;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1267, 202);
+            this.gridControl1.Size = new System.Drawing.Size(1252, 202);
             this.gridControl1.TabIndex = 130;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewPendientePago});
@@ -244,37 +244,37 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             this.colTIPO_DTE.Caption = "Tipo Doc.";
             this.colTIPO_DTE.FieldName = "TIPO_DTE";
-            this.colTIPO_DTE.MinWidth = 24;
+            this.colTIPO_DTE.MinWidth = 21;
             this.colTIPO_DTE.Name = "colTIPO_DTE";
             this.colTIPO_DTE.OptionsColumn.AllowSize = false;
             this.colTIPO_DTE.OptionsColumn.FixedWidth = true;
             this.colTIPO_DTE.Visible = true;
             this.colTIPO_DTE.VisibleIndex = 0;
-            this.colTIPO_DTE.Width = 100;
+            this.colTIPO_DTE.Width = 87;
             // 
             // colCOD_GENERACION
             // 
             this.colCOD_GENERACION.Caption = "No./Código generación";
             this.colCOD_GENERACION.FieldName = "COD_GENERACION";
-            this.colCOD_GENERACION.MinWidth = 320;
+            this.colCOD_GENERACION.MinWidth = 280;
             this.colCOD_GENERACION.Name = "colCOD_GENERACION";
             this.colCOD_GENERACION.OptionsColumn.AllowSize = false;
             this.colCOD_GENERACION.OptionsColumn.FixedWidth = true;
             this.colCOD_GENERACION.Visible = true;
             this.colCOD_GENERACION.VisibleIndex = 1;
-            this.colCOD_GENERACION.Width = 320;
+            this.colCOD_GENERACION.Width = 280;
             // 
             // colSELLO_RECIBIDO
             // 
             this.colSELLO_RECIBIDO.Caption = "Serie/Sello recepción";
             this.colSELLO_RECIBIDO.FieldName = "SELLO_RECIBIDO";
-            this.colSELLO_RECIBIDO.MinWidth = 324;
+            this.colSELLO_RECIBIDO.MinWidth = 283;
             this.colSELLO_RECIBIDO.Name = "colSELLO_RECIBIDO";
             this.colSELLO_RECIBIDO.OptionsColumn.AllowSize = false;
             this.colSELLO_RECIBIDO.OptionsColumn.FixedWidth = true;
             this.colSELLO_RECIBIDO.Visible = true;
             this.colSELLO_RECIBIDO.VisibleIndex = 2;
-            this.colSELLO_RECIBIDO.Width = 324;
+            this.colSELLO_RECIBIDO.Width = 283;
             // 
             // colFECHA_VENCE
             // 
@@ -286,13 +286,13 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colFECHA_VENCE.DisplayFormat.FormatString = "dd/MM/yyyy";
             this.colFECHA_VENCE.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.colFECHA_VENCE.FieldName = "FECHA_VENCE";
-            this.colFECHA_VENCE.MinWidth = 120;
+            this.colFECHA_VENCE.MinWidth = 105;
             this.colFECHA_VENCE.Name = "colFECHA_VENCE";
             this.colFECHA_VENCE.OptionsColumn.AllowSize = false;
             this.colFECHA_VENCE.OptionsColumn.FixedWidth = true;
             this.colFECHA_VENCE.Visible = true;
             this.colFECHA_VENCE.VisibleIndex = 3;
-            this.colFECHA_VENCE.Width = 130;
+            this.colFECHA_VENCE.Width = 114;
             // 
             // colNUM_QUEDAN
             // 
@@ -302,13 +302,13 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colNUM_QUEDAN.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colNUM_QUEDAN.Caption = "Quedan";
             this.colNUM_QUEDAN.FieldName = "NUM_QUEDAN";
-            this.colNUM_QUEDAN.MinWidth = 100;
+            this.colNUM_QUEDAN.MinWidth = 87;
             this.colNUM_QUEDAN.Name = "colNUM_QUEDAN";
             this.colNUM_QUEDAN.OptionsColumn.AllowSize = false;
             this.colNUM_QUEDAN.OptionsColumn.FixedWidth = true;
             this.colNUM_QUEDAN.Visible = true;
             this.colNUM_QUEDAN.VisibleIndex = 4;
-            this.colNUM_QUEDAN.Width = 130;
+            this.colNUM_QUEDAN.Width = 114;
             // 
             // colSALDO
             // 
@@ -316,13 +316,13 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colSALDO.DisplayFormat.FormatString = "N2";
             this.colSALDO.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.colSALDO.FieldName = "SALDO";
-            this.colSALDO.MinWidth = 120;
+            this.colSALDO.MinWidth = 105;
             this.colSALDO.Name = "colSALDO";
             this.colSALDO.OptionsColumn.AllowSize = false;
             this.colSALDO.OptionsColumn.FixedWidth = true;
             this.colSALDO.Visible = true;
             this.colSALDO.VisibleIndex = 5;
-            this.colSALDO.Width = 150;
+            this.colSALDO.Width = 131;
             // 
             // btnRetornar
             // 
@@ -332,9 +332,9 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnRetornar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnRetornar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.retornar32x32;
             this.btnRetornar.ImageOptions.ImageToTextIndent = 10;
-            this.btnRetornar.Location = new System.Drawing.Point(15, 571);
+            this.btnRetornar.Location = new System.Drawing.Point(13, 571);
             this.btnRetornar.Name = "btnRetornar";
-            this.btnRetornar.Size = new System.Drawing.Size(113, 47);
+            this.btnRetornar.Size = new System.Drawing.Size(116, 47);
             this.btnRetornar.TabIndex = 129;
             this.btnRetornar.Text = "Retornar";
             this.btnRetornar.Click += new System.EventHandler(this.btnRetornar_Click);
@@ -344,7 +344,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.DarkGreen;
-            this.label3.Location = new System.Drawing.Point(28, 322);
+            this.label3.Location = new System.Drawing.Point(24, 322);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(70, 18);
             this.label3.TabIndex = 128;
@@ -359,9 +359,9 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnBajarTodos.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.flechaAbajoTodos32x32;
             this.btnBajarTodos.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.BottomCenter;
             this.btnBajarTodos.ImageOptions.ImageToTextIndent = 0;
-            this.btnBajarTodos.Location = new System.Drawing.Point(298, 291);
+            this.btnBajarTodos.Location = new System.Drawing.Point(261, 291);
             this.btnBajarTodos.Name = "btnBajarTodos";
-            this.btnBajarTodos.Size = new System.Drawing.Size(44, 34);
+            this.btnBajarTodos.Size = new System.Drawing.Size(38, 34);
             this.btnBajarTodos.TabIndex = 127;
             this.btnBajarTodos.Click += new System.EventHandler(this.btnBajarTodos_Click);
             // 
@@ -374,9 +374,9 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnSubirTodos.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.flechaArribaTodos32x32;
             this.btnSubirTodos.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.BottomCenter;
             this.btnSubirTodos.ImageOptions.ImageToTextIndent = 0;
-            this.btnSubirTodos.Location = new System.Drawing.Point(447, 291);
+            this.btnSubirTodos.Location = new System.Drawing.Point(391, 291);
             this.btnSubirTodos.Name = "btnSubirTodos";
-            this.btnSubirTodos.Size = new System.Drawing.Size(44, 34);
+            this.btnSubirTodos.Size = new System.Drawing.Size(38, 34);
             this.btnSubirTodos.TabIndex = 126;
             this.btnSubirTodos.Click += new System.EventHandler(this.btnSubirTodos_Click);
             // 
@@ -389,9 +389,9 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnBajar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.flechaAbajo32x32;
             this.btnBajar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.BottomCenter;
             this.btnBajar.ImageOptions.ImageToTextIndent = 0;
-            this.btnBajar.Location = new System.Drawing.Point(248, 291);
+            this.btnBajar.Location = new System.Drawing.Point(217, 291);
             this.btnBajar.Name = "btnBajar";
-            this.btnBajar.Size = new System.Drawing.Size(44, 34);
+            this.btnBajar.Size = new System.Drawing.Size(38, 34);
             this.btnBajar.TabIndex = 125;
             this.btnBajar.Click += new System.EventHandler(this.btnBajar_Click);
             // 
@@ -404,9 +404,9 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnSubir.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.flechaArriba32x32;
             this.btnSubir.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.BottomCenter;
             this.btnSubir.ImageOptions.ImageToTextIndent = 0;
-            this.btnSubir.Location = new System.Drawing.Point(397, 291);
+            this.btnSubir.Location = new System.Drawing.Point(347, 291);
             this.btnSubir.Name = "btnSubir";
-            this.btnSubir.Size = new System.Drawing.Size(44, 34);
+            this.btnSubir.Size = new System.Drawing.Size(38, 34);
             this.btnSubir.TabIndex = 124;
             this.btnSubir.Click += new System.EventHandler(this.btnSubir_Click);
             // 
@@ -414,7 +414,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 52);
+            this.label2.Location = new System.Drawing.Point(10, 52);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(247, 18);
             this.label2.TabIndex = 123;
@@ -423,10 +423,10 @@ namespace SistemaContable.UI.Forms.Bancos
             // txtNOMBRE_PROVEEDOR
             // 
             this.txtNOMBRE_PROVEEDOR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNOMBRE_PROVEEDOR.Location = new System.Drawing.Point(260, 17);
+            this.txtNOMBRE_PROVEEDOR.Location = new System.Drawing.Point(228, 17);
             this.txtNOMBRE_PROVEEDOR.Name = "txtNOMBRE_PROVEEDOR";
             this.txtNOMBRE_PROVEEDOR.ReadOnly = true;
-            this.txtNOMBRE_PROVEEDOR.Size = new System.Drawing.Size(1022, 24);
+            this.txtNOMBRE_PROVEEDOR.Size = new System.Drawing.Size(1037, 24);
             this.txtNOMBRE_PROVEEDOR.TabIndex = 121;
             this.txtNOMBRE_PROVEEDOR.TabStop = false;
             // 
@@ -434,10 +434,10 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             this.txtPROVEEDOR.BackColor = System.Drawing.SystemColors.Control;
             this.txtPROVEEDOR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPROVEEDOR.Location = new System.Drawing.Point(106, 17);
+            this.txtPROVEEDOR.Location = new System.Drawing.Point(93, 17);
             this.txtPROVEEDOR.Name = "txtPROVEEDOR";
             this.txtPROVEEDOR.ReadOnly = true;
-            this.txtPROVEEDOR.Size = new System.Drawing.Size(153, 24);
+            this.txtPROVEEDOR.Size = new System.Drawing.Size(134, 24);
             this.txtPROVEEDOR.TabIndex = 120;
             this.txtPROVEEDOR.TabStop = false;
             // 
@@ -445,7 +445,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 20);
+            this.label1.Location = new System.Drawing.Point(10, 20);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(86, 18);
             this.label1.TabIndex = 122;
@@ -453,10 +453,11 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // frmChequeSeleccionQuedan
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1294, 630);
+            this.ClientSize = new System.Drawing.Size(1277, 630);
             this.Controls.Add(this.panel1);
+            this.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

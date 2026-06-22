@@ -1222,8 +1222,13 @@ namespace SistemaContable.UI.Forms.Bancos
                 Cursor = Cursors.WaitCursor;
 
                 var reporte = new rptCheque { IdCheque = _idCheque };
-                reporte.CargarDatos();
-                reporte.ImprimirConDialogo();
+                bool seImprimio = reporte.ImprimirConDialogo();
+
+                if (seImprimio)
+                {
+                    MarcarChequeComoImpreso(_idCheque);
+                    ConfigurarCRUD(EstadoFormulario.Impreso);
+                }
             }
             catch (Exception ex)
             {
@@ -1237,9 +1242,87 @@ namespace SistemaContable.UI.Forms.Bancos
             
         }
 
+        /// <summary>
+        /// Marca el cheque como impreso en la base de datos.
+        /// </summary>
+        private void MarcarChequeComoImpreso(int idCheque)
+        {
+            try
+            {
+                _dal.EjecutarConsulta("SP_CHEQUE", new
+                {
+                    ACCION = "MARCAR_IMPRESO",
+                    ID_CHEQUE = idCheque,
+                    USUARIO = Configuracion.UsuarioActual
+                });
+            }
+            catch (Exception ex)
+            {
+                // No bloquear al usuario si falla la marca, pero notificar
+                XtraMessageBox.Show(
+                    "El cheque se imprimió, pero no se pudo marcar como impreso:\n\n" + ex.Message,
+                    "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
         private void btnEliminar_Click(object sender, EventArgs e)
         {
+            if (_idCheque == 0)
+            {
+                XtraMessageBox.Show("Debe cargar un cheque para eliminarlo.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            var resp = XtraMessageBox.Show(
+                $"¿Está seguro que desea eliminar el cheque N° {txtNUMERO_CHEQUE.Text.Trim()}?\n\n" +
+                "Esta operación no se puede deshacer.\n" +
+                "Los documentos al contado quedarán pendientes para un nuevo cheque.\n" +
+                "Los documentos de Quedan quedarán pendientes de pago nuevamente.",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (resp != DialogResult.Yes) return;
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                DataTable dt = _dal.EjecutarConsulta("SP_CHEQUE", new
+                {
+                    ACCION = "ELIMINAR",
+                    ID_CHEQUE = _idCheque,
+                    USUARIO = Configuracion.UsuarioActual
+                });
+
+                // El SP retorna si hay CCFs contado y el nuevo UID
+                bool tieneContado = false;
+                if (dt.Rows.Count > 0)
+                {
+                    tieneContado = Convert.ToBoolean(dt.Rows[0]["TIENE_CONTADO"]);
+                }
+
+                string mensaje = "Cheque eliminado correctamente.";
+                if (tieneContado)
+                {
+                    mensaje += "\n\nLos documentos al contado quedaron pendientes. " +
+                               "Podrá retomarlos la próxima vez que abra esta pantalla.";
+                }
+
+                XtraMessageBox.Show(mensaje, "Eliminado",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                btnAgregar_Click(sender, e);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al eliminar el cheque:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
