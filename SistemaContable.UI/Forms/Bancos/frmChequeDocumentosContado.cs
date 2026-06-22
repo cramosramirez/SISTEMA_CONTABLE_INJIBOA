@@ -84,6 +84,13 @@ namespace SistemaContable.UI.Forms.Bancos
             gridView1.Appearance.FooterPanel.Options.UseFont = true;
             gridView1.Appearance.FooterPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
 
+            //Cursor de mano para incdicar al usuario que puede seleccionar
+            gridView1.MouseMove += (s, ev) =>
+            {
+                var hitInfo = gridView1.CalcHitInfo(ev.Location);
+                gridControl1.Cursor = hitInfo.InRow ? Cursors.Hand : Cursors.Default;
+            };
+
             gridView1.CustomDrawFooter += (s, ev) =>
             {
                 using (var brush = new SolidBrush(Color.FromArgb(30, 64, 175)))
@@ -119,6 +126,8 @@ namespace SistemaContable.UI.Forms.Bancos
                 ev.Handled = true;   // ← evita que DevExpress lo vuelva a pintar
             };
 
+            gridView1.DoubleClick += gridView1_DoubleClick;
+
             // ✅ Sumario en columnas numéricas (totales en el footer)
             AgregarSumarioTotal(colGRAVADA);
             AgregarSumarioTotal(colEXENTA);
@@ -145,6 +154,34 @@ namespace SistemaContable.UI.Forms.Bancos
         {
             col.SummaryItem.SummaryType = DevExpress.Data.SummaryItemType.Sum;
             col.SummaryItem.DisplayFormat = "{0:N2}";
+        }
+
+        private void gridView1_DoubleClick(object sender, EventArgs e)
+        {
+            if (gridView1.FocusedRowHandle < 0) return;
+
+            var idCcfObj = gridView1.GetFocusedRowCellValue("ID_CCF_COMPRA");
+            if (idCcfObj == null || idCcfObj == DBNull.Value) return;
+            int idCcfCompra = Convert.ToInt32(idCcfObj);
+            try
+            {
+                using (var frm = new frmDocumentoCompra())
+                {
+                    frm.EsContado = true;
+                    frm.UidEnlaceCheque = UidEnlaceCheque;
+                    frm.IdCcfCompra = idCcfCompra;   // ← clave: abre en modo edición
+                    if (frm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        CargarDocumentos();   // refrescar grid por si se modificó
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    "Error al abrir el documento:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // ============================================================
