@@ -29,7 +29,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDeta;  // DataTable que alimenta el grid
-        private int _idNR = 0;
+        //private int _idNR = 0;
         private int _idEntidad = 0;
         private string _codigoEntidad = string.Empty;
         private string _columnaAnteriorGrid = string.Empty;

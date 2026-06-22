@@ -18,7 +18,7 @@ namespace SistemaContable.UI.Forms.Ventas
         #region Campos privados
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDetalle;
-        private int _idVenta = 0;
+        //private int _idVenta = 0;
         private int _idEntidad = 0;
         private string _codigoEntidad = string.Empty;
         private string _columnaAnteriorGrid = string.Empty;
@@ -186,23 +186,21 @@ namespace SistemaContable.UI.Forms.Ventas
                 foreach (DataRow row in dt.Rows)
                 {
                     var f = _dtDetalle.NewRow();
-                    // SP devuelve: UNIDAD_MEDIDA, DESCUENTO (%), DESCUENTO_VALOR ($), EXENTA, GRAVADA
-                    // DataTable usa: UM,           PORC_DESC,     DESCUENTO,           EXENTO, GRAVADO
                     f["ID_PRODUCTO"] = row["ID_PRODUCTO"];
                     f["COD_REF"] = row["COD_REF"];
                     f["DESCRIPCION"] = row["DESCRIPCION"];
                     f["UM"] = row["UNIDAD_MEDIDA"];
-                    f["PORC_DESC"] = row["DESCUENTO"];        // % descuento
+                    f["PORC_DESC"] = row["DESCUENTO"];
                     f["CANTIDAD"] = row["CANTIDAD"];
                     f["PRECIO"] = row["PRECIO"];
                     f["ES_EXENTO"] = row["ES_EXENTO"];
                     f["ES_NOSUJETA"] = row.Table.Columns.Contains("ES_NOSUJETA")
                                             ? row["ES_NOSUJETA"] : (object)false;
-                    f["DESCUENTO"] = row["DESCUENTO_VALOR"];  // monto descuento
+                    f["DESCUENTO"] = row["DESCUENTO_VALOR"];
                     f["NOSUJETA"] = row.Table.Columns.Contains("NOSUJETA")
                                             ? row["NOSUJETA"] : (object)0m;
-                    f["EXENTO"] = row["EXENTA"];           // SP: EXENTA
-                    f["GRAVADO"] = row["GRAVADA"];          // SP: GRAVADA
+                    f["EXENTO"] = row["EXENTA"];
+                    f["GRAVADO"] = row["GRAVADA"];
                     f["TOTAL"] = row["TOTAL"];
                     f["ID_UNIDAD_MEDIDA"] = row.Table.Columns.Contains("ID_UNIDAD_MEDIDA")
                                             ? row["ID_UNIDAD_MEDIDA"] : (object)0;
@@ -249,7 +247,7 @@ namespace SistemaContable.UI.Forms.Ventas
         private void CargarTipoDte()
         {
             DataTable dt = _dal.EjecutarConsulta("SP_TIPO_DTE",
-                new { ACCION = "BUSCAR_DTE", ID_TIPO_DTE = 1 });
+                new { ACCION = "OBTENER", ID_TIPO_DTE = 1 });
             cbxTIPO_DTE.DataSource = dt;
             cbxTIPO_DTE.ValueMember = "ID_TIPO_DTE";
             cbxTIPO_DTE.DisplayMember = "ABREVIATURA";
@@ -320,7 +318,7 @@ namespace SistemaContable.UI.Forms.Ventas
             _dtDetalle.Columns.Add("EXENTO", typeof(decimal));
             _dtDetalle.Columns.Add("GRAVADO", typeof(decimal));
             _dtDetalle.Columns.Add("TOTAL", typeof(decimal));
-            _dtDetalle.Columns.Add("ID_UNIDAD_MEDIDA", typeof(int));   // columna oculta
+            _dtDetalle.Columns.Add("ID_UNIDAD_MEDIDA", typeof(int));
             AgregarFilaVacia();
             gridControl1.DataSource = _dtDetalle;
             var view = gridControl1.MainView as GridView;
@@ -330,20 +328,31 @@ namespace SistemaContable.UI.Forms.Ventas
             OcultarColumna(view, "ID_PRODUCTO");
             ConfigurarColumna(view, "COD_REF", "Código", 90, true);
             ConfigurarColumna(view, "DESCRIPCION", "Descripción", 250, true);
-            ConfigurarColumna(view, "CANTIDAD", "Cantidad", 75, true);
             ConfigurarColumna(view, "UM", "U.M.", 55, false);
-            ConfigurarColumna(view, "PORC_DESC", "%Desc.", 55, true);
+            ConfigurarColumna(view, "CANTIDAD", "Cantidad", 75, true);
             ConfigurarColumna(view, "PRECIO", "Precio", 85, true);
+            ConfigurarColumna(view, "PORC_DESC", "%Desc.", 55, true);
+            ConfigurarColumna(view, "GRAVADO", "Gravado", 85, false);
             ConfigurarColumnaCheckBox(view, "ES_NOSUJETA", "No Sujeta", 65);
-            ConfigurarColumnaCheckBox(view, "ES_EXENTO", "Exento", 55);
-            ConfigurarColumna(view, "DESCUENTO", "Descuento", 75, false);
             ConfigurarColumna(view, "NOSUJETA", "No Sujeta $", 85, false);
+            ConfigurarColumnaCheckBox(view, "ES_EXENTO", "Exento", 55);
             ConfigurarColumna(view, "EXENTO", "Exenta $", 85, false);
-            ConfigurarColumna(view, "GRAVADO", "Gravada", 85, false);
             ConfigurarColumna(view, "TOTAL", "Total", 90, false);
+            ConfigurarColumna(view, "DESCUENTO", "Descuento", 75, false, false); // oculta
             ConfigurarColumna(view, "ID_UNIDAD_MEDIDA", "ID_UNIDAD_MEDIDA", 80, false, false); // oculta
-
-            // ── Columna botón eliminar (igual al patrón de frmTraslado) ──
+            // Orden visual explícito
+            view.Columns["COD_REF"].VisibleIndex = 0;
+            view.Columns["DESCRIPCION"].VisibleIndex = 1;
+            view.Columns["UM"].VisibleIndex = 2;
+            view.Columns["CANTIDAD"].VisibleIndex = 3;
+            view.Columns["PRECIO"].VisibleIndex = 4;
+            view.Columns["PORC_DESC"].VisibleIndex = 5;
+            view.Columns["GRAVADO"].VisibleIndex = 6;
+            view.Columns["ES_NOSUJETA"].VisibleIndex = 7;
+            view.Columns["NOSUJETA"].VisibleIndex = 8;
+            view.Columns["ES_EXENTO"].VisibleIndex = 9;
+            view.Columns["EXENTO"].VisibleIndex = 10;
+            view.Columns["TOTAL"].VisibleIndex = 11;
             var colEliminar = view.Columns.AddField("ELIMINAR");
             colEliminar.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             colEliminar.Caption = " ";
@@ -351,7 +360,6 @@ namespace SistemaContable.UI.Forms.Ventas
             colEliminar.Visible = true;
             colEliminar.OptionsColumn.AllowEdit = true;
             colEliminar.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-
             var repoEliminar = new RepositoryItemButtonEdit();
             repoEliminar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             repoEliminar.Buttons[0].Kind = DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph;
@@ -361,8 +369,7 @@ namespace SistemaContable.UI.Forms.Ventas
             repoEliminar.ButtonClick += (s, ev) => EliminarFilaDetalle();
             gridControl1.RepositoryItems.Add(repoEliminar);
             colEliminar.ColumnEdit = repoEliminar;
-
-            foreach (var campo in new[] { "UM", "DESCUENTO", "NOSUJETA", "EXENTO", "GRAVADO", "TOTAL" })
+            foreach (var campo in new[] { "UM", "NOSUJETA", "EXENTO", "GRAVADO", "TOTAL" })
             {
                 var col = view.Columns[campo];
                 if (col == null) continue;
@@ -394,11 +401,11 @@ namespace SistemaContable.UI.Forms.Ventas
                     ev.Column.FieldName == "NOSUJETA" || ev.Column.FieldName == "EXENTO" ||
                     ev.Column.FieldName == "GRAVADO" || ev.Column.FieldName == "TOTAL")
                 {
-                    if (ev.Value == null || ev.Value == DBNull.Value) { ev.DisplayText = ""; return; }
+                    if (ev.Value == null || ev.Value == DBNull.Value) { ev.DisplayText = "0.00"; return; }
                     if (decimal.TryParse(ev.Value.ToString(), out decimal val))
-                        ev.DisplayText = val == 0 ? "" : val.ToString("N2");
+                        ev.DisplayText = val.ToString("N2");
                     else
-                        ev.DisplayText = "";
+                        ev.DisplayText = "0.00";
                 }
             };
             view.CellValueChanged += (s, ev) =>
@@ -425,7 +432,6 @@ namespace SistemaContable.UI.Forms.Ventas
             gridControl1.RepositoryItems.Add(repo);
             col.ColumnEdit = repo;
         }
-        // visible = true por defecto → todas las llamadas existentes siguen funcionando sin cambios
         private void ConfigurarColumna(GridView view, string field, string caption, int width, bool editable, bool visible = true)
         {
             var col = view.Columns.ColumnByFieldName(field);
@@ -517,16 +523,16 @@ namespace SistemaContable.UI.Forms.Ventas
             decimal retencion = ObtenerTextBoxDecimal(txtRETENCION);
             decimal percepcion = chkPERCEPCION.Checked ? ObtenerTextBoxDecimal(txtPERCEPCION) : 0m;
             decimal totalFinal = subTotal - retencion + percepcion;
-            txtVENTA_NOSUJETA.Text = totalNosujeta > 0 ? totalNosujeta.ToString("N2") : "";
-            txtVENTA_EXENTA.Text = totalExento > 0 ? totalExento.ToString("N2") : "";
-            txtVENTA_GRAVADA.Text = totalGravado > 0 ? totalGravado.ToString("N2") : "";
-            txtIVA.Text = iva > 0 ? iva.ToString("N2") : "";
-            txtSUBTOTAL.Text = subTotal > 0 ? subTotal.ToString("N2") : "";
-            txtDESCUENTO.Text = totalDescuento > 0 ? totalDescuento.ToString("N2") : "";
-            txtTOTAL_VENTA.Text = totalFinal > 0 ? totalFinal.ToString("N2") : "";
+            txtVENTA_NOSUJETA.Text = totalNosujeta.ToString("N2");
+            txtVENTA_EXENTA.Text = totalExento.ToString("N2");
+            txtVENTA_GRAVADA.Text = totalGravado.ToString("N2");
+            txtIVA.Text = iva.ToString("N2");
+            txtSUBTOTAL.Text = subTotal.ToString("N2");
+            txtDESCUENTO.Text = totalDescuento.ToString("N2");
+            txtTOTAL_VENTA.Text = totalFinal.ToString("N2");
             string condicion = cbxCONDPAGO.Text?.Trim().ToUpper() ?? "";
-            txtRECIB_EFECTIVO.Text = condicion == "CONTADO" && totalFinal > 0
-                ? totalFinal.ToString("N2") : "";
+            txtRECIB_EFECTIVO.Text = condicion == "CONTADO"
+                ? totalFinal.ToString("N2") : "0.00";
         }
         private decimal ObtenerTextBoxDecimal(TextBox txt)
         {
@@ -551,11 +557,9 @@ namespace SistemaContable.UI.Forms.Ventas
             {
                 e.Handled = true;
                 view.CloseEditor();
-                // Foco al botón eliminar para que el usuario decida: eliminar o Enter para nueva fila
                 view.FocusedColumn = view.Columns["ELIMINAR"];
                 return;
             }
-
             if (colActual == "ELIMINAR")
             {
                 e.Handled = true;
@@ -678,26 +682,19 @@ namespace SistemaContable.UI.Forms.Ventas
             if (view == null) return;
             int fila = view.FocusedRowHandle;
             if (fila < 0) return;
-
-            // Verificar que no sea la única fila con producto
             bool esFilaVacia = string.IsNullOrWhiteSpace(
                 view.GetRowCellValue(fila, "COD_REF")?.ToString());
-
             int filasConProducto = _dtDetalle.Rows.Cast<DataRow>()
                 .Count(r => !string.IsNullOrWhiteSpace(r["COD_REF"].ToString()));
-
             if (!esFilaVacia && filasConProducto <= 1)
             {
                 XtraMessageBox.Show("Debe haber al menos una línea en el detalle.",
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             if (MessageBox.Show("¿Desea eliminar esta fila?",
                     "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
-
-            // Si la factura ya está guardada en BD y la fila tiene producto, eliminar en BD
             if (IdFactEnc > 0 && !esFilaVacia)
             {
                 object val = view.GetRowCellValue(fila, "ID_PRODUCTO");
@@ -716,7 +713,6 @@ namespace SistemaContable.UI.Forms.Ventas
                     }
                 }
             }
-
             view.DeleteRow(fila);
             ActualizarTotales();
         }
@@ -875,7 +871,6 @@ namespace SistemaContable.UI.Forms.Ventas
         #region LIMPIAR
         private void LimpiarFormulario()
         {
-            _idVenta = 0;
             _idEntidad = 0;
             _codigoEntidad = string.Empty;
             IdFactEnc = 0;
@@ -896,22 +891,22 @@ namespace SistemaContable.UI.Forms.Ventas
             mskFECHA.Text = "";
             mskFECHA_VENCE.Text = "";
             chkPERCEPCION.Checked = false;
-            txtRECIB_EFECTIVO.Text = "";
-            txtRECIB_REMESA.Text = "";
-            txtRECIB_CHEQUE.Text = "";
-            txtRECIB_NOTAABONO.Text = "";
-            txtRECIB_ANTICIPO.Text = "";
-            txtRECIB_EFECTIVO_CAMBIO.Text = "";
-            txtVENTA_NOSUJETA.Text = "";
-            txtVENTA_EXENTA.Text = "";
-            txtVENTA_GRAVADA.Text = "";
-            txtPORC_DESCUENTO.Text = "";
-            txtDESCUENTO.Text = "";
-            txtIVA.Text = "";
-            txtSUBTOTAL.Text = "";
-            txtRETENCION.Text = "";
-            txtPERCEPCION.Text = "";
-            txtTOTAL_VENTA.Text = "";
+            txtRECIB_EFECTIVO.Text = "0.00";
+            txtRECIB_REMESA.Text = "0.00";
+            txtRECIB_CHEQUE.Text = "0.00";
+            txtRECIB_NOTAABONO.Text = "0.00";
+            txtRECIB_ANTICIPO.Text = "0.00";
+            txtRECIB_EFECTIVO_CAMBIO.Text = "0.00";
+            txtVENTA_NOSUJETA.Text = "0.00";
+            txtVENTA_EXENTA.Text = "0.00";
+            txtVENTA_GRAVADA.Text = "0.00";
+            txtPORC_DESCUENTO.Text = "0.00";
+            txtDESCUENTO.Text = "0.00";
+            txtIVA.Text = "0.00";
+            txtSUBTOTAL.Text = "0.00";
+            txtRETENCION.Text = "0.00";
+            txtPERCEPCION.Text = "0.00";
+            txtTOTAL_VENTA.Text = "0.00";
             _dtDetalle.Clear();
             AgregarFilaVacia();
             ActualizarTotales();
@@ -934,7 +929,7 @@ namespace SistemaContable.UI.Forms.Ventas
         #endregion
         #region HELPERS
         private void AsignarDecimal(TextBox tb, decimal valor)
-            => tb.Text = valor == 0 ? "" : valor.ToString("N2");
+            => tb.Text = valor.ToString("N2");
         private static DateTime ParsearFecha(string texto)
             => DateTime.ParseExact(texto, "dd/MM/yyyy", CultureInfo.InvariantCulture);
         private static DateTime? ParsearFechaOpcional(string texto)
@@ -1046,6 +1041,9 @@ namespace SistemaContable.UI.Forms.Ventas
             int? idTipoDte = ObtenerIdCombo(cbxTIPO_DTE);
             if (idTipoDte == null || idTipoDte <= 0) return;
             AnioDte = ObtenerAnioPorDte(idTipoDte);
+        }
+        private void txtCLIENTE_TextChanged(object sender, EventArgs e)
+        {
         }
     }
 }
