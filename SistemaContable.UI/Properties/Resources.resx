@@ -247,4 +247,19 @@
   <data name="cancelar32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cancelar32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="facturaFA32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\facturaFA32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="facturaCcf32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\facturaCcf32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="facturaExp32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\facturaExp32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="facturaFa32x321" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\facturaFa32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="facturaFac32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\facturaFac32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

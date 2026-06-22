@@ -223,6 +223,56 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap facturaCcf32x32 {
+            get {
+                object obj = ResourceManager.GetObject("facturaCcf32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap facturaExp32x32 {
+            get {
+                object obj = ResourceManager.GetObject("facturaExp32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap facturaFA32x32 {
+            get {
+                object obj = ResourceManager.GetObject("facturaFA32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap facturaFa32x321 {
+            get {
+                object obj = ResourceManager.GetObject("facturaFa32x321", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap facturaFac32x32 {
+            get {
+                object obj = ResourceManager.GetObject("facturaFac32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap flechaAbajo32x32 {
             get {
                 object obj = ResourceManager.GetObject("flechaAbajo32x32", resourceCulture);
