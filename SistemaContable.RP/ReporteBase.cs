@@ -1,6 +1,7 @@
 ﻿using DevExpress.XtraReports.UI;
 using SistemaContable.DAL;
 using System.Data;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SistemaContable.RP
@@ -65,6 +66,7 @@ namespace SistemaContable.RP
                     if (frm.GetType().Name.Contains("PrintPreview"))
                     {
                         frm.WindowState = FormWindowState.Maximized;
+                        ForzarIconosGrandes(frm);
                         timer.Stop();
                         timer.Dispose();
                         return;
@@ -74,6 +76,25 @@ namespace SistemaContable.RP
             timer.Start();
 
             this.ShowPreview();
+        }
+
+        private void ForzarIconosGrandes(Form previewForm)
+        {
+            var barManagers = previewForm.GetType()
+                .GetFields(System.Reflection.BindingFlags.NonPublic |
+                           System.Reflection.BindingFlags.Instance)
+                .Where(f => typeof(DevExpress.XtraBars.BarManager).IsAssignableFrom(f.FieldType))
+                .Select(f => (DevExpress.XtraBars.BarManager)f.GetValue(previewForm))
+                .Where(bm => bm != null);
+
+            foreach (var bm in barManagers)
+            {
+                foreach (DevExpress.XtraBars.BarItem item in bm.Items)
+                {
+                    item.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+                }
+                bm.ForceLinkCreate();
+            }
         }
 
         private void InitializeComponent()

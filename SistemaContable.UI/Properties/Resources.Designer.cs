@@ -463,6 +463,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap quedan2_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("quedan2_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap quedan2_32x32 {
             get {
                 object obj = ResourceManager.GetObject("quedan2_32x32", resourceCulture);
