@@ -1,7 +1,5 @@
 ﻿using DevExpress.XtraReports.UI;
 using SistemaContable.DAL;
-using System;
-using System.ComponentModel;
 using System.Data;
 using System.Windows.Forms;
 

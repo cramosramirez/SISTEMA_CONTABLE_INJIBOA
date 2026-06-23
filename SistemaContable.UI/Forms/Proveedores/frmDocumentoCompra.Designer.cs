@@ -349,6 +349,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnImprimirQuedan.Size = new System.Drawing.Size(119, 47);
             this.btnImprimirQuedan.TabIndex = 42;
             this.btnImprimirQuedan.Text = "Imprimir Quedan";
+            this.btnImprimirQuedan.Click += new System.EventHandler(this.btnImprimirQuedan_Click);
             // 
             // label40
             // 

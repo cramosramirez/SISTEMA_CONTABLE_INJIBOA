@@ -262,4 +262,7 @@
   <data name="facturaFac32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\facturaFac32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="impresionReportes48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\impresionReportes48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

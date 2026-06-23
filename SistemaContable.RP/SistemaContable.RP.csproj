@@ -62,7 +62,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.Designer.cs">
+      <DependentUpon>rptListadoDocumentosRecibidos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptQuedan.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptQuedan.designer.cs">
+      <DependentUpon>rptQuedan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Esquemas\ChequeEsquema.cs" />
+    <Compile Include="Esquemas\ListadoDocumentosRecibidosEsquema.cs" />
+    <Compile Include="Esquemas\QuedanEsquema.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bancos\Proveedores\rptCheque.cs">
       <SubType>Component</SubType>
@@ -75,6 +89,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.resx">
+      <DependentUpon>rptListadoDocumentosRecibidos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Bancos\Proveedores\rptQuedan.resx">
+      <DependentUpon>rptQuedan.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Bancos\Proveedores\rptCheque.resx">
       <DependentUpon>rptCheque.cs</DependentUpon>

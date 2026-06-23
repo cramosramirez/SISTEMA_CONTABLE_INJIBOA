@@ -53,14 +53,27 @@ namespace SistemaContable.UI.Forms
                 ACCION = "MENU_POR_ROL",
                 ID_ROL = idRol
             });
+
             var pages = new Dictionary<int, RibbonPage>();
-            var groups = new Dictionary<int, RibbonPageGroup>();                
+            var groups = new Dictionary<int, RibbonPageGroup>();
+            var subItems = new Dictionary<int, BarSubItem>();   // ← NUEVO
+
+            // Pre-calcular qué opciones de nivel 3 tienen hijos nivel 4
+            var idsConHijosNivel4 = dt.AsEnumerable()
+                .Where(r => Convert.ToInt32(r["NIVEL"]) == 4
+                         && r["ID_OPCION_PADRE"] != DBNull.Value)
+                .Select(r => Convert.ToInt32(r["ID_OPCION_PADRE"]))
+                .Distinct()
+                .ToHashSet();
+
             foreach (DataRow row in dt.Rows)
             {
                 int idOpcion = Convert.ToInt32(row["ID_OPCION"]);
                 string nombre = row["NOMBRE_OPCION"].ToString();
                 int nivel = Convert.ToInt32(row["NIVEL"]);
-                int idPadre = row["ID_OPCION_PADRE"] == DBNull.Value ? 0 : Convert.ToInt32(row["ID_OPCION_PADRE"]);
+                int idPadre = row["ID_OPCION_PADRE"] == DBNull.Value
+                                ? 0
+                                : Convert.ToInt32(row["ID_OPCION_PADRE"]);
 
                 switch (nivel)
                 {
@@ -73,46 +86,76 @@ namespace SistemaContable.UI.Forms
                     case 2: // RibbonPageGroup
                         if (pages.ContainsKey(idPadre))
                         {
-                            var group = new RibbonPageGroup(nombre);                            
+                            var group = new RibbonPageGroup(nombre);
                             pages[idPadre].Groups.Add(group);
                             groups[idOpcion] = group;
                         }
                         break;
 
-                    case 3: // BarButtonItem
+                    case 3: // BarButtonItem O BarSubItem (si tiene hijos)
                         if (groups.ContainsKey(idPadre))
                         {
-                            var btn = new BarButtonItem(this.ribbon.Manager, nombre);
-                            btn.RibbonStyle = RibbonItemStyles.Large;
-                            string imagenSvg = row["IMAGEN_SVG"].ToString();
-                            if (!String.IsNullOrEmpty(imagenSvg))
+                            if (idsConHijosNivel4.Contains(idOpcion))
                             {
-                                object recurso = Properties.Resources.ResourceManager.GetObject(imagenSvg);
-                                if (recurso is SvgImage svg)
-                                {
-                                    btn.ImageOptions.SvgImage = svg;
-                                }
-                                else if (recurso is Bitmap bmp)
-                                {
-                                    btn.ImageOptions.Image = bmp;
-                                }
-                            }                            
-                            Font boldFont = new Font("Segoe UI", 10, FontStyle.Bold);
-                            btn.ItemAppearance.Normal.Font = boldFont;
-                            btn.ItemAppearance.Normal.Options.UseFont = true;
-                            btn.ItemAppearance.Hovered.Font = boldFont;
-                            btn.ItemAppearance.Hovered.Options.UseFont = true;
-                            btn.ItemAppearance.Pressed.Font = boldFont;
-                            btn.ItemAppearance.Pressed.Options.UseFont = true;                            
-                            btn.Tag = row["FORMULARIO_WIN"].ToString();                            
-                            //btn.ItemClick += ribbon_ItemClick;
-                            groups[idPadre].ItemLinks.Add(btn);
+                                // ===== BarSubItem con dropdown =====
+                                var subItem = new BarSubItem(this.ribbon.Manager, nombre);
+                                subItem.RibbonStyle = RibbonItemStyles.Large;
+
+                                AsignarIcono(subItem, row);                                
+
+                                groups[idPadre].ItemLinks.Add(subItem);
+                                subItems[idOpcion] = subItem;
+                            }
+                            else
+                            {
+                                // ===== BarButtonItem normal =====
+                                var btn = new BarButtonItem(this.ribbon.Manager, nombre);
+                                btn.RibbonStyle = RibbonItemStyles.Large;
+
+                                AsignarIcono(btn, row);                                
+
+                                btn.Tag = row["FORMULARIO_WIN"].ToString();
+                                btn.ItemClick += ribbon_ItemClick;
+
+                                groups[idPadre].ItemLinks.Add(btn);
+                            }
+                        }
+                        break;
+
+                    case 4: // BarButtonItem dentro de un BarSubItem
+                        if (subItems.ContainsKey(idPadre))
+                        {
+                            var btnHijo = new BarButtonItem(this.ribbon.Manager, nombre);
+
+                            AsignarIcono(btnHijo, row);
+
+                            btnHijo.Tag = row["FORMULARIO_WIN"].ToString();
+                            btnHijo.ItemClick += ribbon_ItemClick;
+
+                            // ✅ Usar AddItem en lugar de LinksPersistInfo.Add
+                            subItems[idPadre].AddItem(btnHijo);
                         }
                         break;
                 }
             }
         }
-                
+
+        private void AsignarIcono(BarItem item, DataRow row)
+        {
+            string imagenSvg = row["IMAGEN_SVG"]?.ToString();
+            if (string.IsNullOrEmpty(imagenSvg)) return;
+
+            object recurso = Properties.Resources.ResourceManager.GetObject(imagenSvg);
+
+            if (recurso is SvgImage svg)
+            {
+                item.ImageOptions.SvgImage = svg;
+            }
+            else if (recurso is Bitmap bmp)
+            {
+                item.ImageOptions.Image = bmp;
+            }
+        }
 
         // Cache para mejorar rendimiento (opcional pero recomendado)
         private static readonly Dictionary<string, Type> _formCache = new Dictionary<string, Type>();

@@ -1,5 +1,5 @@
 ﻿
-namespace SistemaContable.RP
+namespace SistemaContable.RP.Bancos.Proveedores
 {
     partial class rptCheque
     {

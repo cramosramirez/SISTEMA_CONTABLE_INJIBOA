@@ -54,7 +54,6 @@ namespace SistemaContable.UI.Forms
             this.ribbonPage1});
             this.ribbon.Size = new System.Drawing.Size(1167, 188);
             this.ribbon.StatusBar = this.ribbonStatusBar;
-            this.ribbon.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ribbon_ItemClick);
             // 
             // barStaticItem1
             // 

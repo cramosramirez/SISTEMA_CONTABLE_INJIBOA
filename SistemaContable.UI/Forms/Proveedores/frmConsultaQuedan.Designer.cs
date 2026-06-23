@@ -45,6 +45,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.btnNuevoQuedan = new DevExpress.XtraEditors.SimpleButton();
             this.panel2 = new System.Windows.Forms.Panel();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
@@ -75,6 +76,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnFinalizar);
             this.panel1.Controls.Add(this.btnNuevoQuedan);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -82,18 +84,41 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel1.Size = new System.Drawing.Size(1229, 46);
             this.panel1.TabIndex = 1;
             // 
+            // btnFinalizar
+            // 
+            this.btnFinalizar.AllowFocus = false;
+            this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold);
+            this.btnFinalizar.Appearance.Options.UseFont = true;
+            this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
+            this.btnFinalizar.Location = new System.Drawing.Point(166, 5);
+            this.btnFinalizar.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat;
+            this.btnFinalizar.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.btnFinalizar.Name = "btnFinalizar";
+            this.btnFinalizar.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.btnFinalizar.Size = new System.Drawing.Size(116, 38);
+            this.btnFinalizar.TabIndex = 2;
+            this.btnFinalizar.TabStop = false;
+            this.btnFinalizar.Text = "Finalizar";
+            this.btnFinalizar.ToolTip = "Nuevo Quedan";
+            this.btnFinalizar.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.btnFinalizar.ToolTipTitle = "Operación";
+            this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
+            // 
             // btnNuevoQuedan
             // 
             this.btnNuevoQuedan.AllowFocus = false;
+            this.btnNuevoQuedan.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold);
+            this.btnNuevoQuedan.Appearance.Options.UseFont = true;
             this.btnNuevoQuedan.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.nuevo32x32;
             this.btnNuevoQuedan.Location = new System.Drawing.Point(10, 5);
             this.btnNuevoQuedan.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat;
             this.btnNuevoQuedan.LookAndFeel.UseDefaultLookAndFeel = false;
             this.btnNuevoQuedan.Name = "btnNuevoQuedan";
             this.btnNuevoQuedan.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.btnNuevoQuedan.Size = new System.Drawing.Size(38, 38);
+            this.btnNuevoQuedan.Size = new System.Drawing.Size(109, 38);
             this.btnNuevoQuedan.TabIndex = 1;
             this.btnNuevoQuedan.TabStop = false;
+            this.btnNuevoQuedan.Text = "Nuevo";
             this.btnNuevoQuedan.ToolTip = "Nuevo Quedan";
             this.btnNuevoQuedan.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.btnNuevoQuedan.ToolTipTitle = "Operación";
@@ -127,8 +152,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.gvDetalle.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.colID_QUEDAN,
-            this.colID_CCF_COMPRA,
             this.colNUM_QUEDAN,
+            this.colID_CCF_COMPRA,
             this.colEDITAR,
             this.colVER_Q,
             this.colVER_R,
@@ -142,7 +167,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gvDetalle.Name = "gvDetalle";
             this.gvDetalle.OptionsView.ShowIndicator = false;
             this.gvDetalle.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
-            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colNUM_QUEDAN, DevExpress.Data.ColumnSortOrder.Descending)});
+            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colNUM_QUEDAN, DevExpress.Data.ColumnSortOrder.Descending),
+            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colID_CCF_COMPRA, DevExpress.Data.ColumnSortOrder.Ascending)});
             // 
             // colID_QUEDAN
             // 
@@ -158,6 +184,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colID_CCF_COMPRA.FieldName = "ID_CCF_COMPRA";
             this.colID_CCF_COMPRA.MinWidth = 21;
             this.colID_CCF_COMPRA.Name = "colID_CCF_COMPRA";
+            this.colID_CCF_COMPRA.SortMode = DevExpress.XtraGrid.ColumnSortMode.Value;
             this.colID_CCF_COMPRA.Width = 79;
             // 
             // colNUM_QUEDAN
@@ -219,6 +246,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.riVerQ.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
             this.riVerQ.Name = "riVerQ";
             this.riVerQ.UseReadOnlyAppearance = false;
+            this.riVerQ.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.riVerQ_ButtonClick);
             // 
             // colVER_R
             // 
@@ -381,5 +409,6 @@ namespace SistemaContable.UI.Forms.Proveedores
         private DevExpress.XtraGrid.Columns.GridColumn colFECHA_EMISION;
         private DevExpress.XtraGrid.Columns.GridColumn colFECHA_RECIBIDO;
         private DevExpress.XtraEditors.SimpleButton btnNuevoQuedan;
+        private DevExpress.XtraEditors.SimpleButton btnFinalizar;
     }
 }

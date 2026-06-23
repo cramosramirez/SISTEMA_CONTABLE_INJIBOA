@@ -1012,9 +1012,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label18
             // 
             this.label18.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(259, 402);
+            this.label18.Location = new System.Drawing.Point(259, 399);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(88, 14);
+            this.label18.Size = new System.Drawing.Size(101, 17);
             this.label18.TabIndex = 147;
             this.label18.Text = "Fecha Recibido";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1237,7 +1237,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNOMBRE_PROVEEDOR.Location = new System.Drawing.Point(228, 218);
             this.txtNOMBRE_PROVEEDOR.Name = "txtNOMBRE_PROVEEDOR";
             this.txtNOMBRE_PROVEEDOR.ReadOnly = true;
-            this.txtNOMBRE_PROVEEDOR.Size = new System.Drawing.Size(509, 24);
+            this.txtNOMBRE_PROVEEDOR.Size = new System.Drawing.Size(489, 24);
             this.txtNOMBRE_PROVEEDOR.TabIndex = 10;
             this.txtNOMBRE_PROVEEDOR.TabStop = false;
             // 
@@ -1254,9 +1254,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(909, 222);
+            this.label4.Location = new System.Drawing.Point(893, 222);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(27, 14);
+            this.label4.Size = new System.Drawing.Size(45, 17);
             this.label4.TabIndex = 121;
             this.label4.Text = "NIT";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1264,9 +1264,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(743, 222);
+            this.label3.Location = new System.Drawing.Point(732, 222);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 14);
+            this.label3.Size = new System.Drawing.Size(40, 17);
             this.label3.TabIndex = 120;
             this.label3.Text = "NRC";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1277,7 +1277,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNRC.Location = new System.Drawing.Point(780, 219);
             this.txtNRC.Name = "txtNRC";
             this.txtNRC.ReadOnly = true;
-            this.txtNRC.Size = new System.Drawing.Size(123, 24);
+            this.txtNRC.Size = new System.Drawing.Size(114, 24);
             this.txtNRC.TabIndex = 11;
             this.txtNRC.TabStop = false;
             // 

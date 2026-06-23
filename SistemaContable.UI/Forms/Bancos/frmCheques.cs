@@ -8,7 +8,7 @@ using SistemaContable.DAL;
 using System.Drawing;
 using DevExpress.XtraEditors;
 using DevExpress.Utils;
-using SistemaContable.RP;
+using SistemaContable.RP.Bancos.Proveedores;
 
 namespace SistemaContable.UI.Forms.Bancos
 {
@@ -1343,5 +1343,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 FormHelper.AbrirBusqueda(txtOPERACION);
             }));
         }
+
+        
     }
 }
