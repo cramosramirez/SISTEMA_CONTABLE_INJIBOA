@@ -9,9 +9,11 @@ namespace SistemaContable.UI
 {
     static class Program
     {
+
         [STAThread]
         static void Main()
         {
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -28,5 +30,6 @@ namespace SistemaContable.UI
             // 3. Mostrar Ribbon
             Application.Run(new Forms.frmPrincipalRibbon());
         }
+        
     }
 }

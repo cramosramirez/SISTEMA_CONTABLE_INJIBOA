@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace SistemaContable.UI.Forms.Bancos
 {
-    public partial class frmCuentasBancarias : DevExpress.XtraEditors.XtraForm
+    public partial class frmCuentasBancarias : Form
     {
         private int _idActual = 0;
         public frmCuentasBancarias()
@@ -139,5 +139,7 @@ namespace SistemaContable.UI.Forms.Bancos
             FormHelper.LimpiarControles(this);
             txtNUM_CUENTA.Focus();
         }
+
+       
     }
 }

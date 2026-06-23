@@ -39,6 +39,7 @@
   -->
   <PropertyGroup>
 	<DevExpressPath>C:\Program Files (x86)\DevExpress 20.1\Components\Bin\Framework</DevExpressPath>
+	<ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v20.1">
