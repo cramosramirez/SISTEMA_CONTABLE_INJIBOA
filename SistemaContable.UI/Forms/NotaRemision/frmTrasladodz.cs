@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Linq;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraEditors.Repository;
+using System.Data.SqlClient;
 
 namespace SistemaContable.UI.Forms.NotaRemision
 {
@@ -256,9 +257,18 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 txtMotorista.Text = r["MOTORISTA"].ToString();
                 txtLicencia.Text = r["LICENCIA"].ToString();
 
-                txtMarchamo1.Text = r["MARCHAMOS1"].ToString();
-                txtMarchamo3.Text = r["MARCHAMOS3"].ToString();
+               
                 cbxID_ZAFRA.SelectedValue = Convert.ToInt32(r["ID_ZAFRA"]);
+
+                cbxID_SEGMENTO.SelectedValue = Convert.ToInt32(r["ID_SEGMENTO"]);
+                cbxID_SEGMENTO_SelectedIndexChanged(null, null);
+                cbxID_DTSEGMENTO.SelectedValue = Convert.ToInt32(r["ID_DTSEGMENTO"]);
+
+                mskFECHA_DTE_DZ.Text = AsFecha(r["FECHA_DTE_DZ"]);
+
+                txtCOD_GENERACION_DZ.Text = r["COD_GENERACION_DZ"].ToString();
+                txtNUM_CONTROL_DZ.Text = r["NUM_CONTROL_DZ"].ToString();
+               
 
             }
             catch (Exception ex)
@@ -1068,6 +1078,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     "ID_PRODUCTO",
                     "ID_UNIDAD_MEDIDA"
                 },
+                ParametrosExtra = new { ROL_PROD = "NRE DIZUCAR" }
             };
 
 
@@ -1154,7 +1165,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             if (string.IsNullOrWhiteSpace(txtNOMBRE_PROVEEDOR.Text))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Seleccione un Cliente.",
+                    "Seleccione un Bodega Destino.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtPROVEEDOR.Focus();
                 return false;
@@ -1163,6 +1174,59 @@ namespace SistemaContable.UI.Forms.NotaRemision
             if (!FormHelper.ValidarFecha(mskFECHA_EMISION, "Fecha de la Nota Remision"))
                 return false;
 
+
+            if (cbxID_ZAFRA.SelectedIndex == 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione una zafra.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbxID_ZAFRA.Focus();
+                return false;
+            }
+
+            if (cbxID_SEGMENTO.SelectedIndex == 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione un segmento.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cbxID_SEGMENTO.Focus();
+                return false;
+            }
+
+            if (cbxID_DTSEGMENTO.SelectedIndex == 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione un Cliente de segmento.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cbxID_DTSEGMENTO.Focus();
+                return false;
+            }
+
+            if (!FormHelper.ValidarFecha(mskFECHA_DTE_DZ, "Fecha de DTE Dizucar"))
+                return false;
+
+            if (string.IsNullOrWhiteSpace(txtCOD_GENERACION_DZ.Text))
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Cod. Generación de Información DTE Dizucar requerido",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCOD_GENERACION_DZ.Focus();
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(txtNUM_CONTROL_DZ.Text))
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "N° Contol de Información DTE Dizucar requerido",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNUM_CONTROL_DZ.Focus();
+                return false;
+            }
 
             if (string.IsNullOrWhiteSpace(txtPROV_TRANSP.Text))
             {
@@ -1173,12 +1237,24 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 return false;
             }
 
+            if (cbxIdTransposte.SelectedIndex == 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione un tipo de transporte.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cbxIdTransposte.Focus();
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(txtPlaca.Text))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Seleccione un Proveedor de Transposte.",
+                    "Ingresar la placa del Transposte.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtPROV_TRANSP.Focus();
+                txtPlaca.Focus();
                 return false;
             }
 
@@ -1246,16 +1322,21 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     TOTALVENTA = txtTOTAL.Text,
                     OBSERVACIONES = txtObservacion.Text,
                     USER_CREA = Configuracion.UsuarioActual,
-                    OPCIONNR = "NRBD",
+                    OPCIONNR = "NRDZ",
 
                     ID_PROV_TRANSP = _ID_PROV_TRANSP,
                     ID_TRANSPORTE = cbxIdTransposte.SelectedValue,
                     PLACA = txtPlaca.Text,
                     REMOLQUE = txtRemolque.Text,
                     ID_MOTORISTA = _ID_MOTORISTA,
-                    MARCHAMOS1 = txtMarchamo1.Text,
-                    MARCHAMOS3 = txtMarchamo3.Text,
+                    MARCHAMOS1 = txtCOD_GENERACION_DZ.Text,
+                    MARCHAMOS3 = txtNUM_CONTROL_DZ.Text,
                     ID_ZAFRA = cbxID_ZAFRA.SelectedValue,
+                    ID_SEGMENTO = cbxID_SEGMENTO.SelectedValue,
+                    ID_DTSEGMENTO = cbxID_DTSEGMENTO.SelectedValue,
+                    FECHA_DTE_DZ = FormHelper.ObtenerFecha(mskFECHA_DTE_DZ),
+                    COD_GENERACION_DZ =txtCOD_GENERACION_DZ.Text,
+                    NUM_CONTROL_DZ =txtNUM_CONTROL_DZ.Text
 
                 });
 
@@ -1307,12 +1388,24 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     "Nota Remision guarda correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            
             catch (Exception ex)
             {
+                string mensaje = ex.Message;
+                // Quitar texto técnico del SP si viene incluido
+                if (mensaje.Contains("]:"))
+                {
+                    mensaje = mensaje.Substring(mensaje.IndexOf("]:") + 2).Trim();
+                }
+
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    $"Error al guardar: {ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    mensaje,
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
             }
+
         }
 
         private void btnValidar_Click(object sender, EventArgs e)

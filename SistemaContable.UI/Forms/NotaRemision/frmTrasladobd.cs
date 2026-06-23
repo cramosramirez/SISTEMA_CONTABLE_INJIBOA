@@ -29,7 +29,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDeta;  // DataTable que alimenta el grid
-        //private int _idNR = 0;
+        private int _idNR = 0;
         private int _idEntidad = 0;
         private string _codigoEntidad = string.Empty;
         private string _columnaAnteriorGrid = string.Empty;
@@ -1010,6 +1010,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     "ID_PRODUCTO",
                     "ID_UNIDAD_MEDIDA"
                 },
+                ParametrosExtra = new { ROL_PROD = "NRE BODEGA AZUCAR" }
             };
 
 
@@ -1096,7 +1097,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             if (string.IsNullOrWhiteSpace(txtNOMBRE_PROVEEDOR.Text))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Seleccione un Cliente.",
+                    "Seleccione un Bodega Destino.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtPROVEEDOR.Focus();
                 return false;
@@ -1105,6 +1106,17 @@ namespace SistemaContable.UI.Forms.NotaRemision
             if (!FormHelper.ValidarFecha(mskFECHA_EMISION, "Fecha de la Nota Remision"))
                 return false;
 
+
+            if (cbxID_ZAFRA.SelectedIndex == 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione una zafra.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbxID_ZAFRA.Focus();
+                return false;
+            }
+
+                      
 
             if (string.IsNullOrWhiteSpace(txtPROV_TRANSP.Text))
             {
@@ -1115,12 +1127,24 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 return false;
             }
 
+            if (cbxIdTransposte.SelectedIndex == 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione un tipo de transporte.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cbxIdTransposte.Focus();
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(txtPlaca.Text))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Seleccione un Proveedor de Transposte.",
+                    "Ingresar la placa del Transposte.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtPROV_TRANSP.Focus();
+                txtPlaca.Focus();
                 return false;
             }
 
@@ -1255,9 +1279,19 @@ namespace SistemaContable.UI.Forms.NotaRemision
             }
             catch (Exception ex)
             {
+                string mensaje = ex.Message;
+                // Quitar texto técnico del SP si viene incluido
+                if (mensaje.Contains("]:"))
+                {
+                    mensaje = mensaje.Substring(mensaje.IndexOf("]:") + 2).Trim();
+                }
+
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    $"Error al guardar: {ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    mensaje,
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
             }
         }
 

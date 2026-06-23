@@ -30,7 +30,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+            this.mskFECHA_DTE_DZ = new System.Windows.Forms.MaskedTextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.cbxID_DTSEGMENTO = new System.Windows.Forms.ComboBox();
             this.cbxID_SEGMENTO = new System.Windows.Forms.ComboBox();
@@ -53,9 +53,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label25 = new System.Windows.Forms.Label();
             this.txtPROV_TRANSP = new System.Windows.Forms.TextBox();
             this.label24 = new System.Windows.Forms.Label();
-            this.txtMarchamo3 = new System.Windows.Forms.TextBox();
+            this.txtNUM_CONTROL_DZ = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
-            this.txtMarchamo1 = new System.Windows.Forms.TextBox();
+            this.txtCOD_GENERACION_DZ = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.cbxID_ZAFRA = new System.Windows.Forms.ComboBox();
@@ -109,7 +109,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.maskedTextBox1);
+            this.panel1.Controls.Add(this.mskFECHA_DTE_DZ);
             this.panel1.Controls.Add(this.label18);
             this.panel1.Controls.Add(this.cbxID_DTSEGMENTO);
             this.panel1.Controls.Add(this.cbxID_SEGMENTO);
@@ -132,9 +132,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Controls.Add(this.label25);
             this.panel1.Controls.Add(this.txtPROV_TRANSP);
             this.panel1.Controls.Add(this.label24);
-            this.panel1.Controls.Add(this.txtMarchamo3);
+            this.panel1.Controls.Add(this.txtNUM_CONTROL_DZ);
             this.panel1.Controls.Add(this.label21);
-            this.panel1.Controls.Add(this.txtMarchamo1);
+            this.panel1.Controls.Add(this.txtCOD_GENERACION_DZ);
             this.panel1.Controls.Add(this.label19);
             this.panel1.Controls.Add(this.label12);
             this.panel1.Controls.Add(this.cbxID_ZAFRA);
@@ -186,14 +186,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Size = new System.Drawing.Size(1171, 784);
             this.panel1.TabIndex = 0;
             // 
-            // maskedTextBox1
+            // mskFECHA_DTE_DZ
             // 
-            this.maskedTextBox1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.maskedTextBox1.Location = new System.Drawing.Point(976, 273);
-            this.maskedTextBox1.Mask = "00/00/0000";
-            this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(147, 22);
-            this.maskedTextBox1.TabIndex = 202;
+            this.mskFECHA_DTE_DZ.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mskFECHA_DTE_DZ.Location = new System.Drawing.Point(976, 273);
+            this.mskFECHA_DTE_DZ.Mask = "00/00/0000";
+            this.mskFECHA_DTE_DZ.Name = "mskFECHA_DTE_DZ";
+            this.mskFECHA_DTE_DZ.Size = new System.Drawing.Size(147, 22);
+            this.mskFECHA_DTE_DZ.TabIndex = 202;
             // 
             // label18
             // 
@@ -415,14 +415,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label24.TabIndex = 181;
             this.label24.Text = "Proveedor";
             // 
-            // txtMarchamo3
+            // txtNUM_CONTROL_DZ
             // 
-            this.txtMarchamo3.BackColor = System.Drawing.SystemColors.Window;
-            this.txtMarchamo3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMarchamo3.Location = new System.Drawing.Point(675, 304);
-            this.txtMarchamo3.Name = "txtMarchamo3";
-            this.txtMarchamo3.Size = new System.Drawing.Size(448, 22);
-            this.txtMarchamo3.TabIndex = 176;
+            this.txtNUM_CONTROL_DZ.BackColor = System.Drawing.SystemColors.Window;
+            this.txtNUM_CONTROL_DZ.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNUM_CONTROL_DZ.Location = new System.Drawing.Point(675, 304);
+            this.txtNUM_CONTROL_DZ.Name = "txtNUM_CONTROL_DZ";
+            this.txtNUM_CONTROL_DZ.Size = new System.Drawing.Size(448, 22);
+            this.txtNUM_CONTROL_DZ.TabIndex = 176;
             // 
             // label21
             // 
@@ -434,14 +434,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label21.TabIndex = 177;
             this.label21.Text = "N° Control";
             // 
-            // txtMarchamo1
+            // txtCOD_GENERACION_DZ
             // 
-            this.txtMarchamo1.BackColor = System.Drawing.SystemColors.Window;
-            this.txtMarchamo1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMarchamo1.Location = new System.Drawing.Point(159, 304);
-            this.txtMarchamo1.Name = "txtMarchamo1";
-            this.txtMarchamo1.Size = new System.Drawing.Size(385, 22);
-            this.txtMarchamo1.TabIndex = 172;
+            this.txtCOD_GENERACION_DZ.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCOD_GENERACION_DZ.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCOD_GENERACION_DZ.Location = new System.Drawing.Point(159, 304);
+            this.txtCOD_GENERACION_DZ.Name = "txtCOD_GENERACION_DZ";
+            this.txtCOD_GENERACION_DZ.Size = new System.Drawing.Size(385, 22);
+            this.txtCOD_GENERACION_DZ.TabIndex = 172;
             // 
             // label19
             // 
@@ -1006,9 +1006,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox txtPROV_TRANSP;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.TextBox txtMarchamo3;
+        private System.Windows.Forms.TextBox txtNUM_CONTROL_DZ;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.TextBox txtMarchamo1;
+        private System.Windows.Forms.TextBox txtCOD_GENERACION_DZ;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.ComboBox cbxID_ZAFRA;
@@ -1019,7 +1019,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private System.Windows.Forms.ComboBox cbxID_SEGMENTO;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
+        private System.Windows.Forms.MaskedTextBox mskFECHA_DTE_DZ;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ComboBox cbxID_DTSEGMENTO;
     }
