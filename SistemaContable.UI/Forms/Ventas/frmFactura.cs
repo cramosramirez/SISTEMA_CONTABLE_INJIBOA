@@ -18,7 +18,6 @@ namespace SistemaContable.UI.Forms.Ventas
         #region Campos privados
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDetalle;
-        //private int _idVenta = 0;
         private int _idEntidad = 0;
         private string _codigoEntidad = string.Empty;
         private string _columnaAnteriorGrid = string.Empty;
@@ -28,6 +27,16 @@ namespace SistemaContable.UI.Forms.Ventas
         private int? _diasCredito = null;
         public int _idTipoContribCliente { get; set; } = 0;
         public int _idTipoPersona { get; set; } = 0;
+
+        public int _idTipoContribEMISOR { get; set; } = 0;
+        public int _idTipoPersonaEMISOR { get; set; } = 0;
+
+        // Tasas fiscales (se cargan desde [EMH].[DTRETENCION])
+        private decimal _porcIVA = 0.13m;
+        private decimal _porcIVARET = 0.01m;
+        private decimal _porcIVAPER = 0.01m;
+        private decimal _extraerIVA = 0m;
+        private decimal _extraerRENTA = 0m;
         public frmFactura()
         {
             InitializeComponent();
@@ -43,6 +52,8 @@ namespace SistemaContable.UI.Forms.Ventas
             CargarZafra();
             CargarCentroCosto();
             CargarVendedor();
+            CargarEmisor(1);
+            CargarTasasRetencion();
             if (cbxTIPO_DTE.Items.Count > 0) cbxTIPO_DTE.SelectedIndex = 0;
             InicializarGridDetalle();
             FormHelper.RegistrarBusqueda(
@@ -159,6 +170,16 @@ namespace SistemaContable.UI.Forms.Ventas
                 AsignarDecimal(txtRECIB_NOTAABONO, ToDecimal(r["RECIB_NOTAABONO"]));
                 AsignarDecimal(txtRECIB_ANTICIPO, ToDecimal(r["RECIB_ANTICIPO"]));
                 AsignarDecimal(txtRECIB_EFECTIVO_CAMBIO, ToDecimal(r["RECIB_EFECTIVO_CAMBIO"]));
+                // NUEVOS
+                txtRECIB_REMESA_BANCO.Text = AsString(r["RECIB_REMESA_BANCO"]);
+                txtRECIB_REMESA_CUENTA.Text = AsString(r["RECIB_REMESA_CUENTA"]);
+                AsignarDecimal(txtRECIB_REMESA_MONTO, ToDecimal(r["RECIB_REMESA_MONTO"]));
+                txtRECIB_CHEQUE_BANCO.Text = AsString(r["RECIB_CHEQUE_BANCO"]);
+                txtRECIB_CHEQUE_CUENTA.Text = AsString(r["RECIB_CHEQUE_CUENTA"]);
+                AsignarDecimal(txtRECIB_CHEQUE_MONTO, ToDecimal(r["RECIB_CHEQUE_MONTO"]));
+                txtRECIB_NOTAABONO_BANCO.Text = AsString(r["RECIB_NOTAABONO_BANCO"]);
+                txtRECIB_NOTAABONO_CUENTA.Text = AsString(r["RECIB_NOTAABONO_CUENTA"]);
+                AsignarDecimal(txtRECIB_NOTAABONO_MONTO, ToDecimal(r["RECIB_NOTAABONO_MONTO"]));
                 chkPERCEPCION.Checked = Convert.ToBoolean(r["AP_PERCEPCION"]);
                 txtOBSERVACION.Text = AsString(r["OBSERVACIONES"]);
                 CargarFacturaDetalleExistente(idFactEnc);
@@ -241,6 +262,28 @@ namespace SistemaContable.UI.Forms.Ventas
             txtACTIVIDAD_PRIMARIA.Text = fila["ACTIVIDAD_PRIMARIA"].ToString();
             txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
             txtTIPO_CONTRIBUYENTE.Text = fila["TIPO_CONTRIBUYENTE"].ToString();
+        }
+        private void CargarEmisor(int idEmisor)
+        {
+            DataTable dt = _dal.EjecutarConsulta("[dbo].[SP_EMISOR]",
+                new { ACCION = "OBTENER", ID_EMISOR = idEmisor });
+            if (dt == null || dt.Rows.Count == 0) return;
+            DataRow r = dt.Rows[0];
+            _idTipoContribEMISOR = Convert.ToInt32(r["ID_TIPO_CONTRIB"].ToString());
+            _idTipoPersonaEMISOR = Convert.ToInt32(r["ID_TIPO_PERSONA"].ToString());
+        }
+
+        private void CargarTasasRetencion()
+        {
+            DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_DTRETENCION]",
+                new { ACCION = "OBTENER", ID_DTRETENCION = 1 });
+            if (dt == null || dt.Rows.Count == 0) return;
+            DataRow r = dt.Rows[0];
+            _porcIVA = r["IVA"] == DBNull.Value ? 0.13m : Convert.ToDecimal(r["IVA"]) / 100m;
+            _porcIVARET = r["IVARET"] == DBNull.Value ? 0.01m : Convert.ToDecimal(r["IVARET"]) / 100m;
+            _porcIVAPER = r["IVAPER"] == DBNull.Value ? 0.01m : Convert.ToDecimal(r["IVAPER"]) / 100m;
+            _extraerIVA = r["EXTRAER_IVA"] == DBNull.Value ? 0m : Convert.ToDecimal(r["EXTRAER_IVA"]);
+            _extraerRENTA = r["EXTRAER_RENTA"] == DBNull.Value ? 0m : Convert.ToDecimal(r["EXTRAER_RENTA"]);
         }
         #endregion
         #region COMBOS
@@ -338,9 +381,8 @@ namespace SistemaContable.UI.Forms.Ventas
             ConfigurarColumnaCheckBox(view, "ES_EXENTO", "Exento", 55);
             ConfigurarColumna(view, "EXENTO", "Exenta $", 85, false);
             ConfigurarColumna(view, "TOTAL", "Total", 90, false);
-            ConfigurarColumna(view, "DESCUENTO", "Descuento", 75, false, false); // oculta
-            ConfigurarColumna(view, "ID_UNIDAD_MEDIDA", "ID_UNIDAD_MEDIDA", 80, false, false); // oculta
-            // Orden visual explícito
+            ConfigurarColumna(view, "DESCUENTO", "Descuento", 75, false, false);
+            ConfigurarColumna(view, "ID_UNIDAD_MEDIDA", "ID_UNIDAD_MEDIDA", 80, false, false);
             view.Columns["COD_REF"].VisibleIndex = 0;
             view.Columns["DESCRIPCION"].VisibleIndex = 1;
             view.Columns["UM"].VisibleIndex = 2;
@@ -508,6 +550,7 @@ namespace SistemaContable.UI.Forms.Ventas
         }
         private void ActualizarTotales()
         {
+            // 1. Sumar columnas del detalle
             decimal totalNosujeta = 0m, totalExento = 0m, totalGravado = 0m,
                     totalVenta = 0m, totalDescuento = 0m;
             foreach (DataRow fila in _dtDetalle.Rows)
@@ -518,20 +561,72 @@ namespace SistemaContable.UI.Forms.Ventas
                 totalVenta += fila["TOTAL"] == DBNull.Value ? 0 : Convert.ToDecimal(fila["TOTAL"]);
                 totalDescuento += fila["DESCUENTO"] == DBNull.Value ? 0 : Convert.ToDecimal(fila["DESCUENTO"]);
             }
-            decimal iva = Math.Round(totalGravado * 13m / 113m, 2);
-            decimal subTotal = totalVenta;
-            decimal retencion = ObtenerTextBoxDecimal(txtRETENCION);
-            decimal percepcion = chkPERCEPCION.Checked ? ObtenerTextBoxDecimal(txtPERCEPCION) : 0m;
-            decimal totalFinal = subTotal - retencion + percepcion;
+
+            int? idTipoDte = ObtenerIdCombo(cbxTIPO_DTE);
+            decimal subTotal = (totalGravado + totalExento) - totalDescuento;
+            decimal iva = 0m;
+            decimal retencion = 0m;
+            decimal percepcion = 0m;
+
+            // ── FACTURA (1) ─────────────────────────────────────────────────────
+            // IVA ya está incluido en el precio (no se desglosa), retención = 0
+            if (idTipoDte == 1)
+            {
+                iva = 0m;
+                retencion = 0m;
+                percepcion = 0m;
+            }
+            // ── CCF (2) ─────────────────────────────────────────────────────────
+            // IVA se calcula sobre el subtotal; retención/percepción dependen
+            // de la clasificación del emisor y del cliente
+            else if (idTipoDte == 2)
+            {
+                iva = Math.Round(subTotal * _porcIVA, 2);
+
+                // Emisor Grande (3) → Cliente Pequeño o Mediano (1 o 2)
+                if (_idTipoContribEMISOR == 3 &&
+                   (_idTipoContribCliente == 1 || _idTipoContribCliente == 2))
+                {
+                    if (chkPERCEPCION.Checked)
+                    {
+                        percepcion = subTotal >= 100 ? Math.Round(subTotal * _porcIVAPER, 2) : 0m;
+                        retencion = 0m;
+                    }
+                    else
+                    {
+                        retencion = subTotal >= 100 ? Math.Round(subTotal * _porcIVARET, 2) : 0m;
+                        percepcion = 0m;
+                    }
+                }
+                // Emisor Grande (3) → Cliente Grande (3): sin retención ni percepción
+                else if (_idTipoContribEMISOR == 3 && _idTipoContribCliente == 3)
+                {
+                    retencion = 0m;
+                    percepcion = 0m;
+                }
+                // Cualquier otra combinación: sin retención ni percepción
+                else
+                {
+                    retencion = 0m;
+                    percepcion = 0m;
+                }
+            }
+
+            decimal totalFinal = subTotal + iva - retencion + percepcion;
+
+            // 2. Actualizar controles
             txtVENTA_NOSUJETA.Text = totalNosujeta.ToString("N2");
             txtVENTA_EXENTA.Text = totalExento.ToString("N2");
             txtVENTA_GRAVADA.Text = totalGravado.ToString("N2");
-            txtIVA.Text = iva.ToString("N2");
             txtSUBTOTAL.Text = subTotal.ToString("N2");
+            txtIVA.Text = iva.ToString("N2");
+            txtRETENCION.Text = retencion.ToString("N2");
+            txtPERCEPCION.Text = percepcion.ToString("N2");
             txtDESCUENTO.Text = totalDescuento.ToString("N2");
             txtTOTAL_VENTA.Text = totalFinal.ToString("N2");
+
             string condicion = cbxCONDPAGO.Text?.Trim().ToUpper() ?? "";
-            txtRECIB_EFECTIVO.Text = condicion == "CONTADO"
+            txtRECIB_EFECTIVO.Text = condicion == "CONTADO" && totalFinal > 0
                 ? totalFinal.ToString("N2") : "0.00";
         }
         private decimal ObtenerTextBoxDecimal(TextBox txt)
@@ -756,6 +851,16 @@ namespace SistemaContable.UI.Forms.Ventas
                     RECIB_NOTAABONO = ObtenerTextBoxDecimal(txtRECIB_NOTAABONO),
                     RECIB_ANTICIPO = ObtenerTextBoxDecimal(txtRECIB_ANTICIPO),
                     RECIB_EFECTIVO_CAMBIO = ObtenerTextBoxDecimal(txtRECIB_EFECTIVO_CAMBIO),
+                    // NUEVOS
+                    RECIB_REMESA_BANCO = NullIfEmpty(txtRECIB_REMESA_BANCO.Text),
+                    RECIB_REMESA_CUENTA = NullIfEmpty(txtRECIB_REMESA_CUENTA.Text),
+                    RECIB_REMESA_MONTO = ObtenerTextBoxDecimal(txtRECIB_REMESA_MONTO),
+                    RECIB_CHEQUE_BANCO = NullIfEmpty(txtRECIB_CHEQUE_BANCO.Text),
+                    RECIB_CHEQUE_CUENTA = NullIfEmpty(txtRECIB_CHEQUE_CUENTA.Text),
+                    RECIB_CHEQUE_MONTO = ObtenerTextBoxDecimal(txtRECIB_CHEQUE_MONTO),
+                    RECIB_NOTAABONO_BANCO = NullIfEmpty(txtRECIB_NOTAABONO_BANCO.Text),
+                    RECIB_NOTAABONO_CUENTA = NullIfEmpty(txtRECIB_NOTAABONO_CUENTA.Text),
+                    RECIB_NOTAABONO_MONTO = ObtenerTextBoxDecimal(txtRECIB_NOTAABONO_MONTO),
                     AFECTA = ObtenerTextBoxDecimal(txtVENTA_GRAVADA),
                     EXCENTA = ObtenerTextBoxDecimal(txtVENTA_EXENTA),
                     DESCUENTO = ObtenerTextBoxDecimal(txtPORC_DESCUENTO),
@@ -897,6 +1002,16 @@ namespace SistemaContable.UI.Forms.Ventas
             txtRECIB_NOTAABONO.Text = "0.00";
             txtRECIB_ANTICIPO.Text = "0.00";
             txtRECIB_EFECTIVO_CAMBIO.Text = "0.00";
+            // NUEVOS
+            txtRECIB_REMESA_BANCO.Text = "";
+            txtRECIB_REMESA_CUENTA.Text = "";
+            txtRECIB_REMESA_MONTO.Text = "0.00";
+            txtRECIB_CHEQUE_BANCO.Text = "";
+            txtRECIB_CHEQUE_CUENTA.Text = "";
+            txtRECIB_CHEQUE_MONTO.Text = "0.00";
+            txtRECIB_NOTAABONO_BANCO.Text = "";
+            txtRECIB_NOTAABONO_CUENTA.Text = "";
+            txtRECIB_NOTAABONO_MONTO.Text = "0.00";
             txtVENTA_NOSUJETA.Text = "0.00";
             txtVENTA_EXENTA.Text = "0.00";
             txtVENTA_GRAVADA.Text = "0.00";
@@ -985,14 +1100,13 @@ namespace SistemaContable.UI.Forms.Ventas
         private void CalcularDiasVenceDefault()
         {
             int? idCondPago = ObtenerIdCombo(cbxCONDPAGO);
-            if (idCondPago == 1) // CONTADO
+            if (idCondPago == 1)
             {
                 _diasCredito = null;
                 mskFECHA_VENCE.Text = string.Empty;
                 mskFECHA_VENCE.Enabled = false;
                 return;
             }
-            // CRÉDITO
             mskFECHA_VENCE.Enabled = true;
             bool tieneFechaDoc = DateTime.TryParseExact(
                 mskFECHA.Text.Trim(), "dd/MM/yyyy",
@@ -1036,14 +1150,37 @@ namespace SistemaContable.UI.Forms.Ventas
             _diasCredito = (fechaVence - fechaDoc).Days;
         }
         #endregion
+        #region FORMAS DE PAGO - DETALLE
+        private void txtRECIB_REMESA_Leave(object sender, EventArgs e)
+        {
+            if (decimal.TryParse(txtRECIB_REMESA.Text.Replace(",", ""), out decimal val) && val > 0)
+            {
+                txtRECIB_REMESA_MONTO.Text = val.ToString("N2");
+                txtRECIB_REMESA_BANCO.Focus();
+            }
+        }
+        private void txtRECIB_CHEQUE_Leave(object sender, EventArgs e)
+        {
+            if (decimal.TryParse(txtRECIB_CHEQUE.Text.Replace(",", ""), out decimal val) && val > 0)
+            {
+                txtRECIB_CHEQUE_MONTO.Text = val.ToString("N2");
+                txtRECIB_CHEQUE_BANCO.Focus();
+            }
+        }
+        private void txtRECIB_NOTAABONO_Leave(object sender, EventArgs e)
+        {
+            if (decimal.TryParse(txtRECIB_NOTAABONO.Text.Replace(",", ""), out decimal val) && val > 0)
+            {
+                txtRECIB_NOTAABONO_MONTO.Text = val.ToString("N2");
+                txtRECIB_NOTAABONO_BANCO.Focus();
+            }
+        }
+        #endregion
         private void cbxTIPO_DTE_SelectedIndexChanged(object sender, EventArgs e)
         {
             int? idTipoDte = ObtenerIdCombo(cbxTIPO_DTE);
             if (idTipoDte == null || idTipoDte <= 0) return;
             AnioDte = ObtenerAnioPorDte(idTipoDte);
-        }
-        private void txtCLIENTE_TextChanged(object sender, EventArgs e)
-        {
         }
     }
 }
