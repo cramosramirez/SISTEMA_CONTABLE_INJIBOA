@@ -76,7 +76,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                         { "NOMBRE",         300 },
                         { "NIT",            120 }
                     },
-                    ParametrosExtra = new { ROL = "TRASL" }
+                    ParametrosExtra = new { ROL = "NR" }
                 },
                 fila => AsignarProveedor(fila)
             );
@@ -347,7 +347,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 {
                     ACCION = "BUSCAR_POR_CODIGO",
                     FILTRO = codigo,
-                    ROL = "PRO"
+                    ROL = "NR"
                 });
 
                 if (dt.Rows.Count > 0)
@@ -794,7 +794,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
         {
             var config = new BusquedaConfig
             {
-                StoredProcedure = "[EINVENTARIO].[SP_PRODUCTO]",
+                StoredProcedure = "[EINVENTARIO].[SP_PRODUCTO]", 
                 Columnas = new Dictionary<string, string>
                 {
                     { "ID_PRODUCTO",        "ID_PRODUCTO" },
@@ -963,21 +963,10 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     NUMCONTROL = txtNUM_CONTROL.Text,
                     NUMINTERNO = txtNumero_NR.Text,
                     AFECTA = txtGRAVADA.Text,
-                    TOTALVENTA = txtTOTAL.Text,
-                    TOTALLETRAS = string.Empty,
-                    OBSERVACIONES = txtObservacion.Text,
-                    TPCONTRIBUYENTE = string.Empty,
-                    USER_CREA = Configuracion.UsuarioActual,
-                    TPCONTRIBUYENTEEMISOR = string.Empty,
-                    TPDOCRECTOR = string.Empty,
-                    NDOCRECTOR = string.Empty,
-                    TRANSPORTE = string.Empty,
-                    MOTORISTA = string.Empty,
-                    LICENCIA = string.Empty,
-                    PLACA = string.Empty,
-                    MARCHAMOS = string.Empty,
-                    OPCIONNR = "NR",
-                    ID_ZAFRA = string.Empty
+                    TOTALVENTA = txtTOTAL.Text,                    
+                    OBSERVACIONES = txtObservacion.Text,                   
+                    USER_CREA = Configuracion.UsuarioActual,                   
+                    OPCIONNR = "NR"
 
 
                 });
