@@ -433,6 +433,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap ordenDespacho_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("ordenDespacho_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap procesar32x32 {
             get {
                 object obj = ResourceManager.GetObject("procesar32x32", resourceCulture);
@@ -503,6 +513,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap reportes_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("reportes_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap retencion32x32 {
             get {
                 object obj = ResourceManager.GetObject("retencion32x32", resourceCulture);
@@ -526,6 +546,36 @@ namespace SistemaContable.UI.Properties {
         public static System.Drawing.Bitmap salir32x32 {
             get {
                 object obj = ResourceManager.GetObject("salir32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap traslado_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("traslado_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap traslado1_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("traslado1_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap traslado2_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("traslado2_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

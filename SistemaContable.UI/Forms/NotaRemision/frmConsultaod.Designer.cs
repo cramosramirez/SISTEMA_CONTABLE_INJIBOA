@@ -51,8 +51,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colNUMDOC = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colNOMCLIENTE = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colCODGENERACION = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colNUMCONTROL = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colSELLORECEPCION = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colESTADO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnNuevoNR = new DevExpress.XtraEditors.SimpleButton();
@@ -103,8 +101,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colNUMDOC,
             this.colNOMCLIENTE,
             this.colCODGENERACION,
-            this.colNUMCONTROL,
-            this.colSELLORECEPCION,
             this.colESTADO});
             this.gvDetalle.DetailHeight = 284;
             this.gvDetalle.GridControl = this.gridControl1;
@@ -117,7 +113,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // colID_NR
             // 
             this.colID_NR.Caption = "Sistema(Id)";
-            this.colID_NR.FieldName = "ID_NTREMISIONENC";
+            this.colID_NR.FieldName = "ID_ODENC";
             this.colID_NR.MinWidth = 18;
             this.colID_NR.Name = "colID_NR";
             this.colID_NR.OptionsColumn.AllowSize = false;
@@ -204,32 +200,12 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // colCODGENERACION
             // 
             this.colCODGENERACION.Caption = "Cod. Generacion";
-            this.colCODGENERACION.FieldName = "CODGENERACION";
+            this.colCODGENERACION.FieldName = "CODGENERACION_OD";
             this.colCODGENERACION.Name = "colCODGENERACION";
             this.colCODGENERACION.OptionsColumn.AllowSize = false;
             this.colCODGENERACION.Visible = true;
             this.colCODGENERACION.VisibleIndex = 6;
             this.colCODGENERACION.Width = 204;
-            // 
-            // colNUMCONTROL
-            // 
-            this.colNUMCONTROL.Caption = "N° Control";
-            this.colNUMCONTROL.FieldName = "NUMCONTROL";
-            this.colNUMCONTROL.Name = "colNUMCONTROL";
-            this.colNUMCONTROL.OptionsColumn.AllowSize = false;
-            this.colNUMCONTROL.Visible = true;
-            this.colNUMCONTROL.VisibleIndex = 7;
-            this.colNUMCONTROL.Width = 204;
-            // 
-            // colSELLORECEPCION
-            // 
-            this.colSELLORECEPCION.Caption = "Sello Recepcion";
-            this.colSELLORECEPCION.FieldName = "SELLORECEPCION";
-            this.colSELLORECEPCION.Name = "colSELLORECEPCION";
-            this.colSELLORECEPCION.OptionsColumn.AllowSize = false;
-            this.colSELLORECEPCION.Visible = true;
-            this.colSELLORECEPCION.VisibleIndex = 8;
-            this.colSELLORECEPCION.Width = 157;
             // 
             // colESTADO
             // 
@@ -238,7 +214,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colESTADO.Name = "colESTADO";
             this.colESTADO.OptionsColumn.AllowSize = false;
             this.colESTADO.Visible = true;
-            this.colESTADO.VisibleIndex = 9;
+            this.colESTADO.VisibleIndex = 7;
             this.colESTADO.Width = 69;
             // 
             // panel2
@@ -324,8 +300,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private DevExpress.XtraGrid.Columns.GridColumn colNUMDOC;
         private DevExpress.XtraGrid.Columns.GridColumn colNOMCLIENTE;
         private DevExpress.XtraGrid.Columns.GridColumn colCODGENERACION;
-        private DevExpress.XtraGrid.Columns.GridColumn colNUMCONTROL;
-        private DevExpress.XtraGrid.Columns.GridColumn colSELLORECEPCION;
         private DevExpress.XtraGrid.Columns.GridColumn colESTADO;
     }
 }

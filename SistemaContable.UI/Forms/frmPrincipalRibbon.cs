@@ -219,7 +219,8 @@ namespace SistemaContable.UI.Forms
                         frm is frmProvisionDiaria provisionDiaria ||
                         frm is frmConsulta consultaForm ||
                         frm is frmConsultabd Consultabd ||
-                        frm is frmConsultadz Consultadz )
+                        frm is frmConsultadz Consultadz ||
+                        frm is frmConsultaod Consultaod)
                     {
                         Form formulario = (Form)frm;
 

@@ -79,8 +79,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
         #region === CARGA DE DATOS ===
         private void CargarDatos()
         {
-            _dtDetalle = _dal.EjecutarConsulta("[EDTE].SP_NOTA_REMISION",
-                new { ACCION = "LIST_NR" });
+            _dtDetalle = _dal.EjecutarConsulta("[EORDEN_DESPACHO].SP_NOTAREMISION_ENC",
+                new { ACCION = "LIST" });
             gridControl1.DataSource = _dtDetalle;
             gridControl1.Refresh();
         }
@@ -92,7 +92,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private int? ObtenerIdFilaActiva()
         {
             if (gvDetalle.FocusedRowHandle < 0) return null;
-            object val = gvDetalle.GetRowCellValue(gvDetalle.FocusedRowHandle, "ID_NTREMISIONENC");
+            object val = gvDetalle.GetRowCellValue(gvDetalle.FocusedRowHandle, "ID_ODENC");
             if (val == null || val == DBNull.Value) return null;
             return Convert.ToInt32(val);
         }
