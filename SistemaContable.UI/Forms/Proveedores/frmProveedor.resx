@@ -136,30 +136,4 @@
         x+LQUm2kJLxe0PWcN+L9At0n0Pupesa+ZrmS3D8Bt5L3HUY5afMAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="btnImprimir.ImageOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAOw4AADsOAFxK8o4AAAAB3RJ
-        TUUH5QkDBjAmnD4isgAAAvRJREFUWEfNV8tu00AUvZBZ5lEh2qZKnPANXYD4EuAzWM0ii6psUAPsKlWM
-        hFghksig0lWlFlZIwA8AEiuoymPpBmgWlKBj7qTja1uOawtxpSN57LnnHM/jekyUEIoM0FBk9hWZaUE8
-        Zy4pkx5soKPIfFRkThSZQ77OA+QgF9fgkjLxYOGKIrOoyFxVZD4zcO0x0TxAX5m/xNxS9m+weFOR6Ssy
-        7xSZL4rM71xvwCFGEBzgeq/I3GGNeEKF7p9jcczbETsvywC4Aua+VyEDrVjCsiLzVpH5rshcU2SucOKn
-        AgaQC47LzAluaEArMeGA0WbY9lkNZPM5w7/qLBq8vR2BMhah5FudTYMi01JkNhSZD4rML4bt6LYxnPYN
-        smCHPo0PWtBswcADXihYeHYPgwBw21IkCzLfbdsF+RAGxix+A/N0nrY8os12EvAsYbgTgb5uf6eNtXCd
-        NccwACfhVlu5NKL1/UltbffYW9s9bgt463uTWm/nh1xzseg9+xny3Nqb1G/6Y+rtnLYvrjx2t+h0ZoBo
-        y+u/mVa1Hwy0HxxqPzgQwL2h9oO69gOpOQs84z4j7QdPtR/UGGF749W0Cq1EA3jIImkGQJLHwLb2g4Zj
-        YPv2y5N6ooFwCrojm9zVftARwD2Qkd6cSt1IOCYW9JOjSPvC4qPkKeCbkqv0EGX6PzTAqCsyXbm1CgBc
-        jcopP+6lGoD4QBxCihYicA2Zey4D6Py1xFL8LY8BoJpwogkrmayOElzt5McI17W0KbClGOURZTI8QHIn
-        +0ZZVTJSLZudYSzfGd1YKXY/RnauMAJ4i5BgjioZqZb917NqZw3gGpx2bUFr9jGCo7t8DsRwjZIMZFTJ
-        SLV0yq00gJeDBrRwPmzbOcFpFcekcLskTUHTG6KaoaR62g/aKcCz+nJ7EMsX2xtamSfkCMFyDgNLrWQD
-        c4c0UMIaKG6g4BooZqCsbTh3OAZsRStSiHL/V7gGUK3+3c+pDTawwL/W9jf7rHjBXFImjD+GwWV7K4qT
-        KwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <metadata name="barManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="popupDocumentos.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>158, 17</value>
-  </metadata>
 </root>

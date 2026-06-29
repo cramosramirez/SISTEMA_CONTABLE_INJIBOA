@@ -385,7 +385,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.MinimizeBox = false;
             this.Name = "frmChequeDocumentosContado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Compras de contado";
+            this.Text = "Comprobantes de crédito fiscal";
             this.Load += new System.EventHandler(this.frmChequeDocumentosContado_Load);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();

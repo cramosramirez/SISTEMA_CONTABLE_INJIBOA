@@ -214,13 +214,8 @@ namespace SistemaContable.UI.Forms
                 {
                     if (frm == null) return;
 
-                    if (frm is frmConsultaQuedan quedanForm ||
-                        frm is frmConsultaNotaDebCred notaDebCredForm ||
-                        frm is frmProvisionDiaria provisionDiaria ||
-                        frm is frmConsulta consultaForm ||
-                        frm is frmConsultabd Consultabd ||
-                        frm is frmConsultadz Consultadz ||
-                        frm is frmConsultaod Consultaod)
+                    if (frm.Tag != null && frm.Tag.ToString().ToUpper() == "CONSULTA")
+
                     {
                         Form formulario = (Form)frm;
 

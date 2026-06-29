@@ -527,7 +527,8 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
-            {                
+            {
+                LimpiarFilasVaciasGrid();
                 if (!Validar())
                 {
                     return;
@@ -573,6 +574,20 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 Cursor = Cursors.Default;
             }            
+        }
+
+        private void LimpiarFilasVaciasGrid()
+        {
+            for (int i = _dtPartida.Rows.Count - 1; i >= 0; i--)
+            {
+                var fila = _dtPartida.Rows[i];
+                string cta = fila["CTACONTABLE"]?.ToString()?.Trim() ?? "";
+
+                if (string.IsNullOrEmpty(cta))   // solo cuenta vacía
+                {
+                    _dtPartida.Rows.RemoveAt(i);
+                }
+            }
         }
 
         private void btnBorrarFila_Click(object sender, EventArgs e)

@@ -269,9 +269,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label49
             // 
             this.label49.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(141, 65);
+            this.label49.Location = new System.Drawing.Point(131, 65);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(182, 18);
+            this.label49.Size = new System.Drawing.Size(192, 20);
             this.label49.TabIndex = 217;
             this.label49.Text = "Estado del documento:";
             this.label49.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -832,9 +832,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxTIPO_DTE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxTIPO_DTE.ForeColor = System.Drawing.Color.Blue;
             this.cbxTIPO_DTE.FormattingEnabled = true;
-            this.cbxTIPO_DTE.Location = new System.Drawing.Point(144, 109);
+            this.cbxTIPO_DTE.Location = new System.Drawing.Point(156, 109);
             this.cbxTIPO_DTE.Name = "cbxTIPO_DTE";
-            this.cbxTIPO_DTE.Size = new System.Drawing.Size(384, 25);
+            this.cbxTIPO_DTE.Size = new System.Drawing.Size(372, 25);
             this.cbxTIPO_DTE.TabIndex = 3;
             this.cbxTIPO_DTE.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbxTIPO_DTE_DrawItem);
             // 
@@ -862,9 +862,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label8
             // 
             this.label8.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(52, 175);
+            this.label8.Location = new System.Drawing.Point(60, 173);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(70, 21);
+            this.label8.Size = new System.Drawing.Size(94, 21);
             this.label8.TabIndex = 162;
             this.label8.Text = "Fecha Fact.";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -874,7 +874,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.mskFECHA_EMISION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mskFECHA_EMISION.ForeColor = System.Drawing.Color.Blue;
             this.mskFECHA_EMISION.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
-            this.mskFECHA_EMISION.Location = new System.Drawing.Point(144, 170);
+            this.mskFECHA_EMISION.Location = new System.Drawing.Point(156, 169);
             this.mskFECHA_EMISION.Mask = "00/00/0000";
             this.mskFECHA_EMISION.Name = "mskFECHA_EMISION";
             this.mskFECHA_EMISION.Size = new System.Drawing.Size(112, 24);
@@ -922,17 +922,17 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.txtCOD_GENERACION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCOD_GENERACION.ForeColor = System.Drawing.Color.Blue;
-            this.txtCOD_GENERACION.Location = new System.Drawing.Point(144, 139);
+            this.txtCOD_GENERACION.Location = new System.Drawing.Point(156, 139);
             this.txtCOD_GENERACION.Name = "txtCOD_GENERACION";
-            this.txtCOD_GENERACION.Size = new System.Drawing.Size(384, 24);
+            this.txtCOD_GENERACION.Size = new System.Drawing.Size(372, 24);
             this.txtCOD_GENERACION.TabIndex = 5;
             // 
             // label22
             // 
             this.label22.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(6, 144);
+            this.label22.Location = new System.Drawing.Point(6, 142);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(116, 21);
+            this.label22.Size = new System.Drawing.Size(148, 21);
             this.label22.TabIndex = 159;
             this.label22.Text = "N°/Cod. Generación";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -940,9 +940,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label23
             // 
             this.label23.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(24, 111);
+            this.label23.Location = new System.Drawing.Point(36, 109);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(98, 23);
+            this.label23.Size = new System.Drawing.Size(118, 23);
             this.label23.TabIndex = 158;
             this.label23.Text = "Tipo documento";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1315,9 +1315,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(200, 32);
+            this.label2.Location = new System.Drawing.Point(200, 29);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(121, 21);
+            this.label2.Size = new System.Drawing.Size(152, 21);
             this.label2.TabIndex = 24;
             this.label2.Text = "Consulta pública DTE";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1337,9 +1337,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // lblNUM_QUEDAN
             // 
             this.lblNUM_QUEDAN.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNUM_QUEDAN.Location = new System.Drawing.Point(10, 32);
+            this.lblNUM_QUEDAN.Location = new System.Drawing.Point(3, 29);
             this.lblNUM_QUEDAN.Name = "lblNUM_QUEDAN";
-            this.lblNUM_QUEDAN.Size = new System.Drawing.Size(73, 21);
+            this.lblNUM_QUEDAN.Size = new System.Drawing.Size(94, 21);
             this.lblNUM_QUEDAN.TabIndex = 15;
             this.lblNUM_QUEDAN.Text = "No. Quedan";
             this.lblNUM_QUEDAN.TextAlign = System.Drawing.ContentAlignment.MiddleRight;

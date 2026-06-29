@@ -140,6 +140,41 @@ namespace SistemaContable.DAL
             }
         }
 
+        public int EjecutarConsultaConTVPs(
+                string sp,
+                object parametrosAdicionales,
+                params (string Nombre, string TipoTVP, DataTable Tabla)[] tvps)
+        {
+            using (var cn = new SqlConnection(CadenaConexion))
+            using (var cmd = new SqlCommand(sp, cn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // Agregar todos los TVPs
+                foreach (var tvp in tvps)
+                {
+                    cmd.Parameters.Add(new SqlParameter("@" + tvp.Nombre, SqlDbType.Structured)
+                    {
+                        TypeName = "dbo." + tvp.TipoTVP,
+                        Value = tvp.Tabla
+                    });
+                }
+                // Parámetros normales
+                if (parametrosAdicionales != null)
+                {
+                    foreach (var prop in parametrosAdicionales.GetType().GetProperties())
+                        cmd.Parameters.AddWithValue("@" + prop.Name,
+                            prop.GetValue(parametrosAdicionales) ?? DBNull.Value);
+                }
+
+                cn.Open();
+                var resultado = cmd.ExecuteScalar();
+                return resultado == null || resultado == DBNull.Value
+                    ? 0
+                    : Convert.ToInt32(resultado);
+            }
+        }
+
         public DataTable EjecutarConsultaConTVPDataTable(
             string storedProcedure,
             string nombreParametroTVP,

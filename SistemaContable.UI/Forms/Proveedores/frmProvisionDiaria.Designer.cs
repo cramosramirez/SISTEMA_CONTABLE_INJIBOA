@@ -646,6 +646,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.MinimizeBox = false;
             this.Name = "frmProvisionDiaria";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "CONSULTA";
             this.Text = "Provisión Diaria";
             this.Load += new System.EventHandler(this.frmProvisionDiaria_Load);
             this.panel1.ResumeLayout(false);
