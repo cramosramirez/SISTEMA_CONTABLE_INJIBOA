@@ -69,11 +69,11 @@
             this.lblDIST = new System.Windows.Forms.Label();
             this.cbxDIST = new System.Windows.Forms.ComboBox();
             this.lblACTIVIDAD_1 = new System.Windows.Forms.Label();
-            this.cbxACTIVIDAD_1 = new System.Windows.Forms.ComboBox();
+            this.txtACTIVIDAD_1 = new System.Windows.Forms.TextBox();
             this.lblACTIVIDAD_2 = new System.Windows.Forms.Label();
-            this.cbxACTIVIDAD_2 = new System.Windows.Forms.ComboBox();
+            this.txtACTIVIDAD_2 = new System.Windows.Forms.TextBox();
             this.lblACTIVIDAD_3 = new System.Windows.Forms.Label();
-            this.cbxACTIVIDAD_3 = new System.Windows.Forms.ComboBox();
+            this.txtACTIVIDAD_3 = new System.Windows.Forms.TextBox();
             this.lblORIGEN = new System.Windows.Forms.Label();
             this.cbxORIGEN = new System.Windows.Forms.ComboBox();
             this.lblCODIPROVEEDOR = new System.Windows.Forms.Label();
@@ -214,11 +214,11 @@
             this.groupControl1.Controls.Add(this.lblDIST);
             this.groupControl1.Controls.Add(this.cbxDIST);
             this.groupControl1.Controls.Add(this.lblACTIVIDAD_1);
-            this.groupControl1.Controls.Add(this.cbxACTIVIDAD_1);
+            this.groupControl1.Controls.Add(this.txtACTIVIDAD_1);
             this.groupControl1.Controls.Add(this.lblACTIVIDAD_2);
-            this.groupControl1.Controls.Add(this.cbxACTIVIDAD_2);
+            this.groupControl1.Controls.Add(this.txtACTIVIDAD_2);
             this.groupControl1.Controls.Add(this.lblACTIVIDAD_3);
-            this.groupControl1.Controls.Add(this.cbxACTIVIDAD_3);
+            this.groupControl1.Controls.Add(this.txtACTIVIDAD_3);
             this.groupControl1.Controls.Add(this.lblORIGEN);
             this.groupControl1.Controls.Add(this.cbxORIGEN);
             this.groupControl1.Location = new System.Drawing.Point(10, 3);
@@ -734,15 +734,13 @@
             this.lblACTIVIDAD_1.TabIndex = 27;
             this.lblACTIVIDAD_1.Text = "Actividad 1";
             //
-            // cbxACTIVIDAD_1
+            // txtACTIVIDAD_1
             //
-            this.cbxACTIVIDAD_1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxACTIVIDAD_1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.cbxACTIVIDAD_1.FormattingEnabled = true;
-            this.cbxACTIVIDAD_1.Location = new System.Drawing.Point(119, 305);
-            this.cbxACTIVIDAD_1.Name = "cbxACTIVIDAD_1";
-            this.cbxACTIVIDAD_1.Size = new System.Drawing.Size(970, 22);
-            this.cbxACTIVIDAD_1.TabIndex = 26;
+            this.txtACTIVIDAD_1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtACTIVIDAD_1.Location = new System.Drawing.Point(119, 305);
+            this.txtACTIVIDAD_1.Name = "txtACTIVIDAD_1";
+            this.txtACTIVIDAD_1.Size = new System.Drawing.Size(970, 22);
+            this.txtACTIVIDAD_1.TabIndex = 26;
             //
             // lblACTIVIDAD_2
             //
@@ -754,15 +752,13 @@
             this.lblACTIVIDAD_2.TabIndex = 28;
             this.lblACTIVIDAD_2.Text = "Actividad 2";
             //
-            // cbxACTIVIDAD_2
+            // txtACTIVIDAD_2
             //
-            this.cbxACTIVIDAD_2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxACTIVIDAD_2.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.cbxACTIVIDAD_2.FormattingEnabled = true;
-            this.cbxACTIVIDAD_2.Location = new System.Drawing.Point(120, 333);
-            this.cbxACTIVIDAD_2.Name = "cbxACTIVIDAD_2";
-            this.cbxACTIVIDAD_2.Size = new System.Drawing.Size(969, 22);
-            this.cbxACTIVIDAD_2.TabIndex = 27;
+            this.txtACTIVIDAD_2.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtACTIVIDAD_2.Location = new System.Drawing.Point(120, 333);
+            this.txtACTIVIDAD_2.Name = "txtACTIVIDAD_2";
+            this.txtACTIVIDAD_2.Size = new System.Drawing.Size(969, 22);
+            this.txtACTIVIDAD_2.TabIndex = 27;
             //
             // lblACTIVIDAD_3
             //
@@ -774,15 +770,13 @@
             this.lblACTIVIDAD_3.TabIndex = 29;
             this.lblACTIVIDAD_3.Text = "Actividad 3";
             //
-            // cbxACTIVIDAD_3
+            // txtACTIVIDAD_3
             //
-            this.cbxACTIVIDAD_3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxACTIVIDAD_3.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.cbxACTIVIDAD_3.FormattingEnabled = true;
-            this.cbxACTIVIDAD_3.Location = new System.Drawing.Point(119, 364);
-            this.cbxACTIVIDAD_3.Name = "cbxACTIVIDAD_3";
-            this.cbxACTIVIDAD_3.Size = new System.Drawing.Size(970, 22);
-            this.cbxACTIVIDAD_3.TabIndex = 28;
+            this.txtACTIVIDAD_3.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtACTIVIDAD_3.Location = new System.Drawing.Point(119, 364);
+            this.txtACTIVIDAD_3.Name = "txtACTIVIDAD_3";
+            this.txtACTIVIDAD_3.Size = new System.Drawing.Size(970, 22);
+            this.txtACTIVIDAD_3.TabIndex = 28;
             //
             // lblORIGEN
             //
@@ -1010,12 +1004,12 @@
         private System.Windows.Forms.ComboBox cbxMUNI;
         // Row 8
         private System.Windows.Forms.Label lblACTIVIDAD_1;
-        private System.Windows.Forms.ComboBox cbxACTIVIDAD_1;
+        private System.Windows.Forms.TextBox txtACTIVIDAD_1;
         private System.Windows.Forms.Label lblACTIVIDAD_2;
-        private System.Windows.Forms.ComboBox cbxACTIVIDAD_2;
+        private System.Windows.Forms.TextBox txtACTIVIDAD_2;
         // Row 9
         private System.Windows.Forms.Label lblACTIVIDAD_3;
-        private System.Windows.Forms.ComboBox cbxACTIVIDAD_3;
+        private System.Windows.Forms.TextBox txtACTIVIDAD_3;
         private System.Windows.Forms.Label lblORIGEN;
         private System.Windows.Forms.ComboBox cbxORIGEN;
         private System.Windows.Forms.Label lblCODIPROVEEDOR;

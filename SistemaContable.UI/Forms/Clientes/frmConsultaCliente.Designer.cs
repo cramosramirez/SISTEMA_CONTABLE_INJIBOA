@@ -9,7 +9,6 @@
                 components.Dispose();
             base.Dispose(disposing);
         }
-
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
@@ -39,9 +38,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvEntidades)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.riEditar)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // panel1
-            // 
+            //
             this.panel1.Controls.Add(this.btnNuevo);
             this.panel1.Controls.Add(this.btnSalir);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -49,9 +48,9 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1300, 58);
             this.panel1.TabIndex = 0;
-            // 
+            //
             // btnNuevo
-            // 
+            //
             this.btnNuevo.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold);
             this.btnNuevo.Appearance.Options.UseFont = true;
             this.btnNuevo.Appearance.Options.UseTextOptions = true;
@@ -64,9 +63,9 @@
             this.btnNuevo.TabStop = false;
             this.btnNuevo.Text = "Nuevo";
             this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
-            // 
+            //
             // btnSalir
-            // 
+            //
             this.btnSalir.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold);
             this.btnSalir.Appearance.Options.UseFont = true;
             this.btnSalir.Appearance.Options.UseTextOptions = true;
@@ -79,9 +78,9 @@
             this.btnSalir.TabStop = false;
             this.btnSalir.Text = "Salir";
             this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
-            // 
+            //
             // gridControl1
-            // 
+            //
             this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridControl1.Location = new System.Drawing.Point(0, 58);
             this.gridControl1.MainView = this.gvEntidades;
@@ -93,9 +92,9 @@
             this.gridControl1.Tag = "Consulta";
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvEntidades});
-            // 
+            //
             // gvEntidades
-            // 
+            //
             this.gvEntidades.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.colID_ENTIDAD,
             this.colEDITAR,
@@ -112,14 +111,14 @@
             this.gvEntidades.Name = "gvEntidades";
             this.gvEntidades.OptionsView.ShowIndicator = false;
             this.gvEntidades.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
-            // 
+            //
             // colID_ENTIDAD
-            // 
+            //
             this.colID_ENTIDAD.FieldName = "ID_ENTIDAD";
             this.colID_ENTIDAD.Name = "colID_ENTIDAD";
-            // 
+            //
             // colEDITAR
-            // 
+            //
             this.colEDITAR.Caption = " ";
             this.colEDITAR.ColumnEdit = this.riEditar;
             this.colEDITAR.MinWidth = 18;
@@ -130,9 +129,9 @@
             this.colEDITAR.Visible = true;
             this.colEDITAR.VisibleIndex = 0;
             this.colEDITAR.Width = 41;
-            // 
+            //
             // riEditar
-            // 
+            //
             this.riEditar.AutoHeight = false;
             editorButtonImageOptions1.Image = global::SistemaContable.UI.Properties.Resources.editar3_32x32;
             this.riEditar.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -141,9 +140,9 @@
             this.riEditar.Name = "riEditar";
             this.riEditar.UseReadOnlyAppearance = false;
             this.riEditar.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.riEditar_ButtonClick);
-            // 
+            //
             // colCODIGO_ENTIDAD
-            // 
+            //
             this.colCODIGO_ENTIDAD.Caption = "Código";
             this.colCODIGO_ENTIDAD.FieldName = "CODIGO_ENTIDAD";
             this.colCODIGO_ENTIDAD.MinWidth = 18;
@@ -152,9 +151,9 @@
             this.colCODIGO_ENTIDAD.Visible = true;
             this.colCODIGO_ENTIDAD.VisibleIndex = 1;
             this.colCODIGO_ENTIDAD.Width = 110;
-            // 
+            //
             // colNOMBRE
-            // 
+            //
             this.colNOMBRE.Caption = "Nombre";
             this.colNOMBRE.FieldName = "NOMBRE";
             this.colNOMBRE.MinWidth = 18;
@@ -163,9 +162,9 @@
             this.colNOMBRE.Visible = true;
             this.colNOMBRE.VisibleIndex = 2;
             this.colNOMBRE.Width = 300;
-            // 
+            //
             // colNOMBRE_COMERCIAL
-            // 
+            //
             this.colNOMBRE_COMERCIAL.Caption = "Nombre Comercial";
             this.colNOMBRE_COMERCIAL.FieldName = "NOMBRE_COMERCIAL";
             this.colNOMBRE_COMERCIAL.MinWidth = 18;
@@ -174,9 +173,9 @@
             this.colNOMBRE_COMERCIAL.Visible = true;
             this.colNOMBRE_COMERCIAL.VisibleIndex = 3;
             this.colNOMBRE_COMERCIAL.Width = 200;
-            // 
+            //
             // colTIPO_PERSONA
-            // 
+            //
             this.colTIPO_PERSONA.Caption = "Tipo Persona";
             this.colTIPO_PERSONA.FieldName = "NOMBRE_TIPO_PERSONA";
             this.colTIPO_PERSONA.MinWidth = 18;
@@ -185,9 +184,9 @@
             this.colTIPO_PERSONA.Visible = true;
             this.colTIPO_PERSONA.VisibleIndex = 4;
             this.colTIPO_PERSONA.Width = 120;
-            // 
+            //
             // colNRC
-            // 
+            //
             this.colNRC.AppearanceCell.Options.UseTextOptions = true;
             this.colNRC.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colNRC.Caption = "NRC";
@@ -198,9 +197,9 @@
             this.colNRC.Visible = true;
             this.colNRC.VisibleIndex = 5;
             this.colNRC.Width = 90;
-            // 
+            //
             // colNIT
-            // 
+            //
             this.colNIT.Caption = "NIT";
             this.colNIT.FieldName = "NIT";
             this.colNIT.MinWidth = 18;
@@ -209,9 +208,9 @@
             this.colNIT.Visible = true;
             this.colNIT.VisibleIndex = 6;
             this.colNIT.Width = 110;
-            // 
+            //
             // colCORREO
-            // 
+            //
             this.colCORREO.Caption = "Correo";
             this.colCORREO.FieldName = "CORREO";
             this.colCORREO.MinWidth = 18;
@@ -220,9 +219,9 @@
             this.colCORREO.Visible = true;
             this.colCORREO.VisibleIndex = 7;
             this.colCORREO.Width = 200;
-            // 
+            //
             // colTELEFONO
-            // 
+            //
             this.colTELEFONO.Caption = "Teléfono";
             this.colTELEFONO.FieldName = "TELEFONO";
             this.colTELEFONO.MinWidth = 18;
@@ -231,9 +230,9 @@
             this.colTELEFONO.Visible = true;
             this.colTELEFONO.VisibleIndex = 8;
             this.colTELEFONO.Width = 100;
-            // 
+            //
             // frmConsultaCliente
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1300, 550);
@@ -248,10 +247,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvEntidades)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riEditar)).EndInit();
             this.ResumeLayout(false);
-
         }
         #endregion
-
         private System.Windows.Forms.Panel panel1;
         private DevExpress.XtraEditors.SimpleButton btnNuevo;
         private DevExpress.XtraEditors.SimpleButton btnSalir;
@@ -268,7 +265,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn colNIT;
         private DevExpress.XtraGrid.Columns.GridColumn colCORREO;
         private DevExpress.XtraGrid.Columns.GridColumn colTELEFONO;
-
         private void btnSalir_Click(object sender, System.EventArgs e) => this.Close();
     }
 }
