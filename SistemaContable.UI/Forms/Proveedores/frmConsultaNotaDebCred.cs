@@ -115,6 +115,11 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void btnNuevoQuedan_Click(object sender, EventArgs e)
         {
             AbrirDocumento(idCcfCompra: 0);
-        }       
+        }
+
+        private void btnFinalizar_Click(object sender, EventArgs e)
+        {
+            Close(); 
+        }
     }
 }

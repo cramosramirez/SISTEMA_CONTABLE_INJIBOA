@@ -33,6 +33,9 @@ namespace SistemaContable.UI.Forms.Bancos
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.searchLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnSalir = new DevExpress.XtraEditors.SimpleButton();
+            this.btnCancelar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.txtCTACONTABLE = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -43,9 +46,6 @@ namespace SistemaContable.UI.Forms.Bancos
             this.label3 = new System.Windows.Forms.Label();
             this.txtNUM_CUENTA = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnCancelar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnSalir = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.searchLookUpEdit1View)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -76,6 +76,9 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnSalir);
+            this.panel1.Controls.Add(this.btnCancelar);
+            this.panel1.Controls.Add(this.btnGuardar);
             this.panel1.Controls.Add(this.txtCTACONTABLE);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
@@ -86,138 +89,144 @@ namespace SistemaContable.UI.Forms.Bancos
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.txtNUM_CUENTA);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1098, 311);
+            this.panel1.Size = new System.Drawing.Size(1098, 364);
             this.panel1.TabIndex = 0;
-            // 
-            // txtCTACONTABLE
-            // 
-            this.txtCTACONTABLE.Location = new System.Drawing.Point(442, 227);
-            this.txtCTACONTABLE.Name = "txtCTACONTABLE";
-            this.txtCTACONTABLE.Size = new System.Drawing.Size(520, 29);
-            this.txtCTACONTABLE.TabIndex = 4;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(226, 227);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(136, 21);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "Cuenta contable: *";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(226, 181);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(137, 21);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Fecha de apertura:";
-            // 
-            // mskFECHA_APERTURA
-            // 
-            this.mskFECHA_APERTURA.Location = new System.Drawing.Point(442, 178);
-            this.mskFECHA_APERTURA.Mask = "00/00/0000";
-            this.mskFECHA_APERTURA.Name = "mskFECHA_APERTURA";
-            this.mskFECHA_APERTURA.Size = new System.Drawing.Size(520, 29);
-            this.mskFECHA_APERTURA.TabIndex = 3;
-            // 
-            // cbxBANCO
-            // 
-            this.cbxBANCO.FormattingEnabled = true;
-            this.cbxBANCO.Location = new System.Drawing.Point(442, 130);
-            this.cbxBANCO.Name = "cbxBANCO";
-            this.cbxBANCO.Size = new System.Drawing.Size(520, 29);
-            this.cbxBANCO.TabIndex = 2;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(226, 135);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(55, 21);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Banco:";
-            // 
-            // txtNOMBRE
-            // 
-            this.txtNOMBRE.Location = new System.Drawing.Point(442, 82);
-            this.txtNOMBRE.Name = "txtNOMBRE";
-            this.txtNOMBRE.Size = new System.Drawing.Size(520, 29);
-            this.txtNOMBRE.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(226, 82);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(158, 21);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Nombre de la cuenta:";
-            // 
-            // txtNUM_CUENTA
-            // 
-            this.txtNUM_CUENTA.Location = new System.Drawing.Point(442, 36);
-            this.txtNUM_CUENTA.Name = "txtNUM_CUENTA";
-            this.txtNUM_CUENTA.Size = new System.Drawing.Size(520, 29);
-            this.txtNUM_CUENTA.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(226, 36);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 21);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "N° de Cuenta: *";
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardar.Appearance.Options.UseFont = true;
-            this.btnGuardar.Location = new System.Drawing.Point(331, 332);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(125, 37);
-            this.btnGuardar.TabIndex = 1;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
-            // 
-            // btnCancelar
-            // 
-            this.btnCancelar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancelar.Appearance.Options.UseFont = true;
-            this.btnCancelar.Location = new System.Drawing.Point(487, 332);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(125, 37);
-            this.btnCancelar.TabIndex = 2;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // btnSalir
             // 
             this.btnSalir.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSalir.Appearance.Options.UseFont = true;
-            this.btnSalir.Location = new System.Drawing.Point(643, 332);
+            this.btnSalir.Location = new System.Drawing.Point(691, 275);
             this.btnSalir.Name = "btnSalir";
-            this.btnSalir.Size = new System.Drawing.Size(125, 37);
-            this.btnSalir.TabIndex = 3;
+            this.btnSalir.Size = new System.Drawing.Size(125, 35);
+            this.btnSalir.TabIndex = 11;
             this.btnSalir.Text = "Salir";
             this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
             // 
+            // btnCancelar
+            // 
+            this.btnCancelar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancelar.Appearance.Options.UseFont = true;
+            this.btnCancelar.Location = new System.Drawing.Point(535, 275);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(125, 35);
+            this.btnCancelar.TabIndex = 10;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
+            // btnGuardar
+            // 
+            this.btnGuardar.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGuardar.Appearance.Options.UseFont = true;
+            this.btnGuardar.Location = new System.Drawing.Point(379, 275);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(125, 35);
+            this.btnGuardar.TabIndex = 9;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            // 
+            // txtCTACONTABLE
+            // 
+            this.txtCTACONTABLE.Location = new System.Drawing.Point(442, 214);
+            this.txtCTACONTABLE.Name = "txtCTACONTABLE";
+            this.txtCTACONTABLE.Size = new System.Drawing.Size(520, 26);
+            this.txtCTACONTABLE.TabIndex = 4;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(306, 214);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(131, 18);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Cuenta contable: *";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(304, 170);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(133, 18);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "Fecha de apertura:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // mskFECHA_APERTURA
+            // 
+            this.mskFECHA_APERTURA.Location = new System.Drawing.Point(442, 168);
+            this.mskFECHA_APERTURA.Mask = "00/00/0000";
+            this.mskFECHA_APERTURA.Name = "mskFECHA_APERTURA";
+            this.mskFECHA_APERTURA.Size = new System.Drawing.Size(520, 26);
+            this.mskFECHA_APERTURA.TabIndex = 3;
+            // 
+            // cbxBANCO
+            // 
+            this.cbxBANCO.FormattingEnabled = true;
+            this.cbxBANCO.Location = new System.Drawing.Point(442, 122);
+            this.cbxBANCO.Name = "cbxBANCO";
+            this.cbxBANCO.Size = new System.Drawing.Size(520, 27);
+            this.cbxBANCO.TabIndex = 2;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(384, 127);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 18);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Banco:";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtNOMBRE
+            // 
+            this.txtNOMBRE.Location = new System.Drawing.Point(442, 77);
+            this.txtNOMBRE.Name = "txtNOMBRE";
+            this.txtNOMBRE.Size = new System.Drawing.Size(520, 26);
+            this.txtNOMBRE.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(287, 77);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(150, 18);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Nombre de la cuenta:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtNUM_CUENTA
+            // 
+            this.txtNUM_CUENTA.Location = new System.Drawing.Point(442, 34);
+            this.txtNUM_CUENTA.Name = "txtNUM_CUENTA";
+            this.txtNUM_CUENTA.Size = new System.Drawing.Size(520, 26);
+            this.txtNUM_CUENTA.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(322, 34);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(115, 18);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "N° de Cuenta: *";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // frmCuentasBancarias
             // 
-            this.Appearance.Options.UseFont = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1098, 387);
-            this.Controls.Add(this.btnSalir);
-            this.Controls.Add(this.btnCancelar);
-            this.Controls.Add(this.btnGuardar);
+            this.ClientSize = new System.Drawing.Size(1098, 364);
             this.Controls.Add(this.panel1);
-            this.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -248,8 +257,8 @@ namespace SistemaContable.UI.Forms.Bancos
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.MaskedTextBox mskFECHA_APERTURA;
-        private DevExpress.XtraEditors.SimpleButton btnGuardar;
-        private DevExpress.XtraEditors.SimpleButton btnCancelar;
         private DevExpress.XtraEditors.SimpleButton btnSalir;
+        private DevExpress.XtraEditors.SimpleButton btnCancelar;
+        private DevExpress.XtraEditors.SimpleButton btnGuardar;
     }
 }

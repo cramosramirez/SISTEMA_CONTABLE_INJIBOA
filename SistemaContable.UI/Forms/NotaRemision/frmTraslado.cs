@@ -35,7 +35,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private string _codigoEntidad = string.Empty;
         private string _columnaAnteriorGrid = string.Empty;
         public int IdTraslado { get; set; } = 0;
-
+        private int _ID_PROV_TRANSP = 0;
+        private int _ID_MOTORISTA = 0;
 
 
         public frmTraslado()
@@ -52,36 +53,84 @@ namespace SistemaContable.UI.Forms.NotaRemision
         {
             FormHelper.Inicializar(this);
             CargarTipoDte();
-            
+            CargarTansposte();
             mskFECHA_EMISION.Text = DateTime.Now.ToString("dd/MM/yyyy");
             
 
             InicializarGridDetalle();
             // Búsqueda * + Enter en txtPROVEEDOR
             FormHelper.RegistrarBusqueda(
-                txtPROVEEDOR,
-                new BusquedaConfig
-                {
-                    StoredProcedure = "SP_ENTIDAD",
-                    Accion = "BUSCAR",
-                    Columnas = new Dictionary<string, string>
-                    {
+        txtPROVEEDOR,
+        new BusquedaConfig
+        {
+            StoredProcedure = "SP_ENTIDAD",
+            Accion = "BUSCAR",
+            Columnas = new Dictionary<string, string>
+            {
                         { "CODIGO_ENTIDAD", "PROVEEDOR" },
                         { "NOMBRE",         "NOMBRE"    },
                         { "NIT",            "NIT"       }
-                    },
-                    Anchos = new Dictionary<string, int>
-                    {
+            },
+            Anchos = new Dictionary<string, int>
+            {
                         { "CODIGO_ENTIDAD", 100 },
                         { "NOMBRE",         300 },
                         { "NIT",            120 }
-                    },
-                    ParametrosExtra = new { ROL = "TRASL" }
-                },
-                fila => AsignarProveedor(fila)
-            );
+            },
+            ParametrosExtra = new { ROL = "NR" }
+        },
+        fila => AsignarProveedor(fila)
+    );
             txtPROVEEDOR.Leave += txtPROVEEDOR_Leave;
 
+
+            FormHelper.RegistrarBusqueda(
+               txtPROV_TRANSP,
+               new BusquedaConfig
+               {
+                   StoredProcedure = "[EGENERALES].SP_PROVEEDOR_TRANSPORTE",
+                   Accion = "BUSCAR",
+                   Columnas = new Dictionary<string, string>
+                   {
+                        { "ID_PROV_TRANSP", "ID" },
+                        { "NOMBRE",         "NOMBRE"    },
+                        { "TRANSPORTE",            "TRANSPORTE"       }
+                   },
+                   Anchos = new Dictionary<string, int>
+                   {
+                        { "CODIGO_ENTIDAD", 100 },
+                        { "NOMBRE",         300 },
+                        { "TRANSPORTE",            300 }
+                   }
+
+               },
+               fila => AsignarProveedorTransporte(fila)
+           );
+            txtPROV_TRANSP.Leave += txtPROV_TRANSP_Leave;
+
+            FormHelper.RegistrarBusqueda(
+              txtMotorista,
+              new BusquedaConfig
+              {
+                  StoredProcedure = "[EGENERALES].SP_MOTORISTA",
+                  Accion = "BUSCAR",
+                  Columnas = new Dictionary<string, string>
+                  {
+                        { "ID_MOTORISTA", "ID" },
+                        { "NOMBRE",         "NOMBRE"    },
+                        { "LICENCIA",            "LICENCIA"       }
+                  },
+                  Anchos = new Dictionary<string, int>
+                  {
+                        { "CODIGO_ENTIDAD", 100 },
+                        { "NOMBRE",         300 },
+                        { "LICENCIA",            60 }
+                  }
+
+              },
+              fila => AsignarMotorista(fila)
+          );
+            txtMotorista.Leave += txtMotorista_Leave;
 
             ConfigurarTextBoxDecimal(
                 txtGRAVADA, txtTOTAL
@@ -98,6 +147,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
             else
             {
                 txtCOD_GENERACION.Text = DALBase.NuevoGUID();
+                txtPROV_TRANSP.Text = "INJIBOA S.A. DE C.V.";
+                txtPROV_TRANSP_Leave(null,null);
                 CargarSiguienteNumNotaRemision();
 
                 ConfigurarCRUD(EstadoFormulario.Nuevo);
@@ -187,6 +238,15 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 txtGRAVADA.Text = AsString(r["AFECTA"]);
                txtTOTAL.Text = AsString(r["TOTALVENTA"]);
 
+                _ID_PROV_TRANSP = Convert.ToInt32(r["ID_PROV_TRANSP"]);
+                txtPROV_TRANSP.Text = r["PROV_TXTTRANSPORTE"].ToString();
+                cbxIdTransposte.SelectedValue = Convert.ToInt32(r["ID_TRANSPORTE"]);
+                txtPlaca.Text = r["PLACA"].ToString();
+                txtRemolque.Text = r["REMOLQUE"].ToString();
+                _ID_MOTORISTA = Convert.ToInt32(r["ID_MOTORISTA"]);
+
+                txtMotorista.Text = r["MOTORISTA"].ToString();
+                txtLicencia.Text = r["LICENCIA"].ToString();
 
             }
             catch (Exception ex)
@@ -315,7 +375,28 @@ namespace SistemaContable.UI.Forms.NotaRemision
             cbxTIPO_DTE.ValueMember = "ID_TIPO_DTE";
             cbxTIPO_DTE.DisplayMember = "ABREVIATURA_E";
         }
+        private void CargarTansposte()
+        {
+            DataTable dt = _dal.EjecutarConsulta("[EGENERALES].SP_TRANSPORTE",
+                new { ACCION = "OBTENER_CB" });
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.NewRow();
+                dr["ID_TRANSPORTE"] = 0;
+                dr["NOMBRE"] = "-- SELECCIONAR --";
 
+                dt.Rows.InsertAt(dr, 0);
+                cbxIdTransposte.DataSource = dt;
+                cbxIdTransposte.ValueMember = "ID_TRANSPORTE";
+                cbxIdTransposte.DisplayMember = "NOMBRE";
+                cbxIdTransposte.SelectedIndex = -1;
+                cbxIdTransposte.SelectedIndex = 0;
+            }
+            else
+            {
+                cbxIdTransposte.DataSource = null;
+            }
+        }
         private void CargarSiguienteNumNotaRemision()
         {
             var num = _dal.ObtenerNumeracionPrevia("NR", null);   // sin año -> corrido
@@ -347,7 +428,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 {
                     ACCION = "BUSCAR_POR_CODIGO",
                     FILTRO = codigo,
-                    ROL = "PRO"
+                    ROL = "NR"
                 });
 
                 if (dt.Rows.Count > 0)
@@ -395,6 +476,82 @@ namespace SistemaContable.UI.Forms.NotaRemision
             txtACTIVIDAD_PRIMARIA.Text = string.Empty;
 
             txtDIRECCION.Text = string.Empty;
+        }
+
+        /// proveedor transporte
+        private void txtPROV_TRANSP_Leave(object sender, EventArgs e)
+        {
+            string codigo = txtPROV_TRANSP.Text.Trim();
+            if (codigo == "*") return;
+            if (string.IsNullOrWhiteSpace(codigo))
+            {
+                LimpiarProveedorTransporte();
+                return;
+            }
+            try
+            {
+                var dt = _dal.EjecutarConsulta("[EGENERALES].SP_PROVEEDOR_TRANSPORTE", new
+                {
+                    ACCION = "BUSCAR",
+                    FILTRO = codigo
+                });
+
+                if (dt.Rows.Count > 0)
+                    AsignarProveedorTransporte(dt.Rows[0]);
+                else
+                {
+                    LimpiarProveedorTransporte();
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        $"No se encontró el proveedor con código '{codigo}'.",
+                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPROVEEDOR.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    $"Error al buscar proveedor: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void AsignarProveedorTransporte(DataRow fila)
+        {
+            _ID_PROV_TRANSP = Convert.ToInt32(fila["ID_PROV_TRANSP"]);
+
+            txtPROV_TRANSP.Text = fila["NOMBRE"].ToString();
+
+
+        }
+        private void LimpiarProveedorTransporte()
+        {
+            _ID_PROV_TRANSP = 0;
+            txtPROV_TRANSP.Text = string.Empty;
+        }
+
+        private void txtMotorista_Leave(object sender, EventArgs e)
+        {
+            string codigo = txtMotorista.Text.Trim();
+            if (codigo == "*") return;
+            if (string.IsNullOrWhiteSpace(codigo))
+            {
+                LimpiarMotorista();
+                return;
+            }
+
+        }
+        private void AsignarMotorista(DataRow fila)
+        {
+            _ID_MOTORISTA = Convert.ToInt32(fila["ID_MOTORISTA"]);
+
+            txtMotorista.Text = fila["NOMBRE"].ToString();
+            txtLicencia.Text = fila["LICENCIA"].ToString();
+
+        }
+        private void LimpiarMotorista()
+        {
+            _ID_MOTORISTA = 0;
+            txtMotorista.Text = string.Empty;
+            txtLicencia.Text = string.Empty;
         }
         private void ConfigurarTextBoxDecimal(params TextBox[] textboxes)
         {
@@ -794,7 +951,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
         {
             var config = new BusquedaConfig
             {
-                StoredProcedure = "[EINVENTARIO].[SP_PRODUCTO]",
+                StoredProcedure = "[EINVENTARIO].[SP_PRODUCTO]", 
                 Columnas = new Dictionary<string, string>
                 {
                     { "ID_PRODUCTO",        "ID_PRODUCTO" },
@@ -814,6 +971,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     "ID_PRODUCTO",
                     "ID_UNIDAD_MEDIDA"
                 },
+                ParametrosExtra =new { ROL_PROD = "NRE BODEGA MATERIAL" }
             };
 
            
@@ -900,7 +1058,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             if (string.IsNullOrWhiteSpace(txtNOMBRE_PROVEEDOR.Text))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Seleccione un Cliente.",
+                    "Seleccione un Bodega Destino.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtPROVEEDOR.Focus();
                 return false;
@@ -910,6 +1068,48 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 return false;
 
 
+           
+
+
+
+            if (string.IsNullOrWhiteSpace(txtPROV_TRANSP.Text))
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione un Proveedor de Transposte.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPROV_TRANSP.Focus();
+                return false;
+            }
+
+            if (cbxIdTransposte.SelectedIndex == 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione un tipo de transporte.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cbxIdTransposte.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtPlaca.Text))
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Ingresar la placa del Transposte.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPlaca.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtMotorista.Text))
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione un Motoarista.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMotorista.Focus();
+                return false;
+            }
 
             // Verificar que haya al menos una línea en la partida
             bool tieneLineas = false;
@@ -963,21 +1163,15 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     NUMCONTROL = txtNUM_CONTROL.Text,
                     NUMINTERNO = txtNumero_NR.Text,
                     AFECTA = txtGRAVADA.Text,
-                    TOTALVENTA = txtTOTAL.Text,
-                    TOTALLETRAS = string.Empty,
-                    OBSERVACIONES = txtObservacion.Text,
-                    TPCONTRIBUYENTE = string.Empty,
-                    USER_CREA = Configuracion.UsuarioActual,
-                    TPCONTRIBUYENTEEMISOR = string.Empty,
-                    TPDOCRECTOR = string.Empty,
-                    NDOCRECTOR = string.Empty,
-                    TRANSPORTE = string.Empty,
-                    MOTORISTA = string.Empty,
-                    LICENCIA = string.Empty,
-                    PLACA = string.Empty,
-                    MARCHAMOS = string.Empty,
+                    TOTALVENTA = txtTOTAL.Text,                    
+                    OBSERVACIONES = txtObservacion.Text,                   
+                    USER_CREA = Configuracion.UsuarioActual,                   
                     OPCIONNR = "NR",
-                    ID_ZAFRA = string.Empty
+                    ID_PROV_TRANSP = _ID_PROV_TRANSP,
+                    ID_TRANSPORTE = cbxIdTransposte.SelectedValue,
+                    PLACA = txtPlaca.Text,
+                    REMOLQUE = txtRemolque.Text,
+                    ID_MOTORISTA = _ID_MOTORISTA,
 
 
                 });
@@ -1032,9 +1226,19 @@ namespace SistemaContable.UI.Forms.NotaRemision
             }
             catch (Exception ex)
             {
+                string mensaje = ex.Message;
+                // Quitar texto técnico del SP si viene incluido
+                if (mensaje.Contains("]:"))
+                {
+                    mensaje = mensaje.Substring(mensaje.IndexOf("]:") + 2).Trim();
+                }
+
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    $"Error al guardar: {ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    mensaje,
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
             }
         }
 

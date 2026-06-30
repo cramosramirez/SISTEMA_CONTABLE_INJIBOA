@@ -53,7 +53,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1082, 446);
+            this.panel1.Size = new System.Drawing.Size(947, 446);
             this.panel1.TabIndex = 0;
             // 
             // gridControl1
@@ -62,7 +62,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gridControl1.Location = new System.Drawing.Point(0, 0);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1082, 446);
+            this.gridControl1.Size = new System.Drawing.Size(947, 446);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -84,7 +84,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(0, 444);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1082, 86);
+            this.panel2.Size = new System.Drawing.Size(947, 86);
             this.panel2.TabIndex = 0;
             // 
             // btnBorrarFila
@@ -94,9 +94,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnBorrarFila.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminarFila32x32;
             this.btnBorrarFila.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnBorrarFila.ImageOptions.ImageToTextIndent = 10;
-            this.btnBorrarFila.Location = new System.Drawing.Point(148, 20);
+            this.btnBorrarFila.Location = new System.Drawing.Point(141, 20);
             this.btnBorrarFila.Name = "btnBorrarFila";
-            this.btnBorrarFila.Size = new System.Drawing.Size(119, 47);
+            this.btnBorrarFila.Size = new System.Drawing.Size(126, 47);
             this.btnBorrarFila.TabIndex = 2;
             this.btnBorrarFila.Text = "Borrar fila";
             this.btnBorrarFila.Click += new System.EventHandler(this.btnBorrarFila_Click);
@@ -108,9 +108,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(336, 22);
+            this.btnFinalizar.Location = new System.Drawing.Point(303, 22);
             this.btnFinalizar.Name = "btnFinalizar";
-            this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
+            this.btnFinalizar.Size = new System.Drawing.Size(104, 47);
             this.btnFinalizar.TabIndex = 3;
             this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
@@ -123,9 +123,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnGuardar.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardar.ImageOptions.Image")));
             this.btnGuardar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnGuardar.ImageOptions.ImageToTextIndent = 10;
-            this.btnGuardar.Location = new System.Drawing.Point(12, 20);
+            this.btnGuardar.Location = new System.Drawing.Point(10, 20);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(119, 47);
+            this.btnGuardar.Size = new System.Drawing.Size(114, 47);
             this.btnGuardar.TabIndex = 1;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
@@ -133,9 +133,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // lblDIFERENCIA
             // 
             this.lblDIFERENCIA.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDIFERENCIA.Location = new System.Drawing.Point(824, 32);
+            this.lblDIFERENCIA.Location = new System.Drawing.Point(720, 32);
             this.lblDIFERENCIA.Name = "lblDIFERENCIA";
-            this.lblDIFERENCIA.Size = new System.Drawing.Size(258, 23);
+            this.lblDIFERENCIA.Size = new System.Drawing.Size(226, 23);
             this.lblDIFERENCIA.TabIndex = 23;
             this.lblDIFERENCIA.Text = "0.00";
             this.lblDIFERENCIA.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -143,9 +143,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // lblTOTAL_ABONO
             // 
             this.lblTOTAL_ABONO.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTOTAL_ABONO.Location = new System.Drawing.Point(965, 5);
+            this.lblTOTAL_ABONO.Location = new System.Drawing.Point(844, 5);
             this.lblTOTAL_ABONO.Name = "lblTOTAL_ABONO";
-            this.lblTOTAL_ABONO.Size = new System.Drawing.Size(117, 23);
+            this.lblTOTAL_ABONO.Size = new System.Drawing.Size(102, 23);
             this.lblTOTAL_ABONO.TabIndex = 22;
             this.lblTOTAL_ABONO.Text = "0.00";
             this.lblTOTAL_ABONO.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -153,9 +153,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // lblTOTAL_CARGO
             // 
             this.lblTOTAL_CARGO.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTOTAL_CARGO.Location = new System.Drawing.Point(821, 5);
+            this.lblTOTAL_CARGO.Location = new System.Drawing.Point(718, 5);
             this.lblTOTAL_CARGO.Name = "lblTOTAL_CARGO";
-            this.lblTOTAL_CARGO.Size = new System.Drawing.Size(143, 23);
+            this.lblTOTAL_CARGO.Size = new System.Drawing.Size(125, 23);
             this.lblTOTAL_CARGO.TabIndex = 21;
             this.lblTOTAL_CARGO.Text = "0.00";
             this.lblTOTAL_CARGO.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -163,20 +163,21 @@ namespace SistemaContable.UI.Forms.Proveedores
             // lblCUADRE
             // 
             this.lblCUADRE.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCUADRE.Location = new System.Drawing.Point(431, 31);
+            this.lblCUADRE.Location = new System.Drawing.Point(377, 31);
             this.lblCUADRE.Name = "lblCUADRE";
-            this.lblCUADRE.Size = new System.Drawing.Size(377, 21);
+            this.lblCUADRE.Size = new System.Drawing.Size(330, 21);
             this.lblCUADRE.TabIndex = 20;
             this.lblCUADRE.Text = "-";
             this.lblCUADRE.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // frmDocumentoCompraProvision
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1082, 530);
+            this.ClientSize = new System.Drawing.Size(947, 530);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

@@ -1,8 +1,8 @@
 ﻿using DevExpress.XtraReports.UI;
 using SistemaContable.DAL;
-using System;
-using System.ComponentModel;
 using System.Data;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace SistemaContable.RP
 {
@@ -33,23 +33,68 @@ namespace SistemaContable.RP
         /// </summary>
         public virtual void CargarDatos(){}
 
-
-        public void ImprimirConDialogo()
+        /// <summary>
+        /// Imprime mostrando el cuadro de diálogo para seleccionar impresora sin mostrar reporte
+        /// </summary>
+        public bool ImprimirConDialogo()
         {
             CargarDatos();
-            this.PrintDialog();
+            var resultado = this.PrintDialog();
+            return resultado == System.Windows.Forms.DialogResult.OK;
         }
 
+        /// <summary>
+        /// Imprime directo a la impresora por defecto sin mostrar reporte
+        /// </summary>
         public void ImprimirDirecto()
         {
             CargarDatos();
             this.Print();
         }
 
+        /// <summary>
+        /// Envia el reporte a un formulario en pantalla
+        /// </summary>
         public void MostrarPreview()
         {
             CargarDatos();
+            var timer = new Timer { Interval = 50 };
+            timer.Tick += (s, e) =>
+            {
+                foreach (Form frm in Application.OpenForms)
+                {
+                    if (frm.GetType().Name.Contains("PrintPreview"))
+                    {
+                        frm.WindowState = FormWindowState.Maximized;
+                        ForzarIconosGrandes(frm);
+                        timer.Stop();
+                        timer.Dispose();
+                        return;
+                    }
+                }
+            };
+            timer.Start();
+
             this.ShowPreview();
+        }
+
+        private void ForzarIconosGrandes(Form previewForm)
+        {
+            var barManagers = previewForm.GetType()
+                .GetFields(System.Reflection.BindingFlags.NonPublic |
+                           System.Reflection.BindingFlags.Instance)
+                .Where(f => typeof(DevExpress.XtraBars.BarManager).IsAssignableFrom(f.FieldType))
+                .Select(f => (DevExpress.XtraBars.BarManager)f.GetValue(previewForm))
+                .Where(bm => bm != null);
+
+            foreach (var bm in barManagers)
+            {
+                foreach (DevExpress.XtraBars.BarItem item in bm.Items)
+                {
+                    item.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+                }
+                bm.ForceLinkCreate();
+            }
         }
 
         private void InitializeComponent()

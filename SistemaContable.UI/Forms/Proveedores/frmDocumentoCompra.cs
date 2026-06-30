@@ -13,6 +13,7 @@ using System.Globalization;
 using DevExpress.XtraEditors;
 using ComboBox = System.Windows.Forms.ComboBox;
 using System.Data.SqlClient;
+using SistemaContable.RP.Bancos.Proveedores;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
@@ -1137,6 +1138,24 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 frm.IdCcfCompra = IdCcfCompra;
                 frm.ShowDialog(this);
+            }
+        }
+
+        private void btnImprimirQuedan_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var reporte = new rptQuedan { IdQuedan = _idQuedanActual };
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
             }
         }
     }

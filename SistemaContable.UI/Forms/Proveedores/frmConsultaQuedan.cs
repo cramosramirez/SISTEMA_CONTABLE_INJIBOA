@@ -2,10 +2,12 @@
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using SistemaContable.DAL;
+using SistemaContable.RP.Bancos.Proveedores;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
@@ -35,10 +37,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // --- Vista general ---
             gridControl1.ForceInitialize();
             gvDetalle.OptionsView.ShowGroupPanel = false;   // panel de agrupación visible
-            gvDetalle.OptionsView.ShowAutoFilterRow = true;
+            gvDetalle.OptionsView.ShowAutoFilterRow = true;            
             gvDetalle.OptionsBehavior.AutoExpandAllGroups = true;
             gvDetalle.OptionsBehavior.Editable = true;   // necesario para los botones por fila
-            
 
             // --- Buscador global ---
             gvDetalle.OptionsFind.AlwaysVisible = true;
@@ -73,9 +74,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             nav.Buttons.Remove.Visible = false;
             nav.Buttons.Edit.Visible = false;
             nav.Buttons.EndEdit.Visible = false;
-            nav.Buttons.CancelEdit.Visible = false;                     
+            nav.Buttons.CancelEdit.Visible = false;            
         }
- 
+        
         private void GvDetalle_CustomDrawGroupRow(object sender, RowObjectCustomDrawEventArgs e)
         {
             if (e.Info is GridGroupRowInfo info)
@@ -91,7 +92,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             _dtDetalle = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",
                 new { ACCION = "QUEDAN_DETALLE_LISTAR" });
-            gridControl1.DataSource = _dtDetalle;
+            gridControl1.DataSource = _dtDetalle;            
         }
         #endregion
                       
@@ -102,6 +103,13 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             if (gvDetalle.FocusedRowHandle < 0) return null;
             object val = gvDetalle.GetRowCellValue(gvDetalle.FocusedRowHandle, "ID_CCF_COMPRA");
+            if (val == null || val == DBNull.Value) return null;
+            return Convert.ToInt32(val);
+        }
+        private int? ObtenerIdQuedanFilaActiva()
+        {
+            if (gvDetalle.FocusedRowHandle < 0) return null;
+            object val = gvDetalle.GetRowCellValue(gvDetalle.FocusedRowHandle, "ID_QUEDAN");
             if (val == null || val == DBNull.Value) return null;
             return Convert.ToInt32(val);
         }
@@ -152,6 +160,34 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void btnNuevoQuedan_Click(object sender, EventArgs e)
         {
             AbrirDocumento(0, true);
+        }
+
+        private void riVerQ_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                int? idQuedan = ObtenerIdQuedanFilaActiva();
+                if (idQuedan.HasValue)
+                {
+                    var reporte = new rptQuedan { IdQuedan = idQuedan.Value };
+                    reporte.MostrarPreview();
+                } 
+                
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void btnFinalizar_Click(object sender, EventArgs e)
+        {
+            Close(); 
         }
     }
 }

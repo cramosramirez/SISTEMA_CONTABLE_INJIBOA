@@ -79,7 +79,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                         { "NOMBRE",         300 },
                         { "NIT",            120 }
                     },
-                    ParametrosExtra = new { ROL = "TRASL" }
+                    ParametrosExtra = new { ROL = "NR_BD" }
                 },
                 fila => AsignarProveedor(fila)
             );
@@ -240,6 +240,24 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 txtTOTAL.Text = AsString(r["TOTALVENTA"]);
 
 
+                 _ID_PROV_TRANSP =  Convert.ToInt32(r["ID_PROV_TRANSP"]);
+                txtPROV_TRANSP.Text =   r["PROV_TXTTRANSPORTE"].ToString();
+                cbxIdTransposte.SelectedValue = Convert.ToInt32(r["ID_TRANSPORTE"]);
+                txtPlaca.Text = r["PLACA"].ToString();
+                txtRemolque.Text = r["REMOLQUE"].ToString();
+                _ID_MOTORISTA = Convert.ToInt32(r["ID_MOTORISTA"]);
+
+                txtMotorista.Text = r["MOTORISTA"].ToString();
+                txtLicencia.Text = r["LICENCIA"].ToString();
+
+                txtMarchamo1.Text = r["MARCHAMOS1"].ToString();
+                txtMarchamo2.Text = r["MARCHAMOS2"].ToString();
+                txtMarchamo3.Text = r["MARCHAMOS3"].ToString();
+                txtMarchamo4.Text = r["MARCHAMOS4"].ToString();
+                cbxID_ZAFRA.SelectedValue = Convert.ToInt32(r["ID_ZAFRA"]);
+                txtNFormulario.Text = r["NFORMULARIO"].ToString();
+                txtNContenedor.Text = r["CONTENEDOR"].ToString();
+
             }
             catch (Exception ex)
             {
@@ -380,18 +398,44 @@ namespace SistemaContable.UI.Forms.NotaRemision
         {
             DataTable dt = _dal.EjecutarConsulta("[EGENERALES].SP_TRANSPORTE",
                 new { ACCION = "OBTENER_CB" });
-            cbxIdTransposte.DataSource = dt;
-            cbxIdTransposte.ValueMember = "ID_TRANSPORTE";
-            cbxIdTransposte.DisplayMember = "NOMBRE";
-            cbxIdTransposte.SelectedIndex = -1;
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.NewRow();
+                dr["ID_TRANSPORTE"] = 0;
+                dr["NOMBRE"] = "-- SELECCIONAR --";
+
+                dt.Rows.InsertAt(dr, 0);
+                cbxIdTransposte.DataSource = dt;
+                cbxIdTransposte.ValueMember = "ID_TRANSPORTE";
+                cbxIdTransposte.DisplayMember = "NOMBRE";
+                cbxIdTransposte.SelectedIndex = -1;
+                cbxIdTransposte.SelectedIndex = 0;
+            }
+            else
+            {
+                cbxIdTransposte.DataSource = null;
+            }
         }
         private void CargarZafra()
         {
             DataTable dt = _dal.EjecutarConsulta("[EGENERALES].[SP_ZAFRA]",
-                new { ACCION = "OBTENER", ID_ZAFRA = 1 });
-            cbxID_ZAFRA.DataSource = dt;
-            cbxID_ZAFRA.ValueMember = "ID_ZAFRA";
-            cbxID_ZAFRA.DisplayMember = "NOMBRE_ZAFRA";
+                new { ACCION = "OBTENER_CB" });
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.NewRow();
+                dr["ID_ZAFRA"] = 0;
+                dr["NOMBRE_ZAFRA"] = "-- SELECCIONAR --";
+
+                dt.Rows.InsertAt(dr, 0);
+                cbxID_ZAFRA.DataSource = dt;
+                cbxID_ZAFRA.ValueMember = "ID_ZAFRA";
+                cbxID_ZAFRA.DisplayMember = "NOMBRE_ZAFRA";
+                cbxID_ZAFRA.SelectedIndex = 0;
+            }
+            else
+            {
+                cbxID_ZAFRA.DataSource = null;
+            }
         }
         private void CargarSiguienteNumNotaRemision()
         {
@@ -424,7 +468,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 {
                     ACCION = "BUSCAR_POR_CODIGO",
                     FILTRO = codigo,
-                    ROL = "PRO"
+                    ROL = "NR_BD"
                 });
 
                 if (dt.Rows.Count > 0)
@@ -550,8 +594,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             txtMotorista.Text = string.Empty;
             txtLicencia.Text = string.Empty;
         }
-
-
 
 
         private void ConfigurarTextBoxDecimal(params TextBox[] textboxes)
@@ -775,8 +817,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
         }
 
-
-
         private void ConfigurarColumna(GridView view, string fieldName,
         string caption, int width, bool readOnly, bool visible)
         {
@@ -797,7 +837,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             }
         }
 
-
         private void AgregarFilaVacia()
         {
             if (string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text))
@@ -816,7 +855,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 _dtDeta.Rows.Add(fila);
             }
         }
-
 
 
         private void AgregarFilaPartida(string cod_ref)
@@ -972,6 +1010,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     "ID_PRODUCTO",
                     "ID_UNIDAD_MEDIDA"
                 },
+                ParametrosExtra = new { ROL_PROD = "NRE BODEGA AZUCAR" }
             };
 
 
@@ -1058,7 +1097,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             if (string.IsNullOrWhiteSpace(txtNOMBRE_PROVEEDOR.Text))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Seleccione un Cliente.",
+                    "Seleccione un Bodega Destino.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtPROVEEDOR.Focus();
                 return false;
@@ -1067,6 +1106,17 @@ namespace SistemaContable.UI.Forms.NotaRemision
             if (!FormHelper.ValidarFecha(mskFECHA_EMISION, "Fecha de la Nota Remision"))
                 return false;
 
+
+            if (cbxID_ZAFRA.SelectedIndex == 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione una zafra.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbxID_ZAFRA.Focus();
+                return false;
+            }
+
+                      
 
             if (string.IsNullOrWhiteSpace(txtPROV_TRANSP.Text))
             {
@@ -1077,12 +1127,24 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 return false;
             }
 
+            if (cbxIdTransposte.SelectedIndex == 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione un tipo de transporte.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cbxIdTransposte.Focus();
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(txtPlaca.Text))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Seleccione un Proveedor de Transposte.",
+                    "Ingresar la placa del Transposte.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtPROV_TRANSP.Focus();
+                txtPlaca.Focus();
                 return false;
             }
 
@@ -1123,7 +1185,114 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (!ValidarCampos()) return;
 
+            try
+            {
+                // 1. Guardar encabezado del NR
+                var dtNR = _dal.EjecutarConsulta("[EDTE].SP_NOTA_REMISION", new
+                {
+                    ACCION = "GUARDAR",
+                    ID_NTREMISIONENC = IdTraslado,
+                    ID_EMISOR = 1,
+                    ID_SUCURSAL = cbxSUCURSAL.SelectedValue,
+                    ID_ALMACEN = Configuracion.Id_Almacen,
+                    ID_CAJERO = Configuracion.Id_Cajero,
+                    ID_CONDPAGO = 1,
+                    ID_CLIENTE = _idEntidad,
+                    COD_REF = _codigoEntidad,
+                    TPDOC = "NRE",
+                    FECHA = FormHelper.ObtenerFecha(mskFECHA_EMISION),
+                    SALFEC = FormHelper.ObtenerSalfec(mskFECHA_EMISION),
+                    NUMDOC = txtNumero_NR.Text,
+                    CODGENERACION = txtCOD_GENERACION.Text,
+                    NUMCONTROL = txtNUM_CONTROL.Text,
+                    NUMINTERNO = txtNumero_NR.Text,
+                    AFECTA = txtGRAVADA.Text,
+                    TOTALVENTA = txtTOTAL.Text,
+                    OBSERVACIONES = txtObservacion.Text,
+                    USER_CREA = Configuracion.UsuarioActual,
+                    OPCIONNR = "NRBD",
+
+                    ID_PROV_TRANSP = _ID_PROV_TRANSP,
+                    ID_TRANSPORTE = cbxIdTransposte.SelectedValue,
+                    PLACA = txtPlaca.Text,
+                    REMOLQUE = txtRemolque.Text,
+                    ID_MOTORISTA = _ID_MOTORISTA,
+                    MARCHAMOS1 = txtMarchamo1.Text,
+                    MARCHAMOS2 = txtMarchamo2.Text,
+                    MARCHAMOS3 = txtMarchamo3.Text,
+                    MARCHAMOS4 = txtMarchamo4.Text,
+                    ID_ZAFRA = cbxID_ZAFRA.SelectedValue,
+                    NFORMULARIO = txtNFormulario.Text,
+                    CONTENEDOR = txtNContenedor.Text
+
+                });
+
+                if (dtNR.Rows.Count == 0) return;
+                IdTraslado = Convert.ToInt32(dtNR.Rows[0]["ID_GENERADO"]);
+                _idNR = Convert.ToInt32(dtNR.Rows[0]["ID_GENERADO"]);
+                txtNUM_CONTROL.Text = Convert.ToString(dtNR.Rows[0]["NCONT"]);
+                txtNumero_NR.Text = Convert.ToString(dtNR.Rows[0]["INTERN"]);
+
+                // 3. Guardar líneas detalle
+                foreach (DataRow fila in _dtDeta.Rows)
+                {
+                    string cta = fila["ID_PRODUCTO"].ToString().Trim();
+                    if (string.IsNullOrWhiteSpace(cta)) continue;
+
+                    _dal.EjecutarSinRetorno("[EDTE].SP_NOTAREMISION_DET", new
+                    {
+                        ACCION = "GUARDAR",
+                        ID_NTREMISIONDT = 0,
+                        ID_NTREMISIONENC = _idNR,
+                        ID_EMISOR = 1,
+                        CODGENERACION = txtCOD_GENERACION.Text,
+                        ID_PRODUCTO = Convert.ToInt32(fila["ID_PRODUCTO"]),
+                        COD_REF = fila["COD_REF"],
+                        DESCRIPCION = fila["DESCRIPCION"],
+                        CANTIDAD = Convert.ToDecimal(fila["CANTIDAD"]),
+                        ID_UNIDAD_MEDIDA = Convert.ToInt32(fila["ID_UNIDAD_MEDIDA"]),
+                        UNIDAD_MEDIDA = fila["UNIDAD_MEDIDA"],
+                        PRECIO = Convert.ToDecimal(fila["PRECIO"]),
+                        EXENTA = 0,
+                        GRAVADA = Convert.ToDecimal(fila["TOTAL"]),
+                        TOTAL = Convert.ToDecimal(fila["TOTAL"]),
+                        USER_CREA = Configuracion.UsuarioActual,
+                    });
+                }
+
+
+                _dal.EjecutarSinRetorno("[EDTE].SP_NOTAREMISION_JSON", new
+                {
+                    ID_NTREMISIONENC = IdTraslado
+                });
+
+
+                if (_idNR != 0)
+                {
+                    ConfigurarCRUD(EstadoFormulario.Guardado);
+                }
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Nota Remision guarda correctamente.",
+                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message;
+                // Quitar texto técnico del SP si viene incluido
+                if (mensaje.Contains("]:"))
+                {
+                    mensaje = mensaje.Substring(mensaje.IndexOf("]:") + 2).Trim();
+                }
+
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    mensaje,
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+            }
         }
 
         private void btnValidar_Click(object sender, EventArgs e)

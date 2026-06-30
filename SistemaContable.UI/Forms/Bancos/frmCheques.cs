@@ -8,7 +8,7 @@ using SistemaContable.DAL;
 using System.Drawing;
 using DevExpress.XtraEditors;
 using DevExpress.Utils;
-using SistemaContable.RP;
+using SistemaContable.RP.Bancos.Proveedores;
 
 namespace SistemaContable.UI.Forms.Bancos
 {
@@ -93,7 +93,7 @@ namespace SistemaContable.UI.Forms.Bancos
                     string ctaContable = fila["CTACONTABLE"].ToString();
                     if (!string.IsNullOrWhiteSpace(ctaContable))
                         AgregarFilaPartida(ctaContable);
-                }
+                }                
             );
 
             FormHelper.RegistrarBusqueda(
@@ -119,9 +119,28 @@ namespace SistemaContable.UI.Forms.Bancos
                 fila => AsignarProveedor(fila)
             );
             ConfigurarCRUD(EstadoFormulario.Nuevo);
+            ConfigurarMenuDocumentos();
         }
 
-        
+        private void ConfigurarMenuDocumentos()
+        {
+            // CCF al contado
+            var btnCCFContado = new DevExpress.XtraBars.BarButtonItem(barManager1, "Crédito Fiscal");            
+            btnCCFContado.ItemClick += btnCCFContado_ItemClick;                      
+
+            // Sujeto excluido
+            var btnSujetoExcluido = new DevExpress.XtraBars.BarButtonItem(barManager1, "Sujeto excluido");            
+            //btnSujetoExcluido.ItemClick += BtnSujetoExcluido_ItemClick;
+
+            // Agregar al PopupMenu
+            popupDocumentos.AddItem(btnCCFContado);            
+            popupDocumentos.AddItem(btnSujetoExcluido);                                                  
+
+            // Asignar el PopupMenu al botón
+            btnDocumentos.DropDownControl = popupDocumentos;
+        }
+
+
         private bool _procesandoLeaveProveedor = false;
         private void txtPROVEEDOR_Leave(object sender, EventArgs e)
         {
@@ -237,7 +256,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
                     btnImprimir.Enabled = false;
                     btnGuardar.Enabled = true;
-                    btnCCF_Contado.Enabled = true;
+                    btnDocumentos.Enabled = true;
                     btnAgregar.Enabled = false;
                     btnBorrarFila.Enabled = true;
                     btnEliminar.Enabled = false; 
@@ -257,7 +276,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
                     btnImprimir.Enabled = true;
                     btnGuardar.Enabled = false;
-                    btnCCF_Contado.Enabled = false;
+                    btnDocumentos.Enabled = false;
                     btnAgregar.Enabled = true;
                     btnBorrarFila.Enabled = false;
                     btnEliminar.Enabled = true;
@@ -265,7 +284,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 case EstadoFormulario.Impreso:
                     btnImprimir.Enabled = true;
                     btnGuardar.Enabled = false;
-                    btnCCF_Contado.Enabled = false;
+                    btnDocumentos.Enabled = false;
                     btnAgregar.Enabled = true;
                     btnBorrarFila.Enabled = false;
                     btnEliminar.Enabled = false;
@@ -703,10 +722,10 @@ namespace SistemaContable.UI.Forms.Bancos
             {
                 StoredProcedure = "SP_CATALOGO_CUENTA",
                 Columnas = new Dictionary<string, string>
-        {
-            { "CUENTA",        "CUENTA" },
-            { "NOMBRE_CUENTA", "NOMBRE" }
-        },
+                {
+                    { "CUENTA",        "CUENTA" },
+                    { "NOMBRE_CUENTA", "NOMBRE" }
+                },
                 ParametrosExtra = new { ES_DETALLE = true }
             };
 
@@ -1010,19 +1029,20 @@ namespace SistemaContable.UI.Forms.Bancos
             }));
         }
 
-        private void btnCCF_Contado_Click(object sender, EventArgs e)
+        private void btnCCFContado_ItemClick(object sender, EventArgs e)
         {
             AbrirContadoConUid();
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            LimpiarFilasVaciasGrid();
             if (!ValidarCampos()) return;
 
             try
             {
                 Cursor = Cursors.WaitCursor;
-                               
+
                 if (_dtPartida.Rows.Count == 0)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(
@@ -1031,6 +1051,9 @@ namespace SistemaContable.UI.Forms.Bancos
                     return;
                 }
 
+                // Construir TVP para pago de CCFs de Quedan (puede venir vacío)
+                DataTable dtPagoQuedan = ConstruirTvpPagoCcfQuedan();
+
                 // Parámetros del cheque
                 var parametros = new
                 {
@@ -1038,36 +1061,35 @@ namespace SistemaContable.UI.Forms.Bancos
                     ID_CHEQUE = 0,
                     ID_CTA_BANCO = Convert.ToInt32(txtNUM_CUENTA.Tag ?? 0),
                     NUM_CHEQUE = string.IsNullOrWhiteSpace(txtNUMERO_CHEQUE.Text)
-                                          ? (int?)null
-                                          : (int?)Convert.ToInt32(txtNUMERO_CHEQUE.Text),
+                                      ? (int?)null
+                                      : (int?)Convert.ToInt32(txtNUMERO_CHEQUE.Text),
                     FECHA_CHEQUE = FormHelper.ObtenerFecha(mskFECHA_CHEQUE),
                     MONTO = ObtenerDecimal(txtCANTIDAD),
                     NOMBRE_CHEQUE = NullIfEmpty(txtNOMBRE_CHEQUE.Text),
                     NUM_PARTIDA = string.IsNullOrWhiteSpace(txtNUMERO_PARTIDA.Text)
-                                          ? (int?)null
-                                          : (int?)Convert.ToInt32(txtNUMERO_PARTIDA.Text),
+                                      ? (int?)null
+                                      : (int?)Convert.ToInt32(txtNUMERO_PARTIDA.Text),
                     CONCEPTO = NullIfEmpty(txtCONCEPTO.Text),
                     ID_ENTIDAD = (int?)null,
                     CODIGO_ENTIDAD = NullIfEmpty(txtPROVEEDOR.Text),
                     UID_ENLACE_CHEQUE = _uidEnlaceCheque,
-                    USUARIO = Configuracion.UsuarioActual
+                    USUARIO = Configuracion.UsuarioActual,
+                    IMPRESO = 0
                 };
 
-                // Llamada al SP con TVP
-                int idCheque = _dal.EjecutarConsultaConTVP(
+                // Llamada al SP con dos TVPs
+                int idCheque = _dal.EjecutarConsultaConTVPs(
                     "SP_CHEQUE",
-                    "PARTIDA",
-                    "typeCHEQUE_PARTIDA",
-                    _dtPartida,
-                    parametros);
+                    parametros,
+                    ("PARTIDA", "typeCHEQUE_PARTIDA", _dtPartida),
+                    ("PAGO_CCF_QUEDAN", "typeCHEQUE_PAGO_CCF_QUEDAN", dtPagoQuedan)
+                );
 
-                if (idCheque > 0)
-                {
-                    _idCheque = idCheque;
-                    ConfigurarCRUD(EstadoFormulario.Guardado);
-                }
-                else
+                if (idCheque == 0)
                     throw new Exception("El SP no devolvió el ID generado.");
+
+                _idCheque = idCheque;
+                ConfigurarCRUD(EstadoFormulario.Guardado);
 
                 var args = new XtraMessageBoxArgs
                 {
@@ -1077,8 +1099,7 @@ namespace SistemaContable.UI.Forms.Bancos
                     Icon = SystemIcons.Information,
                     AllowHtmlText = DefaultBoolean.True
                 };
-                XtraMessageBox.Show(args);                
-               
+                XtraMessageBox.Show(args);
             }
             catch (Exception ex)
             {
@@ -1089,12 +1110,47 @@ namespace SistemaContable.UI.Forms.Bancos
                     Buttons = new[] { DialogResult.OK },
                     Icon = SystemIcons.Warning,
                     AllowHtmlText = DefaultBoolean.True
-                };               
+                };
+                XtraMessageBox.Show(args);   
             }
             finally
             {
                 Cursor = Cursors.Default;
             }
+        }
+
+        private void LimpiarFilasVaciasGrid()
+        {
+            for (int i = _dtPartida.Rows.Count - 1; i >= 0; i--)
+            {
+                var fila = _dtPartida.Rows[i];
+                string cta = fila["CTACONTABLE"]?.ToString()?.Trim() ?? "";
+
+                if (string.IsNullOrEmpty(cta))   // solo cuenta vacía
+                {
+                    _dtPartida.Rows.RemoveAt(i);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Construye un DataTable con los IDs de CCFs de Quedan a pagar.
+        /// Si no hay documentos seleccionados, retorna un DataTable vacío.
+        /// </summary>
+        private DataTable ConstruirTvpPagoCcfQuedan()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("ID_CCF_COMPRA", typeof(int));
+            if (_documentosPago == null || _documentosPago.Rows.Count == 0)
+                return dt;
+            foreach (DataRow fila in _documentosPago.Rows)
+            {
+                if (fila["ID_CCF_COMPRA"] == DBNull.Value) continue;
+
+                int idCcf = Convert.ToInt32(fila["ID_CCF_COMPRA"]);
+                dt.Rows.Add(idCcf);
+            }
+            return dt;
         }
 
         private static string NullIfEmpty(string texto)
@@ -1222,8 +1278,13 @@ namespace SistemaContable.UI.Forms.Bancos
                 Cursor = Cursors.WaitCursor;
 
                 var reporte = new rptCheque { IdCheque = _idCheque };
-                reporte.CargarDatos();
-                reporte.ImprimirConDialogo();
+                bool seImprimio = reporte.ImprimirConDialogo();
+
+                if (seImprimio)
+                {
+                    MarcarChequeComoImpreso(_idCheque);
+                    ConfigurarCRUD(EstadoFormulario.Impreso);
+                }
             }
             catch (Exception ex)
             {
@@ -1237,9 +1298,87 @@ namespace SistemaContable.UI.Forms.Bancos
             
         }
 
+        /// <summary>
+        /// Marca el cheque como impreso en la base de datos.
+        /// </summary>
+        private void MarcarChequeComoImpreso(int idCheque)
+        {
+            try
+            {
+                _dal.EjecutarConsulta("SP_CHEQUE", new
+                {
+                    ACCION = "MARCAR_IMPRESO",
+                    ID_CHEQUE = idCheque,
+                    USUARIO = Configuracion.UsuarioActual
+                });
+            }
+            catch (Exception ex)
+            {
+                // No bloquear al usuario si falla la marca, pero notificar
+                XtraMessageBox.Show(
+                    "El cheque se imprimió, pero no se pudo marcar como impreso:\n\n" + ex.Message,
+                    "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
         private void btnEliminar_Click(object sender, EventArgs e)
         {
+            if (_idCheque == 0)
+            {
+                XtraMessageBox.Show("Debe cargar un cheque para eliminarlo.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            var resp = XtraMessageBox.Show(
+                $"¿Está seguro que desea eliminar el cheque N° {txtNUMERO_CHEQUE.Text.Trim()}?\n\n" +
+                "Esta operación no se puede deshacer.\n" +
+                "Los documentos al contado quedarán pendientes para un nuevo cheque.\n" +
+                "Los documentos de Quedan quedarán pendientes de pago nuevamente.",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (resp != DialogResult.Yes) return;
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                DataTable dt = _dal.EjecutarConsulta("SP_CHEQUE", new
+                {
+                    ACCION = "ELIMINAR",
+                    ID_CHEQUE = _idCheque,
+                    USUARIO = Configuracion.UsuarioActual
+                });
+
+                // El SP retorna si hay CCFs contado y el nuevo UID
+                bool tieneContado = false;
+                if (dt.Rows.Count > 0)
+                {
+                    tieneContado = Convert.ToBoolean(dt.Rows[0]["TIENE_CONTADO"]);
+                }
+
+                string mensaje = "Cheque eliminado correctamente.";
+                if (tieneContado)
+                {
+                    mensaje += "\n\nLos documentos al contado quedaron pendientes. " +
+                               "Podrá retomarlos la próxima vez que abra esta pantalla.";
+                }
+
+                XtraMessageBox.Show(mensaje, "Eliminado",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                btnAgregar_Click(sender, e);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al eliminar el cheque:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
@@ -1260,5 +1399,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 FormHelper.AbrirBusqueda(txtOPERACION);
             }));
         }
+
+        
     }
 }

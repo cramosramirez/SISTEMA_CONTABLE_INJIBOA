@@ -6,9 +6,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 
-namespace SistemaContable.RP
+namespace SistemaContable.RP.Bancos.Proveedores
 {
-    public partial class rptCheque : ReporteBase
+    public partial class rptCheque : SistemaContable.RP.ReporteBase
     {
         public int IdCheque { get; set; }
         public rptCheque()
