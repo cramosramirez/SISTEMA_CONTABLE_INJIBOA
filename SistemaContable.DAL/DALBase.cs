@@ -169,6 +169,7 @@ namespace SistemaContable.DAL
             }
         }
 
+
         public int EjecutarConsultaConTVPs(
                 string sp,
                 object parametrosAdicionales,
@@ -215,7 +216,6 @@ namespace SistemaContable.DAL
                 throw new Exception(ex.Message, ex);
             }
         }
-
         public DataTable EjecutarConsultaConTVPDataTable(
             string storedProcedure,
             string nombreParametroTVP,
@@ -259,7 +259,7 @@ namespace SistemaContable.DAL
                 throw new Exception(ex.Message, ex);
             }                      
         }
-
+              
 
 
         #region === NUMERACIÓN DE DOCUMENTOS ===

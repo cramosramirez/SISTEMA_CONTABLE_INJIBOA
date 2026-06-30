@@ -193,9 +193,29 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap cliente48x48 {
+            get {
+                object obj = ResourceManager.GetObject("cliente48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap correo32x32 {
             get {
                 object obj = ResourceManager.GetObject("correo32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap creditoFiscal1_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("creditoFiscal1_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -283,6 +303,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap FACTURA1_48X48 {
+            get {
+                object obj = ResourceManager.GetObject("FACTURA1_48X48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap facturaCcf32x32 {
             get {
                 object obj = ResourceManager.GetObject("facturaCcf32x32", resourceCulture);
@@ -303,9 +333,9 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap facturaFa32x321 {
+        public static System.Drawing.Bitmap facturaFa32x32 {
             get {
-                object obj = ResourceManager.GetObject("facturaFa32x321", resourceCulture);
+                object obj = ResourceManager.GetObject("facturaFa32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -496,6 +526,16 @@ namespace SistemaContable.UI.Properties {
         public static System.Drawing.Bitmap notaCredito48x48 {
             get {
                 object obj = ResourceManager.GetObject("notaCredito48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap notaDebito48x48 {
+            get {
+                object obj = ResourceManager.GetObject("notaDebito48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
