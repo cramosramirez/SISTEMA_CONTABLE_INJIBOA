@@ -37,7 +37,11 @@ namespace SistemaContable.DAL
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error en SP [{sp}]: {ex.Message}", ex);
+                Logger.Error(ex.Message, ex,
+                    modulo: "DALBase.EjecutarConsulta",
+                    spNombre: sp,
+                    parametros: parametros);
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -54,7 +58,11 @@ namespace SistemaContable.DAL
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error en SP [{sp}]: {ex.Message}", ex);
+                Logger.Error(ex.Message, ex,
+                    modulo: "DALBase.EjecutarEscalar",
+                    spNombre: sp,
+                    parametros: parametros);
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -71,7 +79,11 @@ namespace SistemaContable.DAL
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error en SP [{sp}]: {ex.Message}", ex);
+                Logger.Error(ex.Message, ex,
+                    modulo: "DALBase.EjecutarSinRetorno",
+                    spNombre: sp,
+                    parametros: parametros);
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -107,7 +119,12 @@ namespace SistemaContable.DAL
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error en SP [{sp}]: {ex.Message}", ex);
+                Logger.Error(ex.Message, ex,
+                    modulo: "DALBase.EjecutarMultiple",
+                    spNombre: sp,
+                    parametros: parametros);
+
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -119,24 +136,36 @@ namespace SistemaContable.DAL
                  DataTable tvp,
                  object parametrosAdicionales = null)
         {
-            using (var cn = new SqlConnection(CadenaConexion))
-            using (var cmd = new SqlCommand(sp, cn))
+            try
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("@" + nombreParametroTVP, SqlDbType.Structured)
+                using (var cn = new SqlConnection(CadenaConexion))
+                using (var cmd = new SqlCommand(sp, cn))
                 {
-                    TypeName = "dbo." + tipoTVP,
-                    Value = tvp
-                });
-                if (parametrosAdicionales != null)
-                {
-                    foreach (var prop in parametrosAdicionales.GetType().GetProperties())
-                        cmd.Parameters.AddWithValue("@" + prop.Name,
-                            prop.GetValue(parametrosAdicionales) ?? DBNull.Value);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@" + nombreParametroTVP, SqlDbType.Structured)
+                    {
+                        TypeName = "dbo." + tipoTVP,
+                        Value = tvp
+                    });
+                    if (parametrosAdicionales != null)
+                    {
+                        foreach (var prop in parametrosAdicionales.GetType().GetProperties())
+                            cmd.Parameters.AddWithValue("@" + prop.Name,
+                                prop.GetValue(parametrosAdicionales) ?? DBNull.Value);
+                    }
+                    cn.Open();
+                    var resultado = cmd.ExecuteScalar();
+                    return resultado == null || resultado == DBNull.Value ? 0 : Convert.ToInt32(resultado);
                 }
-                cn.Open();
-                var resultado = cmd.ExecuteScalar();
-                return resultado == null || resultado == DBNull.Value ? 0 : Convert.ToInt32(resultado);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message, ex,
+                    modulo: "DALBase.EjecutarConsultaConTVP",
+                    spNombre: sp,
+                    parametros: parametrosAdicionales);
+
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -145,33 +174,45 @@ namespace SistemaContable.DAL
                 object parametrosAdicionales,
                 params (string Nombre, string TipoTVP, DataTable Tabla)[] tvps)
         {
-            using (var cn = new SqlConnection(CadenaConexion))
-            using (var cmd = new SqlCommand(sp, cn))
+            try
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                // Agregar todos los TVPs
-                foreach (var tvp in tvps)
+                using (var cn = new SqlConnection(CadenaConexion))
+                using (var cmd = new SqlCommand(sp, cn))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@" + tvp.Nombre, SqlDbType.Structured)
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar todos los TVPs
+                    foreach (var tvp in tvps)
                     {
-                        TypeName = "dbo." + tvp.TipoTVP,
-                        Value = tvp.Tabla
-                    });
-                }
-                // Parámetros normales
-                if (parametrosAdicionales != null)
-                {
-                    foreach (var prop in parametrosAdicionales.GetType().GetProperties())
-                        cmd.Parameters.AddWithValue("@" + prop.Name,
-                            prop.GetValue(parametrosAdicionales) ?? DBNull.Value);
-                }
+                        cmd.Parameters.Add(new SqlParameter("@" + tvp.Nombre, SqlDbType.Structured)
+                        {
+                            TypeName = "dbo." + tvp.TipoTVP,
+                            Value = tvp.Tabla
+                        });
+                    }
+                    // Parámetros normales
+                    if (parametrosAdicionales != null)
+                    {
+                        foreach (var prop in parametrosAdicionales.GetType().GetProperties())
+                            cmd.Parameters.AddWithValue("@" + prop.Name,
+                                prop.GetValue(parametrosAdicionales) ?? DBNull.Value);
+                    }
 
-                cn.Open();
-                var resultado = cmd.ExecuteScalar();
-                return resultado == null || resultado == DBNull.Value
-                    ? 0
-                    : Convert.ToInt32(resultado);
+                    cn.Open();
+                    var resultado = cmd.ExecuteScalar();
+                    return resultado == null || resultado == DBNull.Value
+                        ? 0
+                        : Convert.ToInt32(resultado);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message, ex,
+                    modulo: "DALBase.EjecutarConsultaConTVPs",
+                    spNombre: sp,
+                    parametros: parametrosAdicionales);
+
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -182,29 +223,41 @@ namespace SistemaContable.DAL
             DataTable tvp,
             object parametrosAdicionales = null)
             {
-            using (var cn = new SqlConnection(CadenaConexion))
-            using (var cmd = new SqlCommand(storedProcedure, cn))
+            try
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("@" + nombreParametroTVP, SqlDbType.Structured)
+                using (var cn = new SqlConnection(CadenaConexion))
+                using (var cmd = new SqlCommand(storedProcedure, cn))
                 {
-                    TypeName = "dbo." + tipoTVP,
-                    Value = tvp
-                });
-                if (parametrosAdicionales != null)
-                {
-                    foreach (var prop in parametrosAdicionales.GetType().GetProperties())
-                        cmd.Parameters.AddWithValue("@" + prop.Name,
-                            prop.GetValue(parametrosAdicionales) ?? DBNull.Value);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@" + nombreParametroTVP, SqlDbType.Structured)
+                    {
+                        TypeName = "dbo." + tipoTVP,
+                        Value = tvp
+                    });
+                    if (parametrosAdicionales != null)
+                    {
+                        foreach (var prop in parametrosAdicionales.GetType().GetProperties())
+                            cmd.Parameters.AddWithValue("@" + prop.Name,
+                                prop.GetValue(parametrosAdicionales) ?? DBNull.Value);
+                    }
+                    cn.Open();
+                    var dt = new DataTable();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        dt.Load(reader);
+                    }
+                    return dt;
                 }
-                cn.Open();
-                var dt = new DataTable();
-                using (var reader = cmd.ExecuteReader())
-                {
-                    dt.Load(reader);
-                }
-                return dt;
-            }            
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message, ex,
+                    modulo: "DALBase.EjecutarConsultaConTVPDataTable",
+                    spNombre: storedProcedure,
+                    parametros: parametrosAdicionales);
+
+                throw new Exception(ex.Message, ex);
+            }                      
         }
 
 

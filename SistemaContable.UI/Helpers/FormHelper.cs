@@ -12,6 +12,11 @@ namespace SistemaContable.UI.Helpers
     public static class FormHelper
     {
 
+        private static readonly System.Text.RegularExpressions.Regex _regexCorreo =
+            new System.Text.RegularExpressions.Regex(
+               @"^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$",
+               System.Text.RegularExpressions.RegexOptions.Compiled);
+
         public static void Inicializar(Form formulario)
         {
             //AplicarPropiedadesEstandar(formulario);
@@ -48,7 +53,7 @@ namespace SistemaContable.UI.Helpers
                     ctrl is SearchLookUpEdit ||
                     ctrl is SpinEdit ||
                     ctrl is DateEdit ||
-                    ctrl is MemoEdit ||
+                    ctrl is MemoEdit ||                    
                     ctrl is ComboBoxEdit)
                 {
                     ctrl.KeyDown -= Control_EnterComoTab; // evitar duplicados
@@ -57,6 +62,7 @@ namespace SistemaContable.UI.Helpers
 
                 // Controles estándar WinForms
                 if (ctrl is TextBox ||
+                    ctrl is CheckBox ||
                     ctrl is RichTextBox ||
                     ctrl is NumericUpDown ||
                     ctrl is MaskedTextBox  ||
@@ -130,8 +136,7 @@ namespace SistemaContable.UI.Helpers
             TextBox  campo, BusquedaConfig config, Action<DataRow> alSeleccionar)
         {
             _lookups[campo] = config;
-            _callbacks[campo] = alSeleccionar;
-            campo.Tag = alSeleccionar;            
+            _callbacks[campo] = alSeleccionar;                  
             campo.KeyDown -= Campo_AsteriscoBusqueda_KeyDown;
             campo.KeyDown += Campo_AsteriscoBusqueda_KeyDown;
         }
@@ -315,5 +320,12 @@ namespace SistemaContable.UI.Helpers
             return XtraMessageBox.Show(args);
         }
         #endregion
+        
+        public static bool EsCorreoValido(string correo)
+        {
+            if (string.IsNullOrWhiteSpace(correo)) return true;   // vacío es válido (no obligatorio)
+            return _regexCorreo.IsMatch(correo.Trim());
+        }
+
     }
 }

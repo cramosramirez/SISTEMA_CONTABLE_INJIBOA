@@ -135,7 +135,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(1229, 38);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Comprobantes de Compra al Crédito";
+            this.label1.Text = "Compras al crédito - Quedan";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel2

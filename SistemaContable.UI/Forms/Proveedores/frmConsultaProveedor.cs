@@ -15,6 +15,7 @@ namespace SistemaContable.UI.Forms.Proveedores
     {
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDetalle;
+        private Dictionary<string, int> _anchosColumnas;
         public frmConsultaProveedor()
         {
             InitializeComponent();
@@ -75,16 +76,45 @@ namespace SistemaContable.UI.Forms.Proveedores
             nav.Buttons.CancelEdit.Visible = false;
         }
         private void CargarDatos()
-        {
-            _dtDetalle = _dal.EjecutarConsulta("SP_ENTIDAD",
-                new 
-                { 
-                    ACCION = "CONSULTA_TODOS_PROVEEDORES",
-                    ROL = "PRO"
-                });
-            gridControl1.DataSource = _dtDetalle;
-            this.BeginInvoke(new Action(() => gvDetalle.BestFitColumns()));
+        {            
+            gridControl1.BeginUpdate();
+            try
+            {
+                _dtDetalle = _dal.EjecutarConsulta("SP_ENTIDAD",
+                    new
+                    {
+                        ACCION = "CONSULTA_TODOS_PROVEEDORES",
+                        ROL = "PRO"
+                    });
+
+                gridControl1.DataSource = _dtDetalle;
+            }
+            finally
+            {
+                gridControl1.EndUpdate();
+            }
+
+            // Primera vez: BestFit y guardar
+            // Siguientes: restaurar
+            var timer = new Timer { Interval = 50 };
+            timer.Tick += (s, e) =>
+            {
+                timer.Stop();
+                timer.Dispose();
+
+                if (_anchosColumnas == null)
+                {
+                    gvDetalle.BestFitColumns();
+                    GuardarAnchosColumnas();
+                }
+                else
+                {
+                    RestaurarAnchosColumnas();
+                }                   
+            };
+            timer.Start();
         }
+
 
         private int? ObtenerIdFilaActiva()
         {
@@ -94,10 +124,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             return Convert.ToInt32(val);
         }
 
-        private void AbrirDocumento(int idEntidad, bool esCCF)
+        private void AbrirDocumento(int idEntidad)
         {
             using (var frm = new frmProveedor())
-            {                
+            {
+                frm.IdEntidad = idEntidad;                
                 frm.ShowDialog(this);
             }
             CargarDatos();
@@ -105,7 +136,31 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void btnNuevoQuedan_Click(object sender, EventArgs e)
         {
-            AbrirDocumento(0, true);
+            AbrirDocumento(0);
+        }
+
+        private void riEditar_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            int? id = ObtenerIdFilaActiva();
+            if (id.HasValue) AbrirDocumento(id.Value);
+        }
+
+        private void GuardarAnchosColumnas()
+        {
+            _anchosColumnas = new Dictionary<string, int>();
+            foreach (DevExpress.XtraGrid.Columns.GridColumn col in gvDetalle.Columns)
+            {
+                _anchosColumnas[col.FieldName] = col.Width;
+            }
+        }
+
+        private void RestaurarAnchosColumnas()
+        {
+            foreach (DevExpress.XtraGrid.Columns.GridColumn col in gvDetalle.Columns)
+            {
+                if (_anchosColumnas.TryGetValue(col.FieldName, out int ancho))
+                    col.Width = ancho;
+            }
         }
     }
 }

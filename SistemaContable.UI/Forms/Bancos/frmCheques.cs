@@ -722,10 +722,10 @@ namespace SistemaContable.UI.Forms.Bancos
             {
                 StoredProcedure = "SP_CATALOGO_CUENTA",
                 Columnas = new Dictionary<string, string>
-        {
-            { "CUENTA",        "CUENTA" },
-            { "NOMBRE_CUENTA", "NOMBRE" }
-        },
+                {
+                    { "CUENTA",        "CUENTA" },
+                    { "NOMBRE_CUENTA", "NOMBRE" }
+                },
                 ParametrosExtra = new { ES_DETALLE = true }
             };
 

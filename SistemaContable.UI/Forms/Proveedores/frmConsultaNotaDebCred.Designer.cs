@@ -51,6 +51,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnNuevoQuedan = new DevExpress.XtraEditors.SimpleButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.riEditar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDetalle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -264,6 +265,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.panel1.Controls.Add(this.btnFinalizar);
             this.panel1.Controls.Add(this.btnNuevoQuedan);
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -288,6 +290,18 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnFinalizar.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.btnFinalizar.ToolTipTitle = "Operación";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
+            // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 11.26957F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(1070, 38);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Notas de débito y crédito - Quedan";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // frmConsultaNotaDebCred
             // 
@@ -333,5 +347,6 @@ namespace SistemaContable.UI.Forms.Proveedores
         private DevExpress.XtraGrid.Columns.GridColumn colCODGENERACION_APLICADO;
         private DevExpress.XtraGrid.Columns.GridColumn colSALDO;
         private DevExpress.XtraEditors.SimpleButton btnFinalizar;
+        private System.Windows.Forms.Label label1;
     }
 }

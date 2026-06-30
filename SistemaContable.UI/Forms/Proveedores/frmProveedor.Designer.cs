@@ -33,11 +33,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtCUENTA_X_PAGAR = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
-            this.cbxACTIVIDAD_ECONOMICA3 = new System.Windows.Forms.ComboBox();
             this.label33 = new System.Windows.Forms.Label();
-            this.cbxACTIVIDAD_ECONOMICA2 = new System.Windows.Forms.ComboBox();
             this.label32 = new System.Windows.Forms.Label();
-            this.cbxACTIVIDAD_ECONOMICA1 = new System.Windows.Forms.ComboBox();
             this.label31 = new System.Windows.Forms.Label();
             this.txtENCARGADO = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
@@ -102,18 +99,28 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label1 = new System.Windows.Forms.Label();
             this.cbxORIGEN_ENTIDAD = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.txtCODI_ACTI1 = new System.Windows.Forms.TextBox();
+            this.txtACTIVIDAD_ECONOMICA1 = new System.Windows.Forms.TextBox();
+            this.txtACTIVIDAD_ECONOMICA2 = new System.Windows.Forms.TextBox();
+            this.txtCODI_ACTI2 = new System.Windows.Forms.TextBox();
+            this.txtACTIVIDAD_ECONOMICA3 = new System.Windows.Forms.TextBox();
+            this.txtCODI_ACTI3 = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel1.Controls.Add(this.txtACTIVIDAD_ECONOMICA3);
+            this.panel1.Controls.Add(this.txtCODI_ACTI3);
+            this.panel1.Controls.Add(this.txtACTIVIDAD_ECONOMICA2);
+            this.panel1.Controls.Add(this.txtCODI_ACTI2);
+            this.panel1.Controls.Add(this.txtACTIVIDAD_ECONOMICA1);
+            this.panel1.Controls.Add(this.txtCODI_ACTI1);
             this.panel1.Controls.Add(this.txtCUENTA_X_PAGAR);
             this.panel1.Controls.Add(this.label34);
-            this.panel1.Controls.Add(this.cbxACTIVIDAD_ECONOMICA3);
             this.panel1.Controls.Add(this.label33);
-            this.panel1.Controls.Add(this.cbxACTIVIDAD_ECONOMICA2);
             this.panel1.Controls.Add(this.label32);
-            this.panel1.Controls.Add(this.cbxACTIVIDAD_ECONOMICA1);
             this.panel1.Controls.Add(this.label31);
             this.panel1.Controls.Add(this.txtENCARGADO);
             this.panel1.Controls.Add(this.label30);
@@ -186,11 +193,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // txtCUENTA_X_PAGAR
             // 
-            this.txtCUENTA_X_PAGAR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCUENTA_X_PAGAR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCUENTA_X_PAGAR.Location = new System.Drawing.Point(925, 539);
             this.txtCUENTA_X_PAGAR.Name = "txtCUENTA_X_PAGAR";
             this.txtCUENTA_X_PAGAR.Size = new System.Drawing.Size(224, 24);
-            this.txtCUENTA_X_PAGAR.TabIndex = 34;
+            this.txtCUENTA_X_PAGAR.TabIndex = 37;
             // 
             // label34
             // 
@@ -202,35 +209,15 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label34.Text = "Cuenta por pagar";
             this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // cbxACTIVIDAD_ECONOMICA3
-            // 
-            this.cbxACTIVIDAD_ECONOMICA3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxACTIVIDAD_ECONOMICA3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxACTIVIDAD_ECONOMICA3.FormattingEnabled = true;
-            this.cbxACTIVIDAD_ECONOMICA3.Location = new System.Drawing.Point(156, 607);
-            this.cbxACTIVIDAD_ECONOMICA3.Name = "cbxACTIVIDAD_ECONOMICA3";
-            this.cbxACTIVIDAD_ECONOMICA3.Size = new System.Drawing.Size(619, 25);
-            this.cbxACTIVIDAD_ECONOMICA3.TabIndex = 33;
-            // 
             // label33
             // 
             this.label33.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.Location = new System.Drawing.Point(18, 609);
+            this.label33.Location = new System.Drawing.Point(18, 607);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(128, 23);
             this.label33.TabIndex = 237;
             this.label33.Text = "Cód. Terciaria";
             this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // cbxACTIVIDAD_ECONOMICA2
-            // 
-            this.cbxACTIVIDAD_ECONOMICA2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxACTIVIDAD_ECONOMICA2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxACTIVIDAD_ECONOMICA2.FormattingEnabled = true;
-            this.cbxACTIVIDAD_ECONOMICA2.Location = new System.Drawing.Point(156, 572);
-            this.cbxACTIVIDAD_ECONOMICA2.Name = "cbxACTIVIDAD_ECONOMICA2";
-            this.cbxACTIVIDAD_ECONOMICA2.Size = new System.Drawing.Size(619, 25);
-            this.cbxACTIVIDAD_ECONOMICA2.TabIndex = 32;
             // 
             // label32
             // 
@@ -241,16 +228,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label32.TabIndex = 235;
             this.label32.Text = "Cód. Secundaria";
             this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // cbxACTIVIDAD_ECONOMICA1
-            // 
-            this.cbxACTIVIDAD_ECONOMICA1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxACTIVIDAD_ECONOMICA1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxACTIVIDAD_ECONOMICA1.FormattingEnabled = true;
-            this.cbxACTIVIDAD_ECONOMICA1.Location = new System.Drawing.Point(156, 537);
-            this.cbxACTIVIDAD_ECONOMICA1.Name = "cbxACTIVIDAD_ECONOMICA1";
-            this.cbxACTIVIDAD_ECONOMICA1.Size = new System.Drawing.Size(619, 25);
-            this.cbxACTIVIDAD_ECONOMICA1.TabIndex = 31;
             // 
             // label31
             // 
@@ -337,7 +314,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnFinalizar.Location = new System.Drawing.Point(1162, 336);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
-            this.btnFinalizar.TabIndex = 36;
+            this.btnFinalizar.TabIndex = 39;
             this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
             // 
@@ -351,8 +328,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnGuardar.Location = new System.Drawing.Point(1162, 267);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(119, 47);
-            this.btnGuardar.TabIndex = 35;
-            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.TabIndex = 38;
+            this.btnGuardar.TabStop = false;
+            this.btnGuardar.Text = "Guardar";            
             // 
             // txtID_CARGADORA
             // 
@@ -431,7 +409,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCELULAR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCELULAR.Location = new System.Drawing.Point(156, 396);
             this.txtCELULAR.Name = "txtCELULAR";
-            this.txtCELULAR.Size = new System.Drawing.Size(347, 24);
+            this.txtCELULAR.Size = new System.Drawing.Size(337, 24);
             this.txtCELULAR.TabIndex = 22;
             // 
             // label24
@@ -491,7 +469,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxDEPARTAMENTO.FormattingEnabled = true;
             this.cbxDEPARTAMENTO.Location = new System.Drawing.Point(156, 361);
             this.cbxDEPARTAMENTO.Name = "cbxDEPARTAMENTO";
-            this.cbxDEPARTAMENTO.Size = new System.Drawing.Size(347, 25);
+            this.cbxDEPARTAMENTO.Size = new System.Drawing.Size(337, 25);
             this.cbxDEPARTAMENTO.TabIndex = 19;
             // 
             // label19
@@ -529,7 +507,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCORREO_CC.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCORREO_CC.Location = new System.Drawing.Point(156, 327);
             this.txtCORREO_CC.Name = "txtCORREO_CC";
-            this.txtCORREO_CC.Size = new System.Drawing.Size(347, 24);
+            this.txtCORREO_CC.Size = new System.Drawing.Size(337, 24);
             this.txtCORREO_CC.TabIndex = 17;
             // 
             // label17
@@ -565,7 +543,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCOLONIA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCOLONIA.Location = new System.Drawing.Point(156, 292);
             this.txtCOLONIA.Name = "txtCOLONIA";
-            this.txtCOLONIA.Size = new System.Drawing.Size(347, 24);
+            this.txtCOLONIA.Size = new System.Drawing.Size(337, 24);
             this.txtCOLONIA.TabIndex = 15;
             // 
             // label15
@@ -821,11 +799,12 @@ namespace SistemaContable.UI.Forms.Proveedores
             // txtCODIGO_ENTIDAD
             // 
             this.txtCODIGO_ENTIDAD.BackColor = System.Drawing.SystemColors.Window;
-            this.txtCODIGO_ENTIDAD.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCODIGO_ENTIDAD.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCODIGO_ENTIDAD.Location = new System.Drawing.Point(156, 14);
             this.txtCODIGO_ENTIDAD.Name = "txtCODIGO_ENTIDAD";
             this.txtCODIGO_ENTIDAD.Size = new System.Drawing.Size(173, 24);
             this.txtCODIGO_ENTIDAD.TabIndex = 0;
+            this.txtCODIGO_ENTIDAD.TabStop = false;
             // 
             // label1
             // 
@@ -856,6 +835,66 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label11.TabIndex = 163;
             this.label11.Text = "Origen";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtCODI_ACTI1
+            // 
+            this.txtCODI_ACTI1.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCODI_ACTI1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCODI_ACTI1.Location = new System.Drawing.Point(156, 542);
+            this.txtCODI_ACTI1.Name = "txtCODI_ACTI1";
+            this.txtCODI_ACTI1.Size = new System.Drawing.Size(82, 24);
+            this.txtCODI_ACTI1.TabIndex = 31;
+            // 
+            // txtACTIVIDAD_ECONOMICA1
+            // 
+            this.txtACTIVIDAD_ECONOMICA1.BackColor = System.Drawing.SystemColors.Control;
+            this.txtACTIVIDAD_ECONOMICA1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtACTIVIDAD_ECONOMICA1.Location = new System.Drawing.Point(244, 542);
+            this.txtACTIVIDAD_ECONOMICA1.Name = "txtACTIVIDAD_ECONOMICA1";
+            this.txtACTIVIDAD_ECONOMICA1.ReadOnly = true;
+            this.txtACTIVIDAD_ECONOMICA1.Size = new System.Drawing.Size(540, 24);
+            this.txtACTIVIDAD_ECONOMICA1.TabIndex = 32;
+            this.txtACTIVIDAD_ECONOMICA1.TabStop = false;
+            // 
+            // txtACTIVIDAD_ECONOMICA2
+            // 
+            this.txtACTIVIDAD_ECONOMICA2.BackColor = System.Drawing.SystemColors.Control;
+            this.txtACTIVIDAD_ECONOMICA2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtACTIVIDAD_ECONOMICA2.Location = new System.Drawing.Point(244, 574);
+            this.txtACTIVIDAD_ECONOMICA2.Name = "txtACTIVIDAD_ECONOMICA2";
+            this.txtACTIVIDAD_ECONOMICA2.ReadOnly = true;
+            this.txtACTIVIDAD_ECONOMICA2.Size = new System.Drawing.Size(540, 24);
+            this.txtACTIVIDAD_ECONOMICA2.TabIndex = 34;
+            this.txtACTIVIDAD_ECONOMICA2.TabStop = false;
+            // 
+            // txtCODI_ACTI2
+            // 
+            this.txtCODI_ACTI2.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCODI_ACTI2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCODI_ACTI2.Location = new System.Drawing.Point(156, 574);
+            this.txtCODI_ACTI2.Name = "txtCODI_ACTI2";
+            this.txtCODI_ACTI2.Size = new System.Drawing.Size(82, 24);
+            this.txtCODI_ACTI2.TabIndex = 33;
+            // 
+            // txtACTIVIDAD_ECONOMICA3
+            // 
+            this.txtACTIVIDAD_ECONOMICA3.BackColor = System.Drawing.SystemColors.Control;
+            this.txtACTIVIDAD_ECONOMICA3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtACTIVIDAD_ECONOMICA3.Location = new System.Drawing.Point(244, 607);
+            this.txtACTIVIDAD_ECONOMICA3.Name = "txtACTIVIDAD_ECONOMICA3";
+            this.txtACTIVIDAD_ECONOMICA3.ReadOnly = true;
+            this.txtACTIVIDAD_ECONOMICA3.Size = new System.Drawing.Size(540, 24);
+            this.txtACTIVIDAD_ECONOMICA3.TabIndex = 36;
+            this.txtACTIVIDAD_ECONOMICA3.TabStop = false;
+            // 
+            // txtCODI_ACTI3
+            // 
+            this.txtCODI_ACTI3.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCODI_ACTI3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCODI_ACTI3.Location = new System.Drawing.Point(156, 607);
+            this.txtCODI_ACTI3.Name = "txtCODI_ACTI3";
+            this.txtCODI_ACTI3.Size = new System.Drawing.Size(82, 24);
+            this.txtCODI_ACTI3.TabIndex = 35;
             // 
             // frmProveedor
             // 
@@ -943,13 +982,16 @@ namespace SistemaContable.UI.Forms.Proveedores
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TextBox txtENCARGADO;
         private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.ComboBox cbxACTIVIDAD_ECONOMICA1;
         private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.ComboBox cbxACTIVIDAD_ECONOMICA3;
         private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.ComboBox cbxACTIVIDAD_ECONOMICA2;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.TextBox txtCUENTA_X_PAGAR;
         private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.TextBox txtCODI_ACTI1;
+        private System.Windows.Forms.TextBox txtACTIVIDAD_ECONOMICA1;
+        private System.Windows.Forms.TextBox txtACTIVIDAD_ECONOMICA3;
+        private System.Windows.Forms.TextBox txtCODI_ACTI3;
+        private System.Windows.Forms.TextBox txtACTIVIDAD_ECONOMICA2;
+        private System.Windows.Forms.TextBox txtCODI_ACTI2;
     }
 }
