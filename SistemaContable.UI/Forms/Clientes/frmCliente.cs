@@ -18,6 +18,10 @@ namespace SistemaContable.UI.Forms.Clientes
         private DataTable _dtRolesEntidad;
         private DataTable _dtAllMunicipios;
         private bool _cargando = false;
+        // IDs seleccionados por búsqueda de actividad económica
+        private int _idActividad1 = 0;
+        private int _idActividad2 = 0;
+        private int _idActividad3 = 0;
         #endregion
         public int IdEntidad { get; set; } = 0;
         public frmCliente()
@@ -34,7 +38,7 @@ namespace SistemaContable.UI.Forms.Clientes
             CargarTipoDocIdentidad();
             CargarPaises();
             CargarDepartamentos();
-            CargarActividadEconomica();
+            RegistrarBusquedaActividades();
             CargarOrigen();
             CargarRolesEntidad();
             InicializarGridRoles();
@@ -170,25 +174,81 @@ namespace SistemaContable.UI.Forms.Clientes
             cbxDIST.DisplayMember = "NOMBRE_DISTRITO";
             cbxDIST.SelectedIndex = 0;
         }
-        private void CargarActividadEconomica()
+        private void RegistrarBusquedaActividades()
         {
-            DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ACTIVIDAD_ECONOMICA]",
-                new { ACCION = "LISTAR" });
-            AgregarFilaVacia(dt, "VALORES");
-            cbxACTIVIDAD_1.DataSource = dt;
-            cbxACTIVIDAD_1.ValueMember = "ID_ACTIVIDAD";
-            cbxACTIVIDAD_1.DisplayMember = "VALORES";
-            cbxACTIVIDAD_1.SelectedIndex = 0;
-            DataTable dt2 = dt.Copy();
-            cbxACTIVIDAD_2.DataSource = dt2;
-            cbxACTIVIDAD_2.ValueMember = "ID_ACTIVIDAD";
-            cbxACTIVIDAD_2.DisplayMember = "VALORES";
-            cbxACTIVIDAD_2.SelectedIndex = 0;
-            DataTable dt3 = dt.Copy();
-            cbxACTIVIDAD_3.DataSource = dt3;
-            cbxACTIVIDAD_3.ValueMember = "ID_ACTIVIDAD";
-            cbxACTIVIDAD_3.DisplayMember = "VALORES";
-            cbxACTIVIDAD_3.SelectedIndex = 0;
+            var config1 = new BusquedaConfig
+            {
+                StoredProcedure = "[EMH].[SP_ACTIVIDAD_ECONOMICA]",
+                Accion = "BUSCAR",
+                Columnas = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    { "ID_ACTIVIDAD", "Código" },
+                    { "VALORES",      "Descripción" }
+                },
+                Anchos = new System.Collections.Generic.Dictionary<string, int>
+                {
+                    { "ID_ACTIVIDAD", 80 },
+                    { "VALORES",     600 }
+                }
+            };
+            FormHelper.RegistrarBusqueda(txtACTIVIDAD_1, config1, fila =>
+            {
+                _idActividad1 = Convert.ToInt32(fila["ID_ACTIVIDAD"]);
+                txtACTIVIDAD_1.Text = fila["VALORES"].ToString();
+            });
+            var config2 = new BusquedaConfig
+            {
+                StoredProcedure = "[EMH].[SP_ACTIVIDAD_ECONOMICA]",
+                Accion = "BUSCAR",
+                Columnas = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    { "ID_ACTIVIDAD", "Código" },
+                    { "VALORES",      "Descripción" }
+                },
+                Anchos = new System.Collections.Generic.Dictionary<string, int>
+                {
+                    { "ID_ACTIVIDAD", 80 },
+                    { "VALORES",     600 }
+                }
+            };
+            FormHelper.RegistrarBusqueda(txtACTIVIDAD_2, config2, fila =>
+            {
+                _idActividad2 = Convert.ToInt32(fila["ID_ACTIVIDAD"]);
+                txtACTIVIDAD_2.Text = fila["VALORES"].ToString();
+            });
+            var config3 = new BusquedaConfig
+            {
+                StoredProcedure = "[EMH].[SP_ACTIVIDAD_ECONOMICA]",
+                Accion = "BUSCAR",
+                Columnas = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    { "ID_ACTIVIDAD", "Código" },
+                    { "VALORES",      "Descripción" }
+                },
+                Anchos = new System.Collections.Generic.Dictionary<string, int>
+                {
+                    { "ID_ACTIVIDAD", 80 },
+                    { "VALORES",     600 }
+                }
+            };
+            FormHelper.RegistrarBusqueda(txtACTIVIDAD_3, config3, fila =>
+            {
+                _idActividad3 = Convert.ToInt32(fila["ID_ACTIVIDAD"]);
+                txtACTIVIDAD_3.Text = fila["VALORES"].ToString();
+            });
+        }
+        private string ObtenerDescripcionActividad(int idActividad)
+        {
+            if (idActividad <= 0) return "";
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ACTIVIDAD_ECONOMICA]",
+                    new { ACCION = "CONSULTAR", ID_ACTIVIDAD = idActividad });
+                if (dt != null && dt.Rows.Count > 0)
+                    return dt.Rows[0]["VALORES"]?.ToString() ?? "";
+            }
+            catch { }
+            return "";
         }
         private void CargarOrigen()
         {
@@ -441,14 +501,17 @@ namespace SistemaContable.UI.Forms.Clientes
                 txtCODTRANSPORT.Text = r["CODTRANSPORT"] == DBNull.Value ? "" : r["CODTRANSPORT"].ToString();
                 txtID_CARGADORA.Text = r["ID_CARGADORA"] == DBNull.Value ? "" : r["ID_CARGADORA"].ToString();
                 // Combos
-                cbxTIPO_ENTIDAD.SelectedValue = AsInt(r["ID_TIPO_ENTIDAD"]);
-                cbxTIPO_CONTRIB.SelectedValue = AsInt(r["ID_TIPO_CONTRIB"]);
-                cbxTIPO_DOC_IDEN.SelectedValue = AsInt(r["ID_TIPO_DOC_INDEN"]);
-                cbxPAIS.SelectedValue = AsInt(r["ID_PAIS"]);
-                cbxACTIVIDAD_1.SelectedValue = AsInt(r["ID_ACTIVIDAD_1"]);
-                cbxACTIVIDAD_2.SelectedValue = AsInt(r["ID_ACTIVIDAD_2"]);
-                cbxACTIVIDAD_3.SelectedValue = AsInt(r["ID_ACTIVIDAD_3"]);
-                cbxORIGEN.SelectedValue = AsInt(r["ID_ORIGEN"]);
+                SetComboById(cbxTIPO_ENTIDAD, AsInt(r["ID_TIPO_ENTIDAD"]));
+                SetComboById(cbxTIPO_CONTRIB, AsInt(r["ID_TIPO_CONTRIB"]));
+                SetComboById(cbxTIPO_DOC_IDEN, AsInt(r["ID_TIPO_DOC_INDEN"]));
+                SetComboById(cbxPAIS, AsInt(r["ID_PAIS"]));
+                _idActividad1 = AsInt(r["ID_ACTIVIDAD_1"]) ?? 0;
+                _idActividad2 = AsInt(r["ID_ACTIVIDAD_2"]) ?? 0;
+                _idActividad3 = AsInt(r["ID_ACTIVIDAD_3"]) ?? 0;
+                txtACTIVIDAD_1.Text = ObtenerDescripcionActividad(_idActividad1);
+                txtACTIVIDAD_2.Text = ObtenerDescripcionActividad(_idActividad2);
+                txtACTIVIDAD_3.Text = ObtenerDescripcionActividad(_idActividad3);
+                SetComboById(cbxORIGEN, AsInt(r["ID_ORIGEN"]));
                 // Departamento → Municipio → Distrito
                 string codiDepto = AsString(r["CODI_DEPTO"]);
                 string codiMuni = AsString(r["CODI_MUNI"]);
@@ -513,9 +576,9 @@ namespace SistemaContable.UI.Forms.Clientes
                     ID_PAIS = ObtenerIdCombo(cbxPAIS),
                     CODI_DEPTO = ObtenerCodigoCombo(cbxDEPTO),
                     CODI_MUNI = ObtenerCodigoCombo(cbxMUNI),
-                    ID_ACTIVIDAD_1 = ObtenerIdCombo(cbxACTIVIDAD_1),
-                    ID_ACTIVIDAD_2 = ObtenerIdCombo(cbxACTIVIDAD_2),
-                    ID_ACTIVIDAD_3 = ObtenerIdCombo(cbxACTIVIDAD_3),
+                    ID_ACTIVIDAD_1 = _idActividad1 > 0 ? _idActividad1 : (int?)null,
+                    ID_ACTIVIDAD_2 = _idActividad2 > 0 ? _idActividad2 : (int?)null,
+                    ID_ACTIVIDAD_3 = _idActividad3 > 0 ? _idActividad3 : (int?)null,
                     ID_ORIGEN = ObtenerIdCombo(cbxORIGEN),
                     CODIPROVEEDOR = NullIfEmpty(txtCODIPROVEEDOR.Text),
                     CODTRANSPORT = ParseIntNull(txtCODTRANSPORT.Text),
@@ -699,11 +762,11 @@ namespace SistemaContable.UI.Forms.Clientes
                 txtNRC.Focus();
                 return false;
             }
-            if (requiereNRC && ObtenerIdCombo(cbxACTIVIDAD_1) == null)
+            if (requiereNRC && _idActividad1 == 0)
             {
                 XtraMessageBox.Show("Debe seleccionar al menos la Actividad Económica 1.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbxACTIVIDAD_1.Focus();
+                txtACTIVIDAD_1.Focus();
                 return false;
             }
             return true;
@@ -745,9 +808,12 @@ namespace SistemaContable.UI.Forms.Clientes
             cbxDIST.Items.Clear();
             cbxMUNI.DataSource = null;
             cbxMUNI.Items.Clear();
-            cbxACTIVIDAD_1.SelectedIndex = 0;
-            cbxACTIVIDAD_2.SelectedIndex = 0;
-            cbxACTIVIDAD_3.SelectedIndex = 0;
+            _idActividad1 = 0;
+            _idActividad2 = 0;
+            _idActividad3 = 0;
+            txtACTIVIDAD_1.Text = "";
+            txtACTIVIDAD_2.Text = "";
+            txtACTIVIDAD_3.Text = "";
             cbxORIGEN.SelectedIndex = 0;
             _dtRoles?.Clear();
         }
@@ -831,6 +897,13 @@ namespace SistemaContable.UI.Forms.Clientes
         }
         #endregion
         #region === HELPERS ===
+        private static void SetComboById(System.Windows.Forms.ComboBox cbx, int? value)
+        {
+            if (value != null && value != 0)
+                cbx.SelectedValue = value;
+            else
+                cbx.SelectedIndex = 0;
+        }
         private static string AsString(object val)
             => val == null || val == DBNull.Value ? "" : val.ToString();
         private static int? AsInt(object val)
