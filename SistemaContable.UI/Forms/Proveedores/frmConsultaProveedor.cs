@@ -48,6 +48,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // --- Buscador global ---
             gvDetalle.OptionsFind.AlwaysVisible = true;
             gvDetalle.OptionsFind.FindNullPrompt = "Introduzca el texto a buscar...";
+            gvDetalle.OptionsFind.ShowFindButton = true;            
 
             gvDetalle.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             gvDetalle.OptionsSelection.EnableAppearanceFocusedCell = false;

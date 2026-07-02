@@ -228,17 +228,28 @@ namespace SistemaContable.UI.Forms.Proveedores
             // Si está en CARGO presiona Enter → saltar directo a CTACONTABLE de la siguiente fila
             if (colActual == "CARGO")
             {
-                e.Handled = true;
                 view.CloseEditor();
-                int filaActual = view.FocusedRowHandle;
+                view.UpdateCurrentRow();
 
-                if (filaActual == _dtPartida.Rows.Count - 1)
-                    AgregarFilaVacia();
+                decimal cargoActual = 0;
+                object valorCargo = view.GetFocusedRowCellValue("CARGO");
+                if (valorCargo != null && valorCargo != DBNull.Value)
+                    decimal.TryParse(valorCargo.ToString(), out cargoActual);
 
-                view.FocusedRowHandle = filaActual + 1;
-                view.FocusedColumn = view.Columns["CTACONTABLE"];
-                view.ShowEditor();
-                return;
+                if (cargoActual > 0)
+                {
+                    e.Handled = true;
+                    int filaActual = view.FocusedRowHandle;
+
+                    if (filaActual == _dtPartida.Rows.Count - 1)
+                        AgregarFilaVacia();
+
+                    view.FocusedRowHandle = filaActual + 1;
+                    view.FocusedColumn = view.Columns["CTACONTABLE"];
+                    view.ShowEditor();
+                    return;
+                }
+                // Si CARGO == 0 → caer al bloque general de Tab (avanza a ABONO)
             }
 
             // Enter como Tab entre columnas

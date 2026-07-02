@@ -327,5 +327,65 @@ namespace SistemaContable.UI.Helpers
             return _regexCorreo.IsMatch(correo.Trim());
         }
 
+        public static void ResaltarCombosEnFoco(Control padre, Color? colorFoco = null)
+        {
+            Color color = colorFoco ?? Color.FromArgb(255, 254, 248);
+
+            foreach (Control ctrl in padre.Controls)
+            {
+                if (ctrl is ComboBox cbx)
+                    AplicarResaltadoCombo(cbx, color);
+
+                if (ctrl.HasChildren)
+                    ResaltarCombosEnFoco(ctrl, colorFoco);
+            }
+        }
+
+        private static void AplicarResaltadoCombo(ComboBox combo, Color colorFoco)
+        {
+            Color colorNormal = SystemColors.Window;
+            Color colorInhabilita = SystemColors.Control;   // gris estándar de Windows
+
+            combo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+
+            combo.DrawItem += (s, e) =>
+            {
+                if (e.Index < 0) return;
+
+                // ============ FONDO ============
+                Color fondo;
+                if (!combo.Enabled)
+                    fondo = colorInhabilita;
+                else if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                    fondo = SystemColors.Highlight;
+                else if (combo.Focused)
+                    fondo = colorFoco;
+                else
+                    fondo = colorNormal;
+
+                using (var brush = new SolidBrush(fondo))
+                    e.Graphics.FillRectangle(brush, e.Bounds);
+
+                // ============ TEXTO ============
+                string texto = combo.GetItemText(combo.Items[e.Index]);
+
+                Color colorTexto;
+                if (!combo.Enabled)
+                    colorTexto = SystemColors.GrayText;
+                else if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                    colorTexto = SystemColors.HighlightText;
+                else
+                    colorTexto = SystemColors.WindowText;
+
+                using (var brushTexto = new SolidBrush(colorTexto))
+                    e.Graphics.DrawString(texto, e.Font, brushTexto, e.Bounds);
+
+                e.DrawFocusRectangle();
+            };
+            combo.Enter += (s, e) => combo.Invalidate();
+            combo.Leave += (s, e) => combo.Invalidate();
+            combo.EnabledChanged += (s, e) => combo.Invalidate();   // ← clave
+        }
+
     }
 }

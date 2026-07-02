@@ -38,7 +38,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void frmProveedor_Load(object sender, EventArgs e)
         {
             FormHelper.Inicializar(this);
-            _cargandoFormulario = true;
+            _cargandoFormulario = true;            
             CargarCombos();
             SuscribirEventos();
 
@@ -142,6 +142,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 }
             );
 
+            FormHelper.ResaltarCombosEnFoco(this);
             _cargandoFormulario = false;
         }
 
@@ -495,9 +496,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             bool esJuridica = idTipoPersona == TIPO_PERSONA_JURIDICA;
 
             // DUI: solo si NO es Exterior y NO es Jurídica
-            txtDUI.ReadOnly = esExterior || esJuridica;
+            txtDUI.Enabled = !esExterior && !esJuridica;
 
-            if (txtDUI.ReadOnly)
+            if (!txtDUI.Enabled)
                 txtDUI.Clear();
         }
 
@@ -677,6 +678,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtCODIPROVEEDOR.Text = SafeStr(r["CODIPROVEEDOR"]);
                 txtCODTRANSPORT.Text = SafeStr(r["CODTRANSPORT"]);
                 txtID_CARGADORA.Text = SafeStr(r["ID_CARGADORA"]);
+                txtOTROS_DATOS.Text = SafeStr(r["OTROS_DATOS"]);
 
                 // Actividades económicas
                 CargarActividadEditar(r, "ID_ACTIVIDAD_1", txtCODI_ACTI1, txtACTIVIDAD_ECONOMICA1);
@@ -899,6 +901,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         // ============================================================
         // Valida si ya existe otra entidad con el mismo DUI/NIT/NRC
+        // y que tenga el ROL = "PRO" (PROVEEDOR)
         // Solo aplica en modo nuevo (IdEntidad == 0)
         // ============================================================
         private void ValidarDuplicado(TextBox txt, string nombreCampo)
@@ -913,7 +916,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 var dt = _dal.EjecutarConsulta("SP_ENTIDAD", new
                 {
-                    ACCION = "BUSCAR",
+                    ACCION = "BUSCAR_DUPLICADOS",
+                    ROL = "PRO",
                     FILTRO = valor
                 });
 
@@ -1054,6 +1058,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     PORC_RENTA = ParseDecimalNullable(txtPORC_RENTA.Text),
                     USUARIO_CREA = Configuracion.UsuarioActual,
                     USUARIO_ACT = Configuracion.UsuarioActual,
+                    OTROS_DATOS = NullIfEmpty(txtOTROS_DATOS.Text),
                     ROL = "PRO"
                 };
 
@@ -1136,7 +1141,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 tb.SelectionStart = Math.Max(0, pos);
             }
         }
-
+        
         private void ValidarCorreoLeave(TextBox txt)
         {
             string correo = txt.Text.Trim();
@@ -1149,7 +1154,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txt.Focus();
                 txt.SelectAll();
             }
-        }
+        }       
 
     }
 

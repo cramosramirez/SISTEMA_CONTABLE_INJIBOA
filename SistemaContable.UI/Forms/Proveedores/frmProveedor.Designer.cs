@@ -31,6 +31,12 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmProveedor));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtACTIVIDAD_ECONOMICA3 = new System.Windows.Forms.TextBox();
+            this.txtCODI_ACTI3 = new System.Windows.Forms.TextBox();
+            this.txtACTIVIDAD_ECONOMICA2 = new System.Windows.Forms.TextBox();
+            this.txtCODI_ACTI2 = new System.Windows.Forms.TextBox();
+            this.txtACTIVIDAD_ECONOMICA1 = new System.Windows.Forms.TextBox();
+            this.txtCODI_ACTI1 = new System.Windows.Forms.TextBox();
             this.txtCUENTA_X_PAGAR = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
@@ -99,12 +105,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label1 = new System.Windows.Forms.Label();
             this.cbxORIGEN_ENTIDAD = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.txtCODI_ACTI1 = new System.Windows.Forms.TextBox();
-            this.txtACTIVIDAD_ECONOMICA1 = new System.Windows.Forms.TextBox();
-            this.txtACTIVIDAD_ECONOMICA2 = new System.Windows.Forms.TextBox();
-            this.txtCODI_ACTI2 = new System.Windows.Forms.TextBox();
-            this.txtACTIVIDAD_ECONOMICA3 = new System.Windows.Forms.TextBox();
-            this.txtCODI_ACTI3 = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -190,6 +190,66 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1293, 654);
             this.panel1.TabIndex = 0;
+            // 
+            // txtACTIVIDAD_ECONOMICA3
+            // 
+            this.txtACTIVIDAD_ECONOMICA3.BackColor = System.Drawing.SystemColors.Control;
+            this.txtACTIVIDAD_ECONOMICA3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtACTIVIDAD_ECONOMICA3.Location = new System.Drawing.Point(244, 607);
+            this.txtACTIVIDAD_ECONOMICA3.Name = "txtACTIVIDAD_ECONOMICA3";
+            this.txtACTIVIDAD_ECONOMICA3.ReadOnly = true;
+            this.txtACTIVIDAD_ECONOMICA3.Size = new System.Drawing.Size(540, 24);
+            this.txtACTIVIDAD_ECONOMICA3.TabIndex = 36;
+            this.txtACTIVIDAD_ECONOMICA3.TabStop = false;
+            // 
+            // txtCODI_ACTI3
+            // 
+            this.txtCODI_ACTI3.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCODI_ACTI3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCODI_ACTI3.Location = new System.Drawing.Point(156, 607);
+            this.txtCODI_ACTI3.Name = "txtCODI_ACTI3";
+            this.txtCODI_ACTI3.Size = new System.Drawing.Size(82, 24);
+            this.txtCODI_ACTI3.TabIndex = 35;
+            // 
+            // txtACTIVIDAD_ECONOMICA2
+            // 
+            this.txtACTIVIDAD_ECONOMICA2.BackColor = System.Drawing.SystemColors.Control;
+            this.txtACTIVIDAD_ECONOMICA2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtACTIVIDAD_ECONOMICA2.Location = new System.Drawing.Point(244, 574);
+            this.txtACTIVIDAD_ECONOMICA2.Name = "txtACTIVIDAD_ECONOMICA2";
+            this.txtACTIVIDAD_ECONOMICA2.ReadOnly = true;
+            this.txtACTIVIDAD_ECONOMICA2.Size = new System.Drawing.Size(540, 24);
+            this.txtACTIVIDAD_ECONOMICA2.TabIndex = 34;
+            this.txtACTIVIDAD_ECONOMICA2.TabStop = false;
+            // 
+            // txtCODI_ACTI2
+            // 
+            this.txtCODI_ACTI2.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCODI_ACTI2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCODI_ACTI2.Location = new System.Drawing.Point(156, 574);
+            this.txtCODI_ACTI2.Name = "txtCODI_ACTI2";
+            this.txtCODI_ACTI2.Size = new System.Drawing.Size(82, 24);
+            this.txtCODI_ACTI2.TabIndex = 33;
+            // 
+            // txtACTIVIDAD_ECONOMICA1
+            // 
+            this.txtACTIVIDAD_ECONOMICA1.BackColor = System.Drawing.SystemColors.Control;
+            this.txtACTIVIDAD_ECONOMICA1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtACTIVIDAD_ECONOMICA1.Location = new System.Drawing.Point(244, 542);
+            this.txtACTIVIDAD_ECONOMICA1.Name = "txtACTIVIDAD_ECONOMICA1";
+            this.txtACTIVIDAD_ECONOMICA1.ReadOnly = true;
+            this.txtACTIVIDAD_ECONOMICA1.Size = new System.Drawing.Size(540, 24);
+            this.txtACTIVIDAD_ECONOMICA1.TabIndex = 32;
+            this.txtACTIVIDAD_ECONOMICA1.TabStop = false;
+            // 
+            // txtCODI_ACTI1
+            // 
+            this.txtCODI_ACTI1.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCODI_ACTI1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCODI_ACTI1.Location = new System.Drawing.Point(156, 542);
+            this.txtCODI_ACTI1.Name = "txtCODI_ACTI1";
+            this.txtCODI_ACTI1.Size = new System.Drawing.Size(82, 24);
+            this.txtCODI_ACTI1.TabIndex = 31;
             // 
             // txtCUENTA_X_PAGAR
             // 
@@ -330,7 +390,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnGuardar.Size = new System.Drawing.Size(119, 47);
             this.btnGuardar.TabIndex = 38;
             this.btnGuardar.TabStop = false;
-            this.btnGuardar.Text = "Guardar";            
+            this.btnGuardar.Text = "Guardar";
             // 
             // txtID_CARGADORA
             // 
@@ -667,7 +727,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // txtNIT
             // 
             this.txtNIT.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNIT.Location = new System.Drawing.Point(500, 118);
+            this.txtNIT.Location = new System.Drawing.Point(542, 118);
             this.txtNIT.Name = "txtNIT";
             this.txtNIT.Size = new System.Drawing.Size(231, 24);
             this.txtNIT.TabIndex = 8;
@@ -675,9 +735,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label7
             // 
             this.label7.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(387, 117);
+            this.label7.Location = new System.Drawing.Point(486, 117);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(103, 24);
+            this.label7.Size = new System.Drawing.Size(46, 24);
             this.label7.TabIndex = 186;
             this.label7.Text = "NIT";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -703,15 +763,15 @@ namespace SistemaContable.UI.Forms.Proveedores
             // txtNRC
             // 
             this.txtNRC.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNRC.Location = new System.Drawing.Point(932, 86);
+            this.txtNRC.Location = new System.Drawing.Point(952, 86);
             this.txtNRC.Name = "txtNRC";
-            this.txtNRC.Size = new System.Drawing.Size(217, 24);
+            this.txtNRC.Size = new System.Drawing.Size(197, 24);
             this.txtNRC.TabIndex = 6;
             // 
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(748, 86);
+            this.label5.Location = new System.Drawing.Point(769, 86);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(177, 24);
             this.label5.TabIndex = 182;
@@ -723,7 +783,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxTIPO_CONTRIBUYENTE.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxTIPO_CONTRIBUYENTE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxTIPO_CONTRIBUYENTE.FormattingEnabled = true;
-            this.cbxTIPO_CONTRIBUYENTE.Location = new System.Drawing.Point(500, 84);
+            this.cbxTIPO_CONTRIBUYENTE.Location = new System.Drawing.Point(542, 84);
             this.cbxTIPO_CONTRIBUYENTE.Name = "cbxTIPO_CONTRIBUYENTE";
             this.cbxTIPO_CONTRIBUYENTE.Size = new System.Drawing.Size(231, 25);
             this.cbxTIPO_CONTRIBUYENTE.TabIndex = 5;
@@ -731,7 +791,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(333, 86);
+            this.label4.Location = new System.Drawing.Point(375, 86);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(160, 23);
             this.label4.TabIndex = 180;
@@ -761,15 +821,15 @@ namespace SistemaContable.UI.Forms.Proveedores
             // txtDOCUMENTO
             // 
             this.txtDOCUMENTO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDOCUMENTO.Location = new System.Drawing.Point(932, 49);
+            this.txtDOCUMENTO.Location = new System.Drawing.Point(952, 49);
             this.txtDOCUMENTO.Name = "txtDOCUMENTO";
-            this.txtDOCUMENTO.Size = new System.Drawing.Size(217, 24);
+            this.txtDOCUMENTO.Size = new System.Drawing.Size(197, 24);
             this.txtDOCUMENTO.TabIndex = 3;
             // 
             // label21
             // 
             this.label21.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(748, 49);
+            this.label21.Location = new System.Drawing.Point(769, 49);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(177, 24);
             this.label21.TabIndex = 176;
@@ -781,7 +841,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxTIPO_DOCUMENTO_IDENTIDAD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxTIPO_DOCUMENTO_IDENTIDAD.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxTIPO_DOCUMENTO_IDENTIDAD.FormattingEnabled = true;
-            this.cbxTIPO_DOCUMENTO_IDENTIDAD.Location = new System.Drawing.Point(500, 47);
+            this.cbxTIPO_DOCUMENTO_IDENTIDAD.Location = new System.Drawing.Point(542, 47);
             this.cbxTIPO_DOCUMENTO_IDENTIDAD.Name = "cbxTIPO_DOCUMENTO_IDENTIDAD";
             this.cbxTIPO_DOCUMENTO_IDENTIDAD.Size = new System.Drawing.Size(231, 25);
             this.cbxTIPO_DOCUMENTO_IDENTIDAD.TabIndex = 2;
@@ -789,7 +849,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(333, 49);
+            this.label2.Location = new System.Drawing.Point(375, 49);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(160, 23);
             this.label2.TabIndex = 167;
@@ -835,66 +895,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label11.TabIndex = 163;
             this.label11.Text = "Origen";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtCODI_ACTI1
-            // 
-            this.txtCODI_ACTI1.BackColor = System.Drawing.SystemColors.Window;
-            this.txtCODI_ACTI1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCODI_ACTI1.Location = new System.Drawing.Point(156, 542);
-            this.txtCODI_ACTI1.Name = "txtCODI_ACTI1";
-            this.txtCODI_ACTI1.Size = new System.Drawing.Size(82, 24);
-            this.txtCODI_ACTI1.TabIndex = 31;
-            // 
-            // txtACTIVIDAD_ECONOMICA1
-            // 
-            this.txtACTIVIDAD_ECONOMICA1.BackColor = System.Drawing.SystemColors.Control;
-            this.txtACTIVIDAD_ECONOMICA1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtACTIVIDAD_ECONOMICA1.Location = new System.Drawing.Point(244, 542);
-            this.txtACTIVIDAD_ECONOMICA1.Name = "txtACTIVIDAD_ECONOMICA1";
-            this.txtACTIVIDAD_ECONOMICA1.ReadOnly = true;
-            this.txtACTIVIDAD_ECONOMICA1.Size = new System.Drawing.Size(540, 24);
-            this.txtACTIVIDAD_ECONOMICA1.TabIndex = 32;
-            this.txtACTIVIDAD_ECONOMICA1.TabStop = false;
-            // 
-            // txtACTIVIDAD_ECONOMICA2
-            // 
-            this.txtACTIVIDAD_ECONOMICA2.BackColor = System.Drawing.SystemColors.Control;
-            this.txtACTIVIDAD_ECONOMICA2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtACTIVIDAD_ECONOMICA2.Location = new System.Drawing.Point(244, 574);
-            this.txtACTIVIDAD_ECONOMICA2.Name = "txtACTIVIDAD_ECONOMICA2";
-            this.txtACTIVIDAD_ECONOMICA2.ReadOnly = true;
-            this.txtACTIVIDAD_ECONOMICA2.Size = new System.Drawing.Size(540, 24);
-            this.txtACTIVIDAD_ECONOMICA2.TabIndex = 34;
-            this.txtACTIVIDAD_ECONOMICA2.TabStop = false;
-            // 
-            // txtCODI_ACTI2
-            // 
-            this.txtCODI_ACTI2.BackColor = System.Drawing.SystemColors.Window;
-            this.txtCODI_ACTI2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCODI_ACTI2.Location = new System.Drawing.Point(156, 574);
-            this.txtCODI_ACTI2.Name = "txtCODI_ACTI2";
-            this.txtCODI_ACTI2.Size = new System.Drawing.Size(82, 24);
-            this.txtCODI_ACTI2.TabIndex = 33;
-            // 
-            // txtACTIVIDAD_ECONOMICA3
-            // 
-            this.txtACTIVIDAD_ECONOMICA3.BackColor = System.Drawing.SystemColors.Control;
-            this.txtACTIVIDAD_ECONOMICA3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtACTIVIDAD_ECONOMICA3.Location = new System.Drawing.Point(244, 607);
-            this.txtACTIVIDAD_ECONOMICA3.Name = "txtACTIVIDAD_ECONOMICA3";
-            this.txtACTIVIDAD_ECONOMICA3.ReadOnly = true;
-            this.txtACTIVIDAD_ECONOMICA3.Size = new System.Drawing.Size(540, 24);
-            this.txtACTIVIDAD_ECONOMICA3.TabIndex = 36;
-            this.txtACTIVIDAD_ECONOMICA3.TabStop = false;
-            // 
-            // txtCODI_ACTI3
-            // 
-            this.txtCODI_ACTI3.BackColor = System.Drawing.SystemColors.Window;
-            this.txtCODI_ACTI3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCODI_ACTI3.Location = new System.Drawing.Point(156, 607);
-            this.txtCODI_ACTI3.Name = "txtCODI_ACTI3";
-            this.txtCODI_ACTI3.Size = new System.Drawing.Size(82, 24);
-            this.txtCODI_ACTI3.TabIndex = 35;
             // 
             // frmProveedor
             // 

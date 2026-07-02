@@ -56,6 +56,11 @@ namespace SistemaContable.UI.Forms.Bancos
                     {
                         { "CODIGO_PAR", "CODIGO" },
                         { "NOMBRE",     "NOMBRE" }
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
+                        { "CODIGO_PAR",  80 },
+                        { "NOMBRE",  400 }
                     }
                 },
                 fila =>
@@ -768,7 +773,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private bool ValidarCampos()
         {
-            if (string.IsNullOrWhiteSpace(txtOPERACION.Text))
+            if (string.IsNullOrWhiteSpace(txtOPERACION.Text) || string.IsNullOrWhiteSpace(SafeStr(txtOPERACION.Tag)))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
                     "Seleccione una operación.",
@@ -1051,6 +1056,7 @@ namespace SistemaContable.UI.Forms.Bancos
                     return;
                 }
 
+
                 // Construir TVP para pago de CCFs de Quedan (puede venir vacío)
                 DataTable dtPagoQuedan = ConstruirTvpPagoCcfQuedan();
 
@@ -1074,7 +1080,8 @@ namespace SistemaContable.UI.Forms.Bancos
                     CODIGO_ENTIDAD = NullIfEmpty(txtPROVEEDOR.Text),
                     UID_ENLACE_CHEQUE = _uidEnlaceCheque,
                     USUARIO = Configuracion.UsuarioActual,
-                    IMPRESO = 0
+                    IMPRESO = 0,
+                    ID_TIPO_PARTIDA = Convert.ToInt32(SafeStr(txtOPERACION.Tag))
                 };
 
                 // Llamada al SP con dos TVPs
@@ -1400,6 +1407,7 @@ namespace SistemaContable.UI.Forms.Bancos
             }));
         }
 
-        
+        private static string SafeStr(object v)
+           => v == DBNull.Value || v == null ? "" : v.ToString();
     }
 }

@@ -115,6 +115,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtCARGO, txtABONO
             );
 
+            FormHelper.ResaltarCombosEnFoco(this);
+
             if (IdCcfCompra > 0)
             {
                 CargarCcfExistente(IdCcfCompra);
