@@ -108,7 +108,25 @@
     <Compile Include="ReporteBase.cs">
       <SubType>Component</SubType>
     </Compile>
-
+    <Compile Include="ReporteUtils.cs" />
+    <Compile Include="Traslados\NotaRemision\RptNotaRemision.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Traslados\NotaRemision\RptNotaRemision.Designer.cs">
+      <DependentUpon>RptNotaRemision.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Traslados\NotaRemision\RptNotaRemision_Traslado_Bodegas.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Traslados\NotaRemision\RptNotaRemision_Traslado_Bodegas.Designer.cs">
+      <DependentUpon>RptNotaRemision_Traslado_Bodegas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Traslados\NotaRemision\RptNotaRemision_Venta_Dizucar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Traslados\NotaRemision\RptNotaRemision_Venta_Dizucar.Designer.cs">
+      <DependentUpon>RptNotaRemision_Venta_Dizucar.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Bancos\Proveedores\rptCompRetencion.resx">
