@@ -1,6 +1,7 @@
 ﻿using SistemaContable.DAL;
 using SistemaContable.UI.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
@@ -16,6 +17,17 @@ namespace SistemaContable.UI.Forms.Inventario
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtRoles;
         private DataTable _dtRolesCatalogo;
+        // Catálogos en memoria para la búsqueda genérica con "*"
+        // (Tributo, Unidad de Medida, Tp. Operación, Tp. Ingreso)
+        private DataTable _dtTributos;
+        private DataTable _dtUnidadMedida;
+        private DataTable _dtTpOperacion;
+        private DataTable _dtTpIngreso;
+        // Valores seleccionados desde la búsqueda genérica (lo que realmente se guarda)
+        private string _codTributoSeleccionado;
+        private string _codUnidadMedidaSeleccionada;
+        private int? _idTpOperacionSeleccionado;
+        private int? _idTpIngresoSeleccionado;
         #endregion
         public int IdProducto { get; set; } = 0;
         public frmProducto()
@@ -34,6 +46,7 @@ namespace SistemaContable.UI.Forms.Inventario
             CargarUnidadMedida();
             CargarTipoOperacionVentas();
             CargarTipoIngresoVentas();
+            RegistrarBusquedasCatalogos();
             InicializarGridRoles();
             if (IdProducto == 0)
             {
@@ -114,45 +127,30 @@ namespace SistemaContable.UI.Forms.Inventario
             cbxTIPOITEM.DisplayMember = "VALORES";
             cbxTIPOITEM.SelectedIndex = 0;
         }
+        // Los siguientes 4 catálogos ya NO se enlazan a un ComboBox.
+        // Se cargan en memoria para: 1) resolver el texto a mostrar al editar un
+        // producto existente (ver ObtenerDescripcionCatalogo), y 2) porque ya no
+        // hacen falta para poblar ningún combo — la selección ahora es por
+        // búsqueda genérica con "*" (ver RegistrarBusquedasCatalogos).
         private void CargarTributos()
         {
-            DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_TRIBUTOS_DET]",
+            _dtTributos = _dal.EjecutarConsulta("[EMH].[SP_TRIBUTOS_DET]",
                 new { ACCION = "LISTAR" });
-            AgregarFilaVacia(dt, "VALORES");
-            cbxCODTRIBUTO.DataSource = dt;
-            cbxCODTRIBUTO.ValueMember = "CODIGO";
-            cbxCODTRIBUTO.DisplayMember = "VALORES";
-            cbxCODTRIBUTO.SelectedIndex = 0;
         }
         private void CargarUnidadMedida()
         {
-            DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_UNIDAD_MEDIDA]",
+            _dtUnidadMedida = _dal.EjecutarConsulta("[EMH].[SP_UNIDAD_MEDIDA]",
                 new { ACCION = "LISTAR" });
-            AgregarFilaVacia(dt, "VALORES");
-            cbxUNIMEDIDA.DataSource = dt;
-            cbxUNIMEDIDA.ValueMember = "CODIGO";
-            cbxUNIMEDIDA.DisplayMember = "VALORES";
-            cbxUNIMEDIDA.SelectedIndex = 0;
         }
         private void CargarTipoOperacionVentas()
         {
-            DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_TIPO_OPERACION_VENTAS]",
+            _dtTpOperacion = _dal.EjecutarConsulta("[EMH].[SP_TIPO_OPERACION_VENTAS]",
                 new { ACCION = "LISTAR" });
-            AgregarFilaVacia(dt, "NOMBRE");
-            cbxTPOPERACION.DataSource = dt;
-            cbxTPOPERACION.ValueMember = "ID_TPOPERACION_VENTAS";
-            cbxTPOPERACION.DisplayMember = "NOMBRE";
-            cbxTPOPERACION.SelectedIndex = 0;
         }
         private void CargarTipoIngresoVentas()
         {
-            DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_TIPO_INGRESO_VENTAS]",
+            _dtTpIngreso = _dal.EjecutarConsulta("[EMH].[SP_TIPO_INGRESO_VENTAS]",
                 new { ACCION = "LISTAR" });
-            AgregarFilaVacia(dt, "NOMBRE");
-            cbxTPINGRESO.DataSource = dt;
-            cbxTPINGRESO.ValueMember = "ID_TPINGRESO_VENTAS";
-            cbxTPINGRESO.DisplayMember = "NOMBRE";
-            cbxTPINGRESO.SelectedIndex = 0;
         }
         private void cbxCATEGORIA_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -164,6 +162,114 @@ namespace SistemaContable.UI.Forms.Inventario
                 cbxSUBCATEGORIA.DataSource = null;
                 cbxSUBCATEGORIA.Items.Clear();
             }
+        }
+        #endregion
+        #region === BÚSQUEDA GENÉRICA — CATÁLOGOS (Tributo, U.Medida, Tp.Operación, Tp.Ingreso) ===
+        private void RegistrarBusquedasCatalogos()
+        {
+            FormHelper.RegistrarBusqueda(
+                txtCODTRIBUTO,
+                new BusquedaConfig
+                {
+                    StoredProcedure = "[EMH].[SP_TRIBUTOS_DET]",
+                    Accion = "BUSCAR",
+                    Columnas = new Dictionary<string, string>
+                    {
+                        { "CODIGO",  "CÓDIGO"  },
+                        { "VALORES", "TRIBUTO" }
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
+                        { "CODIGO",  80  },
+                        { "VALORES", 320 }
+                    }
+                },
+                fila => AsignarTributo(fila)
+            );
+            FormHelper.RegistrarBusqueda(
+                txtUNIMEDIDA,
+                new BusquedaConfig
+                {
+                    StoredProcedure = "[EMH].[SP_UNIDAD_MEDIDA]",
+                    Accion = "BUSCAR",
+                    Columnas = new Dictionary<string, string>
+                    {
+                        { "CODIGO",  "CÓDIGO"           },
+                        { "VALORES", "UNIDAD DE MEDIDA" }
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
+                        { "CODIGO",  80  },
+                        { "VALORES", 320 }
+                    }
+                },
+                fila => AsignarUnidadMedida(fila)
+            );
+            FormHelper.RegistrarBusqueda(
+                txtTPOPERACION,
+                new BusquedaConfig
+                {
+                    StoredProcedure = "[EMH].[SP_TIPO_OPERACION_VENTAS]",
+                    Accion = "BUSCAR",
+                    Columnas = new Dictionary<string, string>
+                    {
+                        { "NOMBRE", "TIPO DE OPERACIÓN" }
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
+                        { "NOMBRE", 350 }
+                    }
+                },
+                fila => AsignarTpOperacion(fila)
+            );
+            FormHelper.RegistrarBusqueda(
+                txtTPINGRESO,
+                new BusquedaConfig
+                {
+                    StoredProcedure = "[EMH].[SP_TIPO_INGRESO_VENTAS]",
+                    Accion = "BUSCAR",
+                    Columnas = new Dictionary<string, string>
+                    {
+                        { "NOMBRE", "TIPO DE INGRESO" }
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
+                        { "NOMBRE", 350 }
+                    }
+                },
+                fila => AsignarTpIngreso(fila)
+            );
+        }
+        private void AsignarTributo(DataRow fila)
+        {
+            _codTributoSeleccionado = fila["CODIGO"].ToString();
+            txtCODTRIBUTO.Text = fila["VALORES"].ToString();
+        }
+        private void AsignarUnidadMedida(DataRow fila)
+        {
+            _codUnidadMedidaSeleccionada = fila["CODIGO"].ToString();
+            txtUNIMEDIDA.Text = fila["VALORES"].ToString();
+        }
+        private void AsignarTpOperacion(DataRow fila)
+        {
+            _idTpOperacionSeleccionado = Convert.ToInt32(fila["ID_TPOPERACION_VENTAS"]);
+            txtTPOPERACION.Text = fila["NOMBRE"].ToString();
+        }
+        private void AsignarTpIngreso(DataRow fila)
+        {
+            _idTpIngresoSeleccionado = Convert.ToInt32(fila["ID_TPINGRESO_VENTAS"]);
+            txtTPINGRESO.Text = fila["NOMBRE"].ToString();
+        }
+        /// <summary>
+        /// Busca en un catálogo ya cargado en memoria el texto a mostrar
+        /// para un código/ID dado (se usa al abrir un producto existente).
+        /// </summary>
+        private static string ObtenerDescripcionCatalogo(DataTable dt, string campoClave, object valorClave, string campoDescripcion)
+        {
+            if (dt == null || valorClave == null) return "";
+            var fila = dt.AsEnumerable().FirstOrDefault(r =>
+                r[campoClave]?.ToString() == valorClave.ToString());
+            return fila == null ? "" : fila[campoDescripcion].ToString();
         }
         #endregion
         #region === GRID ROLES ===
@@ -374,10 +480,15 @@ namespace SistemaContable.UI.Forms.Inventario
                 cbxSUBCATEGORIA.SelectedValue = AsInt(r["ID_SUBCATEGORIA"]);
                 cbxPRESENTACION.SelectedValue = AsInt(r["ID_PRESENTACION"]);
                 cbxTIPOITEM.SelectedValue = AsString(r["TIPOITEM"]);
-                cbxCODTRIBUTO.SelectedValue = AsString(r["CODTRIBUTO"]);
-                cbxUNIMEDIDA.SelectedValue = AsString(r["UNIMEDIDA"]);
-                cbxTPOPERACION.SelectedValue = AsInt(r["ID_TPOPERACION_VENTAS"]);
-                cbxTPINGRESO.SelectedValue = AsInt(r["ID_TPINGRESO_VENTAS"]);
+                // Búsqueda genérica — se resuelve el texto a mostrar contra el catálogo ya cargado
+                _codTributoSeleccionado = AsString(r["CODTRIBUTO"]);
+                txtCODTRIBUTO.Text = ObtenerDescripcionCatalogo(_dtTributos, "CODIGO", _codTributoSeleccionado, "VALORES");
+                _codUnidadMedidaSeleccionada = AsString(r["UNIMEDIDA"]);
+                txtUNIMEDIDA.Text = ObtenerDescripcionCatalogo(_dtUnidadMedida, "CODIGO", _codUnidadMedidaSeleccionada, "VALORES");
+                _idTpOperacionSeleccionado = AsInt(r["ID_TPOPERACION_VENTAS"]);
+                txtTPOPERACION.Text = ObtenerDescripcionCatalogo(_dtTpOperacion, "ID_TPOPERACION_VENTAS", _idTpOperacionSeleccionado, "NOMBRE");
+                _idTpIngresoSeleccionado = AsInt(r["ID_TPINGRESO_VENTAS"]);
+                txtTPINGRESO.Text = ObtenerDescripcionCatalogo(_dtTpIngreso, "ID_TPINGRESO_VENTAS", _idTpIngresoSeleccionado, "NOMBRE");
                 chkES_EXENTO.Checked = r["ES_EXENTO"] != DBNull.Value && Convert.ToBoolean(r["ES_EXENTO"]);
                 chkES_NOSUJETA.Checked = r["ES_NOSUJETA"] != DBNull.Value && Convert.ToBoolean(r["ES_NOSUJETA"]);
                 chkES_INVENTARIO.Checked = r["ES_INVENTARIO"] != DBNull.Value && Convert.ToBoolean(r["ES_INVENTARIO"]);
@@ -417,10 +528,10 @@ namespace SistemaContable.UI.Forms.Inventario
                     ID_SUBCATEGORIA = ObtenerIdCombo(cbxSUBCATEGORIA),
                     ID_PRESENTACION = ObtenerIdCombo(cbxPRESENTACION),
                     TIPOITEM = ObtenerCodigoCombo(cbxTIPOITEM),
-                    CODTRIBUTO = ObtenerCodigoCombo(cbxCODTRIBUTO),
-                    UNIMEDIDA = ObtenerCodigoCombo(cbxUNIMEDIDA),
-                    ID_TPOPERACION_VENTAS = ObtenerIdCombo(cbxTPOPERACION),
-                    ID_TPINGRESO_VENTAS = ObtenerIdCombo(cbxTPINGRESO),
+                    CODTRIBUTO = NullIfEmpty(_codTributoSeleccionado),
+                    UNIMEDIDA = NullIfEmpty(_codUnidadMedidaSeleccionada),
+                    ID_TPOPERACION_VENTAS = _idTpOperacionSeleccionado,
+                    ID_TPINGRESO_VENTAS = _idTpIngresoSeleccionado,
                     ES_EXENTO = chkES_EXENTO.Checked,
                     ES_NOSUJETA = chkES_NOSUJETA.Checked,
                     ES_INVENTARIO = chkES_INVENTARIO.Checked,
@@ -541,6 +652,40 @@ namespace SistemaContable.UI.Forms.Inventario
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+            if (cbxTIPOITEM.SelectedValue == null || string.IsNullOrWhiteSpace(cbxTIPOITEM.SelectedValue.ToString()))
+            {
+                XtraMessageBox.Show("Seleccione el tipo de ítem.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(_codTributoSeleccionado) || string.IsNullOrWhiteSpace(txtCODTRIBUTO.Text))
+            {
+                XtraMessageBox.Show("Seleccione el tributo (escriba \"*\" y Enter en el campo para buscar).",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCODTRIBUTO.Focus();
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(_codUnidadMedidaSeleccionada) || string.IsNullOrWhiteSpace(txtUNIMEDIDA.Text))
+            {
+                XtraMessageBox.Show("Seleccione la unidad de medida (escriba \"*\" y Enter en el campo para buscar).",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtUNIMEDIDA.Focus();
+                return false;
+            }
+            if (_idTpOperacionSeleccionado == null || string.IsNullOrWhiteSpace(txtTPOPERACION.Text))
+            {
+                XtraMessageBox.Show("Seleccione el tipo de operación (escriba \"*\" y Enter en el campo para buscar).",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTPOPERACION.Focus();
+                return false;
+            }
+            if (_idTpIngresoSeleccionado == null || string.IsNullOrWhiteSpace(txtTPINGRESO.Text))
+            {
+                XtraMessageBox.Show("Seleccione el tipo de ingreso (escriba \"*\" y Enter en el campo para buscar).",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTPINGRESO.Focus();
+                return false;
+            }
             return true;
         }
         #endregion
@@ -564,10 +709,14 @@ namespace SistemaContable.UI.Forms.Inventario
             cbxSUBCATEGORIA.Items.Clear();
             cbxPRESENTACION.SelectedIndex = 0;
             cbxTIPOITEM.SelectedIndex = 0;
-            cbxCODTRIBUTO.SelectedIndex = 0;
-            cbxUNIMEDIDA.SelectedIndex = 0;
-            cbxTPOPERACION.SelectedIndex = 0;
-            cbxTPINGRESO.SelectedIndex = 0;
+            _codTributoSeleccionado = null;
+            txtCODTRIBUTO.Text = "";
+            _codUnidadMedidaSeleccionada = null;
+            txtUNIMEDIDA.Text = "";
+            _idTpOperacionSeleccionado = null;
+            txtTPOPERACION.Text = "";
+            _idTpIngresoSeleccionado = null;
+            txtTPINGRESO.Text = "";
             chkESTADO.Checked = true;
             _dtRoles?.Clear();
         }

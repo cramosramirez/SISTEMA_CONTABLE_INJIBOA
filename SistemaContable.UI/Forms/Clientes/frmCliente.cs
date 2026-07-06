@@ -284,15 +284,15 @@ namespace SistemaContable.UI.Forms.Clientes
         #region === GRID ROLES ===
         private void CargarRolesEntidad()
         {
-            _dtRolesEntidad = _dal.EjecutarConsulta("[EMH].[SP_ROL_ENTIDAD]",
+            _dtRolesEntidad = _dal.EjecutarConsulta("[EMH].[SP_TIPO_CLIENTE]",
                 new { ACCION = "LISTAR" });
         }
         private void InicializarGridRoles()
         {
             _dtRoles = new DataTable();
-            _dtRoles.Columns.Add("ID_ENTIDAD_ROL", typeof(int));
+            _dtRoles.Columns.Add("ID_ENTIDAD_TPC", typeof(int));
             _dtRoles.Columns.Add("ID_ENTIDAD", typeof(int));
-            _dtRoles.Columns.Add("ID_ROL_ENTIDAD", typeof(int));
+            _dtRoles.Columns.Add("ID_TIPO_CLIENTE", typeof(int));
             _dtRoles.Columns.Add("ACTIVO", typeof(bool));
             _dtRoles.Columns.Add("FECHA_ASIGNACION", typeof(DateTime));
             gridRoles.DataSource = _dtRoles;
@@ -301,21 +301,21 @@ namespace SistemaContable.UI.Forms.Clientes
             view.Columns.Clear();
             view.PopulateColumns();
             // Ocultar claves
-            OcultarColumna(view, "ID_ENTIDAD_ROL");
+            OcultarColumna(view, "ID_ENTIDAD_TPC");
             OcultarColumna(view, "ID_ENTIDAD");
-            // Columna: ROL (LookUpEdit)
-            var colRol = view.Columns["ID_ROL_ENTIDAD"];
+            // Columna: TIPO CLIENTE (LookUpEdit)
+            var colRol = view.Columns["ID_TIPO_CLIENTE"];
             if (colRol != null)
             {
-                colRol.Caption = "Rol";
+                colRol.Caption = "Tipo Cliente";
                 colRol.Width = 250;
                 colRol.Visible = true;
                 colRol.VisibleIndex = 0;
                 colRol.OptionsColumn.AllowEdit = true;
                 var repoRol = new RepositoryItemLookUpEdit();
                 repoRol.DataSource = _dtRolesEntidad;
-                repoRol.ValueMember = "ID_ROL_ENTIDAD";
-                repoRol.DisplayMember = "NOMBRE_ROL_ENTIDAD";
+                repoRol.ValueMember = "ID_TIPO_CLIENTE";
+                repoRol.DisplayMember = "NOMBRE_TIPO_CLIENTE";
                 repoRol.NullText = "-- Seleccionar --";
                 repoRol.ShowHeader = false;
                 repoRol.ShowFooter = false;
@@ -355,7 +355,7 @@ namespace SistemaContable.UI.Forms.Clientes
             repoEliminar.Buttons[0].Kind = DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph;
             repoEliminar.Buttons[0].ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminarFila32x32;
             repoEliminar.Buttons[0].Caption = "";
-            repoEliminar.Buttons[0].ToolTip = "Eliminar rol";
+            repoEliminar.Buttons[0].ToolTip = "Eliminar tipo de cliente";
             repoEliminar.ButtonClick += (s, ev) => EliminarRol();
             gridRoles.RepositoryItems.Add(repoEliminar);
             colEliminar.ColumnEdit = repoEliminar;
@@ -407,18 +407,18 @@ namespace SistemaContable.UI.Forms.Clientes
         }
         private void CargarRolesExistentes(int idEntidad)
         {
-            DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD_ROL]",
+            DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD_TIPO_CLIENTE]",
                 new { ACCION = "LISTAR", ID_ENTIDAD = idEntidad });
             _dtRoles.Clear();
             if (dt == null) return;
             foreach (DataRow row in dt.Rows)
             {
                 var f = _dtRoles.NewRow();
-                f["ID_ENTIDAD_ROL"] = row["ID_ENTIDAD_ROL"];
+                f["ID_ENTIDAD_TPC"] = row["ID_ENTIDAD_TPC"];
                 f["ID_ENTIDAD"] = row["ID_ENTIDAD"];
-                f["ID_ROL_ENTIDAD"] = row["ID_ROL_ENTIDAD"] == DBNull.Value
+                f["ID_TIPO_CLIENTE"] = row["ID_TIPO_CLIENTE"] == DBNull.Value
                                      ? (object)DBNull.Value
-                                     : Convert.ToInt32(row["ID_ROL_ENTIDAD"]);
+                                     : Convert.ToInt32(row["ID_TIPO_CLIENTE"]);
                 f["ACTIVO"] = row["ACTIVO"] == DBNull.Value
                                          ? true
                                          : Convert.ToBoolean(row["ACTIVO"]);
@@ -431,9 +431,9 @@ namespace SistemaContable.UI.Forms.Clientes
         private void AgregarRol()
         {
             var fila = _dtRoles.NewRow();
-            fila["ID_ENTIDAD_ROL"] = 0;
+            fila["ID_ENTIDAD_TPC"] = 0;
             fila["ID_ENTIDAD"] = IdEntidad;
-            fila["ID_ROL_ENTIDAD"] = DBNull.Value;
+            fila["ID_TIPO_CLIENTE"] = DBNull.Value;
             fila["ACTIVO"] = true;
             fila["FECHA_ASIGNACION"] = DateTime.Today;
             _dtRoles.Rows.Add(fila);
@@ -444,19 +444,19 @@ namespace SistemaContable.UI.Forms.Clientes
             if (view == null) return;
             int fila = view.FocusedRowHandle;
             if (fila < 0) return;
-            if (MessageBox.Show("¿Desea eliminar este rol de la entidad?",
+            if (MessageBox.Show("¿Desea eliminar este tipo de cliente de la entidad?",
                     "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
-            object valId = view.GetRowCellValue(fila, "ID_ENTIDAD_ROL");
+            object valId = view.GetRowCellValue(fila, "ID_ENTIDAD_TPC");
             if (valId != null && valId != DBNull.Value)
             {
                 int idRol = Convert.ToInt32(valId);
                 if (idRol > 0)
                 {
-                    _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD_ROL]", new
+                    _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD_TIPO_CLIENTE]", new
                     {
                         ACCION = "ELIMINAR",
-                        ID_ENTIDAD_ROL = idRol
+                        ID_ENTIDAD_TPC = idRol
                     });
                 }
             }
@@ -626,13 +626,13 @@ namespace SistemaContable.UI.Forms.Clientes
             view?.UpdateCurrentRow();
             foreach (DataRow fila in _dtRoles.Rows)
             {
-                if (fila["ID_ROL_ENTIDAD"] == DBNull.Value) continue;
-                _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD_ROL]", new
+                if (fila["ID_TIPO_CLIENTE"] == DBNull.Value) continue;
+                _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD_TIPO_CLIENTE]", new
                 {
                     ACCION = "GUARDAR",
-                    ID_ENTIDAD_ROL = fila["ID_ENTIDAD_ROL"] == DBNull.Value ? 0 : Convert.ToInt32(fila["ID_ENTIDAD_ROL"]),
+                    ID_ENTIDAD_TPC = fila["ID_ENTIDAD_TPC"] == DBNull.Value ? 0 : Convert.ToInt32(fila["ID_ENTIDAD_TPC"]),
                     ID_ENTIDAD = IdEntidad,
-                    ID_ROL_ENTIDAD = Convert.ToInt32(fila["ID_ROL_ENTIDAD"]),
+                    ID_TIPO_CLIENTE = Convert.ToInt32(fila["ID_TIPO_CLIENTE"]),
                     ACTIVO = fila["ACTIVO"] == DBNull.Value ? true : Convert.ToBoolean(fila["ACTIVO"]),
                     FECHA_ASIGNACION = fila["FECHA_ASIGNACION"] == DBNull.Value ? DateTime.Today : Convert.ToDateTime(fila["FECHA_ASIGNACION"]),
                     USUARIO = Configuracion.UsuarioActual

@@ -76,7 +76,7 @@ namespace SistemaContable.UI.Forms.Ventas
                         { "NIT",            150 },
                         { "DUI",            150 }
                     },
-                    ParametrosExtra = new { ROL = "CLIE" }
+                    ParametrosExtra = new { ROL = "CLI" }
                 },
                 fila => AsignarCliente(fila)
             );

@@ -1,4 +1,5 @@
 ﻿using SistemaContable.DAL;
+using SistemaContable.RP.Ventas;
 using SistemaContable.UI.Helpers;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,11 @@ using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Views.Grid;
 using System.Linq;
 using System.Globalization;
-
 namespace SistemaContable.UI.Forms.Ventas
 {
     public partial class frmCreditoFiscal : Form
     {
         private enum EstadoFormulario { Nuevo, Guardado, Validado }
-
         #region Campos privados
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDetalle;
@@ -24,29 +23,24 @@ namespace SistemaContable.UI.Forms.Ventas
         private string _codigoEntidad = string.Empty;
         private string _columnaAnteriorGrid = string.Empty;
         #endregion
-
         public int IdCCFEnc { get; set; } = 0;
         public int AnioDte { get; set; } = 0;
         private int? _diasCredito = null;
         public int _idTipoContribCliente { get; set; } = 0;
         public int _idTipoPersona { get; set; } = 0;
-
         public int _idTipoContribEMISOR { get; set; } = 0;
         public int _idTipoPersonaEMISOR { get; set; } = 0;
-
         // Tasas fiscales (se cargan desde [EMH].[DTRETENCION])
         private decimal _porcIVA = 0.13m;
         private decimal _porcIVARET = 0.01m;
         private decimal _porcIVAPER = 0.01m;
         private decimal _extraerIVA = 0m;
         private decimal _extraerRENTA = 0m;
-
         public frmCreditoFiscal()
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
         }
-
         #region CARGA INICIAL
         private void frmCreditoFiscal_Load(object sender, EventArgs e)
         {
@@ -79,7 +73,7 @@ namespace SistemaContable.UI.Forms.Ventas
                         { "NIT",            150 },
                         { "NRC",            150 }
                     },
-                    ParametrosExtra = new { ROL = "CLIE" }
+                    ParametrosExtra = new { ROL = "CLI" }
                 },
                 fila => AsignarCliente(fila)
             );
@@ -94,7 +88,23 @@ namespace SistemaContable.UI.Forms.Ventas
                 CargarCCFExistente(IdCCFEnc);
             }
         }
-
+        private void btnImprimir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var reporte = new rptCreditoFiscal { IdCCFEnc = IdCCFEnc };
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
         private void ConfigurarCRUD(EstadoFormulario estado)
         {
             switch (estado)
@@ -122,7 +132,6 @@ namespace SistemaContable.UI.Forms.Ventas
                     break;
             }
         }
-
         private void CargarCCFExistente(int idCCFEnc)
         {
             try
@@ -139,9 +148,15 @@ namespace SistemaContable.UI.Forms.Ventas
                 }
                 DataRow r = dt.Rows[0];
                 IdCCFEnc = Convert.ToInt32(r["ID_CCFENC"]);
-                _codigoEntidad = r["ID_CLIENTE"].ToString().Trim();
+                // FIX: ID_CLIENTE ahora guarda ID_ENTIDAD (no el código de cliente).
+                // El SP ya devuelve ID_ENTIDAD y CODIGO_ENTIDAD por separado (JOIN a ENTIDAD),
+                // así que usamos esas columnas para separar el id real del código a mostrar.
                 _idEntidad = r.Table.Columns.Contains("ID_ENTIDAD") && r["ID_ENTIDAD"] != DBNull.Value
-                                    ? Convert.ToInt32(r["ID_ENTIDAD"]) : 0;
+                                    ? Convert.ToInt32(r["ID_ENTIDAD"])
+                                    : (int.TryParse(r["ID_CLIENTE"].ToString().Trim(), out int idFallback) ? idFallback : 0);
+                _codigoEntidad = r.Table.Columns.Contains("CODIGO_ENTIDAD")
+                                    ? AsString(r["CODIGO_ENTIDAD"])
+                                    : r["ID_CLIENTE"].ToString().Trim();
                 txtCLIENTE.Text = _codigoEntidad;
                 txtNOMBRE_CLIENTE.Text = AsString(r["NOMBRE_ENTIDAD"]);
                 txtDUI.Text = AsString(r["DUI"]);
@@ -200,7 +215,6 @@ namespace SistemaContable.UI.Forms.Ventas
                     : EstadoFormulario.Validado);
             }
         }
-
         private void CargarCCFDetalleExistente(int idCCFEnc)
         {
             DataTable dt = _dal.EjecutarConsulta("[EDTE].[SP_CREDITOFISCAL_DET]",
@@ -231,7 +245,6 @@ namespace SistemaContable.UI.Forms.Ventas
             AgregarFilaVacia();
             ActualizarTotales();
         }
-
         private void CargarSiguienteNumDocumento(string abreviaturaDTE, int anio)
         {
             var num = _dal.ObtenerNumeracionPrevia(abreviaturaDTE, anio);
@@ -248,7 +261,6 @@ namespace SistemaContable.UI.Forms.Ventas
             txtNUMINTERNO.Text = num.SiguienteNumeroFormateado();
         }
         #endregion
-
         #region CLIENTE
         private void AsignarCliente(DataRow fila)
         {
@@ -266,7 +278,6 @@ namespace SistemaContable.UI.Forms.Ventas
             txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
             txtTIPO_CONTRIBUYENTE.Text = fila["TIPO_CONTRIBUYENTE"].ToString();
         }
-
         private void CargarEmisor(int idEmisor)
         {
             DataTable dt = _dal.EjecutarConsulta("[dbo].[SP_EMISOR]",
@@ -276,7 +287,6 @@ namespace SistemaContable.UI.Forms.Ventas
             _idTipoContribEMISOR = Convert.ToInt32(r["ID_TIPO_CONTRIB"].ToString());
             _idTipoPersonaEMISOR = Convert.ToInt32(r["ID_TIPO_PERSONA"].ToString());
         }
-
         private void CargarTasasRetencion()
         {
             DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_DTRETENCION]",
@@ -290,7 +300,6 @@ namespace SistemaContable.UI.Forms.Ventas
             _extraerRENTA = r["EXTRAER_RENTA"] == DBNull.Value ? 0m : Convert.ToDecimal(r["EXTRAER_RENTA"]);
         }
         #endregion
-
         #region COMBOS
         private void CargarTipoDte()
         {
@@ -301,7 +310,6 @@ namespace SistemaContable.UI.Forms.Ventas
             cbxTIPO_DTE.ValueMember = "ID_TIPO_DTE";
             cbxTIPO_DTE.DisplayMember = "ABREVIATURA";
         }
-
         private void CargarSucursal()
         {
             DataTable dt = _dal.EjecutarConsulta("SP_SUCURSAL",
@@ -310,7 +318,6 @@ namespace SistemaContable.UI.Forms.Ventas
             cbxSUCURSAL.ValueMember = "ID_SUCURSAL";
             cbxSUCURSAL.DisplayMember = "NOMBRE";
         }
-
         private void CargarCondicionPago()
         {
             DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_CONDICION_OPERACION]",
@@ -319,7 +326,6 @@ namespace SistemaContable.UI.Forms.Ventas
             cbxCONDPAGO.ValueMember = "ID_CONDICION_OPERACION";
             cbxCONDPAGO.DisplayMember = "VALORES";
         }
-
         private void CargarVendedor()
         {
             DataTable dt = _dal.EjecutarConsulta("[EDTE].[SP_VENDEDOR]",
@@ -328,7 +334,6 @@ namespace SistemaContable.UI.Forms.Ventas
             cbxVENDEDOR.ValueMember = "ID_VENDEDOR";
             cbxVENDEDOR.DisplayMember = "NOMBRE";
         }
-
         private int ObtenerAnioPorDte(int? idTipoDte)
         {
             DataTable dt = _dal.EjecutarConsulta("[dbo].[SP_DOCUMENTO_NUMERACION]",
@@ -337,7 +342,6 @@ namespace SistemaContable.UI.Forms.Ventas
             return Convert.ToInt32(dt.Rows[0]["ANIO"]);
         }
         #endregion
-
         #region GRID DETALLE  (CCF: sin columna No-Sujeta)
         private void InicializarGridDetalle()
         {
@@ -449,7 +453,6 @@ namespace SistemaContable.UI.Forms.Ventas
             view.FocusedColumnChanged += GridView_FocusedColumnChanged;
             ActualizarTotales();
         }
-
         private void ConfigurarColumnaCheckBox(GridView view, string field, string caption, int width)
         {
             var col = view.Columns.ColumnByFieldName(field);
@@ -463,7 +466,6 @@ namespace SistemaContable.UI.Forms.Ventas
             gridControl1.RepositoryItems.Add(repo);
             col.ColumnEdit = repo;
         }
-
         private void ConfigurarColumna(GridView view, string field, string caption, int width, bool editable, bool visible = true)
         {
             var col = view.Columns.ColumnByFieldName(field);
@@ -473,13 +475,11 @@ namespace SistemaContable.UI.Forms.Ventas
             col.Visible = visible;
             col.OptionsColumn.AllowEdit = editable;
         }
-
         private void OcultarColumna(GridView view, string field)
         {
             var col = view.Columns.ColumnByFieldName(field);
             if (col != null) col.Visible = false;
         }
-
         private void AgregarFilaVacia()
         {
             var fila = _dtDetalle.NewRow();
@@ -498,7 +498,6 @@ namespace SistemaContable.UI.Forms.Ventas
             fila["ID_UNIDAD_MEDIDA"] = 0;
             _dtDetalle.Rows.Add(fila);
         }
-
         private void RecalcularLinea(GridView view, int rowHandle)
         {
             if (view == null || rowHandle < 0) return;
@@ -526,14 +525,12 @@ namespace SistemaContable.UI.Forms.Ventas
             }
             ActualizarTotales();
         }
-
         private decimal ObtenerDecimal(GridView view, int rowHandle, string field)
         {
             var val = view.GetRowCellValue(rowHandle, field);
             if (val == null || val == DBNull.Value) return 0m;
             return decimal.TryParse(val.ToString(), out decimal d) ? d : 0m;
         }
-
         private void ActualizarTotales()
         {
             decimal totalExento = 0m, totalGravado = 0m, totalDescuento = 0m;
@@ -543,13 +540,11 @@ namespace SistemaContable.UI.Forms.Ventas
                 totalGravado += fila["GRAVADO"] == DBNull.Value ? 0 : Convert.ToDecimal(fila["GRAVADO"]);
                 totalDescuento += fila["DESCUENTO"] == DBNull.Value ? 0 : Convert.ToDecimal(fila["DESCUENTO"]);
             }
-
             // CCF siempre aplica IVA 13%; retención/percepción según contribuyente
             decimal subTotal = (totalGravado + totalExento) - totalDescuento;
             decimal iva = Math.Round(subTotal * _porcIVA, 2);
             decimal retencion = 0m;
             decimal percepcion = 0m;
-
             // Emisor Grande (3) → Cliente Pequeño o Mediano (1 o 2)
             if (_idTipoContribEMISOR == 3 &&
                (_idTipoContribCliente == 1 || _idTipoContribCliente == 2))
@@ -565,9 +560,7 @@ namespace SistemaContable.UI.Forms.Ventas
                     percepcion = 0m;
                 }
             }
-
             decimal totalFinal = subTotal + iva - retencion + percepcion;
-
             txtVENTA_EXENTA.Text = totalExento.ToString("N2");
             txtVENTA_GRAVADA.Text = totalGravado.ToString("N2");
             txtSUBTOTAL.Text = subTotal.ToString("N2");
@@ -576,19 +569,16 @@ namespace SistemaContable.UI.Forms.Ventas
             txtPERCEPCION.Text = percepcion.ToString("N2");
             txtDESCUENTO.Text = totalDescuento.ToString("N2");
             txtTOTAL_VENTA.Text = totalFinal.ToString("N2");
-
             string condicion = cbxCONDPAGO.Text?.Trim().ToUpper() ?? "";
             txtRECIB_EFECTIVO.Text = condicion == "CONTADO" && totalFinal > 0
                 ? totalFinal.ToString("N2") : "0.00";
         }
-
         private decimal ObtenerTextBoxDecimal(TextBox txt)
         {
             if (txt == null || string.IsNullOrWhiteSpace(txt.Text)) return 0m;
             return decimal.TryParse(txt.Text.Replace(",", ""), out decimal val) ? val : 0m;
         }
         #endregion
-
         #region NAVEGACIÓN DEL GRID
         private void GridView_KeyDown(object sender, KeyEventArgs e)
         {
@@ -640,7 +630,6 @@ namespace SistemaContable.UI.Forms.Ventas
             }
             e.Handled = true;
         }
-
         private void GridView_FocusedColumnChanged(object sender,
             DevExpress.XtraGrid.Views.Base.FocusedColumnChangedEventArgs e)
         {
@@ -664,7 +653,6 @@ namespace SistemaContable.UI.Forms.Ventas
             _columnaAnteriorGrid = e.FocusedColumn?.FieldName ?? "";
         }
         #endregion
-
         #region BÚSQUEDA DE PRODUCTO
         private void AbrirBusquedaProducto(GridView view)
         {
@@ -707,7 +695,6 @@ namespace SistemaContable.UI.Forms.Ventas
                     view.SetFocusedRowCellValue("COD_REF", string.Empty);
             }
         }
-
         private void AsignarProductoAFila(GridView view, DataRow fila)
         {
             int rowHandle = view.FocusedRowHandle;
@@ -724,7 +711,6 @@ namespace SistemaContable.UI.Forms.Ventas
             RecalcularLinea(view, rowHandle);
         }
         #endregion
-
         #region ELIMINAR FILA
         private void EliminarFilaDetalle()
         {
@@ -767,7 +753,6 @@ namespace SistemaContable.UI.Forms.Ventas
             ActualizarTotales();
         }
         #endregion
-
         #region GUARDAR
         private void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -789,7 +774,9 @@ namespace SistemaContable.UI.Forms.Ventas
                     ID_CAJERO = Configuracion.Id_Cajero,
                     ID_CAJA = Configuracion.Id_Cajero,
                     ID_CONDPAGO = ObtenerIdCombo(cbxCONDPAGO),
-                    ID_CLIENTE = _codigoEntidad,        // char(10)
+                    // FIX: ID_CLIENTE ahora guarda el ID_ENTIDAD real (no el código de cliente).
+                    // COD_REF sigue guardando el código legible para referencia.
+                    ID_CLIENTE = _idEntidad.ToString(),  // char(10)
                     COD_REF = _codigoEntidad,
                     ID_TIPO_DTE = idTipoDoc,
                     TPDOC = NullIfEmpty(cbxTIPO_DTE.Text),
@@ -846,7 +833,6 @@ namespace SistemaContable.UI.Forms.Ventas
                     txtNUM_CONTROL.Text = Convert.ToString(dtVenta.Rows[0]["NCONT"]);
                 if (dtVenta.Columns.Contains("INTERN") && dtVenta.Rows[0]["INTERN"] != DBNull.Value)
                     txtNUMINTERNO.Text = Convert.ToString(dtVenta.Rows[0]["INTERN"]);
-
                 // Limpiar y reinsertar detalle
                 _dal.EjecutarSinRetorno("[EDTE].[SP_CREDITOFISCAL_DET]", new
                 {
@@ -895,7 +881,6 @@ namespace SistemaContable.UI.Forms.Ventas
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private bool ValidarCampos()
         {
             if (!FormHelper.ValidarFecha(mskFECHA, "Fecha")) return false;
@@ -932,7 +917,6 @@ namespace SistemaContable.UI.Forms.Ventas
             return true;
         }
         #endregion
-
         #region LIMPIAR
         private void LimpiarFormulario()
         {
@@ -996,7 +980,6 @@ namespace SistemaContable.UI.Forms.Ventas
             CargarSiguienteNumDocumento(NullIfEmpty(cbxTIPO_DTE.Text), AnioDte);
         }
         #endregion
-
         #region HELPERS
         private void AsignarDecimal(TextBox tb, decimal valor)
             => tb.Text = valor.ToString("N2");
@@ -1027,7 +1010,6 @@ namespace SistemaContable.UI.Forms.Ventas
             return Convert.ToInt32(cbx.SelectedValue);
         }
         #endregion
-
         #region BOTONES
         private void btnEliminar_Click(object sender, EventArgs e) => EliminarFilaDetalle();
         private void btnNuevo_Click(object sender, EventArgs e)
@@ -1038,7 +1020,6 @@ namespace SistemaContable.UI.Forms.Ventas
         private void btnSalir_Click(object sender, EventArgs e) => this.Close();
         private void btnFinalizar_Click(object sender, EventArgs e) => this.Close();
         #endregion
-
         #region FECHAS Y CONDICIÓN DE PAGO
         private void cbxCONDPAGO_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1097,7 +1078,6 @@ namespace SistemaContable.UI.Forms.Ventas
             _diasCredito = (fechaVence - fechaDoc).Days;
         }
         #endregion
-
         #region FORMAS DE PAGO - DETALLE
         private void txtRECIB_REMESA_Leave(object sender, EventArgs e)
         {
@@ -1124,7 +1104,6 @@ namespace SistemaContable.UI.Forms.Ventas
             }
         }
         #endregion
-
         private void cbxTIPO_DTE_SelectedIndexChanged(object sender, EventArgs e)
         {
             int? idTipoDte = ObtenerIdCombo(cbxTIPO_DTE);

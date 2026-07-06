@@ -795,6 +795,7 @@
             this.btnImprimir.Size = new System.Drawing.Size(101, 47);
             this.btnImprimir.TabIndex = 161;
             this.btnImprimir.Text = "Imprimir";
+            this.btnImprimir.Click += new System.EventHandler(this.btnImprimir_Click);
             //
             // groupBox3  (Datos del Cliente)
             //

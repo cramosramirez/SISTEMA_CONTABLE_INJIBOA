@@ -866,7 +866,7 @@
             this.grpRoles.Size = new System.Drawing.Size(1129, 192);
             this.grpRoles.TabIndex = 5;
             this.grpRoles.TabStop = false;
-            this.grpRoles.Text = "Roles de la Entidad";
+            this.grpRoles.Text = "Tipo de Cliente";
             //
             // btnAgregarRol
             //
@@ -880,7 +880,7 @@
             this.btnAgregarRol.Size = new System.Drawing.Size(120, 32);
             this.btnAgregarRol.TabIndex = 0;
             this.btnAgregarRol.TabStop = false;
-            this.btnAgregarRol.Text = "Agregar Rol";
+            this.btnAgregarRol.Text = "Agregar Tipo Cliente";
             this.btnAgregarRol.Click += new System.EventHandler(this.btnAgregarRol_Click);
             //
             // gridRoles

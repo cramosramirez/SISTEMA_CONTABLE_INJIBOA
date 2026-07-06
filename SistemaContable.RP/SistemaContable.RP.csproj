@@ -127,6 +127,18 @@
     <Compile Include="Traslados\NotaRemision\RptNotaRemision_Venta_Dizucar.Designer.cs">
       <DependentUpon>RptNotaRemision_Venta_Dizucar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Ventas\rptCreditoFiscal.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ventas\rptCreditoFiscal.Designer.cs">
+      <DependentUpon>rptCreditoFiscal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ventas\rptFactura.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ventas\rptFactura.Designer.cs">
+      <DependentUpon>rptFactura.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Bancos\Proveedores\rptCompRetencion.resx">
@@ -157,6 +169,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Traslados\NotaRemision\RptNotaRemision.resx">
       <DependentUpon>RptNotaRemision.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ventas\rptCreditoFiscal.resx">
+      <DependentUpon>rptCreditoFiscal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ventas\rptFactura.resx">
+      <DependentUpon>rptFactura.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

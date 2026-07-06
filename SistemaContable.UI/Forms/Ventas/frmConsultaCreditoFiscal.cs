@@ -1,4 +1,5 @@
 ﻿using SistemaContable.DAL;
+using SistemaContable.RP.Ventas;
 using System;
 using System.Data;
 using System.Drawing;
@@ -172,10 +173,21 @@ namespace SistemaContable.UI.Forms.Ventas
             {
                 int? id = ObtenerIdFilaActiva();
                 if (!id.HasValue) return;
-                // TODO: reemplazar con el formulario de reporte de CCF
-                DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Reporte CCF",
-                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    var reporte = new rptCreditoFiscal { IdCCFEnc = id.Value };
+                    reporte.MostrarPreview();
+                }
+                catch (Exception ex)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
             }
         }
         #endregion
