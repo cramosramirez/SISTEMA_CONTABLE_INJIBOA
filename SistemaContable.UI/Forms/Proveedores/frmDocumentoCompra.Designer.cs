@@ -306,6 +306,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnImprimirRetencion.Size = new System.Drawing.Size(119, 47);
             this.btnImprimirRetencion.TabIndex = 43;
             this.btnImprimirRetencion.Text = "Imprimir Retención";
+            this.btnImprimirRetencion.Click += new System.EventHandler(this.btnImprimirRetencion_Click);
             // 
             // panelQUEDAN
             // 

@@ -70,6 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bancos\Proveedores\rptCompRetencion.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptCompRetencion.designer.cs">
+      <DependentUpon>rptCompRetencion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -83,6 +89,7 @@
       <DependentUpon>rptQuedan.cs</DependentUpon>
     </Compile>
     <Compile Include="Esquemas\ChequeEsquema.cs" />
+    <Compile Include="Esquemas\CompRetencionEsquema.cs" />
     <Compile Include="Esquemas\ListadoDocumentosRecibidosEsquema.cs" />
     <Compile Include="Esquemas\QuedanEsquema.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,8 +102,12 @@
     <Compile Include="ReporteBase.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ReporteUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Bancos\Proveedores\rptCompRetencion.resx">
+      <DependentUpon>rptCompRetencion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.resx">
       <DependentUpon>rptListadoDocumentosRecibidos.cs</DependentUpon>
     </EmbeddedResource>

@@ -1160,6 +1160,24 @@ namespace SistemaContable.UI.Forms.Proveedores
                 Cursor = Cursors.Default;
             }
         }
+
+        private void btnImprimirRetencion_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var reporte = new rptCompRetencion { IdCcfCompra = IdCcfCompra };
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
     }
 }
 

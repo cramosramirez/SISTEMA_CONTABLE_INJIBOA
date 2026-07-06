@@ -25,7 +25,7 @@ namespace SistemaContable.RP.Esquemas
             dt.Columns.Add("QUEDAN", typeof(int));
             dt.Columns.Add("NUMRETE", typeof(string)); 
             dt.Columns.Add("NUMCONTROL", typeof(string));
-            dt.Columns.Add("SELLORECEPCION", typeof(string));
+            dt.Columns.Add("SELLORECEPCION", typeof(string));            
             dt.Columns.Add("ID_CCF_COMPRA", typeof(int));
             return dt;
         }

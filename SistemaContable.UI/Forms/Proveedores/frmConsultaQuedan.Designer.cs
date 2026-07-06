@@ -66,6 +66,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colSALDO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colFECHA_EMISION = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colFECHA_RECIBIDO = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.riVerRVacio = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -73,6 +74,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             ((System.ComponentModel.ISupportInitialize)(this.riEditar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.riVerQ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.riVerR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.riVerRVacio)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -156,7 +158,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.riEditar,
             this.riVerR,
-            this.riVerQ});
+            this.riVerQ,
+            this.riVerRVacio});
             this.gridControl1.Size = new System.Drawing.Size(1229, 603);
             this.gridControl1.TabIndex = 1;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -289,6 +292,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.riVerR.Name = "riVerR";
             this.riVerR.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.riVerR.UseReadOnlyAppearance = false;
+            this.riVerR.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.riVerR_ButtonClick);
             // 
             // colNOMBRE_ENTIDAD
             // 
@@ -380,6 +384,13 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colFECHA_RECIBIDO.VisibleIndex = 9;
             this.colFECHA_RECIBIDO.Width = 87;
             // 
+            // riVerRVacio
+            // 
+            this.riVerRVacio.AutoHeight = false;
+            this.riVerRVacio.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.riVerRVacio.Name = "riVerRVacio";
+            // 
             // frmConsultaQuedan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -403,6 +414,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             ((System.ComponentModel.ISupportInitialize)(this.riEditar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riVerQ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riVerR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.riVerRVacio)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -431,5 +443,6 @@ namespace SistemaContable.UI.Forms.Proveedores
         private DevExpress.XtraEditors.SimpleButton btnNuevoQuedan;
         private DevExpress.XtraEditors.SimpleButton btnFinalizar;
         private System.Windows.Forms.Label label1;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit riVerRVacio;
     }
 }

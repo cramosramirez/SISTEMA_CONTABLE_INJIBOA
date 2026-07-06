@@ -4,7 +4,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using SistemaContable.DAL;
 using SistemaContable.RP.Bancos.Proveedores;
@@ -19,6 +21,11 @@ namespace SistemaContable.UI.Forms.Proveedores
         public frmConsultaQuedan()
         {
             InitializeComponent();
+            riVerRVacio = new RepositoryItemButtonEdit();
+            riVerRVacio.Buttons.Clear(); // sin botón visible
+            riVerRVacio.TextEditStyle = TextEditStyles.DisableTextEditor;
+            riVerRVacio.ReadOnly = true;
+            gridControl1.RepositoryItems.Add(riVerRVacio);
         }
 
 
@@ -74,9 +81,22 @@ namespace SistemaContable.UI.Forms.Proveedores
             nav.Buttons.Remove.Visible = false;
             nav.Buttons.Edit.Visible = false;
             nav.Buttons.EndEdit.Visible = false;
-            nav.Buttons.CancelEdit.Visible = false;            
+            nav.Buttons.CancelEdit.Visible = false;
+
+            gvDetalle.CustomRowCellEdit += GvDetalle_CustomRowCellEdit;
         }
-        
+
+        private void GvDetalle_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
+        {
+            if (e.Column == colVER_R)
+            {
+                object val = gvDetalle.GetRowCellValue(e.RowHandle, "ID_COMPROBANTE_RET");
+                bool tieneRetencion = val != null && val != DBNull.Value;
+
+                e.RepositoryItem = tieneRetencion ? riVerR : riVerRVacio;
+            }
+        }
+
         private void GvDetalle_CustomDrawGroupRow(object sender, RowObjectCustomDrawEventArgs e)
         {
             if (e.Info is GridGroupRowInfo info)
@@ -121,45 +141,26 @@ namespace SistemaContable.UI.Forms.Proveedores
             return Convert.ToInt32(val);
         }
 
-        private void AbrirDocumento(int idCcfCompra, bool esCCF)
-        {
-            if (esCCF)
+        private void AbrirDocumento(int idCcfCompra)
+        {           
+            using (var frm = new frmDocumentoCompra())
             {
-                using (var frm = new frmDocumentoCompra())
-                {
-                    frm.IdCcfCompra = idCcfCompra;
-                    frm.ShowDialog(this);
-                }
-                CargarDatos();
+                frm.IdCcfCompra = idCcfCompra;
+                frm.ShowDialog(this);
             }
-            else
-            {
-                using (var frm = new frmNotaDebCred())
-                {
-                    frm.IdCcfCompra = idCcfCompra;
-                    frm.ShowDialog(this);
-                }
-                CargarDatos();
-            }
-                
+            CargarDatos();                         
         }
         #endregion
           
         private void riEditar_ButtonClick(object sender, ButtonPressedEventArgs e)
         {            
             int? id = ObtenerIdFilaActiva();
-            int? idTipo_dte = ObtenerTipoDTEFilaActiva();
-            bool esCCF = false;
-
-            if (idTipo_dte == 2 || idTipo_dte == 21)            
-                esCCF = true;           
-                
-            if (id.HasValue) AbrirDocumento(id.Value, esCCF);            
+            if (id.HasValue) AbrirDocumento(id.Value);            
         }
 
         private void btnNuevoQuedan_Click(object sender, EventArgs e)
         {
-            AbrirDocumento(0, true);
+            AbrirDocumento(0);
         }
 
         private void riVerQ_ButtonClick(object sender, ButtonPressedEventArgs e)
@@ -188,6 +189,28 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
             Close(); 
+        }
+
+        private void riVerR_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {            
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                int? id = ObtenerIdFilaActiva();
+                if (id.HasValue)
+                {
+                    var reporte = new rptCompRetencion { IdCcfCompra = id.Value };
+                    reporte.MostrarPreview();
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
     }
 }

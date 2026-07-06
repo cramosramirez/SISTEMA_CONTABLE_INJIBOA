@@ -66,6 +66,27 @@ namespace SistemaContable.DAL
             }
         }
 
+        // CASO 2.1: Retorna cualquier tipo de dato — Listo para JSON
+        public T EjecutarEscalar<T>(string sp, object parametros = null)
+        {
+            try
+            {
+                using (var cn = new SqlConnection(CadenaConexion))
+                {
+                    return cn.QueryFirstOrDefault<T>(sp, parametros,
+                             commandType: CommandType.StoredProcedure);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message, ex,
+                    modulo: "DALBase.EjecutarEscalar<T>",
+                    spNombre: sp,
+                    parametros: parametros);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         // CASO 3: Sin retorno — UPDATE, DELETE, ANULAR
         public void EjecutarSinRetorno(string sp, object parametros = null)
         {
