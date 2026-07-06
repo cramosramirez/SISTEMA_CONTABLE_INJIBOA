@@ -17,6 +17,7 @@ using System.Linq;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraEditors.Repository;
 using System.Data.SqlClient;
+using SistemaContable.RP.Traslados.NotaRemision;
 
 namespace SistemaContable.UI.Forms.NotaRemision
 {
@@ -83,7 +84,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                         { "NOMBRE",         300 },
                         { "NIT",            120 }
                     },
-                    ParametrosExtra = new { ROL = "NR_DZ" }
+                    ParametrosExtra = new { ROL = "CLI" }
                 },
                 fila => AsignarProveedor(fila)
             );
@@ -536,7 +537,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 {
                     ACCION = "BUSCAR_POR_CODIGO",
                     FILTRO = codigo,
-                    ROL = "NR_DZ"
+                    ROL = "CLI"
                 });
 
                 if (dt.Rows.Count > 0)
@@ -1415,7 +1416,20 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
         private void btnImprimirQuedan_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var reporte = new RptNotaRemision_Venta_Dizucar { _id = IdTraslado };
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private void btnCorreo_Click(object sender, EventArgs e)

@@ -307,6 +307,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.MinimizeBox = false;
             this.Name = "frmConsultadz";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "Consulta";
             this.Text = "Nota de Remisión Electrónica (Despacho Venta - Dizucar Central)";
             this.Load += new System.EventHandler(this.frmConsultadz_Load);
             this.panel1.ResumeLayout(false);

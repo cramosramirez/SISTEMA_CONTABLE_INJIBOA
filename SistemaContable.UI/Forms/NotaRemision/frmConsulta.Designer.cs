@@ -295,6 +295,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.MinimizeBox = false;
             this.Name = "frmConsulta";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "Consulta";
             this.Text = "Lista de Nota Reminision";
             this.Load += new System.EventHandler(this.frmConsulta_Load);
             this.panel1.ResumeLayout(false);

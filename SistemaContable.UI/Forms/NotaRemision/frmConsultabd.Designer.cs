@@ -53,11 +53,11 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colCODGENERACION = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colNUMCONTROL = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colSELLORECEPCION = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colNFORMULARIO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colESTADO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnNuevoNR = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
-            this.colNFORMULARIO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDetalle)).BeginInit();
@@ -233,6 +233,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colSELLORECEPCION.VisibleIndex = 8;
             this.colSELLORECEPCION.Width = 159;
             // 
+            // colNFORMULARIO
+            // 
+            this.colNFORMULARIO.Caption = "N° Formulario";
+            this.colNFORMULARIO.FieldName = "NFORMULARIO";
+            this.colNFORMULARIO.Name = "colNFORMULARIO";
+            this.colNFORMULARIO.Visible = true;
+            this.colNFORMULARIO.VisibleIndex = 9;
+            // 
             // colESTADO
             // 
             this.colESTADO.Caption = "Estado";
@@ -285,14 +293,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.btnFinalizar.Text = "Finalizar";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
             // 
-            // colNFORMULARIO
-            // 
-            this.colNFORMULARIO.Caption = "N° Formulario";
-            this.colNFORMULARIO.FieldName = "NFORMULARIO";
-            this.colNFORMULARIO.Name = "colNFORMULARIO";
-            this.colNFORMULARIO.Visible = true;
-            this.colNFORMULARIO.VisibleIndex = 9;
-            // 
             // frmConsultabd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -305,6 +305,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.MinimizeBox = false;
             this.Name = "frmConsultabd";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "Consulta";
             this.Text = "Lista de Nota Reminision a bodegas";
             this.Load += new System.EventHandler(this.frmConsultabd_Load);
             this.panel1.ResumeLayout(false);

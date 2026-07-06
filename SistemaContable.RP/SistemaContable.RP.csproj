@@ -91,6 +91,7 @@
     <Compile Include="Esquemas\ChequeEsquema.cs" />
     <Compile Include="Esquemas\CompRetencionEsquema.cs" />
     <Compile Include="Esquemas\ListadoDocumentosRecibidosEsquema.cs" />
+    <Compile Include="Esquemas\NotaRemisionEsquema.cs" />
     <Compile Include="Esquemas\QuedanEsquema.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bancos\Proveedores\rptCheque.cs">
@@ -99,10 +100,15 @@
     <Compile Include="Bancos\Proveedores\rptCheque.Designer.cs">
       <DependentUpon>rptCheque.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ReporteBase.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ReporteUtils.cs" />
+
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Bancos\Proveedores\rptCompRetencion.resx">
@@ -118,8 +124,21 @@
     <EmbeddedResource Include="Bancos\Proveedores\rptCheque.resx">
       <DependentUpon>rptCheque.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="ReporteBase.resx">
       <DependentUpon>ReporteBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Traslados\NotaRemision\RptNotaRemision_Venta_Dizucar.resx">
+      <DependentUpon>RptNotaRemision_Venta_Dizucar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Traslados\NotaRemision\RptNotaRemision_Traslado_Bodegas.resx">
+      <DependentUpon>RptNotaRemision_Traslado_Bodegas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Traslados\NotaRemision\RptNotaRemision.resx">
+      <DependentUpon>RptNotaRemision.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

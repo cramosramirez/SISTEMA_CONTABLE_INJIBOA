@@ -271,6 +271,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.MinimizeBox = false;
             this.Name = "frmConsultaod";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "Consulta";
             this.Text = "Lista de Orden de Despacho (Nota Reminision)";
             this.Load += new System.EventHandler(this.frmConsultaod_Load);
             this.panel1.ResumeLayout(false);

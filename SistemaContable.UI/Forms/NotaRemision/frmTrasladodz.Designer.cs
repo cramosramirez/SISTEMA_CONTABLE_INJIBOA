@@ -913,6 +913,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.txtPROVEEDOR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPROVEEDOR.Location = new System.Drawing.Point(104, 27);
             this.txtPROVEEDOR.Name = "txtPROVEEDOR";
+            this.txtPROVEEDOR.ReadOnly = true;
             this.txtPROVEEDOR.Size = new System.Drawing.Size(153, 22);
             this.txtPROVEEDOR.TabIndex = 115;
             // 

@@ -99,7 +99,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
         private void AbrirDocumento(int IdTraslado)
         {
-            using (var frm = new frmTraslado())
+            using (var frm = new frmOrdenDespacho())
             {
                 frm.IdTraslado = IdTraslado;
                 frm.ShowDialog(this);
