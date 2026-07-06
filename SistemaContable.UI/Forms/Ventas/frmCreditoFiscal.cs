@@ -871,6 +871,14 @@ namespace SistemaContable.UI.Forms.Ventas
                         USUARIO = Configuracion.UsuarioActual,
                     });
                 }
+
+                _dal.EjecutarSinRetorno("[EDTE].[SP_CREDITOFISCAL_JSON]", new
+                {
+                    ID_CCFENC = IdCCFEnc
+                });
+
+
+
                 XtraMessageBox.Show("Crédito fiscal guardado correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ConfigurarCRUD(EstadoFormulario.Guardado);
