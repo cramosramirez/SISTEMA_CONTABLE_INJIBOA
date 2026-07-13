@@ -68,7 +68,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 new BusquedaConfig
                 {
                     StoredProcedure = "SP_ENTIDAD",
-                    Accion = "BUSCAR",
+                    Accion = "BUSCAR_TC",
                     Columnas = new Dictionary<string, string>
                     {
                         { "CODIGO_ENTIDAD", "PROVEEDOR" },
@@ -81,7 +81,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                         { "NOMBRE",         300 },
                         { "NIT",            120 }
                     },
-                    ParametrosExtra = new { ROL = "CLI" }
+                    ParametrosExtra = new { ROL = "NR_BD" }
                 },
                 fila => AsignarProveedor(fila)
             );
@@ -259,6 +259,10 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 cbxID_ZAFRA.SelectedValue = Convert.ToInt32(r["ID_ZAFRA"]);
                 txtNFormulario.Text = r["NFORMULARIO"].ToString();
                 txtNContenedor.Text = r["CONTENEDOR"].ToString();
+
+                  txtOrdenDespacho.Text = r["ID_ODENC"].ToString();
+
+                 txtCodGenera_OrdenDespacho.Text = r["CODGENERACION_OD"].ToString();
 
             }
             catch (Exception ex)
@@ -468,9 +472,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 var dt = _dal.EjecutarConsulta("SP_ENTIDAD", new
                 {
-                    ACCION = "BUSCAR_POR_CODIGO",
+                    ACCION = "BUSCAR_TC",
                     FILTRO = codigo,
-                    ROL = "CLI"
+                    ROL = "NR_BD"
                 });
 
                 if (dt.Rows.Count > 0)
@@ -1161,9 +1165,15 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
             // Verificar que haya al menos una línea en la partida
             bool tieneLineas = false;
+
             foreach (DataRow fila in _dtDeta.Rows)
             {
-                if (!string.IsNullOrWhiteSpace(fila["COD_REF"].ToString()))
+                string codRef = fila["COD_REF"].ToString().Trim();
+
+                decimal cantidad = 0;
+                decimal.TryParse(fila["CANTIDAD"]?.ToString(), out cantidad);
+
+                if (!string.IsNullOrWhiteSpace(codRef) && cantidad > 0)
                 {
                     tieneLineas = true;
                     break;
@@ -1173,8 +1183,11 @@ namespace SistemaContable.UI.Forms.NotaRemision
             if (!tieneLineas)
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Debe ingresar al menos un producto al detalle.",
-                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    "Debe ingresar al menos un producto al detalle con una cantidad válida.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return false;
             }
 
@@ -1227,7 +1240,10 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     MARCHAMOS4 = txtMarchamo4.Text,
                     ID_ZAFRA = cbxID_ZAFRA.SelectedValue,
                     NFORMULARIO = txtNFormulario.Text,
-                    CONTENEDOR = txtNContenedor.Text
+                    CONTENEDOR = txtNContenedor.Text,
+                    ID_ODENC = txtOrdenDespacho.Text,
+
+                CODGENERACION_OD =txtCodGenera_OrdenDespacho.Text
 
                 });
 
@@ -1325,6 +1341,206 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
         }
 
+        private void CargarOD_Existente(int IdOD)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                DataTable dt = _dal.EjecutarConsulta("[EORDEN_DESPACHO].SP_NOTAREMISION_ENC",
+                    new
+                    {
+                        ACCION = "OBTENER",
+                        ID_ODENC = IdOD
+                    });
+
+                if (dt.Rows.Count == 0)
+                {
+                    XtraMessageBox.Show("No se encontró el documento solicitado.",
+                        "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Close();
+                    return;
+                }
+
+                DataRow r = dt.Rows[0];
+                if (Convert.ToBoolean(r["ANULADO"]) ==false)
+                { 
+                    // ---------- Proveedor ----------
+                    _idEntidad = Convert.ToInt32(r["ID_CLIENTE"]);
+
+                _codigoEntidad = r["COD_REF"].ToString();
+
+
+                txtPROVEEDOR.Text = _codigoEntidad;
+                txtNOMBRE_PROVEEDOR.Text = r["NOMBRE_ENTIDAD"]?.ToString();
+                txtNRC.Text = r["NRC"].ToString();
+                txtNIT.Text = r["NIT"].ToString();
+                txtTELEFONO.Text = r["CELULAR"].ToString();
+                txtCORREO.Text = r["CORREO"].ToString();
+                txtACTIVIDAD_PRIMARIA.Text = r["ACTIVIDAD_PRIMARIA"].ToString();
+                txtDIRECCION.Text = r["COMPLEMENTO"].ToString();
+
+                // ---------- Documento fiscal ----------
+
+               
+                txtCodGenera_OrdenDespacho.Text = AsString(r["CODGENERACION_OD"]);
+              
+
+
+                _ID_PROV_TRANSP = Convert.ToInt32(r["ID_PROV_TRANSP"]);
+                txtPROV_TRANSP.Text = r["PROV_TXTTRANSPORTE"].ToString();
+                cbxIdTransposte.SelectedValue = Convert.ToInt32(r["ID_TRANSPORTE"]);
+                txtPlaca.Text = r["PLACA"].ToString();
+                txtRemolque.Text = r["REMOLQUE"].ToString();
+                _ID_MOTORISTA = Convert.ToInt32(r["ID_MOTORISTA"]);
+
+                txtMotorista.Text = r["MOTORISTA"].ToString();
+                txtLicencia.Text = r["LICENCIA"].ToString();
+
+                txtMarchamo1.Text = r["MARCHAMOS1"].ToString();
+                txtMarchamo2.Text = r["MARCHAMOS2"].ToString();
+                txtMarchamo3.Text = r["MARCHAMOS3"].ToString();
+                txtMarchamo4.Text = r["MARCHAMOS4"].ToString();
+                cbxID_ZAFRA.SelectedValue = Convert.ToInt32(r["ID_ZAFRA"]);
+                }
+                else
+                {
+
+                    _idEntidad = 0;
+
+                    _codigoEntidad = "";
+
+
+                    txtPROVEEDOR.Text = string.Empty;
+                    txtNOMBRE_PROVEEDOR.Text = string.Empty;
+                    txtNRC.Text = string.Empty;
+                    txtNIT.Text = string.Empty;
+                    txtTELEFONO.Text = string.Empty;
+                    txtCORREO.Text = string.Empty;
+                    txtACTIVIDAD_PRIMARIA.Text = string.Empty;
+                    txtDIRECCION.Text = string.Empty;
+
+                    // ---------- Documento fiscal ----------
+
+
+                    txtCodGenera_OrdenDespacho.Text = string.Empty;
+
+
+
+                    _ID_PROV_TRANSP = 0;
+                    txtPROV_TRANSP.Text = string.Empty;
+                   
+                    txtPlaca.Text = string.Empty;
+                    txtRemolque.Text = string.Empty;
+                    _ID_MOTORISTA = 0;
+
+                    txtMotorista.Text = string.Empty;
+                    txtLicencia.Text = string.Empty;
+
+                    txtMarchamo1.Text = string.Empty;
+                    txtMarchamo2.Text = string.Empty;
+                    txtMarchamo3.Text = string.Empty;
+                    txtMarchamo4.Text = string.Empty;
+                    cbxID_ZAFRA.SelectedIndex = 0;
+                    cbxIdTransposte.SelectedIndex = 0;
+                    XtraMessageBox.Show("Error: ORDER DE DESPACHO ANULADA",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al cargar el documento:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                
+                
+
+
+            }
+        }
+        private void CargarOD_DTExistente(int IdOD)
+        {
+            try
+            {
+                DataTable dt2 = _dal.EjecutarConsulta("[EORDEN_DESPACHO].SP_NOTAREMISION_DET",
+                    new
+                    {
+                        ACCION = "OBTENER",
+                        ID_ODENC = IdOD
+                    });
+
+                if (dt2.Rows.Count > 0)
+                {
+                    _dtDeta.Rows.Clear();
+
+                    foreach (DataRow row in dt2.Rows)
+                    {
+                        DataRow nueva = _dtDeta.NewRow();
+
+                        nueva["ID_PRODUCTO"] = row["ID_PRODUCTO"];
+                        nueva["COD_REF"] = row["COD_REF"];
+                        nueva["DESCRIPCION"] = row["DESCRIPCION"];
+                        nueva["ID_UNIDAD_MEDIDA"] = row["ID_UNIDAD_MEDIDA"];
+                        nueva["UNIDAD_MEDIDA"] = row["UNIDAD_MEDIDA"];
+                        nueva["CANTIDAD"] = row["CANTIDAD"];
+                        nueva["PRECIO"] = row["PRECIO"];
+                        nueva["TOTAL"] = row["TOTAL"];
+
+                        _dtDeta.Rows.Add(nueva);
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text))
+                {
+                    AgregarFilaVacia();
+                }
+
+                //var view = gridControl1.MainView as GridView;
+                //view.Columns["ELIMINAR"].OptionsColumn.AllowEdit =
+                //    string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text);
+
+
+                var view = gridControl1.MainView as GridView;
+
+                bool editable = string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text);
+
+                view.OptionsBehavior.Editable = editable;
+                view.OptionsBehavior.ReadOnly = !editable;
+
+                view.Appearance.Row.BackColor = editable
+                                    ? Color.White
+                                    : Color.LightGray;
+
+
+                gridControl1.RefreshDataSource();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al cargar el documento:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void btOrdenDespacho_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtOrdenDespacho.Text) &&
+                txtOrdenDespacho.Text.Trim() != "0")
+            {
+                int _id = Convert.ToInt32(txtOrdenDespacho.Text);
+                CargarOD_Existente(_id);
+                CargarOD_DTExistente(_id);
+            }
+            else
+            {
+                XtraMessageBox.Show(
+                    "Error: Ingresar N° Orden de despacho",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
     }
 
 

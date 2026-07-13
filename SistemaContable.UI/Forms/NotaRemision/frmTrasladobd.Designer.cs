@@ -30,6 +30,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.txtRemolque = new System.Windows.Forms.TextBox();
             this.label32 = new System.Windows.Forms.Label();
@@ -64,7 +67,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label8 = new System.Windows.Forms.Label();
             this.txtCodGenera_OrdenDespacho = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
+            this.btOrdenDespacho = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.btnCorreo = new DevExpress.XtraEditors.SimpleButton();
             this.btnImprimir = new DevExpress.XtraEditors.SimpleButton();
@@ -105,9 +108,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.txtNRC = new System.Windows.Forms.TextBox();
             this.txtPROVEEDOR = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label35 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -152,7 +152,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.txtCodGenera_OrdenDespacho);
             this.panel1.Controls.Add(this.label7);
-            this.panel1.Controls.Add(this.simpleButton1);
+            this.panel1.Controls.Add(this.btOrdenDespacho);
             this.panel1.Controls.Add(this.btnFinalizar);
             this.panel1.Controls.Add(this.btnCorreo);
             this.panel1.Controls.Add(this.btnImprimir);
@@ -197,6 +197,36 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1171, 784);
             this.panel1.TabIndex = 0;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label33.Location = new System.Drawing.Point(29, 346);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(176, 15);
+            this.label33.TabIndex = 199;
+            this.label33.Text = "Información de Transporte";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label34.Location = new System.Drawing.Point(31, 126);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(185, 15);
+            this.label34.TabIndex = 198;
+            this.label34.Text = "Información del Movimiento";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label35.Location = new System.Drawing.Point(31, 9);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(189, 15);
+            this.label35.TabIndex = 197;
+            this.label35.Text = "Información Bodega Destino";
             // 
             // label31
             // 
@@ -496,7 +526,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.txtOrdenDespacho.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOrdenDespacho.Location = new System.Drawing.Point(573, 173);
             this.txtOrdenDespacho.Name = "txtOrdenDespacho";
-            this.txtOrdenDespacho.ReadOnly = true;
             this.txtOrdenDespacho.Size = new System.Drawing.Size(153, 22);
             this.txtOrdenDespacho.TabIndex = 162;
             // 
@@ -530,18 +559,19 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label7.TabIndex = 161;
             this.label7.Text = "Cod. Generación  Orden Despacho ";
             // 
-            // simpleButton1
+            // btOrdenDespacho
             // 
-            this.simpleButton1.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.simpleButton1.Appearance.Options.UseFont = true;
-            this.simpleButton1.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.provision32x32;
-            this.simpleButton1.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.simpleButton1.ImageOptions.ImageToTextIndent = 10;
-            this.simpleButton1.Location = new System.Drawing.Point(389, 154);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(153, 41);
-            this.simpleButton1.TabIndex = 159;
-            this.simpleButton1.Text = "Orden Despacho";
+            this.btOrdenDespacho.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btOrdenDespacho.Appearance.Options.UseFont = true;
+            this.btOrdenDespacho.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.provision32x32;
+            this.btOrdenDespacho.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btOrdenDespacho.ImageOptions.ImageToTextIndent = 10;
+            this.btOrdenDespacho.Location = new System.Drawing.Point(389, 154);
+            this.btOrdenDespacho.Name = "btOrdenDespacho";
+            this.btOrdenDespacho.Size = new System.Drawing.Size(153, 41);
+            this.btOrdenDespacho.TabIndex = 159;
+            this.btOrdenDespacho.Text = "Orden Despacho";
+            this.btOrdenDespacho.Click += new System.EventHandler(this.btOrdenDespacho_Click);
             // 
             // btnFinalizar
             // 
@@ -966,36 +996,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label1.TabIndex = 119;
             this.label1.Text = "Cliente";
             // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label35.Location = new System.Drawing.Point(31, 9);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(189, 15);
-            this.label35.TabIndex = 197;
-            this.label35.Text = "Información Bodega Destino";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label34.Location = new System.Drawing.Point(31, 126);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(185, 15);
-            this.label34.TabIndex = 198;
-            this.label34.Text = "Información del Movimiento";
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.Location = new System.Drawing.Point(29, 346);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(176, 15);
-            this.label33.TabIndex = 199;
-            this.label33.Text = "Información de Transporte";
-            // 
             // frmTrasladobd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1066,7 +1066,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtCodGenera_OrdenDespacho;
         private System.Windows.Forms.Label label7;
-        private DevExpress.XtraEditors.SimpleButton simpleButton1;
+        private DevExpress.XtraEditors.SimpleButton btOrdenDespacho;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.TextBox txtRemolque;
         private System.Windows.Forms.Label label32;

@@ -65,7 +65,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
         new BusquedaConfig
         {
             StoredProcedure = "SP_ENTIDAD",
-            Accion = "BUSCAR",
+            Accion = "BUSCAR_TC",
             Columnas = new Dictionary<string, string>
             {
                         { "CODIGO_ENTIDAD", "PROVEEDOR" },
@@ -78,7 +78,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                         { "NOMBRE",         300 },
                         { "NIT",            120 }
             },
-            ParametrosExtra = new { ROL = "CLI" }
+            ParametrosExtra = new { ROL = "NR" }
         },
         fila => AsignarProveedor(fila)
     );
@@ -427,9 +427,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 var dt = _dal.EjecutarConsulta("SP_ENTIDAD", new
                 {
-                    ACCION = "BUSCAR_POR_CODIGO",
+                    ACCION = "BUSCAR_TC",
                     FILTRO = codigo,
-                    ROL = "CLI"
+                    ROL = "NR"
                 });
 
                 if (dt.Rows.Count > 0)

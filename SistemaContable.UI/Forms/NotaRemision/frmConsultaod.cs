@@ -6,6 +6,8 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Base;
 using SistemaContable.DAL;
+using SistemaContable.RP.Traslados;
+
 namespace SistemaContable.UI.Forms.NotaRemision
 {
     public partial class frmConsultaod : Form
@@ -140,8 +142,20 @@ namespace SistemaContable.UI.Forms.NotaRemision
             if (e.Column == colVER_Q)
             {
                 int? id = ObtenerIdFilaActiva();
-                XtraMessageBox.Show("Reporte ",
-                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    var reporte = new RptOrdDespacho { _id = (int)id };
+                    reporte.MostrarPreview();
+                }
+                catch (Exception ex)
+                {
+                    XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
             }
         }
     }

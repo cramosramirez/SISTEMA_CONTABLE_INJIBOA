@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Linq;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraEditors.Repository;
+using SistemaContable.RP.Traslados;
 
 namespace SistemaContable.UI.Forms.NotaRemision
 {
@@ -67,7 +68,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 new BusquedaConfig
                 {
                     StoredProcedure = "SP_ENTIDAD",
-                    Accion = "BUSCAR",
+                    Accion = "BUSCAR_TC",
                     Columnas = new Dictionary<string, string>
                     {
                         { "CODIGO_ENTIDAD", "PROVEEDOR" },
@@ -80,7 +81,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                         { "NOMBRE",         300 },
                         { "NIT",            120 }
                     },
-                    ParametrosExtra = new { ROL = "CLI" }
+                    ParametrosExtra = new { ROL = "NR_BD" }
                 },
                 fila => AsignarProveedor(fila)
             );
@@ -287,7 +288,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     new
                     {
                         ACCION = "OBTENER",
-                        ID_NTREMISIONENC = IdTraslado
+                        ID_ODENC = IdTraslado
                     });
 
                 if (dt2.Rows.Count > 0)
@@ -466,9 +467,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 var dt = _dal.EjecutarConsulta("SP_ENTIDAD", new
                 {
-                    ACCION = "BUSCAR_POR_CODIGO",
+                    ACCION = "BUSCAR_TC",
                     FILTRO = codigo,
-                    ROL = "CLI"
+                    ROL = "NR_BD"
                 });
 
                 if (dt.Rows.Count > 0)
@@ -1209,8 +1210,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     _dal.EjecutarSinRetorno("[EORDEN_DESPACHO].SP_NOTAREMISION_DET", new
                     {
                         ACCION = "GUARDAR",
-                        ID_NTREMISIONDT = 0,
-                        ID_NTREMISIONENC = _idNR,
+                        ID_ODEDT = 0,
+                        ID_ODENC = _idNR,
                         ID_EMISOR = 1,
                         CODGENERACION = txtCOD_GENERACION.Text,
                         ID_PRODUCTO = Convert.ToInt32(fila["ID_PRODUCTO"]),
@@ -1262,7 +1263,20 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
         private void btnImprimirQuedan_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var reporte = new RptOrdDespacho { _id = IdTraslado };
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private void btnCorreo_Click(object sender, EventArgs e)
