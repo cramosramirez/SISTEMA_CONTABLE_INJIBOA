@@ -41,19 +41,22 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblTOTAL_ABONO = new System.Windows.Forms.Label();
             this.lblTOTAL_CARGO = new System.Windows.Forms.Label();
             this.lblCUADRE = new System.Windows.Forms.Label();
+            this.pnESTADO_CUENTA = new System.Windows.Forms.Panel();
+            this.lblESTADO_CUENTA = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             this.panel2.SuspendLayout();
+            this.pnESTADO_CUENTA.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.gridControl1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(947, 446);
+            this.panel1.Size = new System.Drawing.Size(981, 482);
             this.panel1.TabIndex = 0;
             // 
             // gridControl1
@@ -62,7 +65,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gridControl1.Location = new System.Drawing.Point(0, 0);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(947, 446);
+            this.gridControl1.Size = new System.Drawing.Size(981, 482);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -74,6 +77,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.pnESTADO_CUENTA);
             this.panel2.Controls.Add(this.btnBorrarFila);
             this.panel2.Controls.Add(this.btnFinalizar);
             this.panel2.Controls.Add(this.btnGuardar);
@@ -82,9 +86,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel2.Controls.Add(this.lblTOTAL_CARGO);
             this.panel2.Controls.Add(this.lblCUADRE);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 444);
+            this.panel2.Location = new System.Drawing.Point(0, 482);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(947, 86);
+            this.panel2.Size = new System.Drawing.Size(981, 110);
             this.panel2.TabIndex = 0;
             // 
             // btnBorrarFila
@@ -94,7 +98,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnBorrarFila.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminarFila32x32;
             this.btnBorrarFila.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnBorrarFila.ImageOptions.ImageToTextIndent = 10;
-            this.btnBorrarFila.Location = new System.Drawing.Point(141, 20);
+            this.btnBorrarFila.Location = new System.Drawing.Point(141, 54);
             this.btnBorrarFila.Name = "btnBorrarFila";
             this.btnBorrarFila.Size = new System.Drawing.Size(126, 47);
             this.btnBorrarFila.TabIndex = 2;
@@ -108,7 +112,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(303, 22);
+            this.btnFinalizar.Location = new System.Drawing.Point(303, 56);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(104, 47);
             this.btnFinalizar.TabIndex = 3;
@@ -123,7 +127,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnGuardar.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardar.ImageOptions.Image")));
             this.btnGuardar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnGuardar.ImageOptions.ImageToTextIndent = 10;
-            this.btnGuardar.Location = new System.Drawing.Point(10, 20);
+            this.btnGuardar.Location = new System.Drawing.Point(10, 54);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(114, 47);
             this.btnGuardar.TabIndex = 1;
@@ -133,7 +137,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // lblDIFERENCIA
             // 
             this.lblDIFERENCIA.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDIFERENCIA.Location = new System.Drawing.Point(720, 32);
+            this.lblDIFERENCIA.Location = new System.Drawing.Point(753, 32);
             this.lblDIFERENCIA.Name = "lblDIFERENCIA";
             this.lblDIFERENCIA.Size = new System.Drawing.Size(226, 23);
             this.lblDIFERENCIA.TabIndex = 23;
@@ -143,7 +147,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // lblTOTAL_ABONO
             // 
             this.lblTOTAL_ABONO.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTOTAL_ABONO.Location = new System.Drawing.Point(844, 5);
+            this.lblTOTAL_ABONO.Location = new System.Drawing.Point(877, 5);
             this.lblTOTAL_ABONO.Name = "lblTOTAL_ABONO";
             this.lblTOTAL_ABONO.Size = new System.Drawing.Size(102, 23);
             this.lblTOTAL_ABONO.TabIndex = 22;
@@ -153,7 +157,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // lblTOTAL_CARGO
             // 
             this.lblTOTAL_CARGO.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTOTAL_CARGO.Location = new System.Drawing.Point(718, 5);
+            this.lblTOTAL_CARGO.Location = new System.Drawing.Point(751, 5);
             this.lblTOTAL_CARGO.Name = "lblTOTAL_CARGO";
             this.lblTOTAL_CARGO.Size = new System.Drawing.Size(125, 23);
             this.lblTOTAL_CARGO.TabIndex = 21;
@@ -163,20 +167,41 @@ namespace SistemaContable.UI.Forms.Proveedores
             // lblCUADRE
             // 
             this.lblCUADRE.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCUADRE.Location = new System.Drawing.Point(377, 31);
+            this.lblCUADRE.Location = new System.Drawing.Point(410, 31);
             this.lblCUADRE.Name = "lblCUADRE";
             this.lblCUADRE.Size = new System.Drawing.Size(330, 21);
             this.lblCUADRE.TabIndex = 20;
             this.lblCUADRE.Text = "-";
             this.lblCUADRE.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // pnESTADO_CUENTA
+            // 
+            this.pnESTADO_CUENTA.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(254)))), ((int)(((byte)(231)))));
+            this.pnESTADO_CUENTA.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnESTADO_CUENTA.Controls.Add(this.lblESTADO_CUENTA);
+            this.pnESTADO_CUENTA.Location = new System.Drawing.Point(7, 8);
+            this.pnESTADO_CUENTA.Name = "pnESTADO_CUENTA";
+            this.pnESTADO_CUENTA.Size = new System.Drawing.Size(406, 33);
+            this.pnESTADO_CUENTA.TabIndex = 24;
+            this.pnESTADO_CUENTA.Visible = false;
+            // 
+            // lblESTADO_CUENTA
+            // 
+            this.lblESTADO_CUENTA.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblESTADO_CUENTA.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblESTADO_CUENTA.Location = new System.Drawing.Point(0, 0);
+            this.lblESTADO_CUENTA.Name = "lblESTADO_CUENTA";
+            this.lblESTADO_CUENTA.Size = new System.Drawing.Size(404, 31);
+            this.lblESTADO_CUENTA.TabIndex = 0;
+            this.lblESTADO_CUENTA.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // frmDocumentoCompraProvision
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(947, 530);
-            this.Controls.Add(this.panel2);
+            this.ClientSize = new System.Drawing.Size(981, 592);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel2);
             this.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
@@ -189,6 +214,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             this.panel2.ResumeLayout(false);
+            this.pnESTADO_CUENTA.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -206,5 +232,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private DevExpress.XtraEditors.SimpleButton btnGuardar;
         private DevExpress.XtraEditors.SimpleButton btnFinalizar;
         private DevExpress.XtraEditors.SimpleButton btnBorrarFila;
+        private System.Windows.Forms.Panel pnESTADO_CUENTA;
+        private System.Windows.Forms.Label lblESTADO_CUENTA;
     }
 }

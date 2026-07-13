@@ -38,7 +38,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void frmProveedor_Load(object sender, EventArgs e)
         {
             FormHelper.Inicializar(this);
-            _cargandoFormulario = true;            
+            _cargandoFormulario = true;
             CargarCombos();
             SuscribirEventos();
 
@@ -51,7 +51,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtCUENTA_X_PAGAR,
                 new BusquedaConfig
                 {
-                    StoredProcedure = "SP_CATALOGO_CUENTA",                    
+                    StoredProcedure = "SP_CATALOGO_CUENTA",
                     Columnas = new Dictionary<string, string>
                     {
                         { "CUENTA", "CODIGO" },
@@ -60,13 +60,38 @@ namespace SistemaContable.UI.Forms.Proveedores
                     Anchos = new Dictionary<string, int>
                     {
                         { "CUENTA",         100 },
-                        { "NOMBRE_CUENTA",  300 }                        
+                        { "NOMBRE_CUENTA",  300 }
                     },
                     ParametrosExtra = new { ES_DETALLE = true }
                 },
                 fila =>
-                {                    
+                {
                     txtCUENTA_X_PAGAR.Text = fila["CUENTA"].ToString();
+                    txtNOMBRE_CUENTA_X_PAGAR.Text = fila["NOMBRE_CUENTA"].ToString();
+                }
+            );
+
+            FormHelper.RegistrarBusqueda(
+                txtCUENTA_GASTO,
+                new BusquedaConfig
+                {
+                    StoredProcedure = "SP_CATALOGO_CUENTA",
+                    Columnas = new Dictionary<string, string>
+                    {
+                        { "CUENTA", "CODIGO" },
+                        { "NOMBRE_CUENTA", "NOMBRE" }
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
+                        { "CUENTA",         100 },
+                        { "NOMBRE_CUENTA",  300 }
+                    },
+                    ParametrosExtra = new { ES_DETALLE = true }
+                },
+                fila =>
+                {
+                    txtCUENTA_GASTO.Text = fila["CUENTA"].ToString();
+                    txtNOMBRE_CUENTA_GASTO.Text = fila["NOMBRE_CUENTA"].ToString();
                 }
             );
 
@@ -153,7 +178,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             CargarCombo("SP_TIPO_CONTRIBUYENTE", "BUSCAR", "ID_TIPO_CONTRIB", "NOMBRE", cbxTIPO_CONTRIBUYENTE);
             CargarCombo("SP_TIPO_DOCUMENTO_IDENTIDAD", "BUSCAR", "ID_TIPO_DOC_INDEN", "NOMBRE", cbxTIPO_DOCUMENTO_IDENTIDAD);
             CargarCombo("SP_PAIS", "BUSCAR", "ID_PAIS", "VALORES", cbxPAIS);
-            CargarCombo("SP_DEPARTAMENTO", "BUSCAR", "CODI_DEPTO", "VALORES", cbxDEPARTAMENTO);        
+            CargarCombo("SP_DEPARTAMENTO", "BUSCAR", "CODI_DEPTO", "VALORES", cbxDEPARTAMENTO);
 
             // Municipio y Distrito quedan vacíos hasta que se elija depto/muni
             cbxMUNICIPIO.DataSource = null;
@@ -194,7 +219,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 if (_cargandoFormulario) return;
                 AplicarReglasOrigen();
-                SugerirCodigo();  
+                SugerirCodigo();
             };
 
             cbxTIPO_PERSONA.SelectedIndexChanged += (s, e) =>
@@ -226,10 +251,10 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtCODI_ACTI1.Leave += (s, e) => BuscarActividadPorCodigo(txtCODI_ACTI1, txtACTIVIDAD_ECONOMICA1);
             txtCODI_ACTI2.Leave += (s, e) => BuscarActividadPorCodigo(txtCODI_ACTI2, txtACTIVIDAD_ECONOMICA2);
             txtCODI_ACTI3.Leave += (s, e) => BuscarActividadPorCodigo(txtCODI_ACTI3, txtACTIVIDAD_ECONOMICA3);
-            
+
             txtCELULAR.KeyPress += SoloNumeros_KeyPress;
             txtTELEFONO.KeyPress += SoloNumeros_KeyPress;
-            txtNIT.KeyPress += SoloNumeros_KeyPress;            
+            txtNIT.KeyPress += SoloNumeros_KeyPress;
             txtNIT.TextChanged += SoloNumeros_TextChanged;
 
             txtDUI.Leave += (s, e) => ValidarDuplicado(txtDUI, "DUI");
@@ -246,6 +271,9 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             btnGuardar.Click += btnGuardar_Click;
             btnFinalizar.Click += btnFinalizar_Click;
+
+            txtCUENTA_X_PAGAR.Leave += (s, e) => BuscarCuentaContablePorCodigo(txtCUENTA_X_PAGAR, txtNOMBRE_CUENTA_X_PAGAR);
+            txtCUENTA_GASTO.Leave += (s, e) => BuscarCuentaContablePorCodigo(txtCUENTA_GASTO, txtNOMBRE_CUENTA_GASTO);
         }
 
 
@@ -364,7 +392,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtCALLE.Enabled = !esExterior;
             txtCASA.Enabled = !esExterior;
             txtAPTO_LOCAL.Enabled = !esExterior;
-            txtCOLONIA.Enabled = !esExterior;            
+            txtCOLONIA.Enabled = !esExterior;
             txtOTROS_DATOS.Enabled = !esExterior;
 
             // Códigos auxiliares (solo Local)
@@ -372,7 +400,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtCODTRANSPORT.Enabled = !esExterior;
             txtID_CARGADORA.Enabled = !esExterior;
             cbxPAIS.Enabled = esExterior;
-            cbxDEPARTAMENTO.Enabled = !esExterior; 
+            cbxDEPARTAMENTO.Enabled = !esExterior;
             cbxMUNICIPIO.Enabled = !esExterior;
             cbxDISTRITO.Enabled = !esExterior;
 
@@ -673,6 +701,9 @@ namespace SistemaContable.UI.Forms.Proveedores
                                           && Convert.ToBoolean(r["RETENER_RENTA"]);
                 txtPORC_RENTA.Text = SafeStr(r["PORC_RENTA"]);
                 txtCUENTA_X_PAGAR.Text = SafeStr(r["CUENTA_X_PAGAR"]);
+                txtNOMBRE_CUENTA_X_PAGAR.Text = SafeStr(r["NOMBRE_CUENTA_X_PAGAR"]);
+                txtCUENTA_GASTO.Text = SafeStr(r["CUENTA_GASTO"]);
+                txtNOMBRE_CUENTA_GASTO.Text = SafeStr(r["NOMBRE_CUENTA_GASTO"]);
 
                 // Códigos auxiliares
                 txtCODIPROVEEDOR.Text = SafeStr(r["CODIPROVEEDOR"]);
@@ -729,7 +760,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 MostrarValidacion("Debe seleccionar el tipo de contribuyente.");
                 cbxTIPO_CONTRIBUYENTE.Focus();
                 return false;
-            }            
+            }
 
             // ============================================================
             // Validación de documentos según Origen / Tipo Persona / Contribuyente
@@ -1050,6 +1081,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     ID_ACTIVIDAD_2 = ParseIntNullable(SafeStr(txtCODI_ACTI2.Tag)),
                     ID_ACTIVIDAD_3 = ParseIntNullable(SafeStr(txtCODI_ACTI3.Tag)),
                     CUENTA_X_PAGAR = NullIfEmpty(txtCUENTA_X_PAGAR.Text),
+                    CUENTA_GASTO = NullIfEmpty(txtCUENTA_GASTO.Text),
                     ID_ORIGEN = ComboHelper.ObtenerInt(cbxORIGEN_ENTIDAD),
                     CODIPROVEEDOR = NullIfEmpty(txtCODIPROVEEDOR.Text),
                     CODTRANSPORT = ParseIntNullable(txtCODTRANSPORT.Text),
@@ -1141,7 +1173,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 tb.SelectionStart = Math.Max(0, pos);
             }
         }
-        
+
         private void ValidarCorreoLeave(TextBox txt)
         {
             string correo = txt.Text.Trim();
@@ -1154,10 +1186,58 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txt.Focus();
                 txt.SelectAll();
             }
-        }       
+        }
 
+        // ============================================================
+        // Busca la cuenta contable por su código (CUENTA) y despliega
+        // el nombre en el label/textbox destino. Si no existe, avisa.
+        // ============================================================
+        private void BuscarCuentaContablePorCodigo(TextBox txtCodigo, TextBox txtNombreDestino)
+        {
+            string codigo = txtCodigo.Text.Trim();
+            if (string.IsNullOrEmpty(codigo))
+            {
+                txtNombreDestino.Clear();
+                return;
+            }
+            try
+            {
+                var dt = _dal.EjecutarConsulta("SP_CATALOGO_CUENTA", new
+                {
+                    ACCION = "OBTENER",
+                    CUENTA = codigo
+                });
+
+                if (dt.Rows.Count == 0)
+                {
+                    MostrarValidacion($"La cuenta contable '<b>{codigo}</b>' no existe.");
+                    txtNombreDestino.Clear();
+                    txtCodigo.Focus();
+                    txtCodigo.SelectAll();
+                    return;
+                }
+
+                var fila = dt.Rows[0];
+                bool esDetalle = fila["ES_DETALLE"] != DBNull.Value && Convert.ToBoolean(fila["ES_DETALLE"]);
+
+                if (!esDetalle)
+                {
+                    MostrarValidacion("No se puede asignar una cuenta acumulativa.");
+                    txtNombreDestino.Clear();
+                    txtCodigo.Focus();
+                    txtCodigo.SelectAll();
+                    return;
+                }
+
+                txtNombreDestino.Text = fila["NOMBRE_CUENTA"].ToString();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error buscando cuenta contable: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
-
 }
 
 

@@ -131,8 +131,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // ✅ Sumario en columnas numéricas (totales en el footer)
             AgregarSumarioTotal(colGRAVADA);
             AgregarSumarioTotal(colEXENTA);
-            AgregarSumarioTotal(colNO_SUJETA);
-            AgregarSumarioTotal(colPERCEPCION);
+            AgregarSumarioTotal(colNO_SUJETA);            
             AgregarSumarioTotal(colIVA);
             AgregarSumarioTotal(colFOVIAL);
             AgregarSumarioTotal(colCOTRANS);

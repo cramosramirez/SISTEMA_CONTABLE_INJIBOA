@@ -31,6 +31,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDocumentoCompra));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnConsultaCheque = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.btnProvision = new DevExpress.XtraEditors.SimpleButton();
             this.txtDIRECCION = new System.Windows.Forms.TextBox();
@@ -76,8 +77,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label28 = new System.Windows.Forms.Label();
             this.txtIVA = new System.Windows.Forms.TextBox();
             this.label29 = new System.Windows.Forms.Label();
-            this.txtPERCEPCION = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
             this.txtEXCLUIDO = new System.Windows.Forms.TextBox();
             this.label24 = new System.Windows.Forms.Label();
             this.txtEXENTA = new System.Windows.Forms.TextBox();
@@ -130,6 +129,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.groupBox1.Controls.Add(this.btnConsultaCheque);
             this.groupBox1.Controls.Add(this.btnFinalizar);
             this.groupBox1.Controls.Add(this.btnProvision);
             this.groupBox1.Controls.Add(this.txtDIRECCION);
@@ -173,8 +173,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.groupBox1.Controls.Add(this.label28);
             this.groupBox1.Controls.Add(this.txtIVA);
             this.groupBox1.Controls.Add(this.label29);
-            this.groupBox1.Controls.Add(this.txtPERCEPCION);
-            this.groupBox1.Controls.Add(this.label25);
             this.groupBox1.Controls.Add(this.txtEXCLUIDO);
             this.groupBox1.Controls.Add(this.label24);
             this.groupBox1.Controls.Add(this.txtEXENTA);
@@ -227,6 +225,23 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.groupBox1.Size = new System.Drawing.Size(1255, 697);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // btnConsultaCheque
+            // 
+            this.btnConsultaCheque.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConsultaCheque.Appearance.Options.UseFont = true;
+            this.btnConsultaCheque.ImageOptions.Image = global::SistemaContable.UI.RecursosAdicionales01.buscar_01_16x16;
+            this.btnConsultaCheque.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnConsultaCheque.ImageOptions.ImageToTextIndent = 0;
+            this.btnConsultaCheque.Location = new System.Drawing.Point(1091, 599);
+            this.btnConsultaCheque.Name = "btnConsultaCheque";
+            this.btnConsultaCheque.Size = new System.Drawing.Size(30, 25);
+            this.btnConsultaCheque.TabIndex = 114;
+            this.btnConsultaCheque.TabStop = false;
+            this.btnConsultaCheque.ToolTip = "Consulta de Cheque";
+            this.btnConsultaCheque.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.btnConsultaCheque.ToolTipTitle = "Pago";
+            this.btnConsultaCheque.Click += new System.EventHandler(this.btnConsultaCheque_Click);
             // 
             // btnFinalizar
             // 
@@ -382,7 +397,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxTIPO_RENTA.FormattingEnabled = true;
             this.cbxTIPO_RENTA.Location = new System.Drawing.Point(927, 476);
             this.cbxTIPO_RENTA.Name = "cbxTIPO_RENTA";
-            this.cbxTIPO_RENTA.Size = new System.Drawing.Size(191, 25);
+            this.cbxTIPO_RENTA.Size = new System.Drawing.Size(163, 25);
             this.cbxTIPO_RENTA.TabIndex = 35;
             this.cbxTIPO_RENTA.SelectionChangeCommitted += new System.EventHandler(this.cbxTIPO_RENTA_SelectionChangeCommitted);
             // 
@@ -515,7 +530,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtOBSERVACION.Location = new System.Drawing.Point(155, 631);
             this.txtOBSERVACION.Multiline = true;
             this.txtOBSERVACION.Name = "txtOBSERVACION";
-            this.txtOBSERVACION.Size = new System.Drawing.Size(963, 49);
+            this.txtOBSERVACION.Size = new System.Drawing.Size(966, 49);
             this.txtOBSERVACION.TabIndex = 39;
             // 
             // txtSALDO
@@ -524,7 +539,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtSALDO.Location = new System.Drawing.Point(927, 600);
             this.txtSALDO.Name = "txtSALDO";
             this.txtSALDO.ReadOnly = true;
-            this.txtSALDO.Size = new System.Drawing.Size(191, 24);
+            this.txtSALDO.Size = new System.Drawing.Size(163, 24);
             this.txtSALDO.TabIndex = 38;
             this.txtSALDO.TabStop = false;
             this.txtSALDO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -545,7 +560,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtIVAR.Location = new System.Drawing.Point(927, 538);
             this.txtIVAR.Name = "txtIVAR";
             this.txtIVAR.ReadOnly = true;
-            this.txtIVAR.Size = new System.Drawing.Size(191, 24);
+            this.txtIVAR.Size = new System.Drawing.Size(163, 24);
             this.txtIVAR.TabIndex = 37;
             this.txtIVAR.TabStop = false;
             this.txtIVAR.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -566,7 +581,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtRENTA.Location = new System.Drawing.Point(927, 508);
             this.txtRENTA.Name = "txtRENTA";
             this.txtRENTA.ReadOnly = true;
-            this.txtRENTA.Size = new System.Drawing.Size(191, 24);
+            this.txtRENTA.Size = new System.Drawing.Size(163, 24);
             this.txtRENTA.TabIndex = 36;
             this.txtRENTA.TabStop = false;
             this.txtRENTA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -586,7 +601,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtAPLICABLE_RENTA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAPLICABLE_RENTA.Location = new System.Drawing.Point(927, 446);
             this.txtAPLICABLE_RENTA.Name = "txtAPLICABLE_RENTA";
-            this.txtAPLICABLE_RENTA.Size = new System.Drawing.Size(191, 24);
+            this.txtAPLICABLE_RENTA.Size = new System.Drawing.Size(163, 24);
             this.txtAPLICABLE_RENTA.TabIndex = 34;
             this.txtAPLICABLE_RENTA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -605,7 +620,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtABONO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtABONO.Location = new System.Drawing.Point(927, 416);
             this.txtABONO.Name = "txtABONO";
-            this.txtABONO.Size = new System.Drawing.Size(191, 24);
+            this.txtABONO.Size = new System.Drawing.Size(163, 24);
             this.txtABONO.TabIndex = 33;
             this.txtABONO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -624,7 +639,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCARGO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCARGO.Location = new System.Drawing.Point(927, 386);
             this.txtCARGO.Name = "txtCARGO";
-            this.txtCARGO.Size = new System.Drawing.Size(191, 24);
+            this.txtCARGO.Size = new System.Drawing.Size(163, 24);
             this.txtCARGO.TabIndex = 32;
             this.txtCARGO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -717,25 +732,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label29.Text = "IVA";
             this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // txtPERCEPCION
-            // 
-            this.txtPERCEPCION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPERCEPCION.Location = new System.Drawing.Point(594, 478);
-            this.txtPERCEPCION.Name = "txtPERCEPCION";
-            this.txtPERCEPCION.Size = new System.Drawing.Size(155, 24);
-            this.txtPERCEPCION.TabIndex = 27;
-            this.txtPERCEPCION.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label25
-            // 
-            this.label25.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(511, 481);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(77, 18);
-            this.label25.TabIndex = 78;
-            this.label25.Text = "Percepción";
-            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // txtEXCLUIDO
             // 
             this.txtEXCLUIDO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -804,9 +800,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label21
             // 
             this.label21.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(68, 326);
+            this.label21.Location = new System.Drawing.Point(48, 326);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(80, 24);
+            this.label21.Size = new System.Drawing.Size(100, 24);
             this.label21.TabIndex = 70;
             this.label21.Text = "Orden";
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1259,8 +1255,6 @@ namespace SistemaContable.UI.Forms.Proveedores
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.TextBox txtIVA;
         private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.TextBox txtPERCEPCION;
-        private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox txtEXCLUIDO;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.TextBox txtEXENTA;
@@ -1298,5 +1292,6 @@ namespace SistemaContable.UI.Forms.Proveedores
         private DevExpress.XtraEditors.SimpleButton btnImprimirRetencion;
         private DevExpress.XtraEditors.SimpleButton btnCorreo;
         private DevExpress.XtraEditors.SimpleButton btnProvision;
+        private DevExpress.XtraEditors.SimpleButton btnConsultaCheque;
     }
 }

@@ -41,7 +41,6 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colGRAVADA = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colEXENTA = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colNO_SUJETA = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colPERCEPCION = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colIVA = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colFOVIAL = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colCOTRANS = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -91,7 +90,6 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colGRAVADA,
             this.colEXENTA,
             this.colNO_SUJETA,
-            this.colPERCEPCION,
             this.colIVA,
             this.colFOVIAL,
             this.colCOTRANS,
@@ -208,20 +206,6 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colNO_SUJETA.VisibleIndex = 7;
             this.colNO_SUJETA.Width = 79;
             // 
-            // colPERCEPCION
-            // 
-            this.colPERCEPCION.AppearanceHeader.Options.UseTextOptions = true;
-            this.colPERCEPCION.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.colPERCEPCION.Caption = "Percepción";
-            this.colPERCEPCION.DisplayFormat.FormatString = "N2";
-            this.colPERCEPCION.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.colPERCEPCION.FieldName = "PERCEPCION";
-            this.colPERCEPCION.MinWidth = 21;
-            this.colPERCEPCION.Name = "colPERCEPCION";
-            this.colPERCEPCION.Visible = true;
-            this.colPERCEPCION.VisibleIndex = 8;
-            this.colPERCEPCION.Width = 79;
-            // 
             // colIVA
             // 
             this.colIVA.AppearanceHeader.Options.UseTextOptions = true;
@@ -233,7 +217,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colIVA.MinWidth = 21;
             this.colIVA.Name = "colIVA";
             this.colIVA.Visible = true;
-            this.colIVA.VisibleIndex = 9;
+            this.colIVA.VisibleIndex = 8;
             this.colIVA.Width = 79;
             // 
             // colFOVIAL
@@ -247,7 +231,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colFOVIAL.MinWidth = 21;
             this.colFOVIAL.Name = "colFOVIAL";
             this.colFOVIAL.Visible = true;
-            this.colFOVIAL.VisibleIndex = 10;
+            this.colFOVIAL.VisibleIndex = 9;
             this.colFOVIAL.Width = 79;
             // 
             // colCOTRANS
@@ -261,7 +245,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colCOTRANS.MinWidth = 21;
             this.colCOTRANS.Name = "colCOTRANS";
             this.colCOTRANS.Visible = true;
-            this.colCOTRANS.VisibleIndex = 11;
+            this.colCOTRANS.VisibleIndex = 10;
             this.colCOTRANS.Width = 79;
             // 
             // colTOTAL
@@ -275,7 +259,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colTOTAL.MinWidth = 21;
             this.colTOTAL.Name = "colTOTAL";
             this.colTOTAL.Visible = true;
-            this.colTOTAL.VisibleIndex = 12;
+            this.colTOTAL.VisibleIndex = 11;
             this.colTOTAL.Width = 79;
             // 
             // colRENTA
@@ -289,7 +273,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colRENTA.MinWidth = 21;
             this.colRENTA.Name = "colRENTA";
             this.colRENTA.Visible = true;
-            this.colRENTA.VisibleIndex = 13;
+            this.colRENTA.VisibleIndex = 12;
             this.colRENTA.Width = 79;
             // 
             // colRETENCION_IVA
@@ -303,7 +287,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colRETENCION_IVA.MinWidth = 21;
             this.colRETENCION_IVA.Name = "colRETENCION_IVA";
             this.colRETENCION_IVA.Visible = true;
-            this.colRETENCION_IVA.VisibleIndex = 14;
+            this.colRETENCION_IVA.VisibleIndex = 13;
             this.colRETENCION_IVA.Width = 79;
             // 
             // colSALDO
@@ -317,7 +301,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colSALDO.MinWidth = 21;
             this.colSALDO.Name = "colSALDO";
             this.colSALDO.Visible = true;
-            this.colSALDO.VisibleIndex = 15;
+            this.colSALDO.VisibleIndex = 14;
             this.colSALDO.Width = 79;
             // 
             // panel2
@@ -413,7 +397,6 @@ namespace SistemaContable.UI.Forms.Bancos
         private DevExpress.XtraGrid.Columns.GridColumn colGRAVADA;
         private DevExpress.XtraGrid.Columns.GridColumn colEXENTA;
         private DevExpress.XtraGrid.Columns.GridColumn colNO_SUJETA;
-        private DevExpress.XtraGrid.Columns.GridColumn colPERCEPCION;
         private DevExpress.XtraGrid.Columns.GridColumn colIVA;
         private DevExpress.XtraGrid.Columns.GridColumn colFOVIAL;
         private DevExpress.XtraGrid.Columns.GridColumn colCOTRANS;

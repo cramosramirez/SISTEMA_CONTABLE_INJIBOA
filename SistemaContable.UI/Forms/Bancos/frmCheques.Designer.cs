@@ -56,6 +56,8 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNUMERO_PARTIDA = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.groupControl3 = new DevExpress.XtraEditors.GroupControl();
+            this.pnESTADO_CUENTA = new System.Windows.Forms.Panel();
+            this.lblESTADO_CUENTA = new System.Windows.Forms.Label();
             this.btnDocumentos = new DevExpress.XtraEditors.DropDownButton();
             this.btnAgregar = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
@@ -82,6 +84,7 @@ namespace SistemaContable.UI.Forms.Bancos
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).BeginInit();
             this.groupControl3.SuspendLayout();
+            this.pnESTADO_CUENTA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupDocumentos)).BeginInit();
             this.SuspendLayout();
@@ -340,6 +343,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // groupControl3
             // 
+            this.groupControl3.Controls.Add(this.pnESTADO_CUENTA);
             this.groupControl3.Controls.Add(this.btnDocumentos);
             this.groupControl3.Controls.Add(this.btnAgregar);
             this.groupControl3.Controls.Add(this.btnFinalizar);
@@ -357,6 +361,27 @@ namespace SistemaContable.UI.Forms.Bancos
             this.groupControl3.Size = new System.Drawing.Size(1063, 119);
             this.groupControl3.TabIndex = 2;
             this.groupControl3.Text = "groupControl3";
+            // 
+            // pnESTADO_CUENTA
+            // 
+            this.pnESTADO_CUENTA.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(254)))), ((int)(((byte)(231)))));
+            this.pnESTADO_CUENTA.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnESTADO_CUENTA.Controls.Add(this.lblESTADO_CUENTA);
+            this.pnESTADO_CUENTA.Location = new System.Drawing.Point(11, 17);
+            this.pnESTADO_CUENTA.Name = "pnESTADO_CUENTA";
+            this.pnESTADO_CUENTA.Size = new System.Drawing.Size(406, 33);
+            this.pnESTADO_CUENTA.TabIndex = 21;
+            this.pnESTADO_CUENTA.Visible = false;
+            // 
+            // lblESTADO_CUENTA
+            // 
+            this.lblESTADO_CUENTA.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblESTADO_CUENTA.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblESTADO_CUENTA.Location = new System.Drawing.Point(0, 0);
+            this.lblESTADO_CUENTA.Name = "lblESTADO_CUENTA";
+            this.lblESTADO_CUENTA.Size = new System.Drawing.Size(404, 31);
+            this.lblESTADO_CUENTA.TabIndex = 0;
+            this.lblESTADO_CUENTA.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnDocumentos
             // 
@@ -590,6 +615,7 @@ namespace SistemaContable.UI.Forms.Bancos
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).EndInit();
             this.groupControl3.ResumeLayout(false);
+            this.pnESTADO_CUENTA.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupDocumentos)).EndInit();
             this.ResumeLayout(false);
@@ -641,5 +667,7 @@ namespace SistemaContable.UI.Forms.Bancos
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraBars.PopupMenu popupDocumentos;
+        private System.Windows.Forms.Panel pnESTADO_CUENTA;
+        private System.Windows.Forms.Label lblESTADO_CUENTA;
     }
 }

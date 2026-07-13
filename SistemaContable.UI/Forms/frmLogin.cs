@@ -51,6 +51,10 @@ namespace SistemaContable.UI.Forms
                     Configuracion.NombreUsuarioActual = row["NOMBRE"].ToString();
                     Configuracion.IdRolActual = Convert.ToInt32(row["ID_ROL"]);
                     Configuracion.NombreRolActual = row["NOMBRE_ROL"].ToString();
+
+                    // Configurar Helper de Cuentas Contables para Grid
+                    CuentaContableHint.Configurar(new DALBase());
+
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }

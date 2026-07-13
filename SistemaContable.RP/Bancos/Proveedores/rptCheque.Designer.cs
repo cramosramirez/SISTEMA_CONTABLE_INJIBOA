@@ -74,6 +74,9 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.xrLabel5});
             this.Detail.HeightF = 17F;
             this.Detail.Name = "Detail";
+            this.Detail.SortFields.AddRange(new DevExpress.XtraReports.UI.GroupField[] {
+            new DevExpress.XtraReports.UI.GroupField("CARGO", DevExpress.XtraReports.UI.XRColumnSortOrder.Descending),
+            new DevExpress.XtraReports.UI.GroupField("CTACONTABLE", DevExpress.XtraReports.UI.XRColumnSortOrder.Descending)});
             // 
             // xrLabel8
             // 

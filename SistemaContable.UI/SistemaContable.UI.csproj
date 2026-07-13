@@ -97,6 +97,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Update="RecursosAdicionales01.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RecursosAdicionales01.resx</DependentUpon>
+    </Compile>
     <Compile Update="ResourceChris.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -107,6 +112,10 @@
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="RecursosAdicionales01.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RecursosAdicionales01.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="ResourceChris.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

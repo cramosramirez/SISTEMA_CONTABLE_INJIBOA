@@ -27,8 +27,6 @@ namespace SistemaContable.UI.Forms.Bancos
         private DataTable _documentosPago; // Documentos a pagar mediante Quedan
         private string _uidEnlaceCheque = string.Empty;
 
-     
-
         public frmCheques()
         {            
             InitializeComponent();
@@ -75,10 +73,16 @@ namespace SistemaContable.UI.Forms.Bancos
                 new BusquedaConfig
                 {
                     StoredProcedure = "SP_CUENTA_BANCARIA",
+                    ParametrosExtra = new { ACTIVA = true},
                     Columnas = new Dictionary<string, string>
                     {
                         { "NUM_CUENTA", "CUENTA" },
                         { "NOMBRE",     "NOMBRE" }
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
+                        { "NUM_CUENTA",  110 },
+                        { "NOMBRE",  400 }
                     }
                 },
                 fila =>
@@ -125,6 +129,15 @@ namespace SistemaContable.UI.Forms.Bancos
             );
             ConfigurarCRUD(EstadoFormulario.Nuevo);
             ConfigurarMenuDocumentos();
+            ConfigurarOperacion();
+        }
+
+        private void ConfigurarOperacion()
+        {          
+            txtOPERACION.Text = "CH";
+            txtOPERACION.Tag = "1";
+            txtOPERACION.ReadOnly = true;
+            this.BeginInvoke(new Action(() => txtNUM_CUENTA.Focus()));
         }
 
         private void ConfigurarMenuDocumentos()
@@ -401,6 +414,13 @@ namespace SistemaContable.UI.Forms.Bancos
             _dtPartida.RowChanged += (s, ev) => ActualizarCuadre();
             _dtPartida.RowDeleted += (s, ev) => ActualizarCuadre();
 
+            // Actualiza el label de cuenta contable en cuanto cambia el valor de la columna
+            _dtPartida.ColumnChanged += (s, ev) =>
+            {
+                if (ev.Column.ColumnName == "CTACONTABLE")
+                    ActualizarEstadoCuenta(ev.Row["CTACONTABLE"]?.ToString());
+            };
+
             // Agregar fila vacía inicial
             AgregarFilaVacia();
 
@@ -450,15 +470,7 @@ namespace SistemaContable.UI.Forms.Bancos
                     else
                         ev.DisplayText = string.Empty;
                 }
-            };
-
-            /*
-            view.CellValueChanged += (s, ev) =>
-            {
-                if (ev.Column.FieldName == "CARGO" || ev.Column.FieldName == "ABONO")
-                    ActualizarCuadre();
-            };
-           */
+            };          
 
             // Selección de fila completa
             view.OptionsSelection.EnableAppearanceFocusedCell = false;
@@ -472,8 +484,7 @@ namespace SistemaContable.UI.Forms.Bancos
             view.Appearance.Row.Options.UseFont = true;
             view.Appearance.Row.Options.UseForeColor = true;            
             view.Appearance.HeaderPanel.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
-            view.Appearance.HeaderPanel.Options.UseFont = true;
-            //ActualizarCuadre();
+            view.Appearance.HeaderPanel.Options.UseFont = true;         
         }
 
         private void ConfigurarColumna(GridView view, string fieldName,
@@ -530,6 +541,19 @@ namespace SistemaContable.UI.Forms.Bancos
 
             // Agregar fila vacía para siguiente ingreso
             AgregarFilaVacia();            
+        }
+
+        private void ActualizarEstadoCuenta(string codigo)
+        {
+            var (texto, esValida) = CuentaContableHint.Obtener(codigo);
+
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                lblESTADO_CUENTA.Text = "";
+                return;
+            }
+            lblESTADO_CUENTA.Text = texto;
+            lblESTADO_CUENTA.ForeColor = esValida ? Color.DarkGreen : Color.DarkRed;
         }
 
         /// <summary>
@@ -694,7 +718,20 @@ namespace SistemaContable.UI.Forms.Bancos
             DevExpress.XtraGrid.Views.Base.FocusedColumnChangedEventArgs e)
         {
             var view = sender as GridView;
-            if (view == null) return;           
+            if (view == null) return;
+
+            // ============================================================
+            // Mostrar/ocultar el panel de estado de cuenta contable
+            // ============================================================
+            if (_columnaAnteriorGrid == "CTACONTABLE" && e.FocusedColumn?.FieldName != "CTACONTABLE")
+            {
+                string cta = view.GetFocusedRowCellValue("CTACONTABLE")?.ToString();
+                MostrarEstadoCuenta(cta);
+            }
+            else
+            {
+                OcultarEstadoCuenta();
+            }
 
             if (_columnaAnteriorGrid == "CTACONTABLE" &&
                 e.FocusedColumn?.FieldName == "DETALLE")
@@ -721,6 +758,28 @@ namespace SistemaContable.UI.Forms.Bancos
             _columnaAnteriorGrid = e.FocusedColumn?.FieldName ?? string.Empty;
         }
 
+        private void MostrarEstadoCuenta(string codigo)
+        {
+            var (texto, esValida) = CuentaContableHint.Obtener(codigo);
+
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                OcultarEstadoCuenta();
+                return;
+            }
+            lblESTADO_CUENTA.Text = texto;
+            lblESTADO_CUENTA.ForeColor = esValida ? Color.Black : Color.DarkRed;
+            lblESTADO_CUENTA.Font = new Font(
+                lblESTADO_CUENTA.Font,
+                esValida ? FontStyle.Regular : FontStyle.Bold);
+            pnESTADO_CUENTA.Visible = true;
+        }
+
+        private void OcultarEstadoCuenta()
+        {
+            pnESTADO_CUENTA.Visible = false;
+        }
+
         private void AbrirBusquedaCuenta(GridView view)
         {
             var config = new BusquedaConfig
@@ -730,6 +789,11 @@ namespace SistemaContable.UI.Forms.Bancos
                 {
                     { "CUENTA",        "CUENTA" },
                     { "NOMBRE_CUENTA", "NOMBRE" }
+                },
+                Anchos = new Dictionary<string, int>
+                {
+                    { "CUENTA",  130 },
+                    { "NOMBRE_CUENTA",  400 }
                 },
                 ParametrosExtra = new { ES_DETALLE = true }
             };
@@ -1395,15 +1459,14 @@ namespace SistemaContable.UI.Forms.Bancos
             _dtPartida.Clear();
             AgregarFilaVacia();
             mskFECHA_CHEQUE.Text = DateTime.Today.ToString("dd/MM/yyyy");
-            txtOPERACION.Focus();
+            ConfigurarOperacion();
             ActualizarCuadre();
             ConfigurarCRUD(EstadoFormulario.Nuevo);
 
             // Abrir automáticamente la búsqueda de Tipo de Operación
             this.BeginInvoke(new Action(() =>
             {
-                txtOPERACION.Focus();
-                FormHelper.AbrirBusqueda(txtOPERACION);
+                txtNUM_CUENTA.Focus();                
             }));
         }
 

@@ -277,11 +277,47 @@ namespace SistemaContable.UI.Forms.Proveedores
             e.Handled = true;
         }
 
+
+        private void MostrarEstadoCuenta(string codigo)
+        {
+            var (texto, esValida) = CuentaContableHint.Obtener(codigo);
+
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                OcultarEstadoCuenta();
+                return;
+            }
+            lblESTADO_CUENTA.Text = texto;
+            lblESTADO_CUENTA.ForeColor = esValida ? Color.Black : Color.DarkRed;
+            lblESTADO_CUENTA.Font = new Font(
+                lblESTADO_CUENTA.Font,
+                esValida ? FontStyle.Regular : FontStyle.Bold);
+            pnESTADO_CUENTA.Visible = true;
+        }
+
+        private void OcultarEstadoCuenta()
+        {
+            pnESTADO_CUENTA.Visible = false;
+        }
+
         private void GridView_FocusedColumnChanged(object sender,
             DevExpress.XtraGrid.Views.Base.FocusedColumnChangedEventArgs e)
         {
             var view = sender as GridView;
             if (view == null) return;
+
+            // ============================================================
+            // Mostrar/ocultar el panel de estado de cuenta contable
+            // ============================================================
+            if (_columnaAnteriorGrid == "CTACONTABLE" && e.FocusedColumn?.FieldName != "CTACONTABLE")
+            {
+                string cta = view.GetFocusedRowCellValue("CTACONTABLE")?.ToString();
+                MostrarEstadoCuenta(cta);
+            }
+            else
+            {
+                OcultarEstadoCuenta();
+            }
 
             if (_columnaAnteriorGrid == "CTACONTABLE" &&
                 e.FocusedColumn?.FieldName == "DETALLE")

@@ -14,6 +14,7 @@ using DevExpress.XtraEditors;
 using ComboBox = System.Windows.Forms.ComboBox;
 using System.Data.SqlClient;
 using SistemaContable.RP.Bancos.Proveedores;
+using DevExpress.Utils;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
@@ -62,7 +63,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             }
             InicializarHelperMinisterioHacienda();
             CargarCombos();
-            cbxSUCURSAL.SelectedValue = 1;
+            cbxSUCURSAL.SelectedValue = 1;            
+            mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy"); 
             // Cargar de Combos Reuqeridos por MH
             CargarTipoServicio();   // Independiente 
             CargarTipoOperacion();  // Independiente (al cambiar dispara cascada)
@@ -98,7 +100,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtCONSULTA_MH.Leave += txtCONSULTA_MH_Leave;
 
             ConfigurarTextBoxDecimal(
-                txtGRAVADA, txtEXENTA, txtEXCLUIDO, txtPERCEPCION,
+                txtGRAVADA, txtEXENTA, txtEXCLUIDO, 
                 txtIVA, txtFOVIAL, txtCONTRANS, txtTOTAL,
                 txtCARGO, txtABONO, txtAPLICABLE_RENTA, txtRENTA,
                 txtIVAR, txtSALDO
@@ -111,7 +113,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtAPLICABLE_RENTA.Leave += txtAplicableRenta_Leave;
 
             EngancharRecalculo(
-                txtEXCLUIDO, txtPERCEPCION, txtFOVIAL, txtCONTRANS,
+                txtEXCLUIDO, txtFOVIAL, txtCONTRANS,
                 txtCARGO, txtABONO
             );
 
@@ -258,8 +260,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 // ---------- Montos ----------
                 AsignarDecimal(txtGRAVADA, ToDecimal(r["GRAVADA"]));
                 AsignarDecimal(txtEXENTA, ToDecimal(r["EXENTA"]));
-                AsignarDecimal(txtEXCLUIDO, ToDecimal(r["NO_SUJETA"]));
-                AsignarDecimal(txtPERCEPCION, ToDecimal(r["PERCEPCION"]));
+                AsignarDecimal(txtEXCLUIDO, ToDecimal(r["NO_SUJETA"]));                
                 AsignarDecimal(txtIVA, ToDecimal(r["IVA"]));
                 AsignarDecimal(txtFOVIAL, ToDecimal(r["FOVIAL"]));
                 AsignarDecimal(txtCONTRANS, ToDecimal(r["COTRANS"]));
@@ -698,8 +699,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             decimal gravada = ObtenerDecimal(txtGRAVADA);
             decimal exenta = ObtenerDecimal(txtEXENTA);
-            decimal excluido = ObtenerDecimal(txtEXCLUIDO);
-            decimal percepcion = ObtenerDecimal(txtPERCEPCION);
+            decimal excluido = ObtenerDecimal(txtEXCLUIDO);           
             decimal fovial = ObtenerDecimal(txtFOVIAL);
             decimal contrans = ObtenerDecimal(txtCONTRANS);
             decimal cargo = ObtenerDecimal(txtCARGO);
@@ -715,7 +715,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             if (retieneIva)
                 ivar = Calculo.Redondear(gravada * 0.01m, 2);
 
-            decimal total = gravada + exenta + excluido + percepcion + iva + fovial + contrans;
+            decimal total = gravada + exenta + excluido + iva + fovial + contrans;
             decimal saldo = total - cargo - abono - renta - ivar;
 
             AsignarDecimal(txtIVA, iva);
@@ -913,8 +913,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     ID_TIPO_COSTO = ObtenerIdCombo(cbxTIPO_COSTO),
                     NO_SUJETA = ObtenerDecimal(txtEXCLUIDO),
                     EXENTA = ObtenerDecimal(txtEXENTA),
-                    GRAVADA = ObtenerDecimal(txtGRAVADA),
-                    PERCEPCION = ObtenerDecimal(txtPERCEPCION),
+                    GRAVADA = ObtenerDecimal(txtGRAVADA),                    
                     IVA = ObtenerDecimal(txtIVA),
                     FOVIAL = ObtenerDecimal(txtFOVIAL),
                     COTRANS = ObtenerDecimal(txtCONTRANS),
@@ -1011,7 +1010,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             cbxTIPO_RENTA.SelectedIndex = 0;
 
             foreach (var tb in new[] {
-                txtGRAVADA, txtEXENTA, txtEXCLUIDO, txtPERCEPCION,
+                txtGRAVADA, txtEXENTA, txtEXCLUIDO, 
                 txtIVA,     txtFOVIAL, txtCONTRANS, txtTOTAL,
                 txtCARGO,   txtABONO,  txtAPLICABLE_RENTA, txtRENTA,
                 txtIVAR,    txtSALDO, txtOBSERVACION })
@@ -1177,6 +1176,38 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 Cursor = Cursors.Default;
             }
+        }
+
+        private void btnConsultaCheque_Click(object sender, EventArgs e)
+        {
+            // Realizar consulta de cheque
+            DataTable dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",
+                    new
+                    {
+                        ACCION = "OBTENER_CHEQUE",
+                        ID_CCF_COMPRA = IdCcfCompra
+                    });
+
+            if (dt.Rows.Count == 0)
+            {
+                XtraMessageBox.Show("No hay cheque emitido.",
+                    "Información de pago", MessageBoxButtons.OK, MessageBoxIcon.Information);                                
+            }
+            else
+            {
+                DataRow r = dt.Rows[0];
+                var args = new XtraMessageBoxArgs
+                {
+                    Caption = "Información de pago",
+                    Text = $"<b>N° Cheque: {r["NUM_CHEQUE"].ToString()}</b>" + Environment.NewLine + $"<b>Fecha: {AsFecha(r["FECHA_CHEQUE"])}</b>",
+                    Buttons = new[] { DialogResult.OK },
+                    Icon = SystemIcons.Information,
+                    AllowHtmlText = DefaultBoolean.True
+                };
+                XtraMessageBox.Show(args);
+            }
+
+            
         }
     }
 }

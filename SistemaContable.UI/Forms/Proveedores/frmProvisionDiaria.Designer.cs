@@ -444,7 +444,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(1198, 29);
             this.label2.TabIndex = 0;
-            this.label2.Text = "COMPROBANTES SIN PROVISIÓN";
+            this.label2.Text = "Comprobantes pendientes de provisión";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel3
@@ -629,7 +629,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(1198, 29);
             this.label3.TabIndex = 1;
-            this.label3.Text = "COMPROBANTES CON PROVISIÓN";
+            this.label3.Text = "Comprobantes con provisión";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // frmProvisionDiaria
