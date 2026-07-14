@@ -319,6 +319,10 @@ namespace SistemaContable.UI.Forms.Clientes
                 repoRol.NullText = "-- Seleccionar --";
                 repoRol.ShowHeader = false;
                 repoRol.ShowFooter = false;
+                // Solo mostrar la columna de nombre en el desplegable
+                repoRol.Columns.Clear();
+                repoRol.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo(
+                    "NOMBRE_TIPO_CLIENTE", "Tipo Cliente", 250));
                 gridRoles.RepositoryItems.Add(repoRol);
                 colRol.ColumnEdit = repoRol;
             }

@@ -925,7 +925,7 @@
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnSalir);
             this.Name = "frmCliente";
-            this.Text = "Mantenimiento de Entidades";
+            this.Text = "Mantenimiento de Clientes";
             this.Load += new System.EventHandler(this.frmEntidad_Load);
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
