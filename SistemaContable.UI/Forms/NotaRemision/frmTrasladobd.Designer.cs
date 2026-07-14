@@ -262,7 +262,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.txtLicencia.BackColor = System.Drawing.SystemColors.Window;
             this.txtLicencia.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLicencia.Location = new System.Drawing.Point(675, 398);
+            this.txtLicencia.Location = new System.Drawing.Point(689, 398);
             this.txtLicencia.Name = "txtLicencia";
             this.txtLicencia.ReadOnly = true;
             this.txtLicencia.Size = new System.Drawing.Size(147, 22);
@@ -272,7 +272,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label30.Location = new System.Drawing.Point(572, 398);
+            this.label30.Location = new System.Drawing.Point(570, 398);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(49, 14);
             this.label30.TabIndex = 190;
@@ -332,7 +332,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.cbxIdTransposte.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxIdTransposte.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxIdTransposte.FormattingEnabled = true;
-            this.cbxIdTransposte.Location = new System.Drawing.Point(675, 370);
+            this.cbxIdTransposte.Location = new System.Drawing.Point(689, 370);
             this.cbxIdTransposte.Name = "cbxIdTransposte";
             this.cbxIdTransposte.Size = new System.Drawing.Size(147, 22);
             this.cbxIdTransposte.TabIndex = 182;
@@ -341,11 +341,11 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(572, 370);
+            this.label25.Location = new System.Drawing.Point(570, 370);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(67, 14);
+            this.label25.Size = new System.Drawing.Size(113, 14);
             this.label25.TabIndex = 183;
-            this.label25.Text = "Transporte";
+            this.label25.Text = "Tipo de Transporte";
             // 
             // txtPROV_TRANSP
             // 

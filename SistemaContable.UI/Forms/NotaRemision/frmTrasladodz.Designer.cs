@@ -311,7 +311,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.txtLicencia.BackColor = System.Drawing.SystemColors.Window;
             this.txtLicencia.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLicencia.Location = new System.Drawing.Point(675, 381);
+            this.txtLicencia.Location = new System.Drawing.Point(691, 381);
             this.txtLicencia.Name = "txtLicencia";
             this.txtLicencia.ReadOnly = true;
             this.txtLicencia.Size = new System.Drawing.Size(147, 22);
@@ -381,7 +381,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.cbxIdTransposte.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxIdTransposte.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxIdTransposte.FormattingEnabled = true;
-            this.cbxIdTransposte.Location = new System.Drawing.Point(675, 353);
+            this.cbxIdTransposte.Location = new System.Drawing.Point(691, 353);
             this.cbxIdTransposte.Name = "cbxIdTransposte";
             this.cbxIdTransposte.Size = new System.Drawing.Size(147, 22);
             this.cbxIdTransposte.TabIndex = 182;
@@ -392,9 +392,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label25.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label25.Location = new System.Drawing.Point(572, 353);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(67, 14);
+            this.label25.Size = new System.Drawing.Size(113, 14);
             this.label25.TabIndex = 183;
-            this.label25.Text = "Transporte";
+            this.label25.Text = "Tipo de Transporte";
             // 
             // txtPROV_TRANSP
             // 

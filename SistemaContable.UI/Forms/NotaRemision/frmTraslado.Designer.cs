@@ -30,6 +30,21 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.txtRemolque = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.txtLicencia = new System.Windows.Forms.TextBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.txtMotorista = new System.Windows.Forms.TextBox();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.txtPlaca = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.cbxIdTransposte = new System.Windows.Forms.ComboBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.txtPROV_TRANSP = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
             this.label35 = new System.Windows.Forms.Label();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
@@ -72,21 +87,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.txtNRC = new System.Windows.Forms.TextBox();
             this.txtPROVEEDOR = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.txtRemolque = new System.Windows.Forms.TextBox();
-            this.label32 = new System.Windows.Forms.Label();
-            this.txtLicencia = new System.Windows.Forms.TextBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.txtMotorista = new System.Windows.Forms.TextBox();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.txtPlaca = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.cbxIdTransposte = new System.Windows.Forms.ComboBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.txtPROV_TRANSP = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -155,6 +155,154 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1171, 676);
             this.panel1.TabIndex = 0;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label33.Location = new System.Drawing.Point(31, 229);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(176, 15);
+            this.label33.TabIndex = 214;
+            this.label33.Text = "Información de Transporte";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.BackColor = System.Drawing.SystemColors.Info;
+            this.label31.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label31.Location = new System.Drawing.Point(934, 281);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(42, 14);
+            this.label31.TabIndex = 213;
+            this.label31.Text = "REXXX";
+            // 
+            // txtRemolque
+            // 
+            this.txtRemolque.BackColor = System.Drawing.SystemColors.Window;
+            this.txtRemolque.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRemolque.Location = new System.Drawing.Point(978, 281);
+            this.txtRemolque.Name = "txtRemolque";
+            this.txtRemolque.Size = new System.Drawing.Size(147, 22);
+            this.txtRemolque.TabIndex = 211;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label32.Location = new System.Drawing.Point(875, 281);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(61, 14);
+            this.label32.TabIndex = 212;
+            this.label32.Text = "Remolque";
+            // 
+            // txtLicencia
+            // 
+            this.txtLicencia.BackColor = System.Drawing.SystemColors.Window;
+            this.txtLicencia.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLicencia.Location = new System.Drawing.Point(693, 281);
+            this.txtLicencia.Name = "txtLicencia";
+            this.txtLicencia.ReadOnly = true;
+            this.txtLicencia.Size = new System.Drawing.Size(147, 22);
+            this.txtLicencia.TabIndex = 209;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label30.Location = new System.Drawing.Point(574, 281);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(49, 14);
+            this.label30.TabIndex = 210;
+            this.label30.Text = "Licencia";
+            // 
+            // txtMotorista
+            // 
+            this.txtMotorista.BackColor = System.Drawing.SystemColors.Window;
+            this.txtMotorista.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMotorista.Location = new System.Drawing.Point(161, 281);
+            this.txtMotorista.Name = "txtMotorista";
+            this.txtMotorista.Size = new System.Drawing.Size(385, 22);
+            this.txtMotorista.TabIndex = 207;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label29.Location = new System.Drawing.Point(31, 281);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(57, 14);
+            this.label29.TabIndex = 208;
+            this.label29.Text = "Motorista";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.BackColor = System.Drawing.SystemColors.Info;
+            this.label28.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label28.Location = new System.Drawing.Point(934, 253);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(42, 14);
+            this.label28.TabIndex = 206;
+            this.label28.Text = "CXXXX";
+            // 
+            // txtPlaca
+            // 
+            this.txtPlaca.BackColor = System.Drawing.SystemColors.Window;
+            this.txtPlaca.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPlaca.Location = new System.Drawing.Point(978, 253);
+            this.txtPlaca.Name = "txtPlaca";
+            this.txtPlaca.Size = new System.Drawing.Size(147, 22);
+            this.txtPlaca.TabIndex = 204;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.Location = new System.Drawing.Point(875, 253);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(34, 14);
+            this.label27.TabIndex = 205;
+            this.label27.Text = "Placa";
+            // 
+            // cbxIdTransposte
+            // 
+            this.cbxIdTransposte.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxIdTransposte.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbxIdTransposte.FormattingEnabled = true;
+            this.cbxIdTransposte.Location = new System.Drawing.Point(693, 253);
+            this.cbxIdTransposte.Name = "cbxIdTransposte";
+            this.cbxIdTransposte.Size = new System.Drawing.Size(147, 22);
+            this.cbxIdTransposte.TabIndex = 202;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Location = new System.Drawing.Point(574, 253);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(113, 14);
+            this.label25.TabIndex = 203;
+            this.label25.Text = "Tipo de Transporte";
+            // 
+            // txtPROV_TRANSP
+            // 
+            this.txtPROV_TRANSP.BackColor = System.Drawing.SystemColors.Window;
+            this.txtPROV_TRANSP.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPROV_TRANSP.Location = new System.Drawing.Point(161, 253);
+            this.txtPROV_TRANSP.Name = "txtPROV_TRANSP";
+            this.txtPROV_TRANSP.Size = new System.Drawing.Size(385, 22);
+            this.txtPROV_TRANSP.TabIndex = 200;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(31, 253);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(63, 14);
+            this.label24.TabIndex = 201;
+            this.label24.Text = "Proveedor";
             // 
             // label34
             // 
@@ -598,154 +746,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label1.Size = new System.Drawing.Size(44, 14);
             this.label1.TabIndex = 119;
             this.label1.Text = "Cliente";
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.Location = new System.Drawing.Point(31, 229);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(176, 15);
-            this.label33.TabIndex = 214;
-            this.label33.Text = "Información de Transporte";
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.BackColor = System.Drawing.SystemColors.Info;
-            this.label31.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label31.Location = new System.Drawing.Point(934, 281);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(42, 14);
-            this.label31.TabIndex = 213;
-            this.label31.Text = "REXXX";
-            // 
-            // txtRemolque
-            // 
-            this.txtRemolque.BackColor = System.Drawing.SystemColors.Window;
-            this.txtRemolque.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRemolque.Location = new System.Drawing.Point(978, 281);
-            this.txtRemolque.Name = "txtRemolque";
-            this.txtRemolque.Size = new System.Drawing.Size(147, 22);
-            this.txtRemolque.TabIndex = 211;
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.Location = new System.Drawing.Point(875, 281);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(61, 14);
-            this.label32.TabIndex = 212;
-            this.label32.Text = "Remolque";
-            // 
-            // txtLicencia
-            // 
-            this.txtLicencia.BackColor = System.Drawing.SystemColors.Window;
-            this.txtLicencia.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLicencia.Location = new System.Drawing.Point(677, 281);
-            this.txtLicencia.Name = "txtLicencia";
-            this.txtLicencia.ReadOnly = true;
-            this.txtLicencia.Size = new System.Drawing.Size(147, 22);
-            this.txtLicencia.TabIndex = 209;
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label30.Location = new System.Drawing.Point(574, 281);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(49, 14);
-            this.label30.TabIndex = 210;
-            this.label30.Text = "Licencia";
-            // 
-            // txtMotorista
-            // 
-            this.txtMotorista.BackColor = System.Drawing.SystemColors.Window;
-            this.txtMotorista.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMotorista.Location = new System.Drawing.Point(161, 281);
-            this.txtMotorista.Name = "txtMotorista";
-            this.txtMotorista.Size = new System.Drawing.Size(385, 22);
-            this.txtMotorista.TabIndex = 207;
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label29.Location = new System.Drawing.Point(31, 281);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(57, 14);
-            this.label29.TabIndex = 208;
-            this.label29.Text = "Motorista";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.BackColor = System.Drawing.SystemColors.Info;
-            this.label28.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label28.Location = new System.Drawing.Point(934, 253);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(42, 14);
-            this.label28.TabIndex = 206;
-            this.label28.Text = "CXXXX";
-            // 
-            // txtPlaca
-            // 
-            this.txtPlaca.BackColor = System.Drawing.SystemColors.Window;
-            this.txtPlaca.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPlaca.Location = new System.Drawing.Point(978, 253);
-            this.txtPlaca.Name = "txtPlaca";
-            this.txtPlaca.Size = new System.Drawing.Size(147, 22);
-            this.txtPlaca.TabIndex = 204;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.Location = new System.Drawing.Point(875, 253);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(34, 14);
-            this.label27.TabIndex = 205;
-            this.label27.Text = "Placa";
-            // 
-            // cbxIdTransposte
-            // 
-            this.cbxIdTransposte.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxIdTransposte.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxIdTransposte.FormattingEnabled = true;
-            this.cbxIdTransposte.Location = new System.Drawing.Point(677, 253);
-            this.cbxIdTransposte.Name = "cbxIdTransposte";
-            this.cbxIdTransposte.Size = new System.Drawing.Size(147, 22);
-            this.cbxIdTransposte.TabIndex = 202;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(574, 253);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(67, 14);
-            this.label25.TabIndex = 203;
-            this.label25.Text = "Transporte";
-            // 
-            // txtPROV_TRANSP
-            // 
-            this.txtPROV_TRANSP.BackColor = System.Drawing.SystemColors.Window;
-            this.txtPROV_TRANSP.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPROV_TRANSP.Location = new System.Drawing.Point(161, 253);
-            this.txtPROV_TRANSP.Name = "txtPROV_TRANSP";
-            this.txtPROV_TRANSP.Size = new System.Drawing.Size(385, 22);
-            this.txtPROV_TRANSP.TabIndex = 200;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(31, 253);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(63, 14);
-            this.label24.TabIndex = 201;
-            this.label24.Text = "Proveedor";
             // 
             // frmTraslado
             // 

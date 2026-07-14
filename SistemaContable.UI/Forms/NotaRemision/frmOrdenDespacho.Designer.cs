@@ -31,6 +31,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtKilogramos = new System.Windows.Forms.TextBox();
             this.label33 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
             this.label35 = new System.Windows.Forms.Label();
@@ -96,7 +97,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.txtNRC = new System.Windows.Forms.TextBox();
             this.txtPROVEEDOR = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtKilogramos = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -175,6 +175,16 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Size = new System.Drawing.Size(1171, 702);
             this.panel1.TabIndex = 0;
             // 
+            // txtKilogramos
+            // 
+            this.txtKilogramos.BackColor = System.Drawing.SystemColors.Window;
+            this.txtKilogramos.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtKilogramos.Location = new System.Drawing.Point(675, 184);
+            this.txtKilogramos.Name = "txtKilogramos";
+            this.txtKilogramos.Size = new System.Drawing.Size(147, 22);
+            this.txtKilogramos.TabIndex = 200;
+            this.txtKilogramos.Visible = false;
+            // 
             // label33
             // 
             this.label33.AutoSize = true;
@@ -239,7 +249,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.txtLicencia.BackColor = System.Drawing.SystemColors.Window;
             this.txtLicencia.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLicencia.Location = new System.Drawing.Point(675, 333);
+            this.txtLicencia.Location = new System.Drawing.Point(691, 333);
             this.txtLicencia.Name = "txtLicencia";
             this.txtLicencia.ReadOnly = true;
             this.txtLicencia.Size = new System.Drawing.Size(147, 22);
@@ -309,7 +319,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.cbxIdTransposte.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxIdTransposte.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxIdTransposte.FormattingEnabled = true;
-            this.cbxIdTransposte.Location = new System.Drawing.Point(675, 305);
+            this.cbxIdTransposte.Location = new System.Drawing.Point(691, 305);
             this.cbxIdTransposte.Name = "cbxIdTransposte";
             this.cbxIdTransposte.Size = new System.Drawing.Size(147, 22);
             this.cbxIdTransposte.TabIndex = 182;
@@ -320,9 +330,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label25.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label25.Location = new System.Drawing.Point(572, 305);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(67, 14);
+            this.label25.Size = new System.Drawing.Size(113, 14);
             this.label25.TabIndex = 183;
-            this.label25.Text = "Transporte";
+            this.label25.Text = "Tipo de Transporte";
             // 
             // txtPROV_TRANSP
             // 
@@ -841,16 +851,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label1.Size = new System.Drawing.Size(44, 14);
             this.label1.TabIndex = 119;
             this.label1.Text = "Cliente";
-            // 
-            // txtKilogramos
-            // 
-            this.txtKilogramos.BackColor = System.Drawing.SystemColors.Window;
-            this.txtKilogramos.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtKilogramos.Location = new System.Drawing.Point(675, 184);
-            this.txtKilogramos.Name = "txtKilogramos";
-            this.txtKilogramos.Size = new System.Drawing.Size(147, 22);
-            this.txtKilogramos.TabIndex = 200;
-            this.txtKilogramos.Visible = false;
             // 
             // frmOrdenDespacho
             // 
