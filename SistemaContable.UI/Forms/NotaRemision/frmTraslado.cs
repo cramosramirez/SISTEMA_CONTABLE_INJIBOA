@@ -93,13 +93,11 @@ namespace SistemaContable.UI.Forms.NotaRemision
                    Accion = "BUSCAR",
                    Columnas = new Dictionary<string, string>
                    {
-                        { "ID_PROV_TRANSP", "ID" },
-                        { "NOMBRE",         "NOMBRE"    },
+                        { "NOMBRE",         "PROVEEDOR"    },
                         { "TRANSPORTE",            "TRANSPORTE"       }
                    },
                    Anchos = new Dictionary<string, int>
                    {
-                        { "CODIGO_ENTIDAD", 100 },
                         { "NOMBRE",         300 },
                         { "TRANSPORTE",            300 }
                    }
@@ -117,13 +115,11 @@ namespace SistemaContable.UI.Forms.NotaRemision
                   Accion = "BUSCAR",
                   Columnas = new Dictionary<string, string>
                   {
-                        { "ID_MOTORISTA", "ID" },
-                        { "NOMBRE",         "NOMBRE"    },
+                        { "NOMBRE",         "MOTORISTA"    },
                         { "LICENCIA",            "LICENCIA"       }
                   },
                   Anchos = new Dictionary<string, int>
                   {
-                        { "CODIGO_ENTIDAD", 100 },
                         { "NOMBRE",         300 },
                         { "LICENCIA",            60 }
                   }
