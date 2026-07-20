@@ -16,7 +16,8 @@ namespace SistemaContable.UI.Forms.Inventario
         #region === CAMPOS PRIVADOS ===
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtRoles;
-        private DataTable _dtRolesCatalogo;
+        private DataTable _dtPrecios;
+        private DataTable _dtProductoTributos;
         // Catálogos en memoria para la búsqueda genérica con "*"
         // (Tributo, Unidad de Medida, Tp. Operación, Tp. Ingreso)
         private DataTable _dtTributos;
@@ -48,6 +49,8 @@ namespace SistemaContable.UI.Forms.Inventario
             CargarTipoIngresoVentas();
             RegistrarBusquedasCatalogos();
             InicializarGridRoles();
+            InicializarGridPrecios();
+            InicializarGridTributos();
             if (IdProducto == 0)
             {
                 LimpiarFormulario();
@@ -275,9 +278,6 @@ namespace SistemaContable.UI.Forms.Inventario
         #region === GRID ROLES ===
         private void InicializarGridRoles()
         {
-            // Cargar catálogo de roles para el combo del grid
-            _dtRolesCatalogo = _dal.EjecutarConsulta("[EINVENTARIO].[SP_ROL_PROD]",
-                new { ACCION = "LISTAR" });
             _dtRoles = new DataTable();
             _dtRoles.Columns.Add("ID_PRODUCTO_ROL", typeof(int));
             _dtRoles.Columns.Add("ID_PRODUCTO", typeof(int));
@@ -294,7 +294,7 @@ namespace SistemaContable.UI.Forms.Inventario
             OcultarColumna(view, "ID_PRODUCTO_ROL");
             OcultarColumna(view, "ID_PRODUCTO");
             OcultarColumna(view, "ID_ROL_PROD");
-            // Columna: Rol (combo lookup)
+            // Columna: Rol (búsqueda genérica con "*", igual que txtCODTRIBUTO del encabezado)
             var colRol = view.Columns["NOMBRE_ROL_PROD"];
             if (colRol != null)
             {
@@ -303,28 +303,18 @@ namespace SistemaContable.UI.Forms.Inventario
                 colRol.Visible = true;
                 colRol.VisibleIndex = 0;
                 colRol.OptionsColumn.AllowEdit = true;
-                var repoCombo = new RepositoryItemLookUpEdit();
-                repoCombo.DataSource = _dtRolesCatalogo;
-                repoCombo.ValueMember = "NOMBRE_ROL_PROD";
-                repoCombo.DisplayMember = "NOMBRE_ROL_PROD";
-                repoCombo.NullText = "-- Seleccione --";
-                repoCombo.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("NOMBRE_ROL_PROD", "Rol", 220));
-                repoCombo.ShowHeader = false;
-                repoCombo.EditValueChanged += (s, ev) =>
+                var repoTexto = new RepositoryItemTextEdit();
+                repoTexto.KeyDown += (s, ev) =>
                 {
-                    // Sincronizar ID_ROL_PROD al seleccionar del combo
-                    var editor = s as LookUpEdit;
+                    if (ev.KeyCode != Keys.Enter) return;
+                    var editor = s as TextEdit;
                     if (editor == null) return;
-                    string nombreRol = editor.EditValue?.ToString();
-                    if (string.IsNullOrWhiteSpace(nombreRol)) return;
-                    var filaRol = _dtRolesCatalogo.AsEnumerable()
-                        .FirstOrDefault(r => r["NOMBRE_ROL_PROD"].ToString() == nombreRol);
-                    if (filaRol == null) return;
-                    view.SetFocusedRowCellValue("ID_ROL_PROD",
-                        Convert.ToInt32(filaRol["ID_ROL_PROD"]));
+                    if (editor.Text?.Trim() != "*") return;
+                    ev.Handled = true;
+                    AbrirBusquedaRolGrid(view);
                 };
-                gridRoles.RepositoryItems.Add(repoCombo);
-                colRol.ColumnEdit = repoCombo;
+                gridRoles.RepositoryItems.Add(repoTexto);
+                colRol.ColumnEdit = repoTexto;
             }
             // Columna: Activo
             ConfigurarColumnaCheckBox(view, "ACTIVO", "Activo", 55);
@@ -379,6 +369,40 @@ namespace SistemaContable.UI.Forms.Inventario
             view.Appearance.Row.Options.UseFont = true;
             view.Appearance.HeaderPanel.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
             view.Appearance.HeaderPanel.Options.UseFont = true;
+        }
+        /// <summary>
+        /// Abre el formulario de búsqueda genérica de Roles de Producto para la
+        /// celda enfocada del grid.
+        /// </summary>
+        private void AbrirBusquedaRolGrid(GridView view)
+        {
+            var config = new BusquedaConfig
+            {
+                StoredProcedure = "[EINVENTARIO].[SP_ROL_PROD]",
+                Accion = "BUSCAR",
+                Columnas = new Dictionary<string, string>
+                {
+                    { "NOMBRE_ROL_PROD", "ROL DEL PRODUCTO" }
+                },
+                Anchos = new Dictionary<string, int>
+                {
+                    { "NOMBRE_ROL_PROD", 300 }
+                }
+            };
+            using (var frm = new frmBusquedaGenerica(config))
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                if (frm.ShowDialog() == DialogResult.OK && frm.FilaSeleccionada != null)
+                {
+                    view.SetFocusedRowCellValue("ID_ROL_PROD",
+                        Convert.ToInt32(frm.FilaSeleccionada["ID_ROL_PROD"]));
+                    view.SetFocusedRowCellValue("NOMBRE_ROL_PROD", frm.FilaSeleccionada["NOMBRE_ROL_PROD"].ToString());
+                }
+                else
+                {
+                    view.SetFocusedRowCellValue("NOMBRE_ROL_PROD", "");
+                }
+            }
         }
         private void ConfigurarColumnaCheckBox(GridView view, string field, string caption, int width)
         {
@@ -455,6 +479,409 @@ namespace SistemaContable.UI.Forms.Inventario
             view.DeleteRow(fila);
         }
         #endregion
+        #region === GRID PRECIOS ===
+        private void InicializarGridPrecios()
+        {
+            _dtPrecios = new DataTable();
+            _dtPrecios.Columns.Add("ID_PRODUCTO_PRECIO", typeof(int));
+            _dtPrecios.Columns.Add("ID_PRODUCTO", typeof(int));
+            _dtPrecios.Columns.Add("ID_TIPO_PRECIO", typeof(int));
+            _dtPrecios.Columns.Add("TPPRECIO_DESCRIP", typeof(string));
+            _dtPrecios.Columns.Add("PRECIO", typeof(decimal));
+            _dtPrecios.Columns.Add("ESTADO", typeof(bool));
+            gridPrecios.DataSource = _dtPrecios;
+            var view = gridPrecios.MainView as GridView;
+            if (view == null) return;
+            view.Columns.Clear();
+            view.PopulateColumns();
+            // Ocultar columnas de clave
+            OcultarColumna(view, "ID_PRODUCTO_PRECIO");
+            OcultarColumna(view, "ID_PRODUCTO");
+            OcultarColumna(view, "ID_TIPO_PRECIO");
+            // Columna: Tipo de Precio (búsqueda genérica con "*", igual que txtCODTRIBUTO del encabezado)
+            var colTipo = view.Columns["TPPRECIO_DESCRIP"];
+            if (colTipo != null)
+            {
+                colTipo.Caption = "Tipo de Precio";
+                colTipo.Width = 220;
+                colTipo.Visible = true;
+                colTipo.VisibleIndex = 0;
+                colTipo.OptionsColumn.AllowEdit = true;
+                var repoTexto = new RepositoryItemTextEdit();
+                repoTexto.KeyDown += (s, ev) =>
+                {
+                    if (ev.KeyCode != Keys.Enter) return;
+                    var editor = s as TextEdit;
+                    if (editor == null) return;
+                    if (editor.Text?.Trim() != "*") return;
+                    ev.Handled = true;
+                    AbrirBusquedaTipoPrecioGrid(view);
+                };
+                gridPrecios.RepositoryItems.Add(repoTexto);
+                colTipo.ColumnEdit = repoTexto;
+            }
+            // Columna: Precio
+            var colPrecio = view.Columns["PRECIO"];
+            if (colPrecio != null)
+            {
+                colPrecio.Caption = "Precio";
+                colPrecio.Width = 140;
+                colPrecio.Visible = true;
+                colPrecio.VisibleIndex = 1;
+                colPrecio.OptionsColumn.AllowEdit = true;
+                colPrecio.DisplayFormat.FormatString = "N4";
+                colPrecio.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                var repoPrecio = new RepositoryItemSpinEdit();
+                repoPrecio.DisplayFormat.FormatString = "N4";
+                repoPrecio.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                repoPrecio.EditFormat.FormatString = "N4";
+                repoPrecio.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                repoPrecio.MinValue = 0;
+                repoPrecio.MaxValue = 999999999;
+                gridPrecios.RepositoryItems.Add(repoPrecio);
+                colPrecio.ColumnEdit = repoPrecio;
+            }
+            // Columna: Activo
+            ConfigurarColumnaCheckBoxPrecio(view, "ESTADO", "Activo", 55);
+            // Columna: Eliminar
+            var colEliminar = view.Columns.AddField("ELIMINAR");
+            colEliminar.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            colEliminar.Caption = " ";
+            colEliminar.Width = 36;
+            colEliminar.Visible = true;
+            colEliminar.VisibleIndex = 3;
+            colEliminar.OptionsColumn.AllowEdit = true;
+            colEliminar.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            var repoEliminar = new RepositoryItemButtonEdit();
+            repoEliminar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            repoEliminar.Buttons[0].Kind = DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph;
+            repoEliminar.Buttons[0].ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminarFila32x32;
+            repoEliminar.Buttons[0].Caption = "";
+            repoEliminar.Buttons[0].ToolTip = "Eliminar precio";
+            repoEliminar.ButtonClick += (s, ev) => EliminarPrecio();
+            gridPrecios.RepositoryItems.Add(repoEliminar);
+            colEliminar.ColumnEdit = repoEliminar;
+            // Opciones de vista
+            view.OptionsView.ShowGroupPanel = false;
+            view.OptionsBehavior.Editable = true;
+            view.OptionsBehavior.AutoSelectAllInEditor = true;
+            view.OptionsNavigation.EnterMoveNextColumn = true;
+            view.OptionsSelection.EnableAppearanceFocusedCell = false;
+            view.OptionsSelection.EnableAppearanceFocusedRow = true;
+            view.Appearance.FocusedRow.BackColor = Color.FromArgb(204, 229, 255);
+            view.Appearance.FocusedRow.Options.UseBackColor = true;
+            view.Appearance.HideSelectionRow.BackColor = Color.FromArgb(204, 229, 255);
+            view.Appearance.HideSelectionRow.Options.UseBackColor = true;
+            view.Appearance.Row.ForeColor = Color.Black;
+            view.Appearance.Row.Font = new Font("Segoe UI", 9f);
+            view.Appearance.Row.Options.UseFont = true;
+            view.Appearance.HeaderPanel.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
+            view.Appearance.HeaderPanel.Options.UseFont = true;
+        }
+        /// <summary>
+        /// Abre el formulario de búsqueda genérica de Tipo de Precio para la
+        /// celda enfocada del grid.
+        /// </summary>
+        private void AbrirBusquedaTipoPrecioGrid(GridView view)
+        {
+            var config = new BusquedaConfig
+            {
+                StoredProcedure = "[EINVENTARIO].[SP_TIPO_PRECIO]",
+                Accion = "BUSCAR",
+                Columnas = new Dictionary<string, string>
+                {
+                    { "DESCRIPCION", "TIPO DE PRECIO" }
+                },
+                Anchos = new Dictionary<string, int>
+                {
+                    { "DESCRIPCION", 300 }
+                }
+            };
+            using (var frm = new frmBusquedaGenerica(config))
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                if (frm.ShowDialog() == DialogResult.OK && frm.FilaSeleccionada != null)
+                {
+                    view.SetFocusedRowCellValue("ID_TIPO_PRECIO",
+                        Convert.ToInt32(frm.FilaSeleccionada["ID_TIPO_PRECIO"]));
+                    view.SetFocusedRowCellValue("TPPRECIO_DESCRIP", frm.FilaSeleccionada["DESCRIPCION"].ToString());
+                }
+                else
+                {
+                    view.SetFocusedRowCellValue("TPPRECIO_DESCRIP", "");
+                }
+            }
+        }
+        private void ConfigurarColumnaCheckBoxPrecio(GridView view, string field, string caption, int width)
+        {
+            var col = view.Columns.ColumnByFieldName(field);
+            if (col == null) return;
+            col.Caption = caption;
+            col.Width = width;
+            col.Visible = true;
+            col.OptionsColumn.AllowEdit = true;
+            var repo = new RepositoryItemCheckEdit();
+            repo.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Standard;
+            gridPrecios.RepositoryItems.Add(repo);
+            col.ColumnEdit = repo;
+        }
+        private void CargarPreciosExistentes(int idProducto)
+        {
+            DataTable dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_PRODUCTO_PRECIO]",
+                new { ACCION = "LISTAR", ID_PRODUCTO = idProducto });
+            _dtPrecios.Clear();
+            if (dt == null) return;
+            foreach (DataRow row in dt.Rows)
+            {
+                var f = _dtPrecios.NewRow();
+                f["ID_PRODUCTO_PRECIO"] = row["ID_PRODUCTO_PRECIO"];
+                f["ID_PRODUCTO"] = row["ID_PRODUCTO"];
+                f["ID_TIPO_PRECIO"] = row["ID_TIPO_PRECIO"];
+                f["TPPRECIO_DESCRIP"] = row["TPPRECIO_DESCRIP"];
+                f["PRECIO"] = row["PRECIO"] == DBNull.Value ? 0m : Convert.ToDecimal(row["PRECIO"]);
+                f["ESTADO"] = row["ESTADO"] == DBNull.Value ? true : Convert.ToBoolean(row["ESTADO"]);
+                _dtPrecios.Rows.Add(f);
+            }
+        }
+        private void AgregarPrecio()
+        {
+            var fila = _dtPrecios.NewRow();
+            fila["ID_PRODUCTO_PRECIO"] = 0;
+            fila["ID_PRODUCTO"] = IdProducto;
+            fila["ID_TIPO_PRECIO"] = 0;
+            fila["TPPRECIO_DESCRIP"] = "";
+            fila["PRECIO"] = 0m;
+            fila["ESTADO"] = true;
+            _dtPrecios.Rows.Add(fila);
+        }
+        private void EliminarPrecio()
+        {
+            var view = gridPrecios.MainView as GridView;
+            if (view == null) return;
+            int fila = view.FocusedRowHandle;
+            if (fila < 0) return;
+            if (MessageBox.Show("¿Desea eliminar este precio del producto?",
+                    "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+            // Si ya está guardado en BD, eliminarlo
+            object valId = view.GetRowCellValue(fila, "ID_PRODUCTO_PRECIO");
+            if (valId != null && valId != DBNull.Value)
+            {
+                int idPrecio = Convert.ToInt32(valId);
+                if (idPrecio > 0)
+                {
+                    _dal.EjecutarSinRetorno("[EINVENTARIO].[SP_PRODUCTO_PRECIO]", new
+                    {
+                        ACCION = "ELIMINAR",
+                        ID_PRODUCTO_PRECIO = idPrecio
+                    });
+                }
+            }
+            view.DeleteRow(fila);
+        }
+        #endregion
+        #region === GRID TRIBUTOS ===
+        private void InicializarGridTributos()
+        {
+            _dtProductoTributos = new DataTable();
+            _dtProductoTributos.Columns.Add("ID_PRODUCTO_TRIBUTO", typeof(int));
+            _dtProductoTributos.Columns.Add("ID_PRODUCTO", typeof(int));
+            _dtProductoTributos.Columns.Add("CODTRIBUTO", typeof(string));
+            _dtProductoTributos.Columns.Add("TRIBUTO_DESCRIP", typeof(string));
+            _dtProductoTributos.Columns.Add("VALOR", typeof(decimal));
+            _dtProductoTributos.Columns.Add("ESTADO", typeof(bool));
+            gridTributos.DataSource = _dtProductoTributos;
+            var view = gridTributos.MainView as GridView;
+            if (view == null) return;
+            view.Columns.Clear();
+            view.PopulateColumns();
+            // Ocultar columnas de clave
+            OcultarColumna(view, "ID_PRODUCTO_TRIBUTO");
+            OcultarColumna(view, "ID_PRODUCTO");
+            OcultarColumna(view, "CODTRIBUTO");
+            // Columna: Tributo (búsqueda genérica con "*", igual que txtCODTRIBUTO del encabezado)
+            var colTributo = view.Columns["TRIBUTO_DESCRIP"];
+            if (colTributo != null)
+            {
+                colTributo.Caption = "Tributo";
+                colTributo.Width = 350;
+                colTributo.Visible = true;
+                colTributo.VisibleIndex = 0;
+                colTributo.OptionsColumn.AllowEdit = true;
+                var repoTexto = new RepositoryItemTextEdit();
+                repoTexto.KeyDown += (s, ev) =>
+                {
+                    if (ev.KeyCode != Keys.Enter) return;
+                    var editor = s as TextEdit;
+                    if (editor == null) return;
+                    if (editor.Text?.Trim() != "*") return;
+                    ev.Handled = true;
+                    AbrirBusquedaTributoGrid(view);
+                };
+                gridTributos.RepositoryItems.Add(repoTexto);
+                colTributo.ColumnEdit = repoTexto;
+            }
+            // Columna: Valor del tributo
+            var colValor = view.Columns["VALOR"];
+            if (colValor != null)
+            {
+                colValor.Caption = "Valor";
+                colValor.Width = 160;
+                colValor.Visible = true;
+                colValor.VisibleIndex = 1;
+                colValor.OptionsColumn.AllowEdit = true;
+                colValor.DisplayFormat.FormatString = "N6";
+                colValor.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                var repoValor = new RepositoryItemSpinEdit();
+                repoValor.DisplayFormat.FormatString = "N6";
+                repoValor.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                repoValor.EditFormat.FormatString = "N6";
+                repoValor.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                repoValor.MinValue = 0;
+                repoValor.MaxValue = 999999999;
+                gridTributos.RepositoryItems.Add(repoValor);
+                colValor.ColumnEdit = repoValor;
+            }
+            // Columna: Activo
+            ConfigurarColumnaCheckBoxTributo(view, "ESTADO", "Activo", 55);
+            // Columna: Eliminar
+            var colEliminar = view.Columns.AddField("ELIMINAR");
+            colEliminar.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            colEliminar.Caption = " ";
+            colEliminar.Width = 36;
+            colEliminar.Visible = true;
+            colEliminar.VisibleIndex = 3;
+            colEliminar.OptionsColumn.AllowEdit = true;
+            colEliminar.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            var repoEliminar = new RepositoryItemButtonEdit();
+            repoEliminar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            repoEliminar.Buttons[0].Kind = DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph;
+            repoEliminar.Buttons[0].ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminarFila32x32;
+            repoEliminar.Buttons[0].Caption = "";
+            repoEliminar.Buttons[0].ToolTip = "Eliminar tributo";
+            repoEliminar.ButtonClick += (s, ev) => EliminarTributo();
+            gridTributos.RepositoryItems.Add(repoEliminar);
+            colEliminar.ColumnEdit = repoEliminar;
+            // Opciones de vista
+            view.OptionsView.ShowGroupPanel = false;
+            view.OptionsBehavior.Editable = true;
+            view.OptionsBehavior.AutoSelectAllInEditor = true;
+            view.OptionsNavigation.EnterMoveNextColumn = true;
+            view.OptionsSelection.EnableAppearanceFocusedCell = false;
+            view.OptionsSelection.EnableAppearanceFocusedRow = true;
+            view.Appearance.FocusedRow.BackColor = Color.FromArgb(204, 229, 255);
+            view.Appearance.FocusedRow.Options.UseBackColor = true;
+            view.Appearance.HideSelectionRow.BackColor = Color.FromArgb(204, 229, 255);
+            view.Appearance.HideSelectionRow.Options.UseBackColor = true;
+            view.Appearance.Row.ForeColor = Color.Black;
+            view.Appearance.Row.Font = new Font("Segoe UI", 9f);
+            view.Appearance.Row.Options.UseFont = true;
+            view.Appearance.HeaderPanel.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
+            view.Appearance.HeaderPanel.Options.UseFont = true;
+        }
+        private void ConfigurarColumnaCheckBoxTributo(GridView view, string field, string caption, int width)
+        {
+            var col = view.Columns.ColumnByFieldName(field);
+            if (col == null) return;
+            col.Caption = caption;
+            col.Width = width;
+            col.Visible = true;
+            col.OptionsColumn.AllowEdit = true;
+            var repo = new RepositoryItemCheckEdit();
+            repo.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Standard;
+            gridTributos.RepositoryItems.Add(repo);
+            col.ColumnEdit = repo;
+        }
+        /// <summary>
+        /// Abre el formulario de búsqueda genérica de Tributos (misma fuente que
+        /// txtCODTRIBUTO del encabezado) para la celda enfocada del grid.
+        /// </summary>
+        private void AbrirBusquedaTributoGrid(GridView view)
+        {
+            var config = new BusquedaConfig
+            {
+                StoredProcedure = "[EMH].[SP_TRIBUTOS_DET]",
+                Accion = "BUSCAR",
+                Columnas = new Dictionary<string, string>
+                {
+                    { "CODIGO",  "CÓDIGO"  },
+                    { "VALORES", "TRIBUTO" }
+                },
+                Anchos = new Dictionary<string, int>
+                {
+                    { "CODIGO",  80  },
+                    { "VALORES", 320 }
+                }
+            };
+            using (var frm = new frmBusquedaGenerica(config))
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                if (frm.ShowDialog() == DialogResult.OK && frm.FilaSeleccionada != null)
+                {
+                    view.SetFocusedRowCellValue("CODTRIBUTO", frm.FilaSeleccionada["CODIGO"].ToString());
+                    view.SetFocusedRowCellValue("TRIBUTO_DESCRIP", frm.FilaSeleccionada["VALORES"].ToString());
+                }
+                else
+                {
+                    view.SetFocusedRowCellValue("TRIBUTO_DESCRIP", "");
+                }
+            }
+        }
+        private void CargarProductoTributosExistentes(int idProducto)
+        {
+            DataTable dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_PRODUCTO_TRIBUTO]",
+                new { ACCION = "LISTAR", ID_PRODUCTO = idProducto });
+            _dtProductoTributos.Clear();
+            if (dt == null) return;
+            foreach (DataRow row in dt.Rows)
+            {
+                var f = _dtProductoTributos.NewRow();
+                f["ID_PRODUCTO_TRIBUTO"] = row["ID_PRODUCTO_TRIBUTO"];
+                f["ID_PRODUCTO"] = row["ID_PRODUCTO"];
+                f["CODTRIBUTO"] = row["CODTRIBUTO"];
+                f["TRIBUTO_DESCRIP"] = row["TRIBUTO_DESCRIP"];
+                f["VALOR"] = row["VALOR"] == DBNull.Value ? 0m : Convert.ToDecimal(row["VALOR"]);
+                f["ESTADO"] = row["ESTADO"] == DBNull.Value ? true : Convert.ToBoolean(row["ESTADO"]);
+                _dtProductoTributos.Rows.Add(f);
+            }
+        }
+        private void AgregarProductoTributo()
+        {
+            var fila = _dtProductoTributos.NewRow();
+            fila["ID_PRODUCTO_TRIBUTO"] = 0;
+            fila["ID_PRODUCTO"] = IdProducto;
+            fila["CODTRIBUTO"] = "";
+            fila["TRIBUTO_DESCRIP"] = "";
+            fila["VALOR"] = 0m;
+            fila["ESTADO"] = true;
+            _dtProductoTributos.Rows.Add(fila);
+        }
+        private void EliminarTributo()
+        {
+            var view = gridTributos.MainView as GridView;
+            if (view == null) return;
+            int fila = view.FocusedRowHandle;
+            if (fila < 0) return;
+            if (MessageBox.Show("¿Desea eliminar este tributo del producto?",
+                    "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+            // Si ya está guardado en BD, eliminarlo
+            object valId = view.GetRowCellValue(fila, "ID_PRODUCTO_TRIBUTO");
+            if (valId != null && valId != DBNull.Value)
+            {
+                int idTributo = Convert.ToInt32(valId);
+                if (idTributo > 0)
+                {
+                    _dal.EjecutarSinRetorno("[EINVENTARIO].[SP_PRODUCTO_TRIBUTO]", new
+                    {
+                        ACCION = "ELIMINAR",
+                        ID_PRODUCTO_TRIBUTO = idTributo
+                    });
+                }
+            }
+            view.DeleteRow(fila);
+        }
+        #endregion
         #region === CARGAR PRODUCTO EXISTENTE ===
         private void CargarProductoExistente(int idProducto)
         {
@@ -497,6 +924,8 @@ namespace SistemaContable.UI.Forms.Inventario
                 txtULTIMOPRECIOCOMPRA.Text = ToDecimal(r["ULTIMOPRECIOCOMPRA"]).ToString("N6");
                 chkESTADO.Checked = AsString(r["ESTADO"]) == "ACT";
                 CargarRolesExistentes(idProducto);
+                CargarPreciosExistentes(idProducto);
+                CargarProductoTributosExistentes(idProducto);
                 ConfigurarBotones(esNuevo: false);
             }
             catch (Exception ex)
@@ -550,6 +979,10 @@ namespace SistemaContable.UI.Forms.Inventario
                 IdProducto = Convert.ToInt32(dtResult.Rows[0]["ID_GENERADO"]);
                 // Guardar roles del grid
                 GuardarRoles();
+                // Guardar precios del grid
+                GuardarPrecios();
+                // Guardar tributos del grid
+                GuardarProductoTributos();
                 XtraMessageBox.Show("Producto guardado correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ConfigurarBotones(esNuevo: false);
@@ -586,6 +1019,52 @@ namespace SistemaContable.UI.Forms.Inventario
             }
             // Recargar roles desde BD para reflejar IDs generados
             CargarRolesExistentes(IdProducto);
+        }
+        private void GuardarPrecios()
+        {
+            var view = gridPrecios.MainView as GridView;
+            view?.CloseEditor();
+            view?.UpdateCurrentRow();
+            foreach (DataRow fila in _dtPrecios.Rows)
+            {
+                int idTipoPrecio = fila["ID_TIPO_PRECIO"] == DBNull.Value ? 0 : Convert.ToInt32(fila["ID_TIPO_PRECIO"]);
+                if (idTipoPrecio <= 0) continue; // fila sin tipo de precio seleccionado
+                _dal.EjecutarSinRetorno("[EINVENTARIO].[SP_PRODUCTO_PRECIO]", new
+                {
+                    ACCION = "GUARDAR",
+                    ID_PRODUCTO_PRECIO = fila["ID_PRODUCTO_PRECIO"] == DBNull.Value ? 0 : Convert.ToInt32(fila["ID_PRODUCTO_PRECIO"]),
+                    ID_PRODUCTO = IdProducto,
+                    ID_TIPO_PRECIO = idTipoPrecio,
+                    PRECIO = fila["PRECIO"] == DBNull.Value ? 0m : Convert.ToDecimal(fila["PRECIO"]),
+                    ESTADO = fila["ESTADO"] == DBNull.Value ? true : Convert.ToBoolean(fila["ESTADO"]),
+                    USUARIO = Configuracion.UsuarioActual
+                });
+            }
+            // Recargar precios desde BD para reflejar IDs generados
+            CargarPreciosExistentes(IdProducto);
+        }
+        private void GuardarProductoTributos()
+        {
+            var view = gridTributos.MainView as GridView;
+            view?.CloseEditor();
+            view?.UpdateCurrentRow();
+            foreach (DataRow fila in _dtProductoTributos.Rows)
+            {
+                string codTributo = fila["CODTRIBUTO"] == DBNull.Value ? null : fila["CODTRIBUTO"].ToString();
+                if (string.IsNullOrWhiteSpace(codTributo)) continue; // fila sin tributo seleccionado
+                _dal.EjecutarSinRetorno("[EINVENTARIO].[SP_PRODUCTO_TRIBUTO]", new
+                {
+                    ACCION = "GUARDAR",
+                    ID_PRODUCTO_TRIBUTO = fila["ID_PRODUCTO_TRIBUTO"] == DBNull.Value ? 0 : Convert.ToInt32(fila["ID_PRODUCTO_TRIBUTO"]),
+                    ID_PRODUCTO = IdProducto,
+                    CODTRIBUTO = codTributo,
+                    VALOR = fila["VALOR"] == DBNull.Value ? 0m : Convert.ToDecimal(fila["VALOR"]),
+                    ESTADO = fila["ESTADO"] == DBNull.Value ? true : Convert.ToBoolean(fila["ESTADO"]),
+                    USUARIO = Configuracion.UsuarioActual
+                });
+            }
+            // Recargar tributos desde BD para reflejar IDs generados
+            CargarProductoTributosExistentes(IdProducto);
         }
         #endregion
         #region === ELIMINAR PRODUCTO ===
@@ -719,6 +1198,8 @@ namespace SistemaContable.UI.Forms.Inventario
             txtTPINGRESO.Text = "";
             chkESTADO.Checked = true;
             _dtRoles?.Clear();
+            _dtPrecios?.Clear();
+            _dtProductoTributos?.Clear();
         }
         #endregion
         #region === BOTONES ===
@@ -726,6 +1207,8 @@ namespace SistemaContable.UI.Forms.Inventario
         {
             btnEliminar.Enabled = !esNuevo && IdProducto > 0;
             btnAgregarRol.Enabled = !esNuevo && IdProducto > 0;
+            btnAgregarPrecio.Enabled = !esNuevo && IdProducto > 0;
+            btnAgregarTributo.Enabled = !esNuevo && IdProducto > 0;
         }
         private void btnNuevo_Click(object sender, EventArgs e)
         {
@@ -736,6 +1219,14 @@ namespace SistemaContable.UI.Forms.Inventario
         private void btnAgregarRol_Click(object sender, EventArgs e)
         {
             AgregarRol();
+        }
+        private void btnAgregarPrecio_Click(object sender, EventArgs e)
+        {
+            AgregarPrecio();
+        }
+        private void btnAgregarTributo_Click(object sender, EventArgs e)
+        {
+            AgregarProductoTributo();
         }
         private void btnSalir_Click(object sender, EventArgs e)
         {
