@@ -1,6 +1,8 @@
 # Sistema Contable Integrado — INJIBOA
 ## Guía de Configuración del Proyecto
 
+Sistema contable integrado desarrollado para automatizar cuentas por pagar y proveedores de un ingenio azucarero, reemplazando procesos manuales en FoxPro
+
 ---
 
 ## PASOS PARA ABRIR EN VISUAL STUDIO
