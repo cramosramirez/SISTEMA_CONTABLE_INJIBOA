@@ -1605,13 +1605,14 @@ namespace SistemaContable.RP.Traslados.NotaRemision
             // 
             this.xrBarCode2.AutoModule = true;
             this.xrBarCode2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[codigoGeneracion]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[QR]")});
             this.xrBarCode2.LocationFloat = new DevExpress.Utils.PointFloat(629.4637F, 147.9997F);
             this.xrBarCode2.Name = "xrBarCode2";
             this.xrBarCode2.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 10, 0, 0, 100F);
-            this.xrBarCode2.ShowText = false;
             this.xrBarCode2.SizeF = new System.Drawing.SizeF(137.7881F, 109.7083F);
+            this.xrBarCode2.StylePriority.UseTextAlignment = false;
             this.xrBarCode2.Symbology = qrCodeGenerator1;
+            this.xrBarCode2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomCenter;
             // 
             // xrLabel70
             // 
@@ -1623,7 +1624,7 @@ namespace SistemaContable.RP.Traslados.NotaRemision
             this.xrLabel70.SizeF = new System.Drawing.SizeF(139.3072F, 22.99998F);
             this.xrLabel70.StylePriority.UseFont = false;
             this.xrLabel70.StylePriority.UseTextAlignment = false;
-            this.xrLabel70.Text = "Código de Generación";
+            this.xrLabel70.Text = "Código Interno";
             this.xrLabel70.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // xrLabel67

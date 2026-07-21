@@ -303,6 +303,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap excel_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("excel_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap FACTURA1_48X48 {
             get {
                 object obj = ResourceManager.GetObject("FACTURA1_48X48", resourceCulture);

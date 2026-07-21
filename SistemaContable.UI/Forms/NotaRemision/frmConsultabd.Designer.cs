@@ -123,8 +123,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colID_NR.MinWidth = 18;
             this.colID_NR.Name = "colID_NR";
             this.colID_NR.OptionsColumn.AllowSize = false;
-            this.colID_NR.Visible = true;
-            this.colID_NR.VisibleIndex = 0;
             this.colID_NR.Width = 70;
             // 
             // colEDITAR
@@ -136,7 +134,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colEDITAR.OptionsColumn.AllowSize = false;
             this.colEDITAR.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colEDITAR.Visible = true;
-            this.colEDITAR.VisibleIndex = 1;
+            this.colEDITAR.VisibleIndex = 0;
             this.colEDITAR.Width = 54;
             // 
             // riEditar
@@ -158,7 +156,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colVER_Q.OptionsColumn.AllowSize = false;
             this.colVER_Q.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colVER_Q.Visible = true;
-            this.colVER_Q.VisibleIndex = 2;
+            this.colVER_Q.VisibleIndex = 1;
             this.colVER_Q.Width = 54;
             // 
             // riVerQ
@@ -180,7 +178,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colFECHA.Name = "colFECHA";
             this.colFECHA.OptionsColumn.AllowSize = false;
             this.colFECHA.Visible = true;
-            this.colFECHA.VisibleIndex = 3;
+            this.colFECHA.VisibleIndex = 2;
             this.colFECHA.Width = 82;
             // 
             // colNUMDOC
@@ -190,7 +188,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colNUMDOC.Name = "colNUMDOC";
             this.colNUMDOC.OptionsColumn.AllowSize = false;
             this.colNUMDOC.Visible = true;
-            this.colNUMDOC.VisibleIndex = 4;
+            this.colNUMDOC.VisibleIndex = 3;
             this.colNUMDOC.Width = 86;
             // 
             // colNOMCLIENTE
@@ -200,7 +198,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colNOMCLIENTE.Name = "colNOMCLIENTE";
             this.colNOMCLIENTE.OptionsColumn.AllowSize = false;
             this.colNOMCLIENTE.Visible = true;
-            this.colNOMCLIENTE.VisibleIndex = 5;
+            this.colNOMCLIENTE.VisibleIndex = 4;
             this.colNOMCLIENTE.Width = 207;
             // 
             // colCODGENERACION
@@ -210,7 +208,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colCODGENERACION.Name = "colCODGENERACION";
             this.colCODGENERACION.OptionsColumn.AllowSize = false;
             this.colCODGENERACION.Visible = true;
-            this.colCODGENERACION.VisibleIndex = 6;
+            this.colCODGENERACION.VisibleIndex = 5;
             this.colCODGENERACION.Width = 207;
             // 
             // colNUMCONTROL
@@ -220,7 +218,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colNUMCONTROL.Name = "colNUMCONTROL";
             this.colNUMCONTROL.OptionsColumn.AllowSize = false;
             this.colNUMCONTROL.Visible = true;
-            this.colNUMCONTROL.VisibleIndex = 7;
+            this.colNUMCONTROL.VisibleIndex = 6;
             this.colNUMCONTROL.Width = 207;
             // 
             // colSELLORECEPCION
@@ -230,7 +228,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colSELLORECEPCION.Name = "colSELLORECEPCION";
             this.colSELLORECEPCION.OptionsColumn.AllowSize = false;
             this.colSELLORECEPCION.Visible = true;
-            this.colSELLORECEPCION.VisibleIndex = 8;
+            this.colSELLORECEPCION.VisibleIndex = 7;
             this.colSELLORECEPCION.Width = 159;
             // 
             // colNFORMULARIO
@@ -239,7 +237,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colNFORMULARIO.FieldName = "NFORMULARIO";
             this.colNFORMULARIO.Name = "colNFORMULARIO";
             this.colNFORMULARIO.Visible = true;
-            this.colNFORMULARIO.VisibleIndex = 9;
+            this.colNFORMULARIO.VisibleIndex = 8;
             // 
             // colESTADO
             // 
@@ -248,7 +246,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.colESTADO.Name = "colESTADO";
             this.colESTADO.OptionsColumn.AllowSize = false;
             this.colESTADO.Visible = true;
-            this.colESTADO.VisibleIndex = 10;
+            this.colESTADO.VisibleIndex = 9;
             this.colESTADO.Width = 73;
             // 
             // panel2

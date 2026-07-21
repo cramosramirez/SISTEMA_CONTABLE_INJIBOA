@@ -50,6 +50,9 @@
             this.txtDIAS_PLAZO = new System.Windows.Forms.TextBox();
             this.lblCUENTA_X_PAGAR = new System.Windows.Forms.Label();
             this.txtCUENTA_X_COBRAR = new System.Windows.Forms.TextBox();
+            this.txtNOMBRE_CUENTA_X_COBRAR = new System.Windows.Forms.TextBox();
+            this.lblID_TIPO_PRECIO = new System.Windows.Forms.Label();
+            this.txtID_TIPO_PRECIO = new System.Windows.Forms.TextBox();
             this.lblCOMPLEMENTO = new System.Windows.Forms.Label();
             this.txtCOMPLEMENTO = new System.Windows.Forms.TextBox();
             this.lblCALLE = new System.Windows.Forms.Label();
@@ -69,10 +72,13 @@
             this.lblDIST = new System.Windows.Forms.Label();
             this.cbxDIST = new System.Windows.Forms.ComboBox();
             this.lblACTIVIDAD_1 = new System.Windows.Forms.Label();
+            this.txtCODI_ACTIVIDAD1 = new System.Windows.Forms.TextBox();
             this.txtACTIVIDAD_1 = new System.Windows.Forms.TextBox();
             this.lblACTIVIDAD_2 = new System.Windows.Forms.Label();
+            this.txtCODI_ACTIVIDAD2 = new System.Windows.Forms.TextBox();
             this.txtACTIVIDAD_2 = new System.Windows.Forms.TextBox();
             this.lblACTIVIDAD_3 = new System.Windows.Forms.Label();
+            this.txtCODI_ACTIVIDAD3 = new System.Windows.Forms.TextBox();
             this.txtACTIVIDAD_3 = new System.Windows.Forms.TextBox();
             this.lblORIGEN = new System.Windows.Forms.Label();
             this.cbxORIGEN = new System.Windows.Forms.ComboBox();
@@ -214,10 +220,13 @@
             this.groupControl1.Controls.Add(this.lblDIST);
             this.groupControl1.Controls.Add(this.cbxDIST);
             this.groupControl1.Controls.Add(this.lblACTIVIDAD_1);
+            this.groupControl1.Controls.Add(this.txtCODI_ACTIVIDAD1);
             this.groupControl1.Controls.Add(this.txtACTIVIDAD_1);
             this.groupControl1.Controls.Add(this.lblACTIVIDAD_2);
+            this.groupControl1.Controls.Add(this.txtCODI_ACTIVIDAD2);
             this.groupControl1.Controls.Add(this.txtACTIVIDAD_2);
             this.groupControl1.Controls.Add(this.lblACTIVIDAD_3);
+            this.groupControl1.Controls.Add(this.txtCODI_ACTIVIDAD3);
             this.groupControl1.Controls.Add(this.txtACTIVIDAD_3);
             this.groupControl1.Controls.Add(this.lblORIGEN);
             this.groupControl1.Controls.Add(this.cbxORIGEN);
@@ -524,7 +533,7 @@
             this.txtDIAS_PLAZO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtDIAS_PLAZO.Location = new System.Drawing.Point(120, 26);
             this.txtDIAS_PLAZO.Name = "txtDIAS_PLAZO";
-            this.txtDIAS_PLAZO.Size = new System.Drawing.Size(109, 22);
+            this.txtDIAS_PLAZO.Size = new System.Drawing.Size(90, 22);
             this.txtDIAS_PLAZO.TabIndex = 16;
             this.txtDIAS_PLAZO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             //
@@ -532,7 +541,7 @@
             //
             this.lblCUENTA_X_PAGAR.AutoSize = true;
             this.lblCUENTA_X_PAGAR.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblCUENTA_X_PAGAR.Location = new System.Drawing.Point(271, 29);
+            this.lblCUENTA_X_PAGAR.Location = new System.Drawing.Point(225, 29);
             this.lblCUENTA_X_PAGAR.Name = "lblCUENTA_X_PAGAR";
             this.lblCUENTA_X_PAGAR.Size = new System.Drawing.Size(78, 14);
             this.lblCUENTA_X_PAGAR.TabIndex = 17;
@@ -541,11 +550,40 @@
             // txtCUENTA_X_COBRAR
             //
             this.txtCUENTA_X_COBRAR.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCUENTA_X_COBRAR.Location = new System.Drawing.Point(354, 26);
+            this.txtCUENTA_X_COBRAR.Location = new System.Drawing.Point(300, 26);
             this.txtCUENTA_X_COBRAR.MaxLength = 100;
             this.txtCUENTA_X_COBRAR.Name = "txtCUENTA_X_COBRAR";
-            this.txtCUENTA_X_COBRAR.Size = new System.Drawing.Size(161, 22);
+            this.txtCUENTA_X_COBRAR.Size = new System.Drawing.Size(90, 22);
             this.txtCUENTA_X_COBRAR.TabIndex = 17;
+            //
+            // txtNOMBRE_CUENTA_X_COBRAR
+            //
+            this.txtNOMBRE_CUENTA_X_COBRAR.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtNOMBRE_CUENTA_X_COBRAR.Location = new System.Drawing.Point(395, 26);
+            this.txtNOMBRE_CUENTA_X_COBRAR.Name = "txtNOMBRE_CUENTA_X_COBRAR";
+            this.txtNOMBRE_CUENTA_X_COBRAR.ReadOnly = true;
+            this.txtNOMBRE_CUENTA_X_COBRAR.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNOMBRE_CUENTA_X_COBRAR.TabStop = false;
+            this.txtNOMBRE_CUENTA_X_COBRAR.Size = new System.Drawing.Size(230, 22);
+            this.txtNOMBRE_CUENTA_X_COBRAR.TabIndex = 117;
+            //
+            // lblID_TIPO_PRECIO
+            //
+            this.lblID_TIPO_PRECIO.AutoSize = true;
+            this.lblID_TIPO_PRECIO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.lblID_TIPO_PRECIO.Location = new System.Drawing.Point(640, 29);
+            this.lblID_TIPO_PRECIO.Name = "lblID_TIPO_PRECIO";
+            this.lblID_TIPO_PRECIO.Size = new System.Drawing.Size(68, 14);
+            this.lblID_TIPO_PRECIO.TabIndex = 33;
+            this.lblID_TIPO_PRECIO.Text = "Tipo Precio";
+            //
+            // txtID_TIPO_PRECIO
+            //
+            this.txtID_TIPO_PRECIO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtID_TIPO_PRECIO.Location = new System.Drawing.Point(710, 26);
+            this.txtID_TIPO_PRECIO.Name = "txtID_TIPO_PRECIO";
+            this.txtID_TIPO_PRECIO.Size = new System.Drawing.Size(300, 22);
+            this.txtID_TIPO_PRECIO.TabIndex = 18;
             //
             // lblCOMPLEMENTO
             //
@@ -734,13 +772,24 @@
             this.lblACTIVIDAD_1.TabIndex = 27;
             this.lblACTIVIDAD_1.Text = "Actividad 1";
             //
+            // txtCODI_ACTIVIDAD1
+            //
+            this.txtCODI_ACTIVIDAD1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtCODI_ACTIVIDAD1.Location = new System.Drawing.Point(119, 305);
+            this.txtCODI_ACTIVIDAD1.Name = "txtCODI_ACTIVIDAD1";
+            this.txtCODI_ACTIVIDAD1.Size = new System.Drawing.Size(90, 22);
+            this.txtCODI_ACTIVIDAD1.TabIndex = 26;
+            //
             // txtACTIVIDAD_1
             //
             this.txtACTIVIDAD_1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtACTIVIDAD_1.Location = new System.Drawing.Point(119, 305);
+            this.txtACTIVIDAD_1.Location = new System.Drawing.Point(215, 305);
             this.txtACTIVIDAD_1.Name = "txtACTIVIDAD_1";
-            this.txtACTIVIDAD_1.Size = new System.Drawing.Size(970, 22);
-            this.txtACTIVIDAD_1.TabIndex = 26;
+            this.txtACTIVIDAD_1.ReadOnly = true;
+            this.txtACTIVIDAD_1.BackColor = System.Drawing.SystemColors.Control;
+            this.txtACTIVIDAD_1.TabStop = false;
+            this.txtACTIVIDAD_1.Size = new System.Drawing.Size(874, 22);
+            this.txtACTIVIDAD_1.TabIndex = 126;
             //
             // lblACTIVIDAD_2
             //
@@ -752,13 +801,24 @@
             this.lblACTIVIDAD_2.TabIndex = 28;
             this.lblACTIVIDAD_2.Text = "Actividad 2";
             //
+            // txtCODI_ACTIVIDAD2
+            //
+            this.txtCODI_ACTIVIDAD2.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtCODI_ACTIVIDAD2.Location = new System.Drawing.Point(119, 333);
+            this.txtCODI_ACTIVIDAD2.Name = "txtCODI_ACTIVIDAD2";
+            this.txtCODI_ACTIVIDAD2.Size = new System.Drawing.Size(90, 22);
+            this.txtCODI_ACTIVIDAD2.TabIndex = 27;
+            //
             // txtACTIVIDAD_2
             //
             this.txtACTIVIDAD_2.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtACTIVIDAD_2.Location = new System.Drawing.Point(120, 333);
+            this.txtACTIVIDAD_2.Location = new System.Drawing.Point(215, 333);
             this.txtACTIVIDAD_2.Name = "txtACTIVIDAD_2";
-            this.txtACTIVIDAD_2.Size = new System.Drawing.Size(969, 22);
-            this.txtACTIVIDAD_2.TabIndex = 27;
+            this.txtACTIVIDAD_2.ReadOnly = true;
+            this.txtACTIVIDAD_2.BackColor = System.Drawing.SystemColors.Control;
+            this.txtACTIVIDAD_2.TabStop = false;
+            this.txtACTIVIDAD_2.Size = new System.Drawing.Size(874, 22);
+            this.txtACTIVIDAD_2.TabIndex = 127;
             //
             // lblACTIVIDAD_3
             //
@@ -770,13 +830,24 @@
             this.lblACTIVIDAD_3.TabIndex = 29;
             this.lblACTIVIDAD_3.Text = "Actividad 3";
             //
+            // txtCODI_ACTIVIDAD3
+            //
+            this.txtCODI_ACTIVIDAD3.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtCODI_ACTIVIDAD3.Location = new System.Drawing.Point(119, 364);
+            this.txtCODI_ACTIVIDAD3.Name = "txtCODI_ACTIVIDAD3";
+            this.txtCODI_ACTIVIDAD3.Size = new System.Drawing.Size(90, 22);
+            this.txtCODI_ACTIVIDAD3.TabIndex = 28;
+            //
             // txtACTIVIDAD_3
             //
             this.txtACTIVIDAD_3.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtACTIVIDAD_3.Location = new System.Drawing.Point(119, 364);
+            this.txtACTIVIDAD_3.Location = new System.Drawing.Point(215, 364);
             this.txtACTIVIDAD_3.Name = "txtACTIVIDAD_3";
-            this.txtACTIVIDAD_3.Size = new System.Drawing.Size(970, 22);
-            this.txtACTIVIDAD_3.TabIndex = 28;
+            this.txtACTIVIDAD_3.ReadOnly = true;
+            this.txtACTIVIDAD_3.BackColor = System.Drawing.SystemColors.Control;
+            this.txtACTIVIDAD_3.TabStop = false;
+            this.txtACTIVIDAD_3.Size = new System.Drawing.Size(874, 22);
+            this.txtACTIVIDAD_3.TabIndex = 128;
             //
             // lblORIGEN
             //
@@ -904,8 +975,11 @@
             //
             this.groupControl2.Controls.Add(this.txtDIAS_PLAZO);
             this.groupControl2.Controls.Add(this.txtCUENTA_X_COBRAR);
+            this.groupControl2.Controls.Add(this.txtNOMBRE_CUENTA_X_COBRAR);
             this.groupControl2.Controls.Add(this.lblCUENTA_X_PAGAR);
             this.groupControl2.Controls.Add(this.lblDIAS_PLAZO);
+            this.groupControl2.Controls.Add(this.lblID_TIPO_PRECIO);
+            this.groupControl2.Controls.Add(this.txtID_TIPO_PRECIO);
             this.groupControl2.Location = new System.Drawing.Point(10, 445);
             this.groupControl2.Name = "groupControl2";
             this.groupControl2.Size = new System.Drawing.Size(1129, 55);
@@ -925,7 +999,7 @@
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnSalir);
             this.Name = "frmCliente";
-            this.Text = "Mantenimiento de Entidades";
+            this.Text = "Mantenimiento de Clientes";
             this.Load += new System.EventHandler(this.frmEntidad_Load);
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
@@ -982,6 +1056,9 @@
         private System.Windows.Forms.TextBox txtDIAS_PLAZO;
         private System.Windows.Forms.Label lblCUENTA_X_PAGAR;
         private System.Windows.Forms.TextBox txtCUENTA_X_COBRAR;
+        private System.Windows.Forms.TextBox txtNOMBRE_CUENTA_X_COBRAR;
+        private System.Windows.Forms.Label lblID_TIPO_PRECIO;
+        private System.Windows.Forms.TextBox txtID_TIPO_PRECIO;
         // Row 6
         private System.Windows.Forms.Label lblCOMPLEMENTO;
         private System.Windows.Forms.TextBox txtCOMPLEMENTO;
@@ -1004,11 +1081,14 @@
         private System.Windows.Forms.ComboBox cbxMUNI;
         // Row 8
         private System.Windows.Forms.Label lblACTIVIDAD_1;
+        private System.Windows.Forms.TextBox txtCODI_ACTIVIDAD1;
         private System.Windows.Forms.TextBox txtACTIVIDAD_1;
         private System.Windows.Forms.Label lblACTIVIDAD_2;
+        private System.Windows.Forms.TextBox txtCODI_ACTIVIDAD2;
         private System.Windows.Forms.TextBox txtACTIVIDAD_2;
         // Row 9
         private System.Windows.Forms.Label lblACTIVIDAD_3;
+        private System.Windows.Forms.TextBox txtCODI_ACTIVIDAD3;
         private System.Windows.Forms.TextBox txtACTIVIDAD_3;
         private System.Windows.Forms.Label lblORIGEN;
         private System.Windows.Forms.ComboBox cbxORIGEN;

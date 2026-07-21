@@ -299,6 +299,7 @@
             this.MinimizeBox = false;
             this.Name = "frmConsultaCreditoFiscal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "Consulta";
             this.Text = "Consulta Comprobante de Crédito Fiscal";
             this.Load += new System.EventHandler(this.frmConsultaCreditoFiscal_Load);
             this.panel1.ResumeLayout(false);
