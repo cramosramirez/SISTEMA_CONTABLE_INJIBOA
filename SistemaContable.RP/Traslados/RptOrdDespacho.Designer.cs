@@ -37,6 +37,10 @@ namespace SistemaContable.RP.Traslados
             this.xrTableCell5 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell6 = new DevExpress.XtraReports.UI.XRTableCell();
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
+            this.xrLabel29 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel70 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel27 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel28 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel26 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrBarCode2 = new DevExpress.XtraReports.UI.XRBarCode();
             this.xrBarCode1 = new DevExpress.XtraReports.UI.XRBarCode();
@@ -72,8 +76,6 @@ namespace SistemaContable.RP.Traslados
             this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
             this.xrLabel25 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel27 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel28 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -155,6 +157,8 @@ namespace SistemaContable.RP.Traslados
             // PageHeader
             // 
             this.PageHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel29,
+            this.xrLabel70,
             this.xrLabel27,
             this.xrLabel28,
             this.xrLabel26,
@@ -188,6 +192,58 @@ namespace SistemaContable.RP.Traslados
             this.PageHeader.HeightF = 332.4167F;
             this.PageHeader.Name = "PageHeader";
             // 
+            // xrLabel29
+            // 
+            this.xrLabel29.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold);
+            this.xrLabel29.LocationFloat = new DevExpress.Utils.PointFloat(43.5F, 17.8333F);
+            this.xrLabel29.Multiline = true;
+            this.xrLabel29.Name = "xrLabel29";
+            this.xrLabel29.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel29.SizeF = new System.Drawing.SizeF(102.5F, 22.99999F);
+            this.xrLabel29.StylePriority.UseFont = false;
+            this.xrLabel29.StylePriority.UseTextAlignment = false;
+            this.xrLabel29.Text = "Código Interno";
+            this.xrLabel29.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // xrLabel70
+            // 
+            this.xrLabel70.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold);
+            this.xrLabel70.LocationFloat = new DevExpress.Utils.PointFloat(703.5001F, 122.4999F);
+            this.xrLabel70.Multiline = true;
+            this.xrLabel70.Name = "xrLabel70";
+            this.xrLabel70.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel70.SizeF = new System.Drawing.SizeF(102.5F, 22.99999F);
+            this.xrLabel70.StylePriority.UseFont = false;
+            this.xrLabel70.StylePriority.UseTextAlignment = false;
+            this.xrLabel70.Text = "Código Interno";
+            this.xrLabel70.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // xrLabel27
+            // 
+            this.xrLabel27.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold);
+            this.xrLabel27.LocationFloat = new DevExpress.Utils.PointFloat(195.1396F, 99.49995F);
+            this.xrLabel27.Multiline = true;
+            this.xrLabel27.Name = "xrLabel27";
+            this.xrLabel27.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel27.SizeF = new System.Drawing.SizeF(204.1667F, 23F);
+            this.xrLabel27.StylePriority.UseFont = false;
+            this.xrLabel27.StylePriority.UseTextAlignment = false;
+            this.xrLabel27.Text = "Cod. Generación  Orden Despacho ";
+            this.xrLabel27.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrLabel28
+            // 
+            this.xrLabel28.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CODGENERACION_OD]")});
+            this.xrLabel28.LocationFloat = new DevExpress.Utils.PointFloat(195.1396F, 122.4999F);
+            this.xrLabel28.Multiline = true;
+            this.xrLabel28.Name = "xrLabel28";
+            this.xrLabel28.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel28.SizeF = new System.Drawing.SizeF(362.9445F, 22.99999F);
+            this.xrLabel28.StylePriority.UseTextAlignment = false;
+            this.xrLabel28.Text = "xrLabel4";
+            this.xrLabel28.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
             // xrLabel26
             // 
             this.xrLabel26.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
@@ -208,25 +264,26 @@ namespace SistemaContable.RP.Traslados
             // 
             this.xrBarCode2.AutoModule = true;
             this.xrBarCode2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ID_ODENC]")});
-            this.xrBarCode2.LocationFloat = new DevExpress.Utils.PointFloat(703.5F, 122.4999F);
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[QR]")});
+            this.xrBarCode2.LocationFloat = new DevExpress.Utils.PointFloat(703.5001F, 145.4999F);
             this.xrBarCode2.Name = "xrBarCode2";
             this.xrBarCode2.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 10, 0, 0, 100F);
             this.xrBarCode2.ShowText = false;
-            this.xrBarCode2.SizeF = new System.Drawing.SizeF(112.5F, 90.16679F);
+            this.xrBarCode2.SizeF = new System.Drawing.SizeF(112.5F, 87.1528F);
             this.xrBarCode2.Symbology = qrCodeGenerator1;
             // 
             // xrBarCode1
             // 
             this.xrBarCode1.AutoModule = true;
             this.xrBarCode1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ID_ODENC]")});
-            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 17.83329F);
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[QR]")});
+            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 40.83329F);
             this.xrBarCode1.Name = "xrBarCode1";
             this.xrBarCode1.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 10, 0, 0, 100F);
-            this.xrBarCode1.ShowText = false;
             this.xrBarCode1.SizeF = new System.Drawing.SizeF(195.8333F, 58.66665F);
+            this.xrBarCode1.StylePriority.UseTextAlignment = false;
             this.xrBarCode1.Symbology = code128Generator1;
+            this.xrBarCode1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomCenter;
             // 
             // xrLabel23
             // 
@@ -604,32 +661,6 @@ namespace SistemaContable.RP.Traslados
             this.xrLabel25.Text = "PARA USO INTERNO";
             this.xrLabel25.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
-            // xrLabel27
-            // 
-            this.xrLabel27.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold);
-            this.xrLabel27.LocationFloat = new DevExpress.Utils.PointFloat(195.1396F, 99.49995F);
-            this.xrLabel27.Multiline = true;
-            this.xrLabel27.Name = "xrLabel27";
-            this.xrLabel27.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel27.SizeF = new System.Drawing.SizeF(204.1667F, 23F);
-            this.xrLabel27.StylePriority.UseFont = false;
-            this.xrLabel27.StylePriority.UseTextAlignment = false;
-            this.xrLabel27.Text = "Cod. Generación  Orden Despacho ";
-            this.xrLabel27.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
-            // xrLabel28
-            // 
-            this.xrLabel28.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CODGENERACION_OD]")});
-            this.xrLabel28.LocationFloat = new DevExpress.Utils.PointFloat(195.1396F, 122.4999F);
-            this.xrLabel28.Multiline = true;
-            this.xrLabel28.Name = "xrLabel28";
-            this.xrLabel28.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel28.SizeF = new System.Drawing.SizeF(362.9445F, 22.99999F);
-            this.xrLabel28.StylePriority.UseTextAlignment = false;
-            this.xrLabel28.Text = "xrLabel4";
-            this.xrLabel28.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
             // RptOrdDespacho
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -697,5 +728,7 @@ namespace SistemaContable.RP.Traslados
         private DevExpress.XtraReports.UI.XRLabel xrLabel26;
         private DevExpress.XtraReports.UI.XRLabel xrLabel27;
         private DevExpress.XtraReports.UI.XRLabel xrLabel28;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel29;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel70;
     }
 }
