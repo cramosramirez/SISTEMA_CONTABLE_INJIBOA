@@ -1209,6 +1209,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             
         }
+       
     }
 }
 

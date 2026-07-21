@@ -49,6 +49,11 @@ namespace SistemaContable.UI.Forms.Bancos
             gridViewPendientePago.OptionsView.ShowGroupPanel = false;
             gridViewPagar.OptionsView.ShowGroupPanel = false;
 
+            foreach (DevExpress.XtraGrid.Columns.GridColumn col in gridViewPagar.Columns)
+                col.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            foreach (DevExpress.XtraGrid.Columns.GridColumn col in gridViewPendientePago.Columns)
+                col.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+
             AplicarEstiloGrid(gridViewPendientePago);
             AplicarEstiloGrid(gridViewPagar);
         }

@@ -145,7 +145,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {           
             using (var frm = new frmDocumentoCompra())
             {
-                frm.IdCcfCompra = idCcfCompra;
+                frm.IdCcfCompra = idCcfCompra;                
                 frm.ShowDialog(this);
             }
             CargarDatos();                         

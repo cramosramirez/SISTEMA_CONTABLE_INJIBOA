@@ -51,6 +51,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             var dt = new DataTable();
             dt.Columns.Add("CODIGO", typeof(string));
             dt.Columns.Add("DESCRIPCION", typeof(string));
+            dt.Rows.Add("T", "[TODOS]");
             dt.Rows.Add("P", "PROVEEDORES");
             dt.Rows.Add(Configuracion.CodigoCCJIBOA, "CENTRO DE SERVICIOS JIBOA S.A. DE C.V.");
             dt.Rows.Add(Configuracion.CodigoHIBRONSA, "HIERROS Y BRONCES S.A. DE C.V.");

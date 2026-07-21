@@ -11,21 +11,20 @@ using System.Windows.Forms;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
-    public partial class frmConsultaCompraDirectaConRetencion : Form
+    public partial class frmConsultaCompraDirecta : Form
     {
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDetalle;
-        public frmConsultaCompraDirectaConRetencion()
+        public frmConsultaCompraDirecta()
         {
             InitializeComponent();
         }
 
-        private void frmConsultaCompraDirectaConRetencion_Load(object sender, EventArgs e)
+        private void frmConsultaCompraDirecta_Load(object sender, EventArgs e)
         {
             ConfigurarGrid();
             CargarDatos();
         }
-
         private void ConfigurarGrid()
         {
             // --- Vista general ---
@@ -54,7 +53,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             gvDetalle.Appearance.HeaderPanel.Options.UseFont = true;
             gvDetalle.Appearance.Row.Font = new Font("Segoe UI", 9f);
             gvDetalle.Appearance.Row.Options.UseFont = true;
-                       
+
 
             // --- Embedded Navigator: solo Nuevo ---
             gridControl1.UseEmbeddedNavigator = true;
@@ -68,7 +67,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void CargarDatos()
         {
             _dtDetalle = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",
-                new { ACCION = "COMPRA_DIRECTA_CON_RETENCION_DETALLE_LISTAR" });
+                new { ACCION = "LISTAR_COMPRA_X_CAJA_CHICA" });
             gridControl1.DataSource = _dtDetalle;
         }
 
@@ -80,11 +79,12 @@ namespace SistemaContable.UI.Forms.Proveedores
             return Convert.ToInt32(val);
         }
 
-        private void AbrirDocumento(int idCcfCompra, bool esCCF)
-        {            
+        private void AbrirDocumento(int idCcfCompra)
+        {
             using (var frm = new frmDocumentoCompra())
             {
                 frm.IdCcfCompra = idCcfCompra;
+                frm.EsContado = true;
                 frm.ShowDialog(this);
             }
             CargarDatos();
@@ -92,7 +92,18 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
-            Close(); 
+            Close();
+        }
+
+        private void riEditar_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            int? id = ObtenerIdFilaActiva();
+            if (id.HasValue) AbrirDocumento(id.Value);
+       }      
+
+        private void btnNuevoQuedan_Click(object sender, EventArgs e)
+        {
+            AbrirDocumento(0);
         }
     }
 }

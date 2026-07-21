@@ -346,13 +346,13 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colQuedan.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colQuedan.Caption = "No. Quedan";
             this.colQuedan.FieldName = "NUM_QUEDAN";
-            this.colQuedan.MinWidth = 87;
+            this.colQuedan.MinWidth = 89;
             this.colQuedan.Name = "colQuedan";
             this.colQuedan.OptionsColumn.AllowSize = false;
             this.colQuedan.OptionsColumn.FixedWidth = true;
             this.colQuedan.Visible = true;
             this.colQuedan.VisibleIndex = 2;
-            this.colQuedan.Width = 87;
+            this.colQuedan.Width = 89;
             // 
             // colTIPO_DTE
             // 
@@ -362,13 +362,13 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colTIPO_DTE.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colTIPO_DTE.Caption = "Tipo Doc.";
             this.colTIPO_DTE.FieldName = "TIPO_DTE";
-            this.colTIPO_DTE.MinWidth = 70;
+            this.colTIPO_DTE.MinWidth = 73;
             this.colTIPO_DTE.Name = "colTIPO_DTE";
             this.colTIPO_DTE.OptionsColumn.AllowSize = false;
             this.colTIPO_DTE.OptionsColumn.FixedWidth = true;
             this.colTIPO_DTE.Visible = true;
             this.colTIPO_DTE.VisibleIndex = 3;
-            this.colTIPO_DTE.Width = 70;
+            this.colTIPO_DTE.Width = 73;
             // 
             // colFECHA_RECIBIDO
             // 
@@ -532,13 +532,13 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gridColumn9.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn9.Caption = "No. Quedan";
             this.gridColumn9.FieldName = "NUM_QUEDAN";
-            this.gridColumn9.MinWidth = 87;
+            this.gridColumn9.MinWidth = 89;
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowSize = false;
             this.gridColumn9.OptionsColumn.FixedWidth = true;
             this.gridColumn9.Visible = true;
             this.gridColumn9.VisibleIndex = 2;
-            this.gridColumn9.Width = 87;
+            this.gridColumn9.Width = 89;
             // 
             // gridColumn8
             // 
@@ -548,13 +548,13 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gridColumn8.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn8.Caption = "Tipo Doc.";
             this.gridColumn8.FieldName = "TIPO_DTE";
-            this.gridColumn8.MinWidth = 70;
+            this.gridColumn8.MinWidth = 73;
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowSize = false;
             this.gridColumn8.OptionsColumn.FixedWidth = true;
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 3;
-            this.gridColumn8.Width = 70;
+            this.gridColumn8.Width = 73;
             // 
             // gridColumn4
             // 
@@ -629,7 +629,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(1198, 29);
             this.label3.TabIndex = 1;
-            this.label3.Text = "Comprobantes con provisión";
+            this.label3.Text = "Comprobantes a provisionar";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // frmProvisionDiaria

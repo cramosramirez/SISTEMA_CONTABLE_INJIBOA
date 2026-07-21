@@ -59,6 +59,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             ConfigurarColumna(view, "CARGO", "CARGO", 75);
             ConfigurarColumna(view, "ABONO", "ABONO", 75);
 
+            foreach (DevExpress.XtraGrid.Columns.GridColumn col in view.Columns)
+                col.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+
             // Opciones del grid
             view.OptionsView.ShowGroupPanel = false;
             view.OptionsBehavior.Editable = true;

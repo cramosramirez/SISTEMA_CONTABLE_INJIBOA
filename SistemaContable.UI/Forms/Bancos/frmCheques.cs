@@ -26,6 +26,8 @@ namespace SistemaContable.UI.Forms.Bancos
         private string _columnaAnteriorGrid = string.Empty;
         private DataTable _documentosPago; // Documentos a pagar mediante Quedan
         private string _uidEnlaceCheque = string.Empty;
+        private string _ultimoDetalleAutoGenerado = string.Empty;
+        private bool _flujoEsQuedan = false;
 
         public frmCheques()
         {            
@@ -169,7 +171,11 @@ namespace SistemaContable.UI.Forms.Bancos
                 string codigo = txtPROVEEDOR.Text.Trim();
                 string cuentaPorPagar = "";
 
-                if ((codigo == "*") || (string.IsNullOrWhiteSpace(codigo))) return;
+                if ((codigo == "*") || (string.IsNullOrWhiteSpace(codigo)))
+                {
+                    _documentosPago?.Clear();  
+                    return;
+                }
                 
                 // Validar que el usuario haya seleccionado primero la cuenta del banco
                 if (_dtPartida.Rows.Count == 0 ||
@@ -205,7 +211,8 @@ namespace SistemaContable.UI.Forms.Bancos
                             {
                                 _documentosPago = frm.DocumentosAPagar;
                                 txtCANTIDAD.Text = frm.TotalAPagar.ToString("N2");
-
+                                _flujoEsQuedan = true;
+                                txtCONCEPTO.Text = ConstruirConceptoPago(_documentosPago);
                                 AplicarPartidaPago(frm.TotalAPagar, cuentaPorPagar);
 
                                 // ✅ Mover el foco al concepto. El flag evita reentrancia.
@@ -252,6 +259,7 @@ namespace SistemaContable.UI.Forms.Bancos
         {
             _documentosPago = null;
             txtCANTIDAD.Text = "";
+            _flujoEsQuedan = false;
         }
 
         private void ConfigurarCRUD(EstadoFormulario estado)
@@ -438,7 +446,10 @@ namespace SistemaContable.UI.Forms.Bancos
             ConfigurarColumna(view, "CTACONTABLE", "CUENTA", 150);
             ConfigurarColumna(view, "DETALLE", "DETALLE DE LA APLICACION", 350);
             ConfigurarColumna(view, "CARGO", "CARGO", 75);
-            ConfigurarColumna(view, "ABONO", "ABONO", 75); 
+            ConfigurarColumna(view, "ABONO", "ABONO", 75);
+
+            foreach (DevExpress.XtraGrid.Columns.GridColumn col in view.Columns)
+                col.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
 
             // Opciones del grid
             view.OptionsView.ShowGroupPanel = false;
@@ -740,12 +751,16 @@ namespace SistemaContable.UI.Forms.Bancos
                 if (string.IsNullOrWhiteSpace(cta)) return;
 
                 string detalleActual = view.GetFocusedRowCellValue("DETALLE")?.ToString();
-                if (!string.IsNullOrWhiteSpace(detalleActual)) return;
+                if (!_flujoEsQuedan && !string.IsNullOrWhiteSpace(detalleActual)) return;
 
-                string detalle = $"CH # {txtNUMERO_CHEQUE.Text.Trim()} " +
-                                 $"{txtNOMBRE_CHEQUE.Text.Trim()}";
-
-                view.SetFocusedRowCellValue("DETALLE", detalle);
+                string nuevoDetalle = _flujoEsQuedan
+                   ? $"CH # {txtNUMERO_CHEQUE.Text.Trim()} {txtCONCEPTO.Text.Trim()}"
+                   : $"CH # {txtNUMERO_CHEQUE.Text.Trim()} {txtNOMBRE_CHEQUE.Text.Trim()}";
+                bool esAutoGenerado = string.IsNullOrWhiteSpace(detalleActual)
+                           || detalleActual == _ultimoDetalleAutoGenerado;
+                if (!esAutoGenerado) return;
+                view.SetFocusedRowCellValue("DETALLE", nuevoDetalle);
+                _ultimoDetalleAutoGenerado = nuevoDetalle;
                 view.ShowEditor();
 
                 // Diferir el SelectAll hasta que el editor esté completamente activo
@@ -1455,8 +1470,12 @@ namespace SistemaContable.UI.Forms.Bancos
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             _idCheque = 0;
-            FormHelper.LimpiarControles(this);
+            _ultimoDetalleAutoGenerado = string.Empty;
             _dtPartida.Clear();
+            _documentosPago?.Clear(); 
+            _flujoEsQuedan = false;
+            txtNUM_CUENTA.Tag = null;
+            FormHelper.LimpiarControles(this);            
             AgregarFilaVacia();
             mskFECHA_CHEQUE.Text = DateTime.Today.ToString("dd/MM/yyyy");
             ConfigurarOperacion();
@@ -1472,5 +1491,43 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private static string SafeStr(object v)
            => v == DBNull.Value || v == null ? "" : v.ToString();
+
+        /// <summary>
+        /// Arma el concepto de pago a partir de los documentos seleccionados en el Quedan.
+        /// Los que tienen NUM_CONTROL con formato DTE-... aportan su número truncado;
+        /// cualquier otro formato se agrupa genéricamente como "CCF".
+        /// Ejemplos: "PAGO DE DTE #123, 456"  |  "PAGO DE CCF"  |  "PAGO DE DTE #123, 456 Y CCF"
+        /// </summary>
+        private string ConstruirConceptoPago(DataTable documentos)
+        {
+            if (documentos == null || documentos.Rows.Count == 0) return string.Empty;
+
+            var numerosDte = new List<string>();
+            bool hayNoDte = false;
+
+            foreach (DataRow fila in documentos.Rows)
+            {
+                string numControl = fila["NUM_CONTROL"]?.ToString() ?? string.Empty;
+
+                if (numControl.StartsWith("DTE", StringComparison.OrdinalIgnoreCase))
+                {
+                    string numeroInterno = fila["NUM_CONTROL_INTERNO"]?.ToString();
+                    if (!string.IsNullOrWhiteSpace(numeroInterno))
+                        numerosDte.Add(numeroInterno);
+                }
+                else
+                {
+                    hayNoDte = true;
+                }
+            }
+
+            var partes = new List<string>();
+            if (numerosDte.Count > 0)
+                partes.Add("DTE #" + string.Join(", ", numerosDte));
+            if (hayNoDte)
+                partes.Add("CCF");
+
+            return partes.Count == 0 ? string.Empty : "PAGO DE " + string.Join(" Y ", partes);
+        }
     }
 }

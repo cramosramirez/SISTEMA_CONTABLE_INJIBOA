@@ -1,7 +1,7 @@
 ﻿
 namespace SistemaContable.UI.Forms.Proveedores
 {
-    partial class frmConsultaCompraDirectaSinRetencion
+    partial class frmConsultaCompraDirecta
     {
         /// <summary>
         /// Required designer variable.
@@ -69,6 +69,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.riEditar.ReadOnly = true;
             this.riEditar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.riEditar.UseReadOnlyAppearance = false;
+            this.riEditar.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.riEditar_ButtonClick);
             // 
             // panel1
             // 
@@ -99,6 +100,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnFinalizar.ToolTip = "Nuevo Quedan";
             this.btnFinalizar.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.btnFinalizar.ToolTipTitle = "Operación";
+            this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
             // 
             // btnNuevoQuedan
             // 
@@ -118,6 +120,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnNuevoQuedan.ToolTip = "Nuevo Quedan";
             this.btnNuevoQuedan.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.btnNuevoQuedan.ToolTipTitle = "Operación";
+            this.btnNuevoQuedan.Click += new System.EventHandler(this.btnNuevoQuedan_Click);
             // 
             // label1
             // 
@@ -128,7 +131,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(1302, 38);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Comprobantes de compra sin Retención 1%";
+            this.label1.Text = "Caja chica - Documentos de compra";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel2
@@ -283,7 +286,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colFECHA_RECIBIDO.VisibleIndex = 6;
             this.colFECHA_RECIBIDO.Width = 87;
             // 
-            // frmConsultaCompraDirectaSinRetencion
+            // frmConsultaCompraDirecta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -294,10 +297,10 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmConsultaCompraDirectaSinRetencion";
+            this.Name = "frmConsultaCompraDirecta";
             this.Tag = "CONSULTA";
-            this.Text = "Consulta Documento de Compra sin Retención";
-            this.Load += new System.EventHandler(this.frmConsultaCompraDirectaSinRetencion_Load);
+            this.Text = "Consulta Caja Chica - Documentos de Compra";
+            this.Load += new System.EventHandler(this.frmConsultaCompraDirecta_Load);
             ((System.ComponentModel.ISupportInitialize)(this.riEditar)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);

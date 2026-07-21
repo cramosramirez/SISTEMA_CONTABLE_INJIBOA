@@ -31,7 +31,7 @@ namespace SistemaContable.UI.Helpers
         public frmBusquedaGenerica(BusquedaConfig config)
         {            
             InitializeComponent();
-            _config = config;
+            _config = config;           
         }
 
         #endregion
@@ -44,7 +44,7 @@ namespace SistemaContable.UI.Helpers
             CambiarAparienciaGrid();
             ConfigurarColumnas();
             Buscar(null); // carga inicial
-            txtTexto_a_buscar.Focus();
+            this.BeginInvoke(new Action(() => txtTexto_a_buscar.Focus()));
 
             // ESC cierra el formulario
             KeyPreview = true;
@@ -224,5 +224,11 @@ namespace SistemaContable.UI.Helpers
         }
 
         #endregion
+    }
+
+    // Parametro usado para filtrar un frmBusqueda con un parámetro mutable en tiempo de ejecución
+    public class ParametrosCcfBusqueda
+    {
+        public string CODIGO_ENTIDAD { get; set; }
     }
 }
