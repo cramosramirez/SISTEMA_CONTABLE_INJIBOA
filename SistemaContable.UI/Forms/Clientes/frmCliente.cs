@@ -15,13 +15,14 @@ namespace SistemaContable.UI.Forms.Clientes
         #region === CAMPOS PRIVADOS ===
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtRoles;
-        private DataTable _dtRolesEntidad;
         private DataTable _dtAllMunicipios;
         private bool _cargando = false;
         // IDs seleccionados por búsqueda de actividad económica
         private int _idActividad1 = 0;
         private int _idActividad2 = 0;
         private int _idActividad3 = 0;
+        // ID seleccionado desde la búsqueda genérica de Tipo de Precio
+        private int? _idTipoPrecioSeleccionado;
         #endregion
         public int IdEntidad { get; set; } = 0;
         public frmCliente()
@@ -39,8 +40,9 @@ namespace SistemaContable.UI.Forms.Clientes
             CargarPaises();
             CargarDepartamentos();
             RegistrarBusquedaActividades();
+            RegistrarBusquedaTipoPrecio();
+            RegistrarBusquedaCuenta();
             CargarOrigen();
-            CargarRolesEntidad();
             InicializarGridRoles();
             if (IdEntidad == 0)
             {
@@ -182,18 +184,19 @@ namespace SistemaContable.UI.Forms.Clientes
                 Accion = "BUSCAR",
                 Columnas = new System.Collections.Generic.Dictionary<string, string>
                 {
-                    { "ID_ACTIVIDAD", "Código" },
-                    { "VALORES",      "Descripción" }
+                    { "CODI_MH", "Código" },
+                    { "VALORES", "Descripción" }
                 },
                 Anchos = new System.Collections.Generic.Dictionary<string, int>
                 {
-                    { "ID_ACTIVIDAD", 80 },
-                    { "VALORES",     600 }
+                    { "CODI_MH",  80 },
+                    { "VALORES", 600 }
                 }
             };
-            FormHelper.RegistrarBusqueda(txtACTIVIDAD_1, config1, fila =>
+            FormHelper.RegistrarBusqueda(txtCODI_ACTIVIDAD1, config1, fila =>
             {
                 _idActividad1 = Convert.ToInt32(fila["ID_ACTIVIDAD"]);
+                txtCODI_ACTIVIDAD1.Text = fila["CODI_MH"].ToString();
                 txtACTIVIDAD_1.Text = fila["VALORES"].ToString();
             });
             var config2 = new BusquedaConfig
@@ -202,18 +205,19 @@ namespace SistemaContable.UI.Forms.Clientes
                 Accion = "BUSCAR",
                 Columnas = new System.Collections.Generic.Dictionary<string, string>
                 {
-                    { "ID_ACTIVIDAD", "Código" },
-                    { "VALORES",      "Descripción" }
+                    { "CODI_MH", "Código" },
+                    { "VALORES", "Descripción" }
                 },
                 Anchos = new System.Collections.Generic.Dictionary<string, int>
                 {
-                    { "ID_ACTIVIDAD", 80 },
-                    { "VALORES",     600 }
+                    { "CODI_MH",  80 },
+                    { "VALORES", 600 }
                 }
             };
-            FormHelper.RegistrarBusqueda(txtACTIVIDAD_2, config2, fila =>
+            FormHelper.RegistrarBusqueda(txtCODI_ACTIVIDAD2, config2, fila =>
             {
                 _idActividad2 = Convert.ToInt32(fila["ID_ACTIVIDAD"]);
+                txtCODI_ACTIVIDAD2.Text = fila["CODI_MH"].ToString();
                 txtACTIVIDAD_2.Text = fila["VALORES"].ToString();
             });
             var config3 = new BusquedaConfig
@@ -222,30 +226,229 @@ namespace SistemaContable.UI.Forms.Clientes
                 Accion = "BUSCAR",
                 Columnas = new System.Collections.Generic.Dictionary<string, string>
                 {
-                    { "ID_ACTIVIDAD", "Código" },
-                    { "VALORES",      "Descripción" }
+                    { "CODI_MH", "Código" },
+                    { "VALORES", "Descripción" }
                 },
                 Anchos = new System.Collections.Generic.Dictionary<string, int>
                 {
-                    { "ID_ACTIVIDAD", 80 },
-                    { "VALORES",     600 }
+                    { "CODI_MH",  80 },
+                    { "VALORES", 600 }
                 }
             };
-            FormHelper.RegistrarBusqueda(txtACTIVIDAD_3, config3, fila =>
+            FormHelper.RegistrarBusqueda(txtCODI_ACTIVIDAD3, config3, fila =>
             {
                 _idActividad3 = Convert.ToInt32(fila["ID_ACTIVIDAD"]);
+                txtCODI_ACTIVIDAD3.Text = fila["CODI_MH"].ToString();
                 txtACTIVIDAD_3.Text = fila["VALORES"].ToString();
             });
+            // Búsqueda por código escrito directamente (perder foco), igual que en frmProveedor
+            txtCODI_ACTIVIDAD1.Leave += (s, e) => BuscarActividadPorCodigo(txtCODI_ACTIVIDAD1, txtACTIVIDAD_1, v => _idActividad1 = v);
+            txtCODI_ACTIVIDAD2.Leave += (s, e) => BuscarActividadPorCodigo(txtCODI_ACTIVIDAD2, txtACTIVIDAD_2, v => _idActividad2 = v);
+            txtCODI_ACTIVIDAD3.Leave += (s, e) => BuscarActividadPorCodigo(txtCODI_ACTIVIDAD3, txtACTIVIDAD_3, v => _idActividad3 = v);
         }
-        private string ObtenerDescripcionActividad(int idActividad)
+        /// <summary>
+        /// Busca la actividad económica por su código (CODI_MH) escrito directamente
+        /// en el campo, al perder el foco, usando [EMH].[SP_ACTIVIDAD_ECONOMICA].
+        /// Se usa BUSCAR + FILTRO (no filtra por CODI_MH exacto) y se filtra la
+        /// coincidencia exacta en C#.
+        /// </summary>
+        private void BuscarActividadPorCodigo(TextBox txtCodigo, TextBox txtDescripcion, Action<int> asignarId)
         {
-            if (idActividad <= 0) return "";
+            string codigo = txtCodigo.Text.Trim();
+            if (string.IsNullOrEmpty(codigo))
+            {
+                asignarId(0);
+                txtDescripcion.Clear();
+                return;
+            }
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ACTIVIDAD_ECONOMICA]",
+                    new { ACCION = "BUSCAR", FILTRO = codigo });
+                DataRow fila = null;
+                if (dt != null)
+                {
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        if (string.Equals(r["CODI_MH"]?.ToString()?.Trim(), codigo, StringComparison.OrdinalIgnoreCase))
+                        {
+                            fila = r;
+                            break;
+                        }
+                    }
+                }
+                if (fila == null)
+                {
+                    MostrarValidacion($"No se encontró la actividad económica con código '{codigo}'.");
+                    asignarId(0);
+                    txtCodigo.Clear();
+                    txtDescripcion.Clear();
+                    txtCodigo.Focus();
+                    return;
+                }
+                asignarId(Convert.ToInt32(fila["ID_ACTIVIDAD"]));
+                txtCodigo.Text = fila["CODI_MH"].ToString();
+                txtDescripcion.Text = fila["VALORES"].ToString();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error buscando actividad: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        /// <summary>
+        /// Carga código + descripción de una actividad económica ya asignada
+        /// (por ID), usando ACCION="CONSULTAR" de [EMH].[SP_ACTIVIDAD_ECONOMICA].
+        /// </summary>
+        private void CargarActividadPorId(int idActividad, TextBox txtCodigo, TextBox txtDescripcion)
+        {
+            if (idActividad <= 0)
+            {
+                txtCodigo.Clear();
+                txtDescripcion.Clear();
+                return;
+            }
             try
             {
                 DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ACTIVIDAD_ECONOMICA]",
                     new { ACCION = "CONSULTAR", ID_ACTIVIDAD = idActividad });
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    txtCodigo.Clear();
+                    txtDescripcion.Clear();
+                    return;
+                }
+                var fila = dt.Rows[0];
+                txtCodigo.Text = fila["CODI_MH"]?.ToString() ?? "";
+                txtDescripcion.Text = fila["VALORES"]?.ToString() ?? "";
+            }
+            catch
+            {
+                // Silenciar
+            }
+        }
+        /// <summary>
+        /// Registra la búsqueda genérica con "*" para el Tipo de Precio del cliente
+        /// (mismo catálogo [EINVENTARIO].[TIPO_PRECIO] usado en frmProducto).
+        /// </summary>
+        private void RegistrarBusquedaTipoPrecio()
+        {
+            var config = new BusquedaConfig
+            {
+                StoredProcedure = "[EINVENTARIO].[SP_TIPO_PRECIO]",
+                Accion = "BUSCAR",
+                Columnas = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    { "DESCRIPCION", "TIPO DE PRECIO" }
+                },
+                Anchos = new System.Collections.Generic.Dictionary<string, int>
+                {
+                    { "DESCRIPCION", 300 }
+                }
+            };
+            FormHelper.RegistrarBusqueda(txtID_TIPO_PRECIO, config, fila =>
+            {
+                _idTipoPrecioSeleccionado = Convert.ToInt32(fila["ID_TIPO_PRECIO"]);
+                txtID_TIPO_PRECIO.Text = fila["DESCRIPCION"].ToString();
+            });
+        }
+        private string ObtenerDescripcionTipoPrecio(int? idTipoPrecio)
+        {
+            if (idTipoPrecio == null || idTipoPrecio <= 0) return "";
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_TIPO_PRECIO]",
+                    new { ACCION = "OBTENER", ID_TIPO_PRECIO = idTipoPrecio });
                 if (dt != null && dt.Rows.Count > 0)
-                    return dt.Rows[0]["VALORES"]?.ToString() ?? "";
+                    return dt.Rows[0]["DESCRIPCION"]?.ToString() ?? "";
+            }
+            catch { }
+            return "";
+        }
+        /// <summary>
+        /// Registra la búsqueda genérica con "*" para la Cuenta x Cobrar, igual que
+        /// txtCUENTA_X_PAGAR en frmProveedor: SP_CATALOGO_CUENTA ya existe en la base
+        /// de datos (no se crea aquí), filtrando solo cuentas de detalle (ES_DETALLE = true).
+        /// </summary>
+        private void RegistrarBusquedaCuenta()
+        {
+            var config = new BusquedaConfig
+            {
+                StoredProcedure = "SP_CATALOGO_CUENTA",
+                Columnas = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    { "CUENTA",        "CODIGO" },
+                    { "NOMBRE_CUENTA", "NOMBRE" }
+                },
+                Anchos = new System.Collections.Generic.Dictionary<string, int>
+                {
+                    { "CUENTA",        100 },
+                    { "NOMBRE_CUENTA", 300 }
+                },
+                ParametrosExtra = new { ES_DETALLE = true }
+            };
+            FormHelper.RegistrarBusqueda(txtCUENTA_X_COBRAR, config, fila =>
+            {
+                txtCUENTA_X_COBRAR.Text = fila["CUENTA"].ToString();
+                txtNOMBRE_CUENTA_X_COBRAR.Text = fila["NOMBRE_CUENTA"].ToString();
+            });
+            txtCUENTA_X_COBRAR.Leave += (s, e) => BuscarCuentaContablePorCodigo(txtCUENTA_X_COBRAR, txtNOMBRE_CUENTA_X_COBRAR);
+        }
+        /// <summary>
+        /// Busca la cuenta contable por su código (CUENTA) al perder el foco.
+        /// Mismo comportamiento que BuscarCuentaContablePorCodigo en frmProveedor.
+        /// </summary>
+        private void BuscarCuentaContablePorCodigo(TextBox txtCodigo, TextBox txtNombreDestino)
+        {
+            string codigo = txtCodigo.Text.Trim();
+            if (string.IsNullOrEmpty(codigo))
+            {
+                txtNombreDestino.Clear();
+                return;
+            }
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta("SP_CATALOGO_CUENTA",
+                    new { ACCION = "OBTENER", CUENTA = codigo });
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    MostrarValidacion($"La cuenta contable '{codigo}' no existe.");
+                    txtNombreDestino.Clear();
+                    txtCodigo.Focus();
+                    txtCodigo.SelectAll();
+                    return;
+                }
+                var fila = dt.Rows[0];
+                bool esDetalle = fila["ES_DETALLE"] != DBNull.Value && Convert.ToBoolean(fila["ES_DETALLE"]);
+                if (!esDetalle)
+                {
+                    MostrarValidacion("No se puede asignar una cuenta acumulativa.");
+                    txtNombreDestino.Clear();
+                    txtCodigo.Focus();
+                    txtCodigo.SelectAll();
+                    return;
+                }
+                txtNombreDestino.Text = fila["NOMBRE_CUENTA"].ToString();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error buscando cuenta contable: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        /// <summary>
+        /// Resuelve el nombre de una cuenta contable ya guardada (carga silenciosa,
+        /// sin validaciones), para mostrarla en el campo de solo lectura al editar.
+        /// </summary>
+        private string ObtenerNombreCuenta(string cuenta)
+        {
+            if (string.IsNullOrWhiteSpace(cuenta)) return "";
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta("SP_CATALOGO_CUENTA",
+                    new { ACCION = "OBTENER", CUENTA = cuenta });
+                if (dt != null && dt.Rows.Count > 0)
+                    return dt.Rows[0]["NOMBRE_CUENTA"]?.ToString() ?? "";
             }
             catch { }
             return "";
@@ -282,17 +485,13 @@ namespace SistemaContable.UI.Forms.Clientes
         }
         #endregion
         #region === GRID ROLES ===
-        private void CargarRolesEntidad()
-        {
-            _dtRolesEntidad = _dal.EjecutarConsulta("[EMH].[SP_TIPO_CLIENTE]",
-                new { ACCION = "LISTAR" });
-        }
         private void InicializarGridRoles()
         {
             _dtRoles = new DataTable();
             _dtRoles.Columns.Add("ID_ENTIDAD_TPC", typeof(int));
             _dtRoles.Columns.Add("ID_ENTIDAD", typeof(int));
             _dtRoles.Columns.Add("ID_TIPO_CLIENTE", typeof(int));
+            _dtRoles.Columns.Add("NOMBRE_TIPO_CLIENTE", typeof(string));
             _dtRoles.Columns.Add("ACTIVO", typeof(bool));
             _dtRoles.Columns.Add("FECHA_ASIGNACION", typeof(DateTime));
             gridRoles.DataSource = _dtRoles;
@@ -303,8 +502,9 @@ namespace SistemaContable.UI.Forms.Clientes
             // Ocultar claves
             OcultarColumna(view, "ID_ENTIDAD_TPC");
             OcultarColumna(view, "ID_ENTIDAD");
-            // Columna: TIPO CLIENTE (LookUpEdit)
-            var colRol = view.Columns["ID_TIPO_CLIENTE"];
+            OcultarColumna(view, "ID_TIPO_CLIENTE");
+            // Columna: Tipo Cliente (búsqueda genérica con "*")
+            var colRol = view.Columns["NOMBRE_TIPO_CLIENTE"];
             if (colRol != null)
             {
                 colRol.Caption = "Tipo Cliente";
@@ -312,19 +512,18 @@ namespace SistemaContable.UI.Forms.Clientes
                 colRol.Visible = true;
                 colRol.VisibleIndex = 0;
                 colRol.OptionsColumn.AllowEdit = true;
-                var repoRol = new RepositoryItemLookUpEdit();
-                repoRol.DataSource = _dtRolesEntidad;
-                repoRol.ValueMember = "ID_TIPO_CLIENTE";
-                repoRol.DisplayMember = "NOMBRE_TIPO_CLIENTE";
-                repoRol.NullText = "-- Seleccionar --";
-                repoRol.ShowHeader = false;
-                repoRol.ShowFooter = false;
-                // Solo mostrar la columna de nombre en el desplegable
-                repoRol.Columns.Clear();
-                repoRol.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo(
-                    "NOMBRE_TIPO_CLIENTE", "Tipo Cliente", 250));
-                gridRoles.RepositoryItems.Add(repoRol);
-                colRol.ColumnEdit = repoRol;
+                var repoTexto = new RepositoryItemTextEdit();
+                repoTexto.KeyDown += (s, ev) =>
+                {
+                    if (ev.KeyCode != Keys.Enter) return;
+                    var editor = s as TextEdit;
+                    if (editor == null) return;
+                    if (editor.Text?.Trim() != "*") return;
+                    ev.Handled = true;
+                    AbrirBusquedaTipoClienteGrid(view);
+                };
+                gridRoles.RepositoryItems.Add(repoTexto);
+                colRol.ColumnEdit = repoTexto;
             }
             // Columna: Activo
             ConfigurarColumnaCheckBox(view, "ACTIVO", "Activo", 55);
@@ -379,8 +578,41 @@ namespace SistemaContable.UI.Forms.Clientes
             view.Appearance.Row.Options.UseFont = true;
             view.Appearance.HeaderPanel.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
             view.Appearance.HeaderPanel.Options.UseFont = true;
-            // KeyDown: * + Enter abre búsqueda
-
+        }
+        /// <summary>
+        /// Abre el formulario de búsqueda genérica de Tipo de Cliente para la
+        /// celda enfocada del grid. SP_TIPO_CLIENTE ya filtra por @FILTRO
+        /// dentro de la propia acción LISTAR.
+        /// </summary>
+        private void AbrirBusquedaTipoClienteGrid(GridView view)
+        {
+            var config = new BusquedaConfig
+            {
+                StoredProcedure = "[EMH].[SP_TIPO_CLIENTE]",
+                Accion = "LISTAR",
+                Columnas = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    { "NOMBRE_TIPO_CLIENTE", "TIPO DE CLIENTE" }
+                },
+                Anchos = new System.Collections.Generic.Dictionary<string, int>
+                {
+                    { "NOMBRE_TIPO_CLIENTE", 300 }
+                }
+            };
+            using (var frm = new frmBusquedaGenerica(config))
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                if (frm.ShowDialog() == DialogResult.OK && frm.FilaSeleccionada != null)
+                {
+                    view.SetFocusedRowCellValue("ID_TIPO_CLIENTE",
+                        Convert.ToInt32(frm.FilaSeleccionada["ID_TIPO_CLIENTE"]));
+                    view.SetFocusedRowCellValue("NOMBRE_TIPO_CLIENTE", frm.FilaSeleccionada["NOMBRE_TIPO_CLIENTE"].ToString());
+                }
+                else
+                {
+                    view.SetFocusedRowCellValue("NOMBRE_TIPO_CLIENTE", "");
+                }
+            }
         }
         private void ConfigurarColumnaCheckBox(GridView view, string field, string caption, int width)
         {
@@ -408,6 +640,9 @@ namespace SistemaContable.UI.Forms.Clientes
             DataRow r = dt.Rows[0];
             txtDIAS_PLAZO.Text = r["DIAS_PLAZO"] == DBNull.Value ? "" : r["DIAS_PLAZO"].ToString();
             txtCUENTA_X_COBRAR.Text = r["CUENTA_X_COBRAR"] == DBNull.Value ? "" : r["CUENTA_X_COBRAR"].ToString();
+            txtNOMBRE_CUENTA_X_COBRAR.Text = ObtenerNombreCuenta(txtCUENTA_X_COBRAR.Text);
+            _idTipoPrecioSeleccionado = r["ID_TIPO_PRECIO"] == DBNull.Value ? (int?)null : Convert.ToInt32(r["ID_TIPO_PRECIO"]);
+            txtID_TIPO_PRECIO.Text = ObtenerDescripcionTipoPrecio(_idTipoPrecioSeleccionado);
         }
         private void CargarRolesExistentes(int idEntidad)
         {
@@ -423,6 +658,9 @@ namespace SistemaContable.UI.Forms.Clientes
                 f["ID_TIPO_CLIENTE"] = row["ID_TIPO_CLIENTE"] == DBNull.Value
                                      ? (object)DBNull.Value
                                      : Convert.ToInt32(row["ID_TIPO_CLIENTE"]);
+                f["NOMBRE_TIPO_CLIENTE"] = row["NOMBRE_TIPO_CLIENTE"] == DBNull.Value
+                                     ? ""
+                                     : row["NOMBRE_TIPO_CLIENTE"].ToString();
                 f["ACTIVO"] = row["ACTIVO"] == DBNull.Value
                                          ? true
                                          : Convert.ToBoolean(row["ACTIVO"]);
@@ -438,6 +676,7 @@ namespace SistemaContable.UI.Forms.Clientes
             fila["ID_ENTIDAD_TPC"] = 0;
             fila["ID_ENTIDAD"] = IdEntidad;
             fila["ID_TIPO_CLIENTE"] = DBNull.Value;
+            fila["NOMBRE_TIPO_CLIENTE"] = "";
             fila["ACTIVO"] = true;
             fila["FECHA_ASIGNACION"] = DateTime.Today;
             _dtRoles.Rows.Add(fila);
@@ -473,16 +712,16 @@ namespace SistemaContable.UI.Forms.Clientes
             try
             {
                 Cursor = Cursors.WaitCursor;
-                DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD]",
+                DataTable dtEntidad = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD]",
                     new { ACCION = "CONSULTAR", ID_ENTIDAD = idEntidad });
-                if (dt == null || dt.Rows.Count == 0)
+                if (dtEntidad == null || dtEntidad.Rows.Count == 0)
                 {
                     XtraMessageBox.Show("No se encontró la entidad solicitada.",
                         "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Close();
                     return;
                 }
-                DataRow r = dt.Rows[0];
+                DataRow r = dtEntidad.Rows[0];
                 IdEntidad = Convert.ToInt32(r["ID_ENTIDAD"]);
                 txtCODIGO_ENTIDAD.Text = AsString(r["CODIGO_ENTIDAD"]);
                 txtNOMBRE.Text = AsString(r["NOMBRE"]);
@@ -512,9 +751,9 @@ namespace SistemaContable.UI.Forms.Clientes
                 _idActividad1 = AsInt(r["ID_ACTIVIDAD_1"]) ?? 0;
                 _idActividad2 = AsInt(r["ID_ACTIVIDAD_2"]) ?? 0;
                 _idActividad3 = AsInt(r["ID_ACTIVIDAD_3"]) ?? 0;
-                txtACTIVIDAD_1.Text = ObtenerDescripcionActividad(_idActividad1);
-                txtACTIVIDAD_2.Text = ObtenerDescripcionActividad(_idActividad2);
-                txtACTIVIDAD_3.Text = ObtenerDescripcionActividad(_idActividad3);
+                CargarActividadPorId(_idActividad1, txtCODI_ACTIVIDAD1, txtACTIVIDAD_1);
+                CargarActividadPorId(_idActividad2, txtCODI_ACTIVIDAD2, txtACTIVIDAD_2);
+                CargarActividadPorId(_idActividad3, txtCODI_ACTIVIDAD3, txtACTIVIDAD_3);
                 SetComboById(cbxORIGEN, AsInt(r["ID_ORIGEN"]));
                 // Departamento → Municipio → Distrito
                 string codiDepto = AsString(r["CODI_DEPTO"]);
@@ -596,6 +835,7 @@ namespace SistemaContable.UI.Forms.Clientes
                     return;
                 }
                 IdEntidad = Convert.ToInt32(dtResult.Rows[0]["ID_GENERADO"]);
+                GuardarRolCliente(IdEntidad);
                 GuardarEntidadCliente();
                 GuardarRoles();
                 XtraMessageBox.Show("Entidad guardada correctamente.",
@@ -612,6 +852,23 @@ namespace SistemaContable.UI.Forms.Clientes
                 Cursor = Cursors.Default;
             }
         }
+        /// <summary>
+        /// Da de alta (o reactiva) el rol 'CLI' para la entidad en dbo.ENTIDAD_ROL.
+        /// SP_ENTIDAD.GUARDAR no maneja roles; el alta/activación del rol se hace
+        /// aparte contra [EMH].[SP_ENTIDAD_ROL], que ya evita duplicar el mismo ROL.
+        /// </summary>
+        private void GuardarRolCliente(int idEntidad)
+        {
+            _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD_ROL]", new
+            {
+                ACCION = "GUARDAR",
+                ID_ENTIDAD_ROL = 0,
+                ID_ENTIDAD = idEntidad,
+                ROL = "CLI",
+                ACTIVO = true,
+                USUARIO = Configuracion.UsuarioActual
+            });
+        }
         private void GuardarEntidadCliente()
         {
             _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD_CLIENTE]", new
@@ -620,6 +877,7 @@ namespace SistemaContable.UI.Forms.Clientes
                 ID_ENTIDAD = IdEntidad,
                 DIAS_PLAZO = ParseInt(txtDIAS_PLAZO.Text),
                 CUENTA_X_COBRAR = NullIfEmpty(txtCUENTA_X_COBRAR.Text),
+                ID_TIPO_PRECIO = _idTipoPrecioSeleccionado,
                 USER = Configuracion.UsuarioActual
             });
         }
@@ -658,11 +916,18 @@ namespace SistemaContable.UI.Forms.Clientes
                 return;
             try
             {
-                _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD]", new
+                EliminarRolCliente(IdEntidad);
+                if (!TieneAlgunOtroRolActivo(IdEntidad))
                 {
-                    ACCION = "ELIMINAR",
-                    ID_ENTIDAD = IdEntidad
-                });
+                    // La entidad ya no tiene ningún rol activo (ni Proveedor, ni Cliente):
+                    // se elimina por completo. Si aún queda otro rol (p.ej. PRO), se conserva
+                    // la entidad y solo se dio de baja el rol de Cliente.
+                    _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD]", new
+                    {
+                        ACCION = "ELIMINAR",
+                        ID_ENTIDAD = IdEntidad
+                    });
+                }
                 XtraMessageBox.Show("Entidad eliminada correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
@@ -770,7 +1035,7 @@ namespace SistemaContable.UI.Forms.Clientes
             {
                 XtraMessageBox.Show("Debe seleccionar al menos la Actividad Económica 1.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtACTIVIDAD_1.Focus();
+                txtCODI_ACTIVIDAD1.Focus();
                 return false;
             }
             return true;
@@ -795,6 +1060,9 @@ namespace SistemaContable.UI.Forms.Clientes
             txtTELEFONO.Text = "";
             txtDIAS_PLAZO.Text = "";
             txtCUENTA_X_COBRAR.Text = "";
+            txtNOMBRE_CUENTA_X_COBRAR.Text = "";
+            _idTipoPrecioSeleccionado = null;
+            txtID_TIPO_PRECIO.Text = "";
             txtCOMPLEMENTO.Text = "";
             txtCALLE.Text = "";
             txtCASA.Text = "";
@@ -815,8 +1083,11 @@ namespace SistemaContable.UI.Forms.Clientes
             _idActividad1 = 0;
             _idActividad2 = 0;
             _idActividad3 = 0;
+            txtCODI_ACTIVIDAD1.Text = "";
             txtACTIVIDAD_1.Text = "";
+            txtCODI_ACTIVIDAD2.Text = "";
             txtACTIVIDAD_2.Text = "";
+            txtCODI_ACTIVIDAD3.Text = "";
             txtACTIVIDAD_3.Text = "";
             cbxORIGEN.SelectedIndex = 0;
             _dtRoles?.Clear();
@@ -864,22 +1135,36 @@ namespace SistemaContable.UI.Forms.Clientes
                     ACCION = "BUSCAR",
                     FILTRO = codigo
                 });
-                bool existe = false;
+                int idEncontrado = 0;
                 if (dt != null)
                 {
                     foreach (DataRow row in dt.Rows)
                     {
                         string codBD = row["CODIGO_ENTIDAD"]?.ToString()?.Trim() ?? "";
                         int idBD = row["ID_ENTIDAD"] != DBNull.Value ? Convert.ToInt32(row["ID_ENTIDAD"]) : 0;
-                        if (string.Equals(codBD, codigo, StringComparison.OrdinalIgnoreCase)
-                            && idBD != IdEntidad)
+                        if (string.Equals(codBD, codigo, StringComparison.OrdinalIgnoreCase))
                         {
-                            existe = true;
+                            idEncontrado = idBD;
                             break;
                         }
                     }
                 }
-                if (existe)
+                bool existeOtraEntidad = idEncontrado > 0 && idEncontrado != IdEntidad;
+                if (existeOtraEntidad && IdEntidad == 0 && TieneRol(idEncontrado, "PRO"))
+                {
+                    // El código ya existe como Proveedor: se carga esa misma entidad
+                    // para completarla/guardarla también como Cliente (ROL = 'CLI').
+                    CargarEntidadExistente(idEncontrado);
+                    lblValidacionCodigo.Text = "✔";
+                    lblValidacionCodigo.ForeColor = Color.Blue;
+                    lblValidacionCodigo.Tag = "EXISTE_PROVEEDOR";
+                    btnGuardar.Enabled = true;
+                    XtraMessageBox.Show(
+                        "Este código ya existe como Proveedor. Se cargaron sus datos; " +
+                        "al guardar se registrará también como Cliente.",
+                        "Entidad existente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (existeOtraEntidad)
                 {
                     lblValidacionCodigo.Text = "✘";
                     lblValidacionCodigo.ForeColor = Color.Red;
@@ -898,6 +1183,73 @@ namespace SistemaContable.UI.Forms.Clientes
             {
                 lblValidacionCodigo.Text = "";
             }
+        }
+        /// <summary>
+        /// Verifica si una entidad ya tiene un rol específico registrado en
+        /// dbo.ENTIDAD_ROL (p.ej. "PRO" = Proveedor, "CLI" = Cliente).
+        /// </summary>
+        private bool TieneRol(int idEntidad, string rol)
+        {
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD_ROL]", new
+                {
+                    ACCION = "LISTAR",
+                    ID_ENTIDAD = idEntidad
+                });
+                if (dt == null) return false;
+                foreach (DataRow r in dt.Rows)
+                {
+                    bool activo = r["ACTIVO"] != DBNull.Value && Convert.ToBoolean(r["ACTIVO"]);
+                    string rolBD = r["ROL"]?.ToString()?.Trim();
+                    if (activo && string.Equals(rolBD, rol, StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// Da de baja (ELIMINAR) únicamente el rol 'CLI' de la entidad en
+        /// dbo.ENTIDAD_ROL, sin afectar otros roles (p.ej. 'PRO') que comparta.
+        /// </summary>
+        private void EliminarRolCliente(int idEntidad)
+        {
+            DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD_ROL]", new
+            {
+                ACCION = "CONSULTAR",
+                ID_ENTIDAD = idEntidad,
+                ROL = "CLI"
+            });
+            if (dt == null || dt.Rows.Count == 0) return;
+            int idEntidadRol = Convert.ToInt32(dt.Rows[0]["ID_ENTIDAD_ROL"]);
+            _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD_ROL]", new
+            {
+                ACCION = "ELIMINAR",
+                ID_ENTIDAD_ROL = idEntidadRol
+            });
+        }
+        /// <summary>
+        /// Indica si a la entidad le queda algún rol activo distinto (p.ej. Proveedor)
+        /// después de haber dado de baja el rol de Cliente.
+        /// </summary>
+        private bool TieneAlgunOtroRolActivo(int idEntidad)
+        {
+            DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD_ROL]", new
+            {
+                ACCION = "LISTAR",
+                ID_ENTIDAD = idEntidad
+            });
+            if (dt == null) return false;
+            foreach (DataRow r in dt.Rows)
+            {
+                bool activo = r["ACTIVO"] != DBNull.Value && Convert.ToBoolean(r["ACTIVO"]);
+                if (activo) return true;
+            }
+            return false;
         }
         #endregion
         #region === HELPERS ===
@@ -942,6 +1294,10 @@ namespace SistemaContable.UI.Forms.Clientes
             if (cbx.SelectedValue is DataRowView) return null;
             int val = Convert.ToInt32(cbx.SelectedValue);
             return val == 0 ? (int?)null : val;
+        }
+        private void MostrarValidacion(string mensaje)
+        {
+            XtraMessageBox.Show(mensaje, "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         #endregion
         private void lblTIPO_CONTRIB_Click(object sender, EventArgs e)

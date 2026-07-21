@@ -20,10 +20,13 @@
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnNuevo = new DevExpress.XtraEditors.SimpleButton();
-            
             this.btnSalir = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gvLista = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -32,7 +35,6 @@
             this.riEditar = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.colVerR = new DevExpress.XtraGrid.Columns.GridColumn();
             this.riVerR = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.riVerQ = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.colFechaAnulacion = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colFechaDoc = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colHoraAnulacion = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -44,7 +46,7 @@
             this.colSelloAnulado = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colUsuario = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colMotivo = new DevExpress.XtraGrid.Columns.GridColumn();
-
+            this.riVerQ = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvLista)).BeginInit();
@@ -52,10 +54,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.riVerR)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.riVerQ)).BeginInit();
             this.SuspendLayout();
-
-            //
+            // 
             // panel1
-            //
+            // 
             this.panel1.Controls.Add(this.btnNuevo);
             this.panel1.Controls.Add(this.btnSalir);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -63,10 +64,9 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1450, 58);
             this.panel1.TabIndex = 0;
-
-            //
+            // 
             // btnNuevo
-            //
+            // 
             this.btnNuevo.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNuevo.Appearance.Options.UseFont = true;
             this.btnNuevo.Appearance.Options.UseTextOptions = true;
@@ -80,10 +80,9 @@
             this.btnNuevo.TabStop = false;
             this.btnNuevo.Text = "Nuevo";
             this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
-
-            //
+            // 
             // btnSalir
-            //
+            // 
             this.btnSalir.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSalir.Appearance.Options.UseFont = true;
             this.btnSalir.Appearance.Options.UseTextOptions = true;
@@ -97,10 +96,9 @@
             this.btnSalir.TabStop = false;
             this.btnSalir.Text = "Finalizar";
             this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
-
-            //
+            // 
             // gridControl1
-            //
+            // 
             this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(2);
             this.gridControl1.Location = new System.Drawing.Point(0, 58);
@@ -108,54 +106,51 @@
             this.gridControl1.Margin = new System.Windows.Forms.Padding(2);
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-                this.riEditar,
-                this.riVerR,
-                this.riVerQ });
+            this.riEditar,
+            this.riVerR,
+            this.riVerQ});
             this.gridControl1.Size = new System.Drawing.Size(1450, 392);
             this.gridControl1.TabIndex = 1;
+            this.gridControl1.Tag = "Consulta";
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-                this.gvLista });
-
-            //
+            this.gvLista});
+            // 
             // gvLista
-            //
+            // 
             this.gvLista.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-                this.colID,
-                this.colEditar,
-                this.colVerR,
-                this.colFechaAnulacion,
-                this.colFechaDoc,
-                this.colHoraAnulacion,
-                this.colTipoDte,
-                this.colNombreDte,
-                this.colCodGen,
-                this.colSello,
-                this.colNumControl,
-                this.colSelloAnulado,
-                this.colUsuario,
-                this.colMotivo });
+            this.colID,
+            this.colEditar,
+            this.colVerR,
+            this.colFechaAnulacion,
+            this.colFechaDoc,
+            this.colHoraAnulacion,
+            this.colTipoDte,
+            this.colNombreDte,
+            this.colCodGen,
+            this.colSello,
+            this.colNumControl,
+            this.colSelloAnulado,
+            this.colUsuario,
+            this.colMotivo});
             this.gvLista.GridControl = this.gridControl1;
             this.gvLista.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
             this.gvLista.Name = "gvLista";
             this.gvLista.OptionsView.ShowIndicator = false;
             this.gvLista.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
             this.gvLista.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gvLista_RowCellClick);
-
-            //
-            // colID  (oculta)
-            //
+            // 
+            // colID
+            // 
             this.colID.Caption = "Sistema(Id)";
             this.colID.FieldName = "ID_INVALIDACIONJson";
             this.colID.MinWidth = 18;
             this.colID.Name = "colID";
             this.colID.OptionsColumn.AllowEdit = false;
             this.colID.OptionsColumn.AllowSize = false;
-            this.colID.Visible = false;
             this.colID.Width = 80;
-
-            //
+            // 
             // colEditar
-            //
+            // 
             this.colEditar.Caption = "Editar";
             this.colEditar.ColumnEdit = this.riEditar;
             this.colEditar.MinWidth = 18;
@@ -166,27 +161,19 @@
             this.colEditar.Visible = true;
             this.colEditar.VisibleIndex = 0;
             this.colEditar.Width = 41;
-
-            //
+            // 
             // riEditar
-            //
+            // 
             this.riEditar.AutoHeight = false;
             editorButtonImageOptions1.Image = global::SistemaContable.UI.Properties.Resources.editar3_32x32;
             this.riEditar.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-                new DevExpress.XtraEditors.Controls.EditorButton(
-                    DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false,
-                    editorButtonImageOptions1,
-                    new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None),
-                    serializableAppearanceObject1, serializableAppearanceObject2,
-                    serializableAppearanceObject3, serializableAppearanceObject4,
-                    "", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riEditar.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
             this.riEditar.Name = "riEditar";
             this.riEditar.UseReadOnlyAppearance = false;
-
-            //
+            // 
             // colVerR
-            //
+            // 
             this.colVerR.Caption = "Ver";
             this.colVerR.ColumnEdit = this.riVerR;
             this.colVerR.MinWidth = 18;
@@ -197,40 +184,19 @@
             this.colVerR.Visible = true;
             this.colVerR.VisibleIndex = 1;
             this.colVerR.Width = 41;
-
-            //
-            // riVerR  (igual que frmConsultaFactura — declaración inline)
-            //
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            // 
+            // riVerR
+            // 
             this.riVerR.AutoHeight = false;
             editorButtonImageOptions2.Image = global::SistemaContable.UI.Properties.Resources.quedan2_32x32;
             this.riVerR.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-                new DevExpress.XtraEditors.Controls.EditorButton(
-                    DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false,
-                    editorButtonImageOptions2,
-                    new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None),
-                    serializableAppearanceObject5, serializableAppearanceObject6,
-                    serializableAppearanceObject7, serializableAppearanceObject8,
-                    "", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riVerR.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
             this.riVerR.Name = "riVerR";
             this.riVerR.UseReadOnlyAppearance = false;
-
-            //
-            // riVerQ
-            //
-            this.riVerQ.AutoHeight = false;
-            this.riVerQ.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
-            this.riVerQ.Name = "riVerQ";
-            this.riVerQ.UseReadOnlyAppearance = false;
-
-            //
+            // 
             // colFechaAnulacion
-            //
+            // 
             this.colFechaAnulacion.Caption = "Fecha Anulacion";
             this.colFechaAnulacion.DisplayFormat.FormatString = "dd/MM/yyyy";
             this.colFechaAnulacion.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
@@ -242,10 +208,9 @@
             this.colFechaAnulacion.Visible = true;
             this.colFechaAnulacion.VisibleIndex = 2;
             this.colFechaAnulacion.Width = 120;
-
-            //
+            // 
             // colFechaDoc
-            //
+            // 
             this.colFechaDoc.Caption = "Fecha Documento";
             this.colFechaDoc.DisplayFormat.FormatString = "dd/MM/yyyy";
             this.colFechaDoc.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
@@ -257,10 +222,9 @@
             this.colFechaDoc.Visible = true;
             this.colFechaDoc.VisibleIndex = 3;
             this.colFechaDoc.Width = 120;
-
-            //
+            // 
             // colHoraAnulacion
-            //
+            // 
             this.colHoraAnulacion.Caption = "Hora Anulacion";
             this.colHoraAnulacion.DisplayFormat.FormatString = "hh:mm:ss tt";
             this.colHoraAnulacion.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
@@ -272,10 +236,9 @@
             this.colHoraAnulacion.Visible = true;
             this.colHoraAnulacion.VisibleIndex = 4;
             this.colHoraAnulacion.Width = 100;
-
-            //
+            // 
             // colTipoDte
-            //
+            // 
             this.colTipoDte.AppearanceCell.Options.UseTextOptions = true;
             this.colTipoDte.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colTipoDte.Caption = "Tipo DTE";
@@ -287,10 +250,9 @@
             this.colTipoDte.Visible = true;
             this.colTipoDte.VisibleIndex = 5;
             this.colTipoDte.Width = 80;
-
-            //
+            // 
             // colNombreDte
-            //
+            // 
             this.colNombreDte.Caption = "DTE";
             this.colNombreDte.FieldName = "DOCUMENTO_tipoDte_NOMBRE";
             this.colNombreDte.MinWidth = 18;
@@ -300,10 +262,9 @@
             this.colNombreDte.Visible = true;
             this.colNombreDte.VisibleIndex = 6;
             this.colNombreDte.Width = 160;
-
-            //
+            // 
             // colCodGen
-            //
+            // 
             this.colCodGen.Caption = "Cód. Generación";
             this.colCodGen.FieldName = "DOCUMENTO_codigoGeneracion";
             this.colCodGen.MinWidth = 18;
@@ -313,10 +274,9 @@
             this.colCodGen.Visible = true;
             this.colCodGen.VisibleIndex = 7;
             this.colCodGen.Width = 300;
-
-            //
+            // 
             // colSello
-            //
+            // 
             this.colSello.Caption = "Sello Recibido";
             this.colSello.FieldName = "DOCUMENTO_selloRecibido";
             this.colSello.MinWidth = 18;
@@ -326,10 +286,9 @@
             this.colSello.Visible = true;
             this.colSello.VisibleIndex = 8;
             this.colSello.Width = 300;
-
-            //
+            // 
             // colNumControl
-            //
+            // 
             this.colNumControl.Caption = "N° Control";
             this.colNumControl.FieldName = "DOCUMENTO_numeroControl";
             this.colNumControl.MinWidth = 18;
@@ -339,10 +298,9 @@
             this.colNumControl.Visible = true;
             this.colNumControl.VisibleIndex = 9;
             this.colNumControl.Width = 220;
-
-            //
+            // 
             // colSelloAnulado
-            //
+            // 
             this.colSelloAnulado.Caption = "Sello Anulado";
             this.colSelloAnulado.FieldName = "selloRecibido_anulado";
             this.colSelloAnulado.MinWidth = 18;
@@ -352,10 +310,9 @@
             this.colSelloAnulado.Visible = true;
             this.colSelloAnulado.VisibleIndex = 10;
             this.colSelloAnulado.Width = 300;
-
-            //
+            // 
             // colUsuario
-            //
+            // 
             this.colUsuario.Caption = "Usuario";
             this.colUsuario.FieldName = "USUARIO_CREA";
             this.colUsuario.MinWidth = 18;
@@ -365,10 +322,9 @@
             this.colUsuario.Visible = true;
             this.colUsuario.VisibleIndex = 11;
             this.colUsuario.Width = 100;
-
-            //
+            // 
             // colMotivo
-            //
+            // 
             this.colMotivo.Caption = "Motivo";
             this.colMotivo.FieldName = "MOTIVO_CONTROL_INTERNO";
             this.colMotivo.MinWidth = 18;
@@ -378,10 +334,16 @@
             this.colMotivo.Visible = true;
             this.colMotivo.VisibleIndex = 12;
             this.colMotivo.Width = 300;
-
-            //
+            // 
+            // riVerQ
+            // 
+            this.riVerQ.AutoHeight = false;
+            this.riVerQ.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
+            this.riVerQ.Name = "riVerQ";
+            this.riVerQ.UseReadOnlyAppearance = false;
+            // 
             // frmConsultaInvalidacion
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1450, 450);
@@ -392,9 +354,9 @@
             this.MinimizeBox = false;
             this.Name = "frmConsultaInvalidacion";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "Consulta";
             this.Text = "Consulta de Invalidaciones";
             this.Load += new System.EventHandler(this.frmConsultaInvalidacion_Load);
-
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvLista)).EndInit();
@@ -402,6 +364,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.riVerR)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riVerQ)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion

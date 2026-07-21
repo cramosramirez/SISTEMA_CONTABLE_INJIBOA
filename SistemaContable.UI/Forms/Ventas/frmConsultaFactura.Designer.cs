@@ -303,6 +303,7 @@
             this.MinimizeBox = false;
             this.Name = "frmConsultaFactura";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "Consulta";
             this.Text = "Consulta de Facturas";
             this.Load += new System.EventHandler(this.frmConsultaFactura_Load);
             this.panel1.ResumeLayout(false);

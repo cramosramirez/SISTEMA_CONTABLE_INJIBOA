@@ -23,7 +23,6 @@
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnNuevaNcr = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
@@ -42,15 +41,15 @@
             this.colOBSERVACIONES = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colSELLORECEPCION = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colTOTALVENTA = new DevExpress.XtraGrid.Columns.GridColumn();
-
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDetalle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.riEditar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.riVerR)).BeginInit();
             this.SuspendLayout();
-
-            // ── panel1 ────────────────────────────────────────────────────
+            // 
+            // panel1
+            // 
             this.panel1.Controls.Add(this.btnNuevaNcr);
             this.panel1.Controls.Add(this.btnFinalizar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -58,8 +57,9 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1450, 58);
             this.panel1.TabIndex = 0;
-
-            // ── btnNuevaNcr ───────────────────────────────────────────────
+            // 
+            // btnNuevaNcr
+            // 
             this.btnNuevaNcr.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold);
             this.btnNuevaNcr.Appearance.Options.UseFont = true;
             this.btnNuevaNcr.Appearance.Options.UseTextOptions = true;
@@ -73,8 +73,9 @@
             this.btnNuevaNcr.TabStop = false;
             this.btnNuevaNcr.Text = "Nueva NCR";
             this.btnNuevaNcr.Click += new System.EventHandler(this.btnNuevaNcr_Click);
-
-            // ── btnFinalizar ──────────────────────────────────────────────
+            // 
+            // btnFinalizar
+            // 
             this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold);
             this.btnFinalizar.Appearance.Options.UseFont = true;
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
@@ -88,8 +89,9 @@
             this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
-
-            // ── gridControl1 ──────────────────────────────────────────────
+            // 
+            // gridControl1
+            // 
             this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(2);
             this.gridControl1.Location = new System.Drawing.Point(0, 58);
@@ -97,44 +99,46 @@
             this.gridControl1.Margin = new System.Windows.Forms.Padding(2);
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-                this.riEditar,
-                this.riVerR });
+            this.riEditar,
+            this.riVerR});
             this.gridControl1.Size = new System.Drawing.Size(1450, 392);
             this.gridControl1.TabIndex = 1;
+            this.gridControl1.Tag = "Consulta";
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-                this.gvDetalle });
-
-            // ── gvDetalle ─────────────────────────────────────────────────
+            this.gvDetalle});
+            // 
+            // gvDetalle
+            // 
             this.gvDetalle.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-                this.colID_NTCENC,
-                this.colEDITAR,
-                this.colVER_R,
-                this.colFECHA,
-                this.colNUMINTERNO,
-                this.colNOMBRE_ENTIDAD,
-                this.colNUMCONTROL,
-                this.colNUMCONTROLCCF,
-                this.colOBSERVACIONES,
-                this.colSELLORECEPCION,
-                this.colTOTALVENTA });
+            this.colID_NTCENC,
+            this.colEDITAR,
+            this.colVER_R,
+            this.colFECHA,
+            this.colNUMINTERNO,
+            this.colNOMBRE_ENTIDAD,
+            this.colNUMCONTROL,
+            this.colNUMCONTROLCCF,
+            this.colOBSERVACIONES,
+            this.colSELLORECEPCION,
+            this.colTOTALVENTA});
             this.gvDetalle.GridControl = this.gridControl1;
             this.gvDetalle.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
             this.gvDetalle.Name = "gvDetalle";
             this.gvDetalle.OptionsView.ShowIndicator = false;
             this.gvDetalle.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
             this.gvDetalle.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gvDetalle_RowCellClick);
-
-            // ── colID_NTCENC (oculta) ─────────────────────────────────────
+            // 
+            // colID_NTCENC
+            // 
             this.colID_NTCENC.Caption = "Sistema(Id)";
             this.colID_NTCENC.FieldName = "ID_NTCENC";
             this.colID_NTCENC.MinWidth = 18;
             this.colID_NTCENC.Name = "colID_NTCENC";
             this.colID_NTCENC.OptionsColumn.AllowEdit = false;
             this.colID_NTCENC.OptionsColumn.AllowSize = false;
-            this.colID_NTCENC.Visible = false;
-            this.colID_NTCENC.VisibleIndex = -1;
-
-            // ── colEDITAR ─────────────────────────────────────────────────
+            // 
+            // colEDITAR
+            // 
             this.colEDITAR.Caption = "Editar";
             this.colEDITAR.ColumnEdit = this.riEditar;
             this.colEDITAR.MinWidth = 18;
@@ -145,23 +149,19 @@
             this.colEDITAR.Visible = true;
             this.colEDITAR.VisibleIndex = 0;
             this.colEDITAR.Width = 41;
-
+            // 
             // riEditar
+            // 
             this.riEditar.AutoHeight = false;
             editorButtonImageOptions1.Image = global::SistemaContable.UI.Properties.Resources.editar3_32x32;
             this.riEditar.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-                new DevExpress.XtraEditors.Controls.EditorButton(
-                    DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false,
-                    editorButtonImageOptions1,
-                    new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None),
-                    serializableAppearanceObject1, serializableAppearanceObject2,
-                    serializableAppearanceObject3, serializableAppearanceObject4,
-                    "", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riEditar.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
             this.riEditar.Name = "riEditar";
             this.riEditar.UseReadOnlyAppearance = false;
-
-            // ── colVER_R ──────────────────────────────────────────────────
+            // 
+            // colVER_R
+            // 
             this.colVER_R.Caption = "Ver";
             this.colVER_R.ColumnEdit = this.riVerR;
             this.colVER_R.MinWidth = 18;
@@ -172,23 +172,19 @@
             this.colVER_R.Visible = true;
             this.colVER_R.VisibleIndex = 1;
             this.colVER_R.Width = 41;
-
+            // 
             // riVerR
+            // 
             this.riVerR.AutoHeight = false;
             editorButtonImageOptions2.Image = global::SistemaContable.UI.Properties.Resources.quedan2_32x32;
             this.riVerR.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-                new DevExpress.XtraEditors.Controls.EditorButton(
-                    DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false,
-                    editorButtonImageOptions2,
-                    new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None),
-                    serializableAppearanceObject5, serializableAppearanceObject6,
-                    serializableAppearanceObject7, serializableAppearanceObject8,
-                    "", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riVerR.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
             this.riVerR.Name = "riVerR";
             this.riVerR.UseReadOnlyAppearance = false;
-
-            // ── colFECHA ──────────────────────────────────────────────────
+            // 
+            // colFECHA
+            // 
             this.colFECHA.AppearanceCell.Options.UseTextOptions = true;
             this.colFECHA.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colFECHA.Caption = "Fecha NCR";
@@ -202,8 +198,9 @@
             this.colFECHA.Visible = true;
             this.colFECHA.VisibleIndex = 2;
             this.colFECHA.Width = 90;
-
-            // ── colNUMINTERNO ─────────────────────────────────────────────
+            // 
+            // colNUMINTERNO
+            // 
             this.colNUMINTERNO.Caption = "N° Interno";
             this.colNUMINTERNO.FieldName = "NUMINTERNO";
             this.colNUMINTERNO.MinWidth = 18;
@@ -213,8 +210,9 @@
             this.colNUMINTERNO.Visible = true;
             this.colNUMINTERNO.VisibleIndex = 3;
             this.colNUMINTERNO.Width = 90;
-
-            // ── colNOMBRE_ENTIDAD ─────────────────────────────────────────
+            // 
+            // colNOMBRE_ENTIDAD
+            // 
             this.colNOMBRE_ENTIDAD.Caption = "Cliente";
             this.colNOMBRE_ENTIDAD.FieldName = "NOMBRE_ENTIDAD";
             this.colNOMBRE_ENTIDAD.MinWidth = 18;
@@ -224,8 +222,9 @@
             this.colNOMBRE_ENTIDAD.Visible = true;
             this.colNOMBRE_ENTIDAD.VisibleIndex = 4;
             this.colNOMBRE_ENTIDAD.Width = 220;
-
-            // ── colNUMCONTROL (N° Control NCR) ───────────────────────────
+            // 
+            // colNUMCONTROL
+            // 
             this.colNUMCONTROL.Caption = "N° Control NCR";
             this.colNUMCONTROL.FieldName = "NUMCONTROL";
             this.colNUMCONTROL.MinWidth = 18;
@@ -235,8 +234,9 @@
             this.colNUMCONTROL.Visible = true;
             this.colNUMCONTROL.VisibleIndex = 5;
             this.colNUMCONTROL.Width = 220;
-
-            // ── colNUMCONTROLCCF (N° Control CCF origen) ─────────────────
+            // 
+            // colNUMCONTROLCCF
+            // 
             this.colNUMCONTROLCCF.Caption = "N° Control CCF";
             this.colNUMCONTROLCCF.FieldName = "NUMCONTROLCCF";
             this.colNUMCONTROLCCF.MinWidth = 18;
@@ -246,8 +246,9 @@
             this.colNUMCONTROLCCF.Visible = true;
             this.colNUMCONTROLCCF.VisibleIndex = 6;
             this.colNUMCONTROLCCF.Width = 220;
-
-            // ── colOBSERVACIONES (Motivo) ─────────────────────────────────
+            // 
+            // colOBSERVACIONES
+            // 
             this.colOBSERVACIONES.Caption = "Motivo";
             this.colOBSERVACIONES.FieldName = "OBSERVACIONES";
             this.colOBSERVACIONES.MinWidth = 18;
@@ -257,8 +258,9 @@
             this.colOBSERVACIONES.Visible = true;
             this.colOBSERVACIONES.VisibleIndex = 7;
             this.colOBSERVACIONES.Width = 200;
-
-            // ── colSELLORECEPCION ─────────────────────────────────────────
+            // 
+            // colSELLORECEPCION
+            // 
             this.colSELLORECEPCION.Caption = "Sello Recepción";
             this.colSELLORECEPCION.FieldName = "SELLORECEPCION";
             this.colSELLORECEPCION.MinWidth = 18;
@@ -268,8 +270,9 @@
             this.colSELLORECEPCION.Visible = true;
             this.colSELLORECEPCION.VisibleIndex = 8;
             this.colSELLORECEPCION.Width = 200;
-
-            // ── colTOTALVENTA ─────────────────────────────────────────────
+            // 
+            // colTOTALVENTA
+            // 
             this.colTOTALVENTA.AppearanceCell.Options.UseTextOptions = true;
             this.colTOTALVENTA.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.colTOTALVENTA.Caption = "Total Venta";
@@ -283,8 +286,9 @@
             this.colTOTALVENTA.Visible = true;
             this.colTOTALVENTA.VisibleIndex = 9;
             this.colTOTALVENTA.Width = 100;
-
-            // ── frmConsultaNotaCredito ────────────────────────────────────
+            // 
+            // frmConsultaNotaCredito
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1450, 450);
@@ -295,15 +299,16 @@
             this.MinimizeBox = false;
             this.Name = "frmConsultaNotaCredito";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "Consulta";
             this.Text = "Consulta Nota de Crédito (NCR)";
             this.Load += new System.EventHandler(this.frmConsultaNotaCredito_Load);
-
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDetalle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riEditar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riVerR)).EndInit();
             this.ResumeLayout(false);
+
         }
         #endregion
 
