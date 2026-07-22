@@ -513,6 +513,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap menu48x48 {
+            get {
+                object obj = ResourceManager.GetObject("menu48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap nota_deb_cred32x32 {
             get {
                 object obj = ResourceManager.GetObject("nota_deb_cred32x32", resourceCulture);
@@ -693,6 +703,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap rol32x32 {
+            get {
+                object obj = ResourceManager.GetObject("rol32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap salir32x32 {
             get {
                 object obj = ResourceManager.GetObject("salir32x32", resourceCulture);
@@ -736,6 +756,16 @@ namespace SistemaContable.UI.Properties {
         public static System.Drawing.Bitmap traslado2_48x48 {
             get {
                 object obj = ResourceManager.GetObject("traslado2_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap usuario32x32 {
+            get {
+                object obj = ResourceManager.GetObject("usuario32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

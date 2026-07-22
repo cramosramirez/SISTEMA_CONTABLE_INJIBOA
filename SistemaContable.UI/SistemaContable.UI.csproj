@@ -82,6 +82,7 @@
   <ItemGroup>
     <Folder Include="Forms\Catalogos\" />
     <Folder Include="Forms\CxP\" />
+    <Folder Include="Forms\Vendedor\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
