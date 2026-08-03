@@ -660,9 +660,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             ConfigurarColumna(view, "DESCRIPCION", "DESCRIPCION", 350, false, true);
             ConfigurarColumna(view, "ID_UNIDAD_MEDIDA", "ID_UNIDAD_MEDIDA", 80, false, false);
             ConfigurarColumna(view, "UNIDAD_MEDIDA", "UM", 100, true, true);
-            ConfigurarColumna(view, "CANTIDAD", "CANTIDAD", 75, false, true);
-            ConfigurarColumna(view, "PRECIO", "PRECIO", 75, true, true);
-            ConfigurarColumna(view, "TOTAL", "TOTAL", 75, true, true);
+            ConfigurarColumna(view, "CANTIDAD", "CANTIDAD", 75, true, true);
+            ConfigurarColumna(view, "PRECIO", "PRECIO", 75, false, false);
+            ConfigurarColumna(view, "TOTAL", "TOTAL", 75, false, false);
 
             // Crear columna de botón eliminar
             var colEliminar = view.Columns.AddField("ELIMINAR");

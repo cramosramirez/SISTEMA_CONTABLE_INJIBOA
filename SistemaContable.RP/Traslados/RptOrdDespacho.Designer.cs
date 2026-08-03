@@ -287,11 +287,11 @@ namespace SistemaContable.RP.Traslados
             // 
             // xrLabel23
             // 
-            this.xrLabel23.LocationFloat = new DevExpress.Utils.PointFloat(464.9598F, 209.6527F);
+            this.xrLabel23.LocationFloat = new DevExpress.Utils.PointFloat(504.612F, 209.6527F);
             this.xrLabel23.Multiline = true;
             this.xrLabel23.Name = "xrLabel23";
             this.xrLabel23.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel23.SizeF = new System.Drawing.SizeF(74.65259F, 23F);
+            this.xrLabel23.SizeF = new System.Drawing.SizeF(65.27762F, 23F);
             this.xrLabel23.StylePriority.UseTextAlignment = false;
             this.xrLabel23.Text = "Remolque:";
             this.xrLabel23.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
@@ -300,7 +300,7 @@ namespace SistemaContable.RP.Traslados
             // 
             this.xrLabel24.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[REMOLQUE]")});
-            this.xrLabel24.LocationFloat = new DevExpress.Utils.PointFloat(539.6124F, 209.6527F);
+            this.xrLabel24.LocationFloat = new DevExpress.Utils.PointFloat(569.8895F, 209.6527F);
             this.xrLabel24.Multiline = true;
             this.xrLabel24.Name = "xrLabel24";
             this.xrLabel24.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -375,11 +375,11 @@ namespace SistemaContable.RP.Traslados
             // 
             this.xrLabel17.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PLACA]")});
-            this.xrLabel17.LocationFloat = new DevExpress.Utils.PointFloat(363.1954F, 209.6527F);
+            this.xrLabel17.LocationFloat = new DevExpress.Utils.PointFloat(423.6121F, 209.6527F);
             this.xrLabel17.Multiline = true;
             this.xrLabel17.Name = "xrLabel17";
             this.xrLabel17.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel17.SizeF = new System.Drawing.SizeF(100F, 23F);
+            this.xrLabel17.SizeF = new System.Drawing.SizeF(80.99985F, 23F);
             this.xrLabel17.StylePriority.UseTextAlignment = false;
             this.xrLabel17.Text = "xrLabel17";
             this.xrLabel17.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
@@ -405,7 +405,7 @@ namespace SistemaContable.RP.Traslados
             this.xrLabel15.Multiline = true;
             this.xrLabel15.Name = "xrLabel15";
             this.xrLabel15.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel15.SizeF = new System.Drawing.SizeF(100F, 23F);
+            this.xrLabel15.SizeF = new System.Drawing.SizeF(182.5418F, 23F);
             this.xrLabel15.StylePriority.UseTextAlignment = false;
             this.xrLabel15.Text = "xrLabel15";
             this.xrLabel15.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
@@ -493,22 +493,22 @@ namespace SistemaContable.RP.Traslados
             // 
             // xrLabel8
             // 
-            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(131.5007F, 209.6527F);
+            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(69.00084F, 209.6527F);
             this.xrLabel8.Multiline = true;
             this.xrLabel8.Name = "xrLabel8";
             this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel8.SizeF = new System.Drawing.SizeF(63.63892F, 22.99998F);
+            this.xrLabel8.SizeF = new System.Drawing.SizeF(126.1388F, 22.99998F);
             this.xrLabel8.StylePriority.UseTextAlignment = false;
-            this.xrLabel8.Text = "Trasporte:";
+            this.xrLabel8.Text = "Tipo de Transporte:";
             this.xrLabel8.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             // 
             // xrLabel7
             // 
-            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(299.5564F, 209.6527F);
+            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(377.6814F, 209.6527F);
             this.xrLabel7.Multiline = true;
             this.xrLabel7.Name = "xrLabel7";
             this.xrLabel7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel7.SizeF = new System.Drawing.SizeF(63.63898F, 23F);
+            this.xrLabel7.SizeF = new System.Drawing.SizeF(45.93063F, 23F);
             this.xrLabel7.StylePriority.UseTextAlignment = false;
             this.xrLabel7.Text = "Placa:";
             this.xrLabel7.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;

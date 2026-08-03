@@ -620,6 +620,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.txtTOTAL.TabIndex = 148;
             this.txtTOTAL.TabStop = false;
             this.txtTOTAL.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtTOTAL.Visible = false;
             // 
             // label26
             // 
@@ -630,6 +631,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label26.Size = new System.Drawing.Size(35, 14);
             this.label26.TabIndex = 149;
             this.label26.Text = "Total";
+            this.label26.Visible = false;
             // 
             // txtGRAVADA
             // 
@@ -640,6 +642,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.txtGRAVADA.Size = new System.Drawing.Size(155, 22);
             this.txtGRAVADA.TabIndex = 146;
             this.txtGRAVADA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtGRAVADA.Visible = false;
             // 
             // label22
             // 
@@ -650,6 +653,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label22.Size = new System.Drawing.Size(43, 14);
             this.label22.TabIndex = 147;
             this.label22.Text = "Afecta";
+            this.label22.Visible = false;
             // 
             // txtObservacion
             // 
