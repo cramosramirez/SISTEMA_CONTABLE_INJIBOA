@@ -1010,7 +1010,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
        
         private void btnFinalizar_Click(object sender, EventArgs e)
-        {
+        {            
             this.Close();
         }
 
@@ -1370,6 +1370,10 @@ namespace SistemaContable.UI.Forms.Bancos
                 {
                     MarcarChequeComoImpreso(_idCheque);
                     ConfigurarCRUD(EstadoFormulario.Impreso);
+
+                    // Mostrar en pantalla el anexo del cheque después de imprimir
+                    var reporteAnexo = new rptChequeAnexo { IdCheque = _idCheque };
+                    reporteAnexo.MostrarPreview();
                 }
             }
             catch (Exception ex)

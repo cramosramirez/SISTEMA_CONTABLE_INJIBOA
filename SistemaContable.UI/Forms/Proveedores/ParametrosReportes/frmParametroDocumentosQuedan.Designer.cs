@@ -38,6 +38,8 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.label1 = new System.Windows.Forms.Label();
             this.dteFECHA_INICIO = new DevExpress.XtraEditors.DateEdit();
             this.label18 = new System.Windows.Forms.Label();
+            this.btnExportar = new DevExpress.XtraEditors.SimpleButton();
+            this.chkClasificarPorOrden = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_FIN.Properties.CalendarTimeProperties)).BeginInit();
@@ -48,6 +50,7 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnExportar);
             this.panel1.Controls.Add(this.btnFinalizar);
             this.panel1.Controls.Add(this.btnImprimir);
             this.panel1.Controls.Add(this.groupBox1);
@@ -64,10 +67,10 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(289, 141);
+            this.btnFinalizar.Location = new System.Drawing.Point(392, 141);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
-            this.btnFinalizar.TabIndex = 1;
+            this.btnFinalizar.TabIndex = 2;
             this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
@@ -80,7 +83,7 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.btnImprimir.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnImprimir.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimir.ImageOptions.Image")));
             this.btnImprimir.ImageOptions.ImageToTextIndent = 10;
-            this.btnImprimir.Location = new System.Drawing.Point(143, 141);
+            this.btnImprimir.Location = new System.Drawing.Point(79, 141);
             this.btnImprimir.Name = "btnImprimir";
             this.btnImprimir.Size = new System.Drawing.Size(119, 47);
             this.btnImprimir.TabIndex = 0;
@@ -89,6 +92,7 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkClasificarPorOrden);
             this.groupBox1.Controls.Add(this.dteFECHA_FIN);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.dteFECHA_INICIO);
@@ -122,7 +126,7 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.dteFECHA_FIN.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dteFECHA_FIN.Properties.Mask.EditMask = "dd/MM/yyyy";
             this.dteFECHA_FIN.Size = new System.Drawing.Size(123, 24);
-            this.dteFECHA_FIN.TabIndex = 1;
+            this.dteFECHA_FIN.TabIndex = 2;
             // 
             // label1
             // 
@@ -155,7 +159,7 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.dteFECHA_INICIO.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dteFECHA_INICIO.Properties.Mask.EditMask = "dd/MM/yyyy";
             this.dteFECHA_INICIO.Size = new System.Drawing.Size(123, 24);
-            this.dteFECHA_INICIO.TabIndex = 0;
+            this.dteFECHA_INICIO.TabIndex = 1;
             // 
             // label18
             // 
@@ -163,9 +167,34 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.label18.Location = new System.Drawing.Point(64, 40);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(66, 22);
-            this.label18.TabIndex = 58;
+            this.label18.TabIndex = 0;
             this.label18.Text = "Del:";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // btnExportar
+            // 
+            this.btnExportar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExportar.Appearance.Options.UseFont = true;
+            this.btnExportar.Appearance.Options.UseTextOptions = true;
+            this.btnExportar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnExportar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.excel_48x48;
+            this.btnExportar.ImageOptions.ImageToTextIndent = 10;
+            this.btnExportar.Location = new System.Drawing.Point(238, 141);
+            this.btnExportar.Name = "btnExportar";
+            this.btnExportar.Size = new System.Drawing.Size(119, 47);
+            this.btnExportar.TabIndex = 1;
+            this.btnExportar.Text = "Exportar";
+            this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
+            // 
+            // chkClasificarPorOrden
+            // 
+            this.chkClasificarPorOrden.AutoSize = true;
+            this.chkClasificarPorOrden.Location = new System.Drawing.Point(100, 74);
+            this.chkClasificarPorOrden.Name = "chkClasificarPorOrden";
+            this.chkClasificarPorOrden.Size = new System.Drawing.Size(242, 21);
+            this.chkClasificarPorOrden.TabIndex = 3;
+            this.chkClasificarPorOrden.Text = "Clasificar por Orden de Compra";
+            this.chkClasificarPorOrden.UseVisualStyleBackColor = true;
             // 
             // frmParametroDocumentosQuedan
             // 
@@ -183,6 +212,7 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.Load += new System.EventHandler(this.frmParametroDocumentosQuedan_Load);
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_FIN.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_FIN.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_INICIO.Properties.CalendarTimeProperties)).EndInit();
@@ -201,5 +231,7 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
         private System.Windows.Forms.Label label18;
         private DevExpress.XtraEditors.SimpleButton btnImprimir;
         private DevExpress.XtraEditors.SimpleButton btnFinalizar;
+        private DevExpress.XtraEditors.SimpleButton btnExportar;
+        private System.Windows.Forms.CheckBox chkClasificarPorOrden;
     }
 }

@@ -24,6 +24,7 @@ namespace SistemaContable.RP.Esquemas
             dt.Columns.Add("TOTAL", typeof(decimal));
             dt.Columns.Add("SALDO", typeof(decimal));
             dt.Columns.Add("NUMRET", typeof(string));
+            dt.Columns.Add("GRUPO", typeof(int));
             return dt;
         }
     }

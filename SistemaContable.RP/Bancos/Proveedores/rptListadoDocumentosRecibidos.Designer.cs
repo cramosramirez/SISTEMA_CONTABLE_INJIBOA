@@ -106,6 +106,9 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.xrTable2});
             this.Detail.HeightF = 36F;
             this.Detail.Name = "Detail";
+            this.Detail.SortFields.AddRange(new DevExpress.XtraReports.UI.GroupField[] {
+            new DevExpress.XtraReports.UI.GroupField("GRUPO", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending),
+            new DevExpress.XtraReports.UI.GroupField("FECHA_RECIBIDO", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending)});
             // 
             // xrTable2
             // 
@@ -411,7 +414,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             // xrPageInfo2
             // 
             this.xrPageInfo2.Font = new System.Drawing.Font("Arial", 8.139131F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrPageInfo2.LocationFloat = new DevExpress.Utils.PointFloat(874.9567F, 10F);
+            this.xrPageInfo2.LocationFloat = new DevExpress.Utils.PointFloat(870.9567F, 10F);
             this.xrPageInfo2.Name = "xrPageInfo2";
             this.xrPageInfo2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrPageInfo2.PageInfo = DevExpress.XtraPrinting.PageInfo.DateTime;
@@ -424,7 +427,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             // xrPageInfo1
             // 
             this.xrPageInfo1.Font = new System.Drawing.Font("Arial", 8.139131F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(874.9567F, 30.1087F);
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(870.9567F, 30.1087F);
             this.xrPageInfo1.Name = "xrPageInfo1";
             this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrPageInfo1.SizeF = new System.Drawing.SizeF(153.0433F, 16.91304F);

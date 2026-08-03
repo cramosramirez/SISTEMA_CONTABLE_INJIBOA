@@ -46,9 +46,11 @@ namespace SistemaContable.RP
         /// <summary>
         /// Imprime directo a la impresora por defecto sin mostrar reporte
         /// </summary>
-        public void ImprimirDirecto()
+        public void ImprimirDirecto(string nombreImpresora = null)
         {
             CargarDatos();
+            if (!string.IsNullOrWhiteSpace(nombreImpresora))
+                this.PrinterName = nombreImpresora;
             this.Print();
         }
 
