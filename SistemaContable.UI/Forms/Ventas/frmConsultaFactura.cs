@@ -1,4 +1,5 @@
 ﻿using SistemaContable.DAL;
+using SistemaContable.RP.Ventas;
 using System;
 using System.Data;
 using System.Drawing;
@@ -10,12 +11,10 @@ namespace SistemaContable.UI.Forms.Ventas
     {
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDetalle;
-
         public frmConsultaFactura()
         {
             InitializeComponent();
         }
-
         #region === CARGA INICIAL ===
         private void frmConsultaFactura_Load(object sender, EventArgs e)
         {
@@ -23,21 +22,17 @@ namespace SistemaContable.UI.Forms.Ventas
             CargarDatos();
         }
         #endregion
-
         #region === CONFIGURACIÓN DEL GRID ===
         private void ConfigurarGrid()
         {
             gridControl1.ForceInitialize();
-
             // --- Vista general ---
             gvDetalle.OptionsView.ShowGroupPanel = false;
             gvDetalle.OptionsView.ShowAutoFilterRow = false;
             gvDetalle.OptionsBehavior.Editable = false;   // RowCellClick maneja los botones
-
             // --- Buscador global ---
             gvDetalle.OptionsFind.AlwaysVisible = true;
             gvDetalle.OptionsFind.FindNullPrompt = "Introduzca el texto a buscar...";
-
             gvDetalle.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             gvDetalle.OptionsSelection.EnableAppearanceFocusedCell = false;
             gvDetalle.OptionsSelection.EnableAppearanceFocusedRow = true;
@@ -48,61 +43,50 @@ namespace SistemaContable.UI.Forms.Ventas
             gvDetalle.Appearance.Row.ForeColor = Color.Black;
             gvDetalle.Appearance.Row.Font = new Font("Segoe UI", 9f);
             gvDetalle.Appearance.Row.Options.UseFont = true;
-
             // ── Sistema(Id) ────────────────────────────────────────────
             colID_FACTENC.Visible = true;
-
             // ── Botón Editar ───────────────────────────────────────────
             colEDITAR.Caption = "Editar";
             colEDITAR.ShowButtonMode = ShowButtonModeEnum.ShowAlways;
             colEDITAR.Visible = true;
             colEDITAR.VisibleIndex = 0;
             colEDITAR.Width = 41;
-
             // ── Fecha de la factura ────────────────────────────────────
             colFECHA.Caption = "Fecha Fact.";
             colFECHA.OptionsColumn.AllowEdit = false;
             colFECHA.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             colFECHA.AppearanceCell.Options.UseTextOptions = true;
-
             // ── Número interno ─────────────────────────────────────────
             colNUMINTERNO.Caption = "N° Interno";
             colNUMINTERNO.OptionsColumn.AllowEdit = false;
             colNUMINTERNO.Width = 130;
-
             // ── Nombre del cliente ─────────────────────────────────────
             colNOMBRE_ENTIDAD.Caption = "Cliente";
             colNOMBRE_ENTIDAD.OptionsColumn.AllowEdit = false;
             colNOMBRE_ENTIDAD.Width = 280;
-
             // ── Tipo de comprobante ────────────────────────────────────
             colTIPO_DTE.Caption = "Tipo Comp.";
             colTIPO_DTE.OptionsColumn.AllowEdit = false;
             colTIPO_DTE.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             colTIPO_DTE.AppearanceCell.Options.UseTextOptions = true;
             colTIPO_DTE.Width = 68;
-
             // ── Código de generación DTE ───────────────────────────────
             colCOD_GENERACION.Caption = "Cód. Generación";
             colCOD_GENERACION.OptionsColumn.AllowEdit = false;
             colCOD_GENERACION.Width = 220;
-
             // ── Número de control ──────────────────────────────────────
             colFHPROCESAMIENTO.Caption = "N° Control";
             colFHPROCESAMIENTO.OptionsColumn.AllowEdit = false;
             colFHPROCESAMIENTO.Width = 220;
             colFHPROCESAMIENTO.ShowButtonMode = ShowButtonModeEnum.Default;
-
             // ── Total venta ────────────────────────────────────────────
             colTOTALVENTA.Caption = "Total Venta";
             colTOTALVENTA.OptionsColumn.AllowEdit = false;
             colTOTALVENTA.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             colTOTALVENTA.AppearanceCell.Options.UseTextOptions = true;
             colTOTALVENTA.Width = 100;
-
             // ── Columna Ver (reporte) ──────────────────────────────────
             colVER_R.Visible = true;
-
             // ── Navigator: ocultar botones innecesarios ────────────────
             gridControl1.UseEmbeddedNavigator = true;
             var nav = gridControl1.EmbeddedNavigator;
@@ -113,7 +97,6 @@ namespace SistemaContable.UI.Forms.Ventas
             nav.Buttons.CancelEdit.Visible = false;
         }
         #endregion
-
         #region === CARGA DE DATOS ===
         private void CargarDatos()
         {
@@ -126,7 +109,6 @@ namespace SistemaContable.UI.Forms.Ventas
             gridControl1.Refresh();
         }
         #endregion
-
         #region === HELPERS ===
         private int? ObtenerIdFilaActiva()
         {
@@ -135,7 +117,6 @@ namespace SistemaContable.UI.Forms.Ventas
             if (val == null || val == DBNull.Value) return null;
             return Convert.ToInt32(val);
         }
-
         private void AbrirDocumento(int idFactEnc)
         {
             using (var frm = new frmFactura())
@@ -146,18 +127,15 @@ namespace SistemaContable.UI.Forms.Ventas
             CargarDatos();
         }
         #endregion
-
         #region === EVENTOS ===
         private void btnNuevoConsumidorFinal_Click(object sender, EventArgs e)
         {
             AbrirDocumento(idFactEnc: 0);
         }
-
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
         private void gvDetalle_RowCellClick(object sender,
             DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
         {
@@ -170,11 +148,21 @@ namespace SistemaContable.UI.Forms.Ventas
             {
                 int? id = ObtenerIdFilaActiva();
                 if (!id.HasValue) return;
-
-                // TODO: reemplazar con la llamada real al formulario de reporte
-                DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Reporte",
-                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    var reporte = new rptFactura { IdFactEnc = id.Value };
+                    reporte.MostrarPreview();
+                }
+                catch (Exception ex)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
             }
         }
         #endregion

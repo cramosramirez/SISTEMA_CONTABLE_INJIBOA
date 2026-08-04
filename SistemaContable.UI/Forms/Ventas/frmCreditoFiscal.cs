@@ -200,6 +200,12 @@ namespace SistemaContable.UI.Forms.Ventas
                 AsignarDecimal(txtRECIB_NOTAABONO_MONTO, ToDecimal(r["RECIB_NOTAABONO_MONTO"]));
                 chkPERCEPCION.Checked = Convert.ToBoolean(r["AP_PERCEPCION"]);
                 txtOBSERVACION.Text = AsString(r["OBSERVACIONES"]);
+                // FIX: al reabrir un CCF hay que restaurar el tipo de contribuyente del cliente,
+                // si no, _idTipoContribCliente queda en 0 y NO se recalcula la retención/percepción.
+                _idTipoContribCliente = r.Table.Columns.Contains("TPCONTRIBUYENTE") && r["TPCONTRIBUYENTE"] != DBNull.Value
+                                            ? Convert.ToInt32(r["TPCONTRIBUYENTE"]) : 0;
+                if (r.Table.Columns.Contains("TPCONTRIBUYENTEEMISOR") && r["TPCONTRIBUYENTEEMISOR"] != DBNull.Value)
+                    _idTipoContribEMISOR = Convert.ToInt32(r["TPCONTRIBUYENTEEMISOR"]);
                 CargarCCFDetalleExistente(idCCFEnc);
             }
             catch (Exception ex)
@@ -266,8 +272,11 @@ namespace SistemaContable.UI.Forms.Ventas
         {
             _idEntidad = Convert.ToInt32(fila["ID_ENTIDAD"]);
             _codigoEntidad = fila["CODIGO_ENTIDAD"].ToString();
-            _idTipoContribCliente = Convert.ToInt32(fila["ID_TIPO_CONTRIB"]);
-            _idTipoPersona = Convert.ToInt32(fila["ID_TIPO_PERSONA"]);
+            // Lectura segura: si el SP de búsqueda no trae la columna, no se cae y deja 0.
+            _idTipoContribCliente = fila.Table.Columns.Contains("ID_TIPO_CONTRIB") && fila["ID_TIPO_CONTRIB"] != DBNull.Value
+                                        ? Convert.ToInt32(fila["ID_TIPO_CONTRIB"]) : 0;
+            _idTipoPersona = fila.Table.Columns.Contains("ID_TIPO_PERSONA") && fila["ID_TIPO_PERSONA"] != DBNull.Value
+                                        ? Convert.ToInt32(fila["ID_TIPO_PERSONA"]) : 0;
             txtNOMBRE_CLIENTE.Text = fila["NOMBRE"].ToString();
             txtNIT.Text = fila["NIT"].ToString();
             txtNRC.Text = fila.Table.Columns.Contains("NRC") ? fila["NRC"].ToString() : "";
@@ -277,6 +286,8 @@ namespace SistemaContable.UI.Forms.Ventas
             txtACTIVIDAD_PRIMARIA.Text = fila["ACTIVIDAD_PRIMARIA"].ToString();
             txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
             txtTIPO_CONTRIBUYENTE.Text = fila["TIPO_CONTRIBUYENTE"].ToString();
+            // Al cambiar de cliente cambia la regla de retención/percepción -> recalcular.
+            ActualizarTotales();
         }
         private void CargarEmisor(int idEmisor)
         {
@@ -293,9 +304,11 @@ namespace SistemaContable.UI.Forms.Ventas
                 new { ACCION = "OBTENER", ID_DTRETENCION = 1 });
             if (dt == null || dt.Rows.Count == 0) return;
             DataRow r = dt.Rows[0];
-            _porcIVA = r["IVA"] == DBNull.Value ? 0.13m : Convert.ToDecimal(r["IVA"]) / 100m;
-            _porcIVARET = r["IVARET"] == DBNull.Value ? 0.01m : Convert.ToDecimal(r["IVARET"]) / 100m;
-            _porcIVAPER = r["IVAPER"] == DBNull.Value ? 0.01m : Convert.ToDecimal(r["IVAPER"]) / 100m;
+            // FIX: se normaliza la tasa. Antes se dividía siempre entre 100, así que si la
+            // tabla guardaba 0.13 (fracción) el IVA salía 0.0013 y "no calculaba".
+            _porcIVA = NormalizarTasa(r["IVA"], 0.13m);
+            _porcIVARET = NormalizarTasa(r["IVARET"], 0.01m);
+            _porcIVAPER = NormalizarTasa(r["IVAPER"], 0.01m);
             _extraerIVA = r["EXTRAER_IVA"] == DBNull.Value ? 0m : Convert.ToDecimal(r["EXTRAER_IVA"]);
             _extraerRENTA = r["EXTRAER_RENTA"] == DBNull.Value ? 0m : Convert.ToDecimal(r["EXTRAER_RENTA"]);
         }
@@ -540,23 +553,25 @@ namespace SistemaContable.UI.Forms.Ventas
                 totalGravado += fila["GRAVADO"] == DBNull.Value ? 0 : Convert.ToDecimal(fila["GRAVADO"]);
                 totalDescuento += fila["DESCUENTO"] == DBNull.Value ? 0 : Convert.ToDecimal(fila["DESCUENTO"]);
             }
-            // CCF siempre aplica IVA 13%; retención/percepción según contribuyente
-            decimal subTotal = (totalGravado + totalExento) - totalDescuento;
-            decimal iva = Math.Round(subTotal * _porcIVA, 2);
+            // GRAVADO y EXENTO ya vienen netos de descuento desde RecalcularLinea.
+            // FIX: antes el subtotal restaba el descuento otra vez (doble descuento).
+            decimal subTotal = totalGravado + totalExento;
+            // CCF: el IVA (13%) aplica SOLO sobre la base gravada, no sobre la exenta.
+            decimal iva = Math.Round(totalGravado * _porcIVA, 2);
             decimal retencion = 0m;
             decimal percepcion = 0m;
-            // Emisor Grande (3) → Cliente Pequeño o Mediano (1 o 2)
+            // Emisor Grande (3) -> Cliente Pequeño o Mediano (1 o 2). Base = gravada.
             if (_idTipoContribEMISOR == 3 &&
                (_idTipoContribCliente == 1 || _idTipoContribCliente == 2))
             {
                 if (chkPERCEPCION.Checked)
                 {
-                    percepcion = subTotal >= 100 ? Math.Round(subTotal * _porcIVAPER, 2) : 0m;
+                    percepcion = totalGravado >= 100 ? Math.Round(totalGravado * _porcIVAPER, 2) : 0m;
                     retencion = 0m;
                 }
                 else
                 {
-                    retencion = subTotal >= 100 ? Math.Round(subTotal * _porcIVARET, 2) : 0m;
+                    retencion = totalGravado >= 100 ? Math.Round(totalGravado * _porcIVARET, 2) : 0m;
                     percepcion = 0m;
                 }
             }
@@ -871,14 +886,10 @@ namespace SistemaContable.UI.Forms.Ventas
                         USUARIO = Configuracion.UsuarioActual,
                     });
                 }
-
                 _dal.EjecutarSinRetorno("[EDTE].[SP_CREDITOFISCAL_JSON]", new
                 {
                     ID_CCFENC = IdCCFEnc
                 });
-
-
-
                 XtraMessageBox.Show("Crédito fiscal guardado correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ConfigurarCRUD(EstadoFormulario.Guardado);
@@ -989,6 +1000,13 @@ namespace SistemaContable.UI.Forms.Ventas
         }
         #endregion
         #region HELPERS
+        // Acepta la tasa venga como porcentaje (13) o como fracción (0.13)
+        private static decimal NormalizarTasa(object valor, decimal porDefecto)
+        {
+            if (valor == null || valor == DBNull.Value) return porDefecto;
+            if (!decimal.TryParse(valor.ToString(), out decimal v) || v <= 0) return porDefecto;
+            return v > 1m ? v / 100m : v;   // 13 -> 0.13 ; 0.13 -> 0.13
+        }
         private void AsignarDecimal(TextBox tb, decimal valor)
             => tb.Text = valor.ToString("N2");
         private static DateTime ParsearFecha(string texto)

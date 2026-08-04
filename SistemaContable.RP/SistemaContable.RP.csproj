@@ -142,6 +142,7 @@
     <Compile Include="Esquemas\ChequeEsquema.cs" />
     <Compile Include="Esquemas\CompRetencionEsquema.cs" />
     <Compile Include="Esquemas\CreditoFiscalEsquema.cs" />
+    <Compile Include="Esquemas\FacturaEsquema.cs" />
     <Compile Include="Esquemas\FacturaSujetoExcluidoEsquema.cs" />
     <Compile Include="Esquemas\ListadoDocumentosRecibidosEsquema.cs" />
     <Compile Include="Esquemas\NotaRemisionEsquema.cs" />

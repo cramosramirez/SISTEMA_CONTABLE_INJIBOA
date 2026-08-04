@@ -844,6 +844,7 @@
             this.btnImprimir.Size = new System.Drawing.Size(101, 47);
             this.btnImprimir.TabIndex = 161;
             this.btnImprimir.Text = "Imprimir";
+            this.btnImprimir.Click += new System.EventHandler(this.btnImprimir_Click);
             // 
             // groupBox3
             // 
@@ -1149,7 +1150,6 @@
             this.txtRECIB_REMESA_MONTO.Name = "txtRECIB_REMESA_MONTO";
             this.txtRECIB_REMESA_MONTO.Size = new System.Drawing.Size(144, 22);
             this.txtRECIB_REMESA_MONTO.TabIndex = 188;
-            
             // 
             // label35
             // 
@@ -1429,6 +1429,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.separatorControl3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
         #endregion
         private DevExpress.XtraGrid.GridControl gridControl1;

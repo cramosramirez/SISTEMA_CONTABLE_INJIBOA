@@ -37,6 +37,9 @@ namespace SistemaContable.UI.Forms.Ventas
         private decimal _porcIVAPER = 0.01m;
         private decimal _extraerIVA = 0m;
         private decimal _extraerRENTA = 0m;
+
+        private int _idEstado = 1;   // ← FALTA ESTA LÍNEA
+
         public frmFactura()
         {
             InitializeComponent();
@@ -123,8 +126,10 @@ namespace SistemaContable.UI.Forms.Ventas
             try
             {
                 Cursor = Cursors.WaitCursor;
+
                 DataTable dt = _dal.EjecutarConsulta("[EDTE].[SP_FACTURA_ENC]",
                     new { ACCION = "OBTENER", ID_FACTENC = idFactEnc, ID_EMISOR = 1 });
+
                 if (dt == null || dt.Rows.Count == 0)
                 {
                     XtraMessageBox.Show("No se encontró el documento solicitado.",
@@ -132,10 +137,18 @@ namespace SistemaContable.UI.Forms.Ventas
                     Close();
                     return;
                 }
+
                 DataRow r = dt.Rows[0];
                 IdFactEnc = Convert.ToInt32(r["ID_FACTENC"]);
+
+                // NUEVO: estado real del documento (0 anulado / 1 activo / 2 validado)
+                _idEstado = r.Table.Columns.Contains("ID_ESTADO") && r["ID_ESTADO"] != DBNull.Value
+                                ? Convert.ToInt32(r["ID_ESTADO"])
+                                : 1;
+
                 _idEntidad = Convert.ToInt32(r["ID_CLIENTE"]);
                 _codigoEntidad = r["COD_REF"].ToString();
+
                 txtCLIENTE.Text = _codigoEntidad;
                 txtNOMBRE_CLIENTE.Text = AsString(r["NOMBRE_ENTIDAD"]);
                 txtDUI.Text = AsString(r["DUI"]);
@@ -144,17 +157,20 @@ namespace SistemaContable.UI.Forms.Ventas
                 txtCORREO.Text = AsString(r["CORREO"]);
                 txtACTIVIDAD_PRIMARIA.Text = AsString(r["ACTIVIDAD_PRIMARIA"]);
                 txtDIRECCION.Text = AsString(r["COMPLEMENTO"]);
+
                 cbxTIPO_DTE.SelectedValue = Convert.ToInt32(r["ID_TIPO_DTE"]);
                 cbxSUCURSAL.SelectedValue = Convert.ToInt32(r["ID_SUCURSAL"]);
                 cbxCONDPAGO.SelectedValue = Convert.ToInt32(r["ID_CONDPAGO"]);
                 cbxZAFRA.SelectedValue = r["ID_ZAFRA"] == DBNull.Value ? null : (object)Convert.ToInt32(r["ID_ZAFRA"]);
                 cbxCENTRO_COSTO.SelectedValue = r["ID_CENTRO"] == DBNull.Value ? null : (object)Convert.ToInt32(r["ID_CENTRO"]);
+
                 mskFECHA.Text = AsFecha(r["FECHA"]);
                 mskFECHA_VENCE.Text = AsFecha(r["FECHA_VENCE"]);
                 txtNUMINTERNO.Text = AsString(r["NUMINTERNO"]);
                 txtNUM_CONTROL.Text = AsString(r["NUMCONTROL"]);
                 txtCOD_GENERACION.Text = AsString(r["CODGENERACION"]);
                 txtSELLO_RECIBIDO.Text = AsString(r["SELLORECEPCION"]);
+
                 AsignarDecimal(txtVENTA_GRAVADA, ToDecimal(r["AFECTA"]));
                 AsignarDecimal(txtVENTA_EXENTA, ToDecimal(r["EXCENTA"]));
                 AsignarDecimal(txtPORC_DESCUENTO, ToDecimal(r["DESCUENTO"]));
@@ -164,12 +180,14 @@ namespace SistemaContable.UI.Forms.Ventas
                 AsignarDecimal(txtRETENCION, ToDecimal(r["IVARETENIDO"]));
                 AsignarDecimal(txtPERCEPCION, ToDecimal(r["IVAPERCIBIDO"]));
                 AsignarDecimal(txtTOTAL_VENTA, ToDecimal(r["TOTALVENTA"]));
+
                 AsignarDecimal(txtRECIB_EFECTIVO, ToDecimal(r["RECIB_EFECTIVO"]));
                 AsignarDecimal(txtRECIB_REMESA, ToDecimal(r["RECIB_REMESA"]));
                 AsignarDecimal(txtRECIB_CHEQUE, ToDecimal(r["RECIB_CHEQUE"]));
                 AsignarDecimal(txtRECIB_NOTAABONO, ToDecimal(r["RECIB_NOTAABONO"]));
                 AsignarDecimal(txtRECIB_ANTICIPO, ToDecimal(r["RECIB_ANTICIPO"]));
                 AsignarDecimal(txtRECIB_EFECTIVO_CAMBIO, ToDecimal(r["RECIB_EFECTIVO_CAMBIO"]));
+
                 // NUEVOS
                 txtRECIB_REMESA_BANCO.Text = AsString(r["RECIB_REMESA_BANCO"]);
                 txtRECIB_REMESA_CUENTA.Text = AsString(r["RECIB_REMESA_CUENTA"]);
@@ -180,8 +198,10 @@ namespace SistemaContable.UI.Forms.Ventas
                 txtRECIB_NOTAABONO_BANCO.Text = AsString(r["RECIB_NOTAABONO_BANCO"]);
                 txtRECIB_NOTAABONO_CUENTA.Text = AsString(r["RECIB_NOTAABONO_CUENTA"]);
                 AsignarDecimal(txtRECIB_NOTAABONO_MONTO, ToDecimal(r["RECIB_NOTAABONO_MONTO"]));
+
                 chkPERCEPCION.Checked = Convert.ToBoolean(r["AP_PERCEPCION"]);
                 txtOBSERVACION.Text = AsString(r["OBSERVACIONES"]);
+
                 CargarFacturaDetalleExistente(idFactEnc);
             }
             catch (Exception ex)
@@ -192,9 +212,12 @@ namespace SistemaContable.UI.Forms.Ventas
             finally
             {
                 Cursor = Cursors.Default;
-                ConfigurarCRUD(string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text)
-                    ? EstadoFormulario.Guardado
-                    : EstadoFormulario.Validado);
+
+                // Validado SOLO si el documento está realmente validado (ID_ESTADO = 2).
+                // Cualquier otro estado (guardado) mantiene Guardar habilitado.
+                ConfigurarCRUD(_idEstado == 2
+                    ? EstadoFormulario.Validado
+                    : EstadoFormulario.Guardado);
             }
         }
         private void CargarFacturaDetalleExistente(int idFactEnc)
@@ -927,6 +950,13 @@ namespace SistemaContable.UI.Forms.Ventas
                         USUARIO = Configuracion.UsuarioActual,
                     });
                 }
+
+                _dal.EjecutarSinRetorno("[EDTE].[SP_FACTURA_JSON]", new
+                {
+                    ID_FACTENC = IdFactEnc
+                });
+
+
                 XtraMessageBox.Show("Factura guardada correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ConfigurarCRUD(EstadoFormulario.Guardado);
@@ -1181,6 +1211,31 @@ namespace SistemaContable.UI.Forms.Ventas
             int? idTipoDte = ObtenerIdCombo(cbxTIPO_DTE);
             if (idTipoDte == null || idTipoDte <= 0) return;
             AnioDte = ObtenerAnioPorDte(idTipoDte);
+        }
+
+        private void btnImprimir_Click(object sender, EventArgs e)
+        {
+            if (IdFactEnc == 0)
+            {
+                XtraMessageBox.Show("Guarde la factura antes de imprimir.",
+                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var reporte = new SistemaContable.RP.Ventas.rptFactura { IdFactEnc = IdFactEnc };
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
     }
 }
