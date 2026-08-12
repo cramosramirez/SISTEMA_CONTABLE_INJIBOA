@@ -62,9 +62,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.cbxSUCURSAL = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnCorreo = new DevExpress.XtraEditors.SimpleButton();
             this.btnImprimir = new DevExpress.XtraEditors.SimpleButton();
-            this.btnValidar = new DevExpress.XtraEditors.SimpleButton();
             this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -135,9 +133,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Controls.Add(this.cbxSUCURSAL);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.btnFinalizar);
-            this.panel1.Controls.Add(this.btnCorreo);
             this.panel1.Controls.Add(this.btnImprimir);
-            this.panel1.Controls.Add(this.btnValidar);
             this.panel1.Controls.Add(this.btnGuardar);
             this.panel1.Controls.Add(this.gridControl1);
             this.panel1.Controls.Add(this.label17);
@@ -476,28 +472,13 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(520, 638);
+            this.btnFinalizar.Location = new System.Drawing.Point(283, 638);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
             this.btnFinalizar.TabIndex = 158;
             this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
-            // 
-            // btnCorreo
-            // 
-            this.btnCorreo.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCorreo.Appearance.Options.UseFont = true;
-            this.btnCorreo.Appearance.Options.UseTextOptions = true;
-            this.btnCorreo.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnCorreo.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.correo32x32;
-            this.btnCorreo.ImageOptions.ImageToTextIndent = 10;
-            this.btnCorreo.Location = new System.Drawing.Point(412, 638);
-            this.btnCorreo.Name = "btnCorreo";
-            this.btnCorreo.Size = new System.Drawing.Size(102, 47);
-            this.btnCorreo.TabIndex = 157;
-            this.btnCorreo.Text = "Correo";
-            this.btnCorreo.Click += new System.EventHandler(this.btnCorreo_Click);
             // 
             // btnImprimir
             // 
@@ -507,26 +488,12 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.btnImprimir.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnImprimir.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.imprimir32x32;
             this.btnImprimir.ImageOptions.ImageToTextIndent = 10;
-            this.btnImprimir.Location = new System.Drawing.Point(290, 638);
+            this.btnImprimir.Location = new System.Drawing.Point(161, 638);
             this.btnImprimir.Name = "btnImprimir";
             this.btnImprimir.Size = new System.Drawing.Size(116, 47);
             this.btnImprimir.TabIndex = 156;
             this.btnImprimir.Text = "Imprimir";
             this.btnImprimir.Click += new System.EventHandler(this.btnImprimirQuedan_Click);
-            // 
-            // btnValidar
-            // 
-            this.btnValidar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnValidar.Appearance.Options.UseFont = true;
-            this.btnValidar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.validar3_32x32;
-            this.btnValidar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnValidar.ImageOptions.ImageToTextIndent = 10;
-            this.btnValidar.Location = new System.Drawing.Point(161, 636);
-            this.btnValidar.Name = "btnValidar";
-            this.btnValidar.Size = new System.Drawing.Size(123, 47);
-            this.btnValidar.TabIndex = 155;
-            this.btnValidar.Text = "Validar";
-            this.btnValidar.Click += new System.EventHandler(this.btnValidar_Click);
             // 
             // btnGuardar
             // 
@@ -911,9 +878,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private System.Windows.Forms.MaskedTextBox mskFECHA_EMISION;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
-        private DevExpress.XtraEditors.SimpleButton btnCorreo;
         private DevExpress.XtraEditors.SimpleButton btnImprimir;
-        private DevExpress.XtraEditors.SimpleButton btnValidar;
         private DevExpress.XtraEditors.SimpleButton btnGuardar;
         private DevExpress.XtraEditors.SimpleButton btnFinalizar;
         private System.Windows.Forms.ComboBox cbxSUCURSAL;

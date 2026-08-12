@@ -995,6 +995,11 @@ namespace SistemaContable.UI.Forms.Ventas
                         USUARIO = Configuracion.UsuarioActual,
                     });
                 }
+
+                _dal.EjecutarSinRetorno("[EIVA].[SP_LBVENTACCF_NCE_INS]", new
+                {
+                    ID_NTCENC = IdNTCEnc
+                });
                 XtraMessageBox.Show("Nota de crédito guardada correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ConfigurarCRUD(EstadoFormulario.Guardado);

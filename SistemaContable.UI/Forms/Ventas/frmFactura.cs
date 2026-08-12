@@ -956,6 +956,10 @@ namespace SistemaContable.UI.Forms.Ventas
                     ID_FACTENC = IdFactEnc
                 });
 
+                _dal.EjecutarSinRetorno("[EIVA].[SP_LBVENTAFA_FAE_INS]", new
+                {
+                    ID_FACTENC = IdFactEnc
+                });
 
                 XtraMessageBox.Show("Factura guardada correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);

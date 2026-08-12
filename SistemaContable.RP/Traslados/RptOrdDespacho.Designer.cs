@@ -103,7 +103,7 @@ namespace SistemaContable.RP.Traslados
             this.xrTable2.Name = "xrTable2";
             this.xrTable2.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow2});
-            this.xrTable2.SizeF = new System.Drawing.SizeF(446.2782F, 23F);
+            this.xrTable2.SizeF = new System.Drawing.SizeF(475.0966F, 23F);
             // 
             // xrTableRow2
             // 
@@ -117,7 +117,7 @@ namespace SistemaContable.RP.Traslados
             // xrTableCell4
             // 
             this.xrTableCell4.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[COD_REF]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CODPRODUCTO]")});
             this.xrTableCell4.Multiline = true;
             this.xrTableCell4.Name = "xrTableCell4";
             this.xrTableCell4.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 2, 0, 0, 100F);
@@ -138,7 +138,7 @@ namespace SistemaContable.RP.Traslados
             this.xrTableCell5.StylePriority.UseTextAlignment = false;
             this.xrTableCell5.Text = "xrLabel24";
             this.xrTableCell5.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            this.xrTableCell5.Weight = 284.47265625D;
+            this.xrTableCell5.Weight = 305.40062278093416D;
             // 
             // xrTableCell6
             // 
@@ -152,7 +152,7 @@ namespace SistemaContable.RP.Traslados
             this.xrTableCell6.Text = "xrLabel25";
             this.xrTableCell6.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.xrTableCell6.TextFormatString = "{0:N2}";
-            this.xrTableCell6.Weight = 100D;
+            this.xrTableCell6.Weight = 79.072033469065843D;
             // 
             // PageHeader
             // 
@@ -594,7 +594,7 @@ namespace SistemaContable.RP.Traslados
             this.xrTable1.Name = "xrTable1";
             this.xrTable1.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow1});
-            this.xrTable1.SizeF = new System.Drawing.SizeF(446.2781F, 22.99998F);
+            this.xrTable1.SizeF = new System.Drawing.SizeF(473.291F, 22.99997F);
             this.xrTable1.StylePriority.UseBorders = false;
             // 
             // xrTableRow1
@@ -624,7 +624,7 @@ namespace SistemaContable.RP.Traslados
             this.xrTableCell2.StylePriority.UseTextAlignment = false;
             this.xrTableCell2.Text = "Producto";
             this.xrTableCell2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            this.xrTableCell2.Weight = 284.47248840332031D;
+            this.xrTableCell2.Weight = 305.09897912296344D;
             // 
             // xrTableCell3
             // 
@@ -634,7 +634,7 @@ namespace SistemaContable.RP.Traslados
             this.xrTableCell3.StylePriority.UseTextAlignment = false;
             this.xrTableCell3.Text = "Cantidad";
             this.xrTableCell3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.xrTableCell3.Weight = 100.00003015701989D;
+            this.xrTableCell3.Weight = 79.373539437376735D;
             // 
             // PageFooter
             // 

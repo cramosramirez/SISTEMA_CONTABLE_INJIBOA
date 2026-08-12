@@ -886,7 +886,12 @@ namespace SistemaContable.UI.Forms.Ventas
                         USUARIO = Configuracion.UsuarioActual,
                     });
                 }
+                
                 _dal.EjecutarSinRetorno("[EDTE].[SP_CREDITOFISCAL_JSON]", new
+                {
+                    ID_CCFENC = IdCCFEnc
+                });
+                _dal.EjecutarSinRetorno("[EIVA].[SP_LBVENTACCF_INS]", new
                 {
                     ID_CCFENC = IdCCFEnc
                 });

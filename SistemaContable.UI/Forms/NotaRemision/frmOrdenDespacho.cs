@@ -68,7 +68,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 new BusquedaConfig
                 {
                     StoredProcedure = "SP_ENTIDAD",
-                    Accion = "BUSCAR_TC",
+                    Accion = "BUSCAR_OD",
                     Columnas = new Dictionary<string, string>
                     {
                         { "CODIGO_ENTIDAD", "PROVEEDOR" },
@@ -81,7 +81,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
                         { "NOMBRE",         300 },
                         { "NIT",            120 }
                     },
-                    ParametrosExtra = new { ROL = "NR_BD" }
+                    ParametrosExtra = new { ROL = "" }
+
                 },
                 fila => AsignarProveedor(fila)
             );
@@ -167,24 +168,19 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 case EstadoFormulario.Nuevo:
                     txtPROVEEDOR.Enabled = true;
                     btnGuardar.Enabled = true;
-                    btnValidar.Enabled = false;
+                   
                     btnImprimir.Enabled = false;
-                    btnCorreo.Enabled = false;
 
                     break;
                 case EstadoFormulario.Guardado:
                     txtPROVEEDOR.Enabled = false;
                     btnGuardar.Enabled = true;
-                    btnValidar.Enabled = true;
                     btnImprimir.Enabled = true;
-                    btnCorreo.Enabled = false;
                     break;
                 case EstadoFormulario.Validado:
                     txtPROVEEDOR.Enabled = false;
                     btnGuardar.Enabled = false;
-                    btnValidar.Enabled = false;
                     btnImprimir.Enabled = true;
-                    btnCorreo.Enabled = true;
 
                     break;
             }
@@ -467,9 +463,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 var dt = _dal.EjecutarConsulta("SP_ENTIDAD", new
                 {
-                    ACCION = "BUSCAR_TC",
+                    ACCION = "BUSCAR_OD",
                     FILTRO = codigo,
-                    ROL = "NR_BD"
+                    ROL = ""
                 });
 
                 if (dt.Rows.Count > 0)
