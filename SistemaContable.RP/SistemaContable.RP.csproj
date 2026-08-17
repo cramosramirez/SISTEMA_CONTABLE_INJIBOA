@@ -38,6 +38,7 @@
       <HintPath>..\packages\ClosedXML.Parser.2.0.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Charts.v20.1.Core, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.CodeParser.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Data.Desktop.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.DataAccess.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -148,6 +149,42 @@
     <Compile Include="Esquemas\NotaRemisionEsquema.cs" />
     <Compile Include="Esquemas\OrdDespachoEsquema.cs" />
     <Compile Include="Esquemas\QuedanEsquema.cs" />
+    <Compile Include="Iva\Rpt_lbCcfResumen.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Iva\Rpt_lbCcfResumen.Designer.cs">
+      <DependentUpon>Rpt_lbCcfResumen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Iva\Rpt_LbCompra.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Iva\Rpt_LbCompra.Designer.cs">
+      <DependentUpon>Rpt_LbCompra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Iva\Rpt_LbVentasCCF.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Iva\Rpt_LbVentasCCF.Designer.cs">
+      <DependentUpon>Rpt_LbVentasCCF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Iva\Rpt_LbVentasFacturas.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Iva\Rpt_LbVentasFacturas.Designer.cs">
+      <DependentUpon>Rpt_LbVentasFacturas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Iva\Rpt_LbVentasFacturasdt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Iva\Rpt_LbVentasFacturasdt.Designer.cs">
+      <DependentUpon>Rpt_LbVentasFacturasdt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Iva\Rpt_LbVentasLq.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Iva\Rpt_LbVentasLq.Designer.cs">
+      <DependentUpon>Rpt_LbVentasLq.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bancos\Proveedores\rptCheque.cs">
       <SubType>Component</SubType>
@@ -216,6 +253,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Bancos\Proveedores\rptSujetoExcluido.resx">
       <DependentUpon>rptSujetoExcluido.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Iva\Rpt_lbCcfResumen.resx">
+      <DependentUpon>Rpt_lbCcfResumen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Iva\Rpt_LbCompra.resx">
+      <DependentUpon>Rpt_LbCompra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Iva\Rpt_LbVentasCCF.resx">
+      <DependentUpon>Rpt_LbVentasCCF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Iva\Rpt_LbVentasFacturas.resx">
+      <DependentUpon>Rpt_LbVentasFacturas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Iva\Rpt_LbVentasFacturasdt.resx">
+      <DependentUpon>Rpt_LbVentasFacturasdt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Iva\Rpt_LbVentasLq.resx">
+      <DependentUpon>Rpt_LbVentasLq.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Bancos\Proveedores\rptCheque.resx">

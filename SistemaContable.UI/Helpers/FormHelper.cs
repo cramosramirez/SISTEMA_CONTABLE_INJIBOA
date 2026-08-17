@@ -387,5 +387,34 @@ namespace SistemaContable.UI.Helpers
             combo.EnabledChanged += (s, e) => combo.Invalidate();   // ← clave
         }
 
+        public static List<MesItem> ObtenerMeses()
+        {
+            return new List<MesItem>
+    {
+        new MesItem { Value = "01", Mes = "Enero" },
+        new MesItem { Value = "02", Mes = "Febrero" },
+        new MesItem { Value = "03", Mes = "Marzo" },
+        new MesItem { Value = "04", Mes = "Abril" },
+        new MesItem { Value = "05", Mes = "Mayo" },
+        new MesItem { Value = "06", Mes = "Junio" },
+        new MesItem { Value = "07", Mes = "Julio" },
+        new MesItem { Value = "08", Mes = "Agosto" },
+        new MesItem { Value = "09", Mes = "Septiembre" },
+        new MesItem { Value = "10", Mes = "Octubre" },
+        new MesItem { Value = "11", Mes = "Noviembre" },
+        new MesItem { Value = "12", Mes = "Diciembre" }
+    };
+        }
+    }
+
+    public class MesItem
+    {
+        public string Value { get; set; }
+        public string Mes { get; set; }
+    }
+    public class TipLibro
+    {    public int Value { get; set; }
+        public string Libro { get; set; }
+
     }
 }

@@ -634,9 +634,9 @@
             this.label20.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.Location = new System.Drawing.Point(553, 141);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(88, 14);
+            this.label20.Size = new System.Drawing.Size(81, 14);
             this.label20.TabIndex = 160;
-            this.label20.Text = "Fecha Recibido";
+            this.label20.Text = "Fecha Sellado";
             // 
             // label27
             // 
@@ -674,9 +674,9 @@
             this.label21.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label21.Location = new System.Drawing.Point(571, 25);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(70, 14);
+            this.label21.Size = new System.Drawing.Size(107, 14);
             this.label21.TabIndex = 159;
-            this.label21.Text = "Fecha Fact.";
+            this.label21.Text = "Fecha Documento";
             // 
             // mskFECHA
             // 
