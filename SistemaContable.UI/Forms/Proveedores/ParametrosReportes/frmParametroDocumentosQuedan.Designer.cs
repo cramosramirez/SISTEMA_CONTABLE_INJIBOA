@@ -31,15 +31,15 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmParametroDocumentosQuedan));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnExportar = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.btnImprimir = new DevExpress.XtraEditors.SimpleButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkClasificarPorOrden = new System.Windows.Forms.CheckBox();
             this.dteFECHA_FIN = new DevExpress.XtraEditors.DateEdit();
             this.label1 = new System.Windows.Forms.Label();
             this.dteFECHA_INICIO = new DevExpress.XtraEditors.DateEdit();
             this.label18 = new System.Windows.Forms.Label();
-            this.btnExportar = new DevExpress.XtraEditors.SimpleButton();
-            this.chkClasificarPorOrden = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_FIN.Properties.CalendarTimeProperties)).BeginInit();
@@ -59,6 +59,21 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(551, 209);
             this.panel1.TabIndex = 0;
+            // 
+            // btnExportar
+            // 
+            this.btnExportar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExportar.Appearance.Options.UseFont = true;
+            this.btnExportar.Appearance.Options.UseTextOptions = true;
+            this.btnExportar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnExportar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.excel_48x48;
+            this.btnExportar.ImageOptions.ImageToTextIndent = 10;
+            this.btnExportar.Location = new System.Drawing.Point(238, 141);
+            this.btnExportar.Name = "btnExportar";
+            this.btnExportar.Size = new System.Drawing.Size(119, 47);
+            this.btnExportar.TabIndex = 1;
+            this.btnExportar.Text = "Exportar";
+            this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
             // 
             // btnFinalizar
             // 
@@ -104,6 +119,16 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Criterios";
+            // 
+            // chkClasificarPorOrden
+            // 
+            this.chkClasificarPorOrden.AutoSize = true;
+            this.chkClasificarPorOrden.Location = new System.Drawing.Point(100, 74);
+            this.chkClasificarPorOrden.Name = "chkClasificarPorOrden";
+            this.chkClasificarPorOrden.Size = new System.Drawing.Size(242, 21);
+            this.chkClasificarPorOrden.TabIndex = 3;
+            this.chkClasificarPorOrden.Text = "Clasificar por Orden de Compra";
+            this.chkClasificarPorOrden.UseVisualStyleBackColor = true;
             // 
             // dteFECHA_FIN
             // 
@@ -170,31 +195,6 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.label18.TabIndex = 0;
             this.label18.Text = "Del:";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // btnExportar
-            // 
-            this.btnExportar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExportar.Appearance.Options.UseFont = true;
-            this.btnExportar.Appearance.Options.UseTextOptions = true;
-            this.btnExportar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnExportar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.excel_48x48;
-            this.btnExportar.ImageOptions.ImageToTextIndent = 10;
-            this.btnExportar.Location = new System.Drawing.Point(238, 141);
-            this.btnExportar.Name = "btnExportar";
-            this.btnExportar.Size = new System.Drawing.Size(119, 47);
-            this.btnExportar.TabIndex = 1;
-            this.btnExportar.Text = "Exportar";
-            this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
-            // 
-            // chkClasificarPorOrden
-            // 
-            this.chkClasificarPorOrden.AutoSize = true;
-            this.chkClasificarPorOrden.Location = new System.Drawing.Point(100, 74);
-            this.chkClasificarPorOrden.Name = "chkClasificarPorOrden";
-            this.chkClasificarPorOrden.Size = new System.Drawing.Size(242, 21);
-            this.chkClasificarPorOrden.TabIndex = 3;
-            this.chkClasificarPorOrden.Text = "Clasificar por Orden de Compra";
-            this.chkClasificarPorOrden.UseVisualStyleBackColor = true;
             // 
             // frmParametroDocumentosQuedan
             // 

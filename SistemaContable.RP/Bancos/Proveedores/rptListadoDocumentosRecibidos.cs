@@ -20,14 +20,15 @@ namespace SistemaContable.RP.Bancos.Proveedores
             InitializeComponent();
         }
 
-        private DataTable ObtenerDatos()
+        private DataTable ObtenerDatos(int? grupo = null)
         {
             return EjecutarSP("SP_QUEDAN_RPT", new
             {
                 ACCION = "LISTADO_COMPROBANTES_RECIBIDOS",
                 FECHA_INI = FechaInicial,
                 FECHA_FIN = FechaFinal,
-                CLASIFICAR_POR_ORDEN_COMPRA = ClasificarPorOrden
+                CLASIFICAR_POR_ORDEN_COMPRA = ClasificarPorOrden,
+                GRUPO = grupo
             });
         }
         public override void CargarDatos()
@@ -71,56 +72,78 @@ namespace SistemaContable.RP.Bancos.Proveedores
         /// <param name="rutaArchivo">Ruta completa del archivo a generar, ej: C:\Reportes\Documentos.xlsx</param>
         public void ExportarAExcel(string rutaArchivo)
         {
-            DataTable dt = ObtenerDatos();
-
             using (var wb = new XLWorkbook())
             {
-                var ws = wb.Worksheets.Add("Documentos Recibidos");
+                // Hoja 1: Todos
+                DataTable dtTodos = ObtenerDatos();
+                AgregarHojaDocumentos(wb, "Todos los documentos", dtTodos);                
 
-                string[] encabezados =
+                if (ClasificarPorOrden)
                 {
-                    "N° Quedan", "Tipo DTE", "Código Generación", "Fecha Emisión",
-                    "Fecha Recibido", "Fecha Vence", "Nombre", "Orden",
-                    "Afecta", "Total", "Saldo", "N° Retención"
-                };
+                    // Hoja 2: Jiboa
+                    DataTable dtPendientes = ObtenerDatos(1);
+                    AgregarHojaDocumentos(wb, "Jiboa", dtPendientes);
 
-                for (int col = 0; col < encabezados.Length; col++)
-                {
-                    var celda = ws.Cell(1, col + 1);
-                    celda.Value = encabezados[col];
-                    celda.Style.Font.Bold = true;
-                    celda.Style.Fill.BackgroundColor = XLColor.LightGray;
-                }
+                    // Hoja 3: Planta Cogeneracion
+                    DataTable dtPagados = ObtenerDatos(2);
+                    AgregarHojaDocumentos(wb, "Planta Cogeneracion", dtPagados);
 
-                int fila = 2;
-                foreach (DataRow row in dt.Rows)
-                {
-                    ws.Cell(fila, 1).Value = ObtenerEntero(row, "NUM_QUEDAN");
-                    ws.Cell(fila, 2).Value = ObtenerTexto(row, "TIPO_DTE");
-                    ws.Cell(fila, 3).Value = ObtenerTexto(row, "COD_GENERACION");
+                    // Hoja 4: Planta Solar
+                    DataTable dtVencidos = ObtenerDatos(3);
+                    AgregarHojaDocumentos(wb, "Planta Solar", dtVencidos);
+                }               
 
-                    EscribirFecha(ws, fila, 4, row, "FECHA_EMISION");
-                    EscribirFecha(ws, fila, 5, row, "FECHA_RECIBIDO");
-                    EscribirFecha(ws, fila, 6, row, "FECHA_VENCE");
-
-                    ws.Cell(fila, 7).Value = ObtenerTexto(row, "NOMBRE");
-                    ws.Cell(fila, 8).Value = ObtenerTexto(row, "ORDEN");
-
-                    EscribirDecimal(ws, fila, 9, row, "AFECTA");
-                    EscribirDecimal(ws, fila, 10, row, "TOTAL");
-                    EscribirDecimal(ws, fila, 11, row, "SALDO");
-
-                    ws.Cell(fila, 12).Value = ObtenerTexto(row, "NUMRET");
-                    fila++;
-                }
-
-                ws.Columns().AdjustToContents();
-                ws.SheetView.FreezeRows(1);
-                ws.RangeUsed().SetAutoFilter();
                 wb.SaveAs(rutaArchivo);
             }
         }
 
+        private void AgregarHojaDocumentos(XLWorkbook wb, string nombreHoja, DataTable dt)
+        {
+            var ws = wb.Worksheets.Add(nombreHoja);
+
+            string[] encabezados =
+            {
+                "N° Quedan", "Tipo DTE", "Código Generación", "Fecha Emisión",
+                "Fecha Recibido", "Fecha Vence", "Nombre", "Orden", "Afecta",
+                "Total", "Saldo", "N° Retención"
+            };
+
+            for (int col = 0; col < encabezados.Length; col++)
+            {
+                var celda = ws.Cell(1, col + 1);
+                celda.Value = encabezados[col];
+                celda.Style.Font.Bold = true;
+                celda.Style.Fill.BackgroundColor = XLColor.LightGray;
+            }
+
+            int fila = 2;
+            foreach (DataRow row in dt.Rows)
+            {
+                ws.Cell(fila, 1).Value = ObtenerEntero(row, "NUM_QUEDAN");
+                ws.Cell(fila, 2).Value = ObtenerTexto(row, "TIPO_DTE");
+                ws.Cell(fila, 3).Value = ObtenerTexto(row, "COD_GENERACION");
+                EscribirFecha(ws, fila, 4, row, "FECHA_EMISION");
+                EscribirFecha(ws, fila, 5, row, "FECHA_RECIBIDO");
+                EscribirFecha(ws, fila, 6, row, "FECHA_VENCE");
+                ws.Cell(fila, 7).Value = ObtenerTexto(row, "NOMBRE");
+                ws.Cell(fila, 8).Value = ObtenerTexto(row, "ORDEN");
+                EscribirDecimal(ws, fila, 9, row, "AFECTA");
+                EscribirDecimal(ws, fila, 10, row, "TOTAL");
+                EscribirDecimal(ws, fila, 11, row, "SALDO");
+                ws.Cell(fila, 12).Value = ObtenerTexto(row, "NUMRET");
+                fila++;
+            }
+
+            // Solo aplicar formato si hay datos
+            if (dt.Rows.Count > 0)
+            {
+                ws.Columns().AdjustToContents();
+                ws.RangeUsed().SetAutoFilter();
+            }
+            ws.SheetView.FreezeRows(1);
+        }
+
+        
         // --- Helpers para lectura segura de valores (evitan errores por DBNull) ---
 
         private static string ObtenerTexto(DataRow row, string columna)
