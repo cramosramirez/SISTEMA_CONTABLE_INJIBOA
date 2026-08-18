@@ -16,22 +16,17 @@ using ClosedXML.Excel;
 using SistemaContable.DAL;
 using SistemaContable.UI.Helpers;
 
+
 namespace SistemaContable.UI.Forms.Iva
 {
-    public partial class frmF987 : Form
+    public partial class frmF28 : Form
     {
         private void InicializarMeses()
         {
-            cb_Desde.DataSource = FormHelper.ObtenerMeses();
-            cb_Desde.DisplayMember = "Mes";
-            cb_Desde.ValueMember = "Value";
-            cb_Desde.SelectedValue = DateTime.Now.Month.ToString("00");
-
-            cb_Hasta.DataSource = FormHelper.ObtenerMeses();
-            cb_Hasta.DisplayMember = "Mes";
-            cb_Hasta.ValueMember = "Value";
-            cb_Hasta.SelectedValue = DateTime.Now.Month.ToString("00");
-
+            cb_Mes.DataSource = FormHelper.ObtenerMeses();
+            cb_Mes.DisplayMember = "Mes";
+            cb_Mes.ValueMember = "Value";
+            cb_Mes.SelectedValue = DateTime.Now.Month.ToString("00");
         }
         private void InicializarDatos()
         {
@@ -42,8 +37,7 @@ namespace SistemaContable.UI.Forms.Iva
             {
                 mesAnterior = 12;
             }
-            cb_Desde.SelectedValue = mesAnterior.ToString("00");
-            cb_Hasta.SelectedValue = mesAnterior.ToString("00");
+            cb_Mes.SelectedValue = mesAnterior.ToString("00");
         }
 
         private void ActivarSeleccionUnica(DevExpress.XtraEditors.GroupControl contenedor)
@@ -68,29 +62,29 @@ namespace SistemaContable.UI.Forms.Iva
                 }
             }
         }
-
-        public frmF987()
+        public frmF28()
         {
             InitializeComponent();
             InicializarMeses();
             InicializarDatos();
             ActivarSeleccionUnica(groupControl2);
+
+
         }
         #region Generar Anexos
-        private DataTable ObtenerDatosAnexo1(string anio, string Desde, string Hasta)
+        private DataTable ObtenerDatosAnexo1(string anio, string mes)
         {
             DataTable dt = new DataTable();
 
             using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
             {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO1_INSCRIPTOS_F987]", conn))
+                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_1_VTAS_CONTRIBUYENTES_F07]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // ✅ Parámetros de entrada
                     cmd.Parameters.AddWithValue("@anio", anio);
-                    cmd.Parameters.AddWithValue("@Desde", Desde);
-                    cmd.Parameters.AddWithValue("@Hasta", Hasta);
+                    cmd.Parameters.AddWithValue("@mes", mes);
                     cmd.Parameters.AddWithValue("@USER_CREA", Configuracion.UsuarioActual);
 
                     // ✅ Parámetros OUTPUT
@@ -124,20 +118,19 @@ namespace SistemaContable.UI.Forms.Iva
 
             return dt;
         }
-        private DataTable ObtenerDatosAnexo2(string anio, string Desde, string Hasta)
+        private DataTable ObtenerDatosAnexo2(string anio, string mes)
         {
             DataTable dt = new DataTable();
 
             using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
             {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO2_EXTRANJEROS_F987]", conn))
+                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_2_VTAS_CONSUMIDOR_F07]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // ✅ Parámetros de entrada
                     cmd.Parameters.AddWithValue("@anio", anio);
-                    cmd.Parameters.AddWithValue("@Desde", Desde);
-                    cmd.Parameters.AddWithValue("@Hasta", Hasta);
+                    cmd.Parameters.AddWithValue("@mes", mes);
                     cmd.Parameters.AddWithValue("@USER_CREA", Configuracion.UsuarioActual);
 
                     // ✅ Parámetros OUTPUT
@@ -171,20 +164,19 @@ namespace SistemaContable.UI.Forms.Iva
 
             return dt;
         }
-        private DataTable ObtenerDatosAnexo3(string anio, string Desde, string Hasta)
+        private DataTable ObtenerDatosAnexo3(string anio, string mes)
         {
             DataTable dt = new DataTable();
 
             using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
             {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO3_SUJETO_F987]", conn))
+                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_3_COMPRAS_F07]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // ✅ Parámetros de entrada
                     cmd.Parameters.AddWithValue("@anio", anio);
-                    cmd.Parameters.AddWithValue("@Desde", Desde);
-                    cmd.Parameters.AddWithValue("@Hasta", Hasta);
+                    cmd.Parameters.AddWithValue("@mes", mes);
                     cmd.Parameters.AddWithValue("@USER_CREA", Configuracion.UsuarioActual);
 
                     // ✅ Parámetros OUTPUT
@@ -218,20 +210,19 @@ namespace SistemaContable.UI.Forms.Iva
 
             return dt;
         }
-        private DataTable ObtenerDatosAnexo4(string anio, string Desde, string Hasta)
+        private DataTable ObtenerDatosAnexo5(string anio, string mes)
         {
             DataTable dt = new DataTable();
 
             using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
             {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO4_CLIENTES_F987]", conn))
+                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_5_COMPRAS_SUJETOS_F07]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // ✅ Parámetros de entrada
                     cmd.Parameters.AddWithValue("@anio", anio);
-                    cmd.Parameters.AddWithValue("@Desde", Desde);
-                    cmd.Parameters.AddWithValue("@Hasta", Hasta);
+                    cmd.Parameters.AddWithValue("@mes", mes);
                     cmd.Parameters.AddWithValue("@USER_CREA", Configuracion.UsuarioActual);
 
                     // ✅ Parámetros OUTPUT
@@ -265,152 +256,11 @@ namespace SistemaContable.UI.Forms.Iva
 
             return dt;
         }
-        private DataTable ObtenerDatosAnexo5(string anio, string Desde, string Hasta)
-        {
-            DataTable dt = new DataTable();
-
-            using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
-            {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO5_FACMENORES_F987]", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    // ✅ Parámetros de entrada
-                    cmd.Parameters.AddWithValue("@anio", anio);
-                    cmd.Parameters.AddWithValue("@Desde", Desde);
-                    cmd.Parameters.AddWithValue("@Hasta", Hasta);
-                    cmd.Parameters.AddWithValue("@USER_CREA", Configuracion.UsuarioActual);
-
-                    // ✅ Parámetros OUTPUT
-                    SqlParameter msg = new SqlParameter("@msg", SqlDbType.NVarChar, 800)
-                    {
-                        Direction = ParameterDirection.Output
-                    };
-                    cmd.Parameters.Add(msg);
-
-                    SqlParameter code = new SqlParameter("@pResCode", SqlDbType.Int)
-                    {
-                        Direction = ParameterDirection.Output
-                    };
-                    cmd.Parameters.Add(code);
-
-                    // ✅ Ejecutar y llenar DataTable
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    da.Fill(dt);
-
-                    // ✅ Validación resultado del SP
-                    int res = code.Value != DBNull.Value ? (int)code.Value : -1;
-                    string mensaje = msg.Value?.ToString();
-
-                    if (res != 0)
-                    {
-                        Alertas.Error(mensaje);
-                        return null;
-                    }
-                }
-            }
-
-            return dt;
-        }
-        private DataTable ObtenerDatosAnexo6(string anio, string Desde, string Hasta)
-        {
-            DataTable dt = new DataTable();
-
-            using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
-            {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO6_MANDANTE_F987]", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    // ✅ Parámetros de entrada
-                    cmd.Parameters.AddWithValue("@anio", anio);
-                    cmd.Parameters.AddWithValue("@Desde", Desde);
-                    cmd.Parameters.AddWithValue("@Hasta", Hasta);
-                    cmd.Parameters.AddWithValue("@USER_CREA", Configuracion.UsuarioActual);
-
-                    // ✅ Parámetros OUTPUT
-                    SqlParameter msg = new SqlParameter("@msg", SqlDbType.NVarChar, 800)
-                    {
-                        Direction = ParameterDirection.Output
-                    };
-                    cmd.Parameters.Add(msg);
-
-                    SqlParameter code = new SqlParameter("@pResCode", SqlDbType.Int)
-                    {
-                        Direction = ParameterDirection.Output
-                    };
-                    cmd.Parameters.Add(code);
-
-                    // ✅ Ejecutar y llenar DataTable
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    da.Fill(dt);
-
-                    // ✅ Validación resultado del SP
-                    int res = code.Value != DBNull.Value ? (int)code.Value : -1;
-                    string mensaje = msg.Value?.ToString();
-
-                    if (res != 0)
-                    {
-                        Alertas.Error(mensaje);
-                        return null;
-                    }
-                }
-            }
-
-            return dt;
-        }
-        private DataTable ObtenerDatosAnexo7(string anio, string Desde, string Hasta)
-        {
-            DataTable dt = new DataTable();
-
-            using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
-            {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO7_MANDATARIOS_F987]", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    // ✅ Parámetros de entrada
-                    cmd.Parameters.AddWithValue("@anio", anio);
-                    cmd.Parameters.AddWithValue("@Desde", Desde);
-                    cmd.Parameters.AddWithValue("@Hasta", Hasta);
-                    cmd.Parameters.AddWithValue("@USER_CREA", Configuracion.UsuarioActual);
-
-                    // ✅ Parámetros OUTPUT
-                    SqlParameter msg = new SqlParameter("@msg", SqlDbType.NVarChar, 800)
-                    {
-                        Direction = ParameterDirection.Output
-                    };
-                    cmd.Parameters.Add(msg);
-
-                    SqlParameter code = new SqlParameter("@pResCode", SqlDbType.Int)
-                    {
-                        Direction = ParameterDirection.Output
-                    };
-                    cmd.Parameters.Add(code);
-
-
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    da.Fill(dt);
-
-
-                    int res = code.Value != DBNull.Value ? (int)code.Value : -1;
-                    string mensaje = msg.Value?.ToString();
-
-                    if (res != 0)
-                    {
-                        Alertas.Error(mensaje);
-                        return null;
-                    }
-                }
-            }
-
-            return dt;
-        }
-      
+       
         #endregion
 
         #region Exportar
-        private void ExportarExcel(DataTable dt, string nombre, string anio, string desde, string hasta, string anexo)
+        private void ExportarExcel(DataTable dt, string nombre, string anio, string mes, string anexo)
         {
             //if (dt.Rows.Count == 0)
             //{
@@ -419,12 +269,12 @@ namespace SistemaContable.UI.Forms.Iva
             //}
 
             // Convertir mes a nombre en español
-            string nombreMes = ObtenerMesEspanol(desde, hasta);
+            string nombreMes = ObtenerMesEspanol(mes);
 
             // Ruta base: Escritorio
             string escritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa","F987", anio, nombreMes, "Xls");
+            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F07", anio, nombreMes, "Xls");
 
             // Crear carpetas si no existen
             Directory.CreateDirectory(rutaBase);
@@ -457,7 +307,7 @@ namespace SistemaContable.UI.Forms.Iva
 
             Alertas.Exito($"Excel generado ✅\nRuta: {rutaCompleta}");
         }
-        private void ExportarCsv(DataTable dt, string nombre, string anio, string desde, string hasta, string anexo)
+        private void ExportarCsv(DataTable dt, string nombre, string anio, string mes, string anexo)
         {
             if (dt.Rows.Count == 0)
             {
@@ -465,11 +315,11 @@ namespace SistemaContable.UI.Forms.Iva
                 return;
             }
 
-            string nombreMes = ObtenerMesEspanol(desde, hasta);
+            string nombreMes = ObtenerMesEspanol(mes);
 
             string escritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F987", anio, nombreMes, "Csv");
+            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F07", anio, nombreMes, "Csv");
 
             Directory.CreateDirectory(rutaBase);
 
@@ -546,17 +396,19 @@ namespace SistemaContable.UI.Forms.Iva
             string limpio = valor.Replace("-", "");
             return limpio.Length == 14 && limpio.All(char.IsDigit);
         }
-        private string ObtenerMesEspanol(string Desde, string Hasta)
+        private string ObtenerMesEspanol(string mes)
         {
-            CultureInfo cultura = new CultureInfo("es-ES");
-
-            if (int.TryParse(Desde, out int mesDesde) &&
-                int.TryParse(Hasta, out int mesHasta))
+            // Si viene como número (ej: "6" o "06")
+            if (int.TryParse(mes, out int numeroMes))
             {
-                return $"{cultura.DateTimeFormat.GetMonthName(mesDesde).ToUpper()}_{cultura.DateTimeFormat.GetMonthName(mesHasta).ToUpper()}";
+                return new CultureInfo("es-ES")
+                    .DateTimeFormat
+                    .GetMonthName(numeroMes)
+                    .ToUpper(); // opcional: MAYÚSCULAS
             }
 
-            return $"{Desde.ToUpper()}_{Hasta.ToUpper()}";
+            // Si ya viene como texto, lo devolvemos
+            return mes.ToUpper();
         }
         #endregion
         private void bt_DescargaXls_Click(object sender, EventArgs e)
@@ -566,8 +418,7 @@ namespace SistemaContable.UI.Forms.Iva
 
 
                 string anio = txt_Anio.Text;
-                string Desde = cb_Desde.SelectedValue?.ToString();
-                string Hasta = cb_Hasta.SelectedValue?.ToString();
+                string mes = cb_Mes.SelectedValue?.ToString();
 
 
 
@@ -577,7 +428,7 @@ namespace SistemaContable.UI.Forms.Iva
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(Desde))
+                if (string.IsNullOrWhiteSpace(mes))
                 {
                     Alertas.Error("Mes es requerido");
                     return;
@@ -590,8 +441,7 @@ namespace SistemaContable.UI.Forms.Iva
                 progressBar1.Maximum = 100;
                 progressBar1.Value = 0;
 
-                if (ck_Anexo1.Checked == false && ck_Anexo2.Checked == false && ck_Anexo3.Checked == false && ck_Anexo4.Checked == false
-                    && ck_Anexo5.Checked == false && ck_Anexo6.Checked == false && ck_Anexo7.Checked == false )
+                if (ck_Anexo1.Checked == false && ck_Anexo2.Checked == false && ck_Anexo3.Checked == false && ck_Anexo5.Checked == false )
                 {
                     Alertas.Error("Seleccione el Informe a Emitir");
                     return;
@@ -605,115 +455,65 @@ namespace SistemaContable.UI.Forms.Iva
                     lblEstado.Text = "Procesando... 65%";
                     Application.DoEvents();
 
-                    var dt = ObtenerDatosAnexo1(anio, Desde, Hasta);
+                    var dt = ObtenerDatosAnexo1(anio, mes);
 
                     if (dt != null)
                     {
-                        ExportarExcel(dt, "Anexo_1_Inscritos", anio, Desde, Hasta, "Anexo_1");
+                        ExportarExcel(dt, "Anexo_1_Vtas_Contribuyentes", anio, mes, "Anexo_1");
                         progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
                 }
 
-               if (ck_Anexo2.Checked)
+                if (ck_Anexo2.Checked)
                 {
                     progressBar1.Visible = true;
                     progressBar1.Value = 65;
                     lblEstado.Visible = true;
                     lblEstado.Text = "Procesando... 65%";
                     Application.DoEvents();
-                    var dt = ObtenerDatosAnexo2(anio, Desde, Hasta);
+                    var dt = ObtenerDatosAnexo2(anio, mes);
                     if (dt != null)
                     {
-                        ExportarExcel(dt, "Anexo_2_Extranjeros", anio, Desde, Hasta, "Anexo_2");
+                        ExportarExcel(dt, "Anexo_2_Vtas_Consumidor", anio, mes, "Anexo_2");
                         progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
                 }
 
-                  if (ck_Anexo3.Checked)
-                  {
-                      progressBar1.Visible = true;
-                      progressBar1.Value = 65;
-                      lblEstado.Visible = true;
-                      lblEstado.Text = "Procesando... 65%";
-                      Application.DoEvents();
-                      var dt = ObtenerDatosAnexo3(anio, Desde, Hasta);
-                      if (dt != null)
-                      {
-                          ExportarExcel(dt, "Anexo_3_Sujeto", anio, Desde, Hasta, "Anexo_3");
-                          progressBar1.Value = 100; // Excel generado
-                          lblEstado.Text = "Completado 100%";
-                      }
-                  }
-                
-                  if (ck_Anexo4.Checked)
-                  {
-                      progressBar1.Visible = true;
-                      progressBar1.Value = 65;
-                      lblEstado.Visible = true;
-                      lblEstado.Text = "Procesando... 65%";
-                      Application.DoEvents();
-                      var dt = ObtenerDatosAnexo4(anio, Desde, Hasta);
-                      if (dt != null)
-                      {
-                          ExportarExcel(dt, "Anexo_4_Clientes", anio, Desde, Hasta, "Anexo_4");
-                          progressBar1.Value = 100; // Excel generado
-                          lblEstado.Text = "Completado 100%";
-                      }
-                  }
-             
-                  if (ck_Anexo5.Checked)
-                  {
-                      progressBar1.Visible = true;
-                      progressBar1.Value = 65;
-                      lblEstado.Visible = true;
-                      lblEstado.Text = "Procesando... 65%";
-                      Application.DoEvents();
-                      var dt = ObtenerDatosAnexo5(anio, Desde, Hasta);
-                      if (dt != null)
-                      {
-                          ExportarExcel(dt, "Anexo_5_FA_Menores_A", anio, Desde, Hasta, "Anexo_5");
-                          progressBar1.Value = 100; // Excel generado
-                          lblEstado.Text = "Completado 100%";
-                      }
-                  }
-                  
-                  if (ck_Anexo6.Checked)
-                  {
-                      progressBar1.Visible = true;
-                      progressBar1.Value = 65;
-                      lblEstado.Visible = true;
-                      lblEstado.Text = "Procesando... 65%";
-                      Application.DoEvents();
-                      var dt = ObtenerDatosAnexo6(anio, Desde, Hasta);
-                      if (dt != null)
-                      {
-                          ExportarExcel(dt, "Anexo_6_Mandatario", anio, Desde, Hasta, "Anexo_7");
-                          progressBar1.Value = 100; // Excel generado
-                          lblEstado.Text = "Completado 100%";
-                      }
-                  }
-                  
-                  if (ck_Anexo7.Checked)
-                  {
-                      progressBar1.Visible = true;
-                      progressBar1.Value = 65;
-                      lblEstado.Visible = true;
-                      lblEstado.Text = "Procesando... 65%";
-                      Application.DoEvents();
-                      var dt = ObtenerDatosAnexo7(anio, Desde, Hasta);
-                      if (dt != null)
-                      {
-                          ExportarExcel(dt, "Anexo12_retencion13_sujeto_excluido", anio, Desde, Hasta, "Anexo_12");
-                          progressBar1.Value = 100; // Excel generado
-                          lblEstado.Text = "Completado 100%";
-                      }
-                  }
-                 
+                if (ck_Anexo3.Checked)
+                {
+                    progressBar1.Visible = true;
+                    progressBar1.Value = 65;
+                    lblEstado.Visible = true;
+                    lblEstado.Text = "Procesando... 65%";
+                    Application.DoEvents();
+                    var dt = ObtenerDatosAnexo3(anio, mes);
+                    if (dt != null)
+                    {
+                        ExportarExcel(dt, "Anexo_3_Compras", anio, mes, "Anexo_3");
+                        progressBar1.Value = 100; // Excel generado
+                        lblEstado.Text = "Completado 100%";
+                    }
+                }
 
+                if (ck_Anexo5.Checked)
+                {
+                    progressBar1.Visible = true;
+                    progressBar1.Value = 65;
+                    lblEstado.Visible = true;
+                    lblEstado.Text = "Procesando... 65%";
+                    Application.DoEvents();
+                    var dt = ObtenerDatosAnexo5(anio, mes);
+                    if (dt != null)
+                    {
+                        ExportarExcel(dt, "Anexo_5_Compras_Sujetos", anio, mes, "Anexo_5");
+                        progressBar1.Value = 100; // Excel generado
+                        lblEstado.Text = "Completado 100%";
+                    }
+                }
 
-            }
+              }
             catch (Exception ex)
             {
                 Alertas.Error(ex.Message);
@@ -731,8 +531,7 @@ namespace SistemaContable.UI.Forms.Iva
 
 
                 string anio = txt_Anio.Text;
-                string Desde = cb_Desde.SelectedValue?.ToString();
-                string Hasta = cb_Hasta.SelectedValue?.ToString();
+                string mes = cb_Mes.SelectedValue?.ToString();
 
 
 
@@ -742,26 +541,21 @@ namespace SistemaContable.UI.Forms.Iva
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(Desde))
+                if (string.IsNullOrWhiteSpace(mes))
                 {
-                    Alertas.Error("Desde es requerido");
+                    Alertas.Error("Mes es requerido");
                     return;
                 }
-                if (string.IsNullOrWhiteSpace(Hasta))
-                    {
-                        Alertas.Error("Hasta es requerido");
-                        return;
-                    }
 
-                    progressBar1.Visible = false;
+                progressBar1.Visible = false;
                 lblEstado.Visible = false;
                 progressBar1.Style = ProgressBarStyle.Blocks;
                 progressBar1.Minimum = 0;
                 progressBar1.Maximum = 100;
                 progressBar1.Value = 0;
 
-                if (ck_Anexo1.Checked == false && ck_Anexo2.Checked == false && ck_Anexo3.Checked == false && ck_Anexo4.Checked == false
-                    && ck_Anexo5.Checked == false && ck_Anexo6.Checked == false && ck_Anexo7.Checked == false )
+                if (ck_Anexo1.Checked == false && ck_Anexo2.Checked == false && ck_Anexo3.Checked == false && ck_Anexo5.Checked == false )
+                  
                 {
                     Alertas.Error("Seleccione el Informe a Emitir");
                     return;
@@ -774,12 +568,12 @@ namespace SistemaContable.UI.Forms.Iva
                     lblEstado.Visible = true;
                     lblEstado.Text = "Procesando... 65%";
                     Application.DoEvents();
-
-                    var dt = ObtenerDatosAnexo1(anio, Desde, Hasta);
+                    var dt = ObtenerDatosAnexo1(anio, mes);
 
                     if (dt != null)
                     {
-                        ExportarCsv(dt, "Anexo_1_Inscritos", anio, Desde, Hasta, "Anexo_1");
+
+                        ExportarCsv(dt, "Anexo_1_Vtas_Contribuyentes", anio, mes, "Anexo_1");
                         progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
@@ -792,10 +586,10 @@ namespace SistemaContable.UI.Forms.Iva
                     lblEstado.Visible = true;
                     lblEstado.Text = "Procesando... 65%";
                     Application.DoEvents();
-                    var dt = ObtenerDatosAnexo2(anio, Desde, Hasta);
+                    var dt = ObtenerDatosAnexo2(anio, mes);
                     if (dt != null)
                     {
-                        ExportarCsv(dt, "Anexo_2_Extranjeros", anio, Desde, Hasta, "Anexo_2");
+                        ExportarCsv(dt, "Anexo_2_Vtas_Consumidor", anio, mes, "Anexo_2");
                         progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
@@ -808,26 +602,10 @@ namespace SistemaContable.UI.Forms.Iva
                     lblEstado.Visible = true;
                     lblEstado.Text = "Procesando... 65%";
                     Application.DoEvents();
-                    var dt = ObtenerDatosAnexo3(anio, Desde, Hasta);
+                    var dt = ObtenerDatosAnexo3(anio, mes);
                     if (dt != null)
                     {
-                        ExportarCsv(dt, "Anexo_3_Sujeto", anio, Desde, Hasta, "Anexo_3");
-                        progressBar1.Value = 100; // Excel generado
-                        lblEstado.Text = "Completado 100%";
-                    }
-                }
-
-                if (ck_Anexo4.Checked)
-                {
-                    progressBar1.Visible = true;
-                    progressBar1.Value = 65;
-                    lblEstado.Visible = true;
-                    lblEstado.Text = "Procesando... 65%";
-                    Application.DoEvents();
-                    var dt = ObtenerDatosAnexo4(anio, Desde, Hasta);
-                    if (dt != null)
-                    {
-                        ExportarCsv(dt, "Anexo_4_Clientes", anio, Desde, Hasta, "Anexo_4");
+                        ExportarCsv(dt, "Anexo_3_Compras", anio, mes, "Anexo_3");
                         progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
@@ -840,47 +618,16 @@ namespace SistemaContable.UI.Forms.Iva
                     lblEstado.Visible = true;
                     lblEstado.Text = "Procesando... 65%";
                     Application.DoEvents();
-                    var dt = ObtenerDatosAnexo5(anio, Desde, Hasta);
+                    var dt = ObtenerDatosAnexo5(anio, mes);
                     if (dt != null)
                     {
-                        ExportarCsv(dt, "Anexo_5_FA_Menores_A", anio, Desde, Hasta, "Anexo_5");
+                        ExportarCsv(dt, "Anexo_5_Compras_Sujetos", anio, mes, "Anexo_5");
                         progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
                 }
 
-                if (ck_Anexo6.Checked)
-                {
-                    progressBar1.Visible = true;
-                    progressBar1.Value = 65;
-                    lblEstado.Visible = true;
-                    lblEstado.Text = "Procesando... 65%";
-                    Application.DoEvents();
-                    var dt = ObtenerDatosAnexo6(anio, Desde, Hasta);
-                    if (dt != null)
-                    {
-                        ExportarCsv(dt, "Anexo_6_Mandante", anio, Desde, Hasta, "Anexo_6");
-                        progressBar1.Value = 100; // Excel generado
-                        lblEstado.Text = "Completado 100%";
-                    }
-                }
-
-                if (ck_Anexo7.Checked)
-                {
-                    progressBar1.Visible = true;
-                    progressBar1.Value = 65;
-                    lblEstado.Visible = true;
-                    lblEstado.Text = "Procesando... 65%";
-                    Application.DoEvents();
-                    var dt = ObtenerDatosAnexo7(anio, Desde, Hasta);
-                    if (dt != null)
-                    {
-                        ExportarCsv(dt, "Anexo_7_Mandatarios", anio, Desde, Hasta, "Anexo_7");
-                        progressBar1.Value = 100; // Excel generado
-                        lblEstado.Text = "Completado 100%";
-                    }
-                }
-
+                
             }
             catch (Exception ex)
             {
@@ -894,12 +641,9 @@ namespace SistemaContable.UI.Forms.Iva
 
         private void bt_AbrirDirectorio_Click(object sender, EventArgs e)
         {
-            string Desde = cb_Desde.SelectedValue?.ToString();
-            string Hasta = cb_Hasta.SelectedValue?.ToString();
-
-            string nombreMes = ObtenerMesEspanol(Desde, Hasta);
+            string nombreMes = ObtenerMesEspanol(cb_Mes.SelectedValue.ToString());
             string escritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F987", txt_Anio.Text, nombreMes);
+            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F07", txt_Anio.Text, nombreMes);
 
             if (Directory.Exists(rutaBase))
             {

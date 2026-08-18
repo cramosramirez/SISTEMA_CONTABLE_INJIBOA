@@ -1,7 +1,7 @@
 ﻿
 namespace SistemaContable.UI.Forms.Iva
 {
-    partial class frmF987
+    partial class frmF28
     {
         /// <summary>
         /// Required designer variable.
@@ -29,25 +29,20 @@ namespace SistemaContable.UI.Forms.Iva
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmF987));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmF28));
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
-            this.cb_Hasta = new System.Windows.Forms.ComboBox();
-            this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.lblEstado = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.bt_AbrirDirectorio = new DevExpress.XtraEditors.SimpleButton();
-            this.cb_Desde = new System.Windows.Forms.ComboBox();
+            this.cb_Mes = new System.Windows.Forms.ComboBox();
             this.bt_DescargarCsv = new DevExpress.XtraEditors.SimpleButton();
             this.bt_DescargaXls = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.txt_Anio = new DevExpress.XtraEditors.TextEdit();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
-            this.ck_Anexo7 = new DevExpress.XtraEditors.CheckEdit();
-            this.ck_Anexo6 = new DevExpress.XtraEditors.CheckEdit();
             this.ck_Anexo5 = new DevExpress.XtraEditors.CheckEdit();
-            this.ck_Anexo4 = new DevExpress.XtraEditors.CheckEdit();
             this.ck_Anexo3 = new DevExpress.XtraEditors.CheckEdit();
             this.ck_Anexo2 = new DevExpress.XtraEditors.CheckEdit();
             this.ck_Anexo1 = new DevExpress.XtraEditors.CheckEdit();
@@ -56,10 +51,7 @@ namespace SistemaContable.UI.Forms.Iva
             ((System.ComponentModel.ISupportInitialize)(this.txt_Anio.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo7.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo6.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo5.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo4.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo1.Properties)).BeginInit();
@@ -67,13 +59,11 @@ namespace SistemaContable.UI.Forms.Iva
             // 
             // groupControl1
             // 
-            this.groupControl1.Controls.Add(this.cb_Hasta);
-            this.groupControl1.Controls.Add(this.labelControl3);
             this.groupControl1.Controls.Add(this.btnFinalizar);
             this.groupControl1.Controls.Add(this.lblEstado);
             this.groupControl1.Controls.Add(this.progressBar1);
             this.groupControl1.Controls.Add(this.bt_AbrirDirectorio);
-            this.groupControl1.Controls.Add(this.cb_Desde);
+            this.groupControl1.Controls.Add(this.cb_Mes);
             this.groupControl1.Controls.Add(this.bt_DescargarCsv);
             this.groupControl1.Controls.Add(this.bt_DescargaXls);
             this.groupControl1.Controls.Add(this.labelControl2);
@@ -85,26 +75,7 @@ namespace SistemaContable.UI.Forms.Iva
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.Size = new System.Drawing.Size(800, 450);
             this.groupControl1.TabIndex = 1;
-            this.groupControl1.Tag = "Consulta";
-            this.groupControl1.Text = "📊 Generacion de Informe DGII F987";
-            // 
-            // cb_Hasta
-            // 
-            this.cb_Hasta.FormattingEnabled = true;
-            this.cb_Hasta.Location = new System.Drawing.Point(336, 62);
-            this.cb_Hasta.Name = "cb_Hasta";
-            this.cb_Hasta.Size = new System.Drawing.Size(168, 21);
-            this.cb_Hasta.TabIndex = 57;
-            // 
-            // labelControl3
-            // 
-            this.labelControl3.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.labelControl3.Appearance.Options.UseFont = true;
-            this.labelControl3.Location = new System.Drawing.Point(336, 43);
-            this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(33, 13);
-            this.labelControl3.TabIndex = 56;
-            this.labelControl3.Text = "Hasta";
+            this.groupControl1.Text = "📊 Generacion de Informe DGII F-28";
             // 
             // btnFinalizar
             // 
@@ -113,7 +84,7 @@ namespace SistemaContable.UI.Forms.Iva
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(445, 304);
+            this.btnFinalizar.Location = new System.Drawing.Point(445, 228);
             this.btnFinalizar.Margin = new System.Windows.Forms.Padding(2);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(120, 45);
@@ -126,7 +97,7 @@ namespace SistemaContable.UI.Forms.Iva
             // 
             this.lblEstado.BackColor = System.Drawing.Color.Transparent;
             this.lblEstado.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.lblEstado.Location = new System.Drawing.Point(175, 379);
+            this.lblEstado.Location = new System.Drawing.Point(175, 303);
             this.lblEstado.Name = "lblEstado";
             this.lblEstado.Size = new System.Drawing.Size(264, 23);
             this.lblEstado.TabIndex = 11;
@@ -134,7 +105,7 @@ namespace SistemaContable.UI.Forms.Iva
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(40, 353);
+            this.progressBar1.Location = new System.Drawing.Point(40, 277);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(525, 23);
             this.progressBar1.TabIndex = 9;
@@ -142,25 +113,25 @@ namespace SistemaContable.UI.Forms.Iva
             // bt_AbrirDirectorio
             // 
             this.bt_AbrirDirectorio.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("bt_AbrirDirectorio.ImageOptions.Image")));
-            this.bt_AbrirDirectorio.Location = new System.Drawing.Point(310, 304);
+            this.bt_AbrirDirectorio.Location = new System.Drawing.Point(310, 228);
             this.bt_AbrirDirectorio.Name = "bt_AbrirDirectorio";
             this.bt_AbrirDirectorio.Size = new System.Drawing.Size(129, 45);
             this.bt_AbrirDirectorio.TabIndex = 8;
             this.bt_AbrirDirectorio.Text = "Abrir Directorio ";
             this.bt_AbrirDirectorio.Click += new System.EventHandler(this.bt_AbrirDirectorio_Click);
             // 
-            // cb_Desde
+            // cb_Mes
             // 
-            this.cb_Desde.FormattingEnabled = true;
-            this.cb_Desde.Location = new System.Drawing.Point(146, 63);
-            this.cb_Desde.Name = "cb_Desde";
-            this.cb_Desde.Size = new System.Drawing.Size(168, 21);
-            this.cb_Desde.TabIndex = 7;
+            this.cb_Mes.FormattingEnabled = true;
+            this.cb_Mes.Location = new System.Drawing.Point(146, 63);
+            this.cb_Mes.Name = "cb_Mes";
+            this.cb_Mes.Size = new System.Drawing.Size(168, 21);
+            this.cb_Mes.TabIndex = 7;
             // 
             // bt_DescargarCsv
             // 
             this.bt_DescargarCsv.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("bt_DescargarCsv.ImageOptions.Image")));
-            this.bt_DescargarCsv.Location = new System.Drawing.Point(175, 304);
+            this.bt_DescargarCsv.Location = new System.Drawing.Point(175, 228);
             this.bt_DescargarCsv.Name = "bt_DescargarCsv";
             this.bt_DescargarCsv.Size = new System.Drawing.Size(129, 45);
             this.bt_DescargarCsv.TabIndex = 6;
@@ -170,7 +141,7 @@ namespace SistemaContable.UI.Forms.Iva
             // bt_DescargaXls
             // 
             this.bt_DescargaXls.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("bt_DescargaXls.ImageOptions.Image")));
-            this.bt_DescargaXls.Location = new System.Drawing.Point(40, 304);
+            this.bt_DescargaXls.Location = new System.Drawing.Point(40, 228);
             this.bt_DescargaXls.Name = "bt_DescargaXls";
             this.bt_DescargaXls.Size = new System.Drawing.Size(129, 45);
             this.bt_DescargaXls.TabIndex = 5;
@@ -183,9 +154,9 @@ namespace SistemaContable.UI.Forms.Iva
             this.labelControl2.Appearance.Options.UseFont = true;
             this.labelControl2.Location = new System.Drawing.Point(146, 44);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(35, 13);
+            this.labelControl2.Size = new System.Drawing.Size(23, 13);
             this.labelControl2.TabIndex = 4;
-            this.labelControl2.Text = "Desde";
+            this.labelControl2.Text = "Mes";
             // 
             // labelControl1
             // 
@@ -206,56 +177,29 @@ namespace SistemaContable.UI.Forms.Iva
             // 
             // groupControl2
             // 
-            this.groupControl2.Controls.Add(this.ck_Anexo7);
-            this.groupControl2.Controls.Add(this.ck_Anexo6);
             this.groupControl2.Controls.Add(this.ck_Anexo5);
-            this.groupControl2.Controls.Add(this.ck_Anexo4);
             this.groupControl2.Controls.Add(this.ck_Anexo3);
             this.groupControl2.Controls.Add(this.ck_Anexo2);
             this.groupControl2.Controls.Add(this.ck_Anexo1);
             this.groupControl2.Location = new System.Drawing.Point(40, 89);
             this.groupControl2.Name = "groupControl2";
-            this.groupControl2.Size = new System.Drawing.Size(525, 211);
+            this.groupControl2.Size = new System.Drawing.Size(525, 133);
             this.groupControl2.TabIndex = 0;
             this.groupControl2.Text = "Seleccione el Informe a Emitir";
             // 
-            // ck_Anexo7
-            // 
-            this.ck_Anexo7.Location = new System.Drawing.Point(6, 182);
-            this.ck_Anexo7.Name = "ck_Anexo7";
-            this.ck_Anexo7.Properties.Caption = "Anexo 7 Mandatarios";
-            this.ck_Anexo7.Size = new System.Drawing.Size(291, 20);
-            this.ck_Anexo7.TabIndex = 6;
-            // 
-            // ck_Anexo6
-            // 
-            this.ck_Anexo6.Location = new System.Drawing.Point(6, 156);
-            this.ck_Anexo6.Name = "ck_Anexo6";
-            this.ck_Anexo6.Properties.Caption = "Anexo 6 Mandante";
-            this.ck_Anexo6.Size = new System.Drawing.Size(212, 20);
-            this.ck_Anexo6.TabIndex = 5;
-            // 
             // ck_Anexo5
             // 
-            this.ck_Anexo5.Location = new System.Drawing.Point(6, 130);
+            this.ck_Anexo5.Location = new System.Drawing.Point(5, 104);
             this.ck_Anexo5.Name = "ck_Anexo5";
-            this.ck_Anexo5.Properties.Caption = "Anexo 5 Veta menor a";
+            this.ck_Anexo5.Properties.Caption = "Anexo Contribuyente";
             this.ck_Anexo5.Size = new System.Drawing.Size(212, 20);
-            this.ck_Anexo5.TabIndex = 4;
-            // 
-            // ck_Anexo4
-            // 
-            this.ck_Anexo4.Location = new System.Drawing.Point(5, 104);
-            this.ck_Anexo4.Name = "ck_Anexo4";
-            this.ck_Anexo4.Properties.Caption = "Anexo 4 Clientes";
-            this.ck_Anexo4.Size = new System.Drawing.Size(212, 20);
-            this.ck_Anexo4.TabIndex = 3;
+            this.ck_Anexo5.TabIndex = 3;
             // 
             // ck_Anexo3
             // 
             this.ck_Anexo3.Location = new System.Drawing.Point(6, 78);
             this.ck_Anexo3.Name = "ck_Anexo3";
-            this.ck_Anexo3.Properties.Caption = "Anexo 3 Sujeto Excluido";
+            this.ck_Anexo3.Properties.Caption = "Anexo Consumidor Final";
             this.ck_Anexo3.Size = new System.Drawing.Size(212, 20);
             this.ck_Anexo3.TabIndex = 2;
             // 
@@ -263,7 +207,7 @@ namespace SistemaContable.UI.Forms.Iva
             // 
             this.ck_Anexo2.Location = new System.Drawing.Point(6, 52);
             this.ck_Anexo2.Name = "ck_Anexo2";
-            this.ck_Anexo2.Properties.Caption = "Anexo 2 Extranjeros";
+            this.ck_Anexo2.Properties.Caption = "Anexo Exportacion";
             this.ck_Anexo2.Size = new System.Drawing.Size(212, 20);
             this.ck_Anexo2.TabIndex = 1;
             // 
@@ -271,29 +215,26 @@ namespace SistemaContable.UI.Forms.Iva
             // 
             this.ck_Anexo1.Location = new System.Drawing.Point(5, 26);
             this.ck_Anexo1.Name = "ck_Anexo1";
-            this.ck_Anexo1.Properties.Caption = "Anexo 1 Inscritos";
+            this.ck_Anexo1.Properties.Caption = "Anexo Compra";
             this.ck_Anexo1.Size = new System.Drawing.Size(213, 20);
             this.ck_Anexo1.TabIndex = 0;
             // 
-            // frmF987
+            // frmF28
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.groupControl1);
-            this.Name = "frmF987";
+            this.Name = "frmF28";
             this.Tag = "Consulta";
-            this.Text = "DGII F-987";
+            this.Text = "DGII F-28";
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txt_Anio.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
             this.groupControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo7.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo6.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo5.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo4.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo3.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo1.Properties)).EndInit();
@@ -308,21 +249,16 @@ namespace SistemaContable.UI.Forms.Iva
         private System.Windows.Forms.Label lblEstado;
         private System.Windows.Forms.ProgressBar progressBar1;
         private DevExpress.XtraEditors.SimpleButton bt_AbrirDirectorio;
-        private System.Windows.Forms.ComboBox cb_Desde;
+        private System.Windows.Forms.ComboBox cb_Mes;
         private DevExpress.XtraEditors.SimpleButton bt_DescargarCsv;
         private DevExpress.XtraEditors.SimpleButton bt_DescargaXls;
         private DevExpress.XtraEditors.LabelControl labelControl2;
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraEditors.TextEdit txt_Anio;
         private DevExpress.XtraEditors.GroupControl groupControl2;
-        private DevExpress.XtraEditors.CheckEdit ck_Anexo7;
-        private DevExpress.XtraEditors.CheckEdit ck_Anexo6;
         private DevExpress.XtraEditors.CheckEdit ck_Anexo5;
-        private DevExpress.XtraEditors.CheckEdit ck_Anexo4;
         private DevExpress.XtraEditors.CheckEdit ck_Anexo3;
         private DevExpress.XtraEditors.CheckEdit ck_Anexo2;
         private DevExpress.XtraEditors.CheckEdit ck_Anexo1;
-        private System.Windows.Forms.ComboBox cb_Hasta;
-        private DevExpress.XtraEditors.LabelControl labelControl3;
     }
 }
