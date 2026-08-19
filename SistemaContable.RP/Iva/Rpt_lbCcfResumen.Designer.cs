@@ -1,5 +1,5 @@
 ﻿
-namespace ERPMH.Iva.rpt
+namespace SistemaContable.RP.Iva
 {
     partial class Rpt_lbCcfResumen
     {
@@ -598,8 +598,6 @@ namespace ERPMH.Iva.rpt
             this.ReportFooter});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.sdsListResumenlib});
-            this.DataMember = "EIVA_RTP_VENTAS_RESUMEN";
-            this.DataSource = this.sdsListResumenlib;
             this.Font = new System.Drawing.Font("Times New Roman", 10F);
             this.Landscape = true;
             this.Margins = new System.Drawing.Printing.Margins(19, 21, 14, 16);

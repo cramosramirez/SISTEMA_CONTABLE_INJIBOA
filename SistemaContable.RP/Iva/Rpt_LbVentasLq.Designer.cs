@@ -1,5 +1,5 @@
 ﻿
-namespace ERPMH.Iva.rpt
+namespace SistemaContable.RP.Iva
 {
     partial class Rpt_LbVentasLq
     {
@@ -384,7 +384,8 @@ namespace ERPMH.Iva.rpt
             // 
             // xrLabel49
             // 
-            this.xrLabel49.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Top | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrLabel49.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Top | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrLabel49.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([total])")});
             this.xrLabel49.LocationFloat = new DevExpress.Utils.PointFloat(739.3887F, 0F);
@@ -442,8 +443,6 @@ namespace ERPMH.Iva.rpt
             this.DtLQ.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.Detail1,
             this.GroupFooter1});
-            this.DtLQ.DataMember = "EIVA_RPT_LBVENT_LQ";
-            this.DtLQ.DataSource = this.SqsLibrosIva;
             this.DtLQ.Level = 0;
             this.DtLQ.Name = "DtLQ";
             // 
@@ -650,8 +649,6 @@ namespace ERPMH.Iva.rpt
             this.Detail2,
             this.GroupHeader2,
             this.GroupFooter2});
-            this.Dtlq2.DataMember = "EIVA_RPT_LBVENT_LQ2";
-            this.Dtlq2.DataSource = this.SqsLibrosIva;
             this.Dtlq2.Level = 1;
             this.Dtlq2.Name = "Dtlq2";
             // 
@@ -808,7 +805,8 @@ namespace ERPMH.Iva.rpt
             // 
             // xrLabel35
             // 
-            this.xrLabel35.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Top | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrLabel35.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrLabel35.Font = new System.Drawing.Font("Times New Roman", 10F, System.Drawing.FontStyle.Bold);
             this.xrLabel35.LocationFloat = new DevExpress.Utils.PointFloat(589.4443F, 0F);
             this.xrLabel35.Multiline = true;
@@ -859,7 +857,8 @@ namespace ERPMH.Iva.rpt
             // 
             // xrLabel34
             // 
-            this.xrLabel34.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Top | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrLabel34.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Top | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrLabel34.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([total])")});
             this.xrLabel34.LocationFloat = new DevExpress.Utils.PointFloat(867.7775F, 0F);
@@ -881,8 +880,6 @@ namespace ERPMH.Iva.rpt
             this.Detail3,
             this.GroupHeader1,
             this.GroupFooter3});
-            this.Dllq3.DataMember = "EIVA_RPT_LBVENT_LQ3";
-            this.Dllq3.DataSource = this.SqsLibrosIva;
             this.Dllq3.Level = 2;
             this.Dllq3.Name = "Dllq3";
             // 
@@ -1117,7 +1114,6 @@ namespace ERPMH.Iva.rpt
             this.Dllq3});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.SqsLibrosIva});
-            this.DataSource = this.SqsLibrosIva;
             this.Font = new System.Drawing.Font("Times New Roman", 10F);
             this.Landscape = true;
             this.Margins = new System.Drawing.Printing.Margins(32, 32, 15, 20);

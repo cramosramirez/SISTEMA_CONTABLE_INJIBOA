@@ -78,7 +78,7 @@ namespace SistemaContable.UI.Forms.Iva
 
             using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
             {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_1_VTAS_CONTRIBUYENTES_F07]", conn))
+                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_COMPRA_F28]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -124,7 +124,7 @@ namespace SistemaContable.UI.Forms.Iva
 
             using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
             {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_2_VTAS_CONSUMIDOR_F07]", conn))
+                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_EXPORTACION_F28]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -170,7 +170,7 @@ namespace SistemaContable.UI.Forms.Iva
 
             using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
             {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_3_COMPRAS_F07]", conn))
+                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_CONSUMIDORFINAL_F28]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -216,7 +216,7 @@ namespace SistemaContable.UI.Forms.Iva
 
             using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
             {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_5_COMPRAS_SUJETOS_F07]", conn))
+                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_CONTRIBUYENTE_F28]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -274,7 +274,7 @@ namespace SistemaContable.UI.Forms.Iva
             // Ruta base: Escritorio
             string escritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F07", anio, nombreMes, "Xls");
+            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F28", anio, nombreMes, "Xls");
 
             // Crear carpetas si no existen
             Directory.CreateDirectory(rutaBase);
@@ -319,7 +319,7 @@ namespace SistemaContable.UI.Forms.Iva
 
             string escritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F07", anio, nombreMes, "Csv");
+            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F28", anio, nombreMes, "Csv");
 
             Directory.CreateDirectory(rutaBase);
 
@@ -643,7 +643,7 @@ namespace SistemaContable.UI.Forms.Iva
         {
             string nombreMes = ObtenerMesEspanol(cb_Mes.SelectedValue.ToString());
             string escritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F07", txt_Anio.Text, nombreMes);
+            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F28", txt_Anio.Text, nombreMes);
 
             if (Directory.Exists(rutaBase))
             {

@@ -2,19 +2,46 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 
-namespace ERPMH.Iva.rpt
+namespace SistemaContable.RP.Iva
 {
-    public partial class Rpt_LbVentasLq : DevExpress.XtraReports.UI.XtraReport
+    public partial class Rpt_LbVentasLq : SistemaContable.RP.ReporteBase
     {
-        public Rpt_LbVentasLq(Object salfec)
+        public string _anio { get; set; }
+        public string _mes { get; set; }
+        public Rpt_LbVentasLq()
         {
             InitializeComponent();
-            SqsLibrosIva.Queries["EIVA_RPT_LBVENT_LQ"].Parameters[0].Value = salfec;
-            SqsLibrosIva.Queries["EIVA_RPT_LBVENT_LQ2"].Parameters[0].Value = salfec;
-            SqsLibrosIva.Queries["EIVA_RPT_LBVENT_LQ3"].Parameters[0].Value = salfec;
+            
         }
 
+        public override void CargarDatos()
+        {
+            DataTable dt = EjecutarSP("[EIVA].RPT_LBVENT_LQ", new
+            {
+                anio = _anio,
+                mes = _mes
+            });
+            this.DtLQ.DataSource = dt;
+            this.DtLQ.DataMember = "";
+
+            DataTable dt2 = EjecutarSP("[EIVA].RPT_LBVENT_LQ2", new
+            {
+                anio = _anio,
+                mes = _mes
+            });
+            this.Dtlq2.DataSource = dt2;
+            this.Dtlq2.DataMember = "";
+
+            DataTable dt3 = EjecutarSP("[EIVA].RPT_LBVENT_LQ3", new
+            {
+                anio = _anio,
+                mes = _mes
+            });
+            this.Dllq3.DataSource = dt3;
+            this.Dllq3.DataMember = "";
+        }
     }
 }

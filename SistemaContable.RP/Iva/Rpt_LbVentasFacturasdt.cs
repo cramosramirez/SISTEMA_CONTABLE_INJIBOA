@@ -2,16 +2,28 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 
-namespace ERPMH.Iva.rpt
+namespace SistemaContable.RP.Iva
 {
-    public partial class Rpt_LbVentasFacturasdt : DevExpress.XtraReports.UI.XtraReport
+    public partial class Rpt_LbVentasFacturasdt : SistemaContable.RP.ReporteBase
     {
-        public Rpt_LbVentasFacturasdt(Object salfec)
+        public string _anio { get; set; }
+        public string _mes { get; set; }
+        public Rpt_LbVentasFacturasdt()
         {
             InitializeComponent();
-           SqsLibrosIva.Queries["EIVA_RPT_LBVENT_FA_DET"].Parameters[0].Value = salfec;
+        }
+        public override void CargarDatos()
+        {
+            DataTable dt = EjecutarSP("[EIVA].[RPT_LBVENT_FA_DET]", new
+            {
+                anio = _anio,
+                mes = _mes
+            });
+            this.DataSource = dt;
+            this.DataMember = "";
         }
 
     }

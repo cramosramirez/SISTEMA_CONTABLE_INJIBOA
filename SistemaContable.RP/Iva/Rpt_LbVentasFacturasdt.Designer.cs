@@ -1,5 +1,5 @@
 ﻿
-namespace ERPMH.Iva.rpt
+namespace SistemaContable.RP.Iva
 {
     partial class Rpt_LbVentasFacturasdt
     {
@@ -63,13 +63,13 @@ namespace ERPMH.Iva.rpt
             this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
             this.SqsLibrosIva = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
-            this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLabel41 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel37 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel36 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel25 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel24 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
             this.GroupFooter1 = new DevExpress.XtraReports.UI.GroupFooterBand();
-            this.xrLabel41 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -454,11 +454,17 @@ namespace ERPMH.Iva.rpt
             this.ReportFooter.KeepTogether = true;
             this.ReportFooter.Name = "ReportFooter";
             // 
-            // xrLine1
+            // xrLabel41
             // 
-            this.xrLine1.LocationFloat = new DevExpress.Utils.PointFloat(9.999993F, 10F);
-            this.xrLine1.Name = "xrLine1";
-            this.xrLine1.SizeF = new System.Drawing.SizeF(1014.677F, 10F);
+            this.xrLabel41.Font = new System.Drawing.Font("Times New Roman", 12F);
+            this.xrLabel41.LocationFloat = new DevExpress.Utils.PointFloat(616.3332F, 155.5372F);
+            this.xrLabel41.Multiline = true;
+            this.xrLabel41.Name = "xrLabel41";
+            this.xrLabel41.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel41.SizeF = new System.Drawing.SizeF(255.0001F, 28.33722F);
+            this.xrLabel41.StylePriority.UseFont = false;
+            this.xrLabel41.StylePriority.UseTextAlignment = false;
+            this.xrLabel41.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel37
             // 
@@ -520,24 +526,18 @@ namespace ERPMH.Iva.rpt
             this.xrLabel24.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.xrLabel24.TextFormatString = "{0:N2}";
             // 
+            // xrLine1
+            // 
+            this.xrLine1.LocationFloat = new DevExpress.Utils.PointFloat(9.999993F, 10F);
+            this.xrLine1.Name = "xrLine1";
+            this.xrLine1.SizeF = new System.Drawing.SizeF(1014.677F, 10F);
+            // 
             // GroupFooter1
             // 
             this.GroupFooter1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLine1});
             this.GroupFooter1.HeightF = 20F;
             this.GroupFooter1.Name = "GroupFooter1";
-            // 
-            // xrLabel41
-            // 
-            this.xrLabel41.Font = new System.Drawing.Font("Times New Roman", 12F);
-            this.xrLabel41.LocationFloat = new DevExpress.Utils.PointFloat(616.3332F, 155.5372F);
-            this.xrLabel41.Multiline = true;
-            this.xrLabel41.Name = "xrLabel41";
-            this.xrLabel41.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel41.SizeF = new System.Drawing.SizeF(255.0001F, 28.33722F);
-            this.xrLabel41.StylePriority.UseFont = false;
-            this.xrLabel41.StylePriority.UseTextAlignment = false;
-            this.xrLabel41.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // Rpt_LbVentasFacturasdt
             // 
@@ -551,8 +551,6 @@ namespace ERPMH.Iva.rpt
             this.GroupFooter1});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.SqsLibrosIva});
-            this.DataMember = "EIVA_RPT_LBVENT_FA_DET";
-            this.DataSource = this.SqsLibrosIva;
             this.Font = new System.Drawing.Font("Times New Roman", 10F);
             this.Landscape = true;
             this.Margins = new System.Drawing.Printing.Margins(32, 32, 15, 20);

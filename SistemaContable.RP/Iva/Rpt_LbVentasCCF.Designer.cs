@@ -1,5 +1,5 @@
 ﻿
-namespace ERPMH.Iva.rpt
+namespace SistemaContable.RP.Iva
 {
     partial class Rpt_LbVentasCCF
     {
@@ -73,6 +73,7 @@ namespace ERPMH.Iva.rpt
             this.SqsLibrosIva = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrSubreport1 = new DevExpress.XtraReports.UI.XRSubreport();
             this.xrLabel27 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel21 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel22 = new DevExpress.XtraReports.UI.XRLabel();
@@ -84,8 +85,6 @@ namespace ERPMH.Iva.rpt
             this.xrLabel37 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel36 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
-            this.DtVenta = new DevExpress.XtraReports.UI.DetailReportBand();
-            this.Detail1 = new DevExpress.XtraReports.UI.DetailBand();
             this.xrLabel15 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel16 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel18 = new DevExpress.XtraReports.UI.XRLabel();
@@ -96,8 +95,7 @@ namespace ERPMH.Iva.rpt
             this.xrLabel17 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel47 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel48 = new DevExpress.XtraReports.UI.XRLabel();
-            this.GroupFooter1 = new DevExpress.XtraReports.UI.GroupFooterBand();
-            this.xrSubreport1 = new DevExpress.XtraReports.UI.XRSubreport();
+            this.GroupFooter2 = new DevExpress.XtraReports.UI.GroupFooterBand();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -112,8 +110,19 @@ namespace ERPMH.Iva.rpt
             // 
             // Detail
             // 
+            this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel15,
+            this.xrLabel16,
+            this.xrLabel18,
+            this.xrLabel19,
+            this.xrLabel20,
+            this.xrLabel45,
+            this.xrLabel46,
+            this.xrLabel48,
+            this.xrLabel47,
+            this.xrLabel17});
             this.Detail.Font = new System.Drawing.Font("Times New Roman", 8F);
-            this.Detail.HeightF = 0F;
+            this.Detail.HeightF = 20F;
             this.Detail.Name = "Detail";
             this.Detail.StylePriority.UseFont = false;
             // 
@@ -535,6 +544,14 @@ namespace ERPMH.Iva.rpt
             this.xrLabel6.StylePriority.UseTextAlignment = false;
             this.xrLabel6.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
+            // xrSubreport1
+            // 
+            this.xrSubreport1.LocationFloat = new DevExpress.Utils.PointFloat(21.56524F, 66.80764F);
+            this.xrSubreport1.Name = "xrSubreport1";
+            this.xrSubreport1.ReportSource = new SistemaContable.RP.Iva.Rpt_lbCcfResumen();
+            this.xrSubreport1.SizeF = new System.Drawing.SizeF(1296.833F, 213.7692F);
+            this.xrSubreport1.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrSubreport1_BeforePrint);
+            // 
             // xrLabel27
             // 
             this.xrLabel27.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
@@ -708,43 +725,15 @@ namespace ERPMH.Iva.rpt
             // 
             // xrLine1
             // 
-            this.xrLine1.LocationFloat = new DevExpress.Utils.PointFloat(5.525366F, 10F);
+            this.xrLine1.LocationFloat = new DevExpress.Utils.PointFloat(6.875279F, 0F);
             this.xrLine1.Name = "xrLine1";
             this.xrLine1.SizeF = new System.Drawing.SizeF(1316F, 10F);
-            // 
-            // DtVenta
-            // 
-            this.DtVenta.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
-            this.Detail1,
-            this.GroupFooter1});
-            this.DtVenta.DataMember = "EIVA_RPT_LBVENTA_CCF";
-            this.DtVenta.DataSource = this.SqsLibrosIva;
-            this.DtVenta.Level = 0;
-            this.DtVenta.Name = "DtVenta";
-            // 
-            // Detail1
-            // 
-            this.Detail1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrLabel15,
-            this.xrLabel16,
-            this.xrLabel18,
-            this.xrLabel19,
-            this.xrLabel20,
-            this.xrLabel45,
-            this.xrLabel46,
-            this.xrLabel17,
-            this.xrLabel47,
-            this.xrLabel48});
-            this.Detail1.Font = new System.Drawing.Font("Times New Roman", 8F);
-            this.Detail1.HeightF = 20F;
-            this.Detail1.Name = "Detail1";
-            this.Detail1.StylePriority.UseFont = false;
             // 
             // xrLabel15
             // 
             this.xrLabel15.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FECHA]")});
-            this.xrLabel15.LocationFloat = new DevExpress.Utils.PointFloat(56.87496F, 0F);
+            this.xrLabel15.LocationFloat = new DevExpress.Utils.PointFloat(56.87482F, 0F);
             this.xrLabel15.Multiline = true;
             this.xrLabel15.Name = "xrLabel15";
             this.xrLabel15.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -758,7 +747,7 @@ namespace ERPMH.Iva.rpt
             // 
             this.xrLabel16.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NUMERACION]")});
-            this.xrLabel16.LocationFloat = new DevExpress.Utils.PointFloat(126.0416F, 0F);
+            this.xrLabel16.LocationFloat = new DevExpress.Utils.PointFloat(126.0415F, 0F);
             this.xrLabel16.Multiline = true;
             this.xrLabel16.Name = "xrLabel16";
             this.xrLabel16.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 2, 0, 0, 100F);
@@ -773,7 +762,7 @@ namespace ERPMH.Iva.rpt
             this.xrLabel18.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([EXENTA]<>0 and [anulado]=0,[EXENTA] ,Iif([EXENTA]=0 and [anulado]=1,0 ,\'\' ))" +
                     "\n")});
-            this.xrLabel18.LocationFloat = new DevExpress.Utils.PointFloat(717.0426F, 0F);
+            this.xrLabel18.LocationFloat = new DevExpress.Utils.PointFloat(717.0425F, 0F);
             this.xrLabel18.Multiline = true;
             this.xrLabel18.Name = "xrLabel18";
             this.xrLabel18.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 5, 0, 0, 100F);
@@ -789,7 +778,7 @@ namespace ERPMH.Iva.rpt
             this.xrLabel19.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([GRAVADAS]<>0 and [anulado]=0,[GRAVADAS] ,Iif([GRAVADAS]=0 and [anulado]=1,0 " +
                     ",\'\' ))")});
-            this.xrLabel19.LocationFloat = new DevExpress.Utils.PointFloat(795.3759F, 0F);
+            this.xrLabel19.LocationFloat = new DevExpress.Utils.PointFloat(795.3758F, 0F);
             this.xrLabel19.Multiline = true;
             this.xrLabel19.Name = "xrLabel19";
             this.xrLabel19.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 5, 0, 0, 100F);
@@ -835,7 +824,7 @@ namespace ERPMH.Iva.rpt
             // 
             this.xrLabel46.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([IVA]<>0 and [anulado]=0,[IVA] ,Iif([IVA]=0 and [anulado]=1,0 ,\'\' ))\n")});
-            this.xrLabel46.LocationFloat = new DevExpress.Utils.PointFloat(925.3758F, 0F);
+            this.xrLabel46.LocationFloat = new DevExpress.Utils.PointFloat(925.3756F, 0F);
             this.xrLabel46.Multiline = true;
             this.xrLabel46.Name = "xrLabel46";
             this.xrLabel46.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 5, 0, 0, 100F);
@@ -850,7 +839,7 @@ namespace ERPMH.Iva.rpt
             // 
             this.xrLabel17.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CORRE]")});
-            this.xrLabel17.LocationFloat = new DevExpress.Utils.PointFloat(6.874966F, 0F);
+            this.xrLabel17.LocationFloat = new DevExpress.Utils.PointFloat(6.874825F, 0F);
             this.xrLabel17.Multiline = true;
             this.xrLabel17.Name = "xrLabel17";
             this.xrLabel17.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -864,7 +853,7 @@ namespace ERPMH.Iva.rpt
             // 
             this.xrLabel47.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NOMBRE]")});
-            this.xrLabel47.LocationFloat = new DevExpress.Utils.PointFloat(399.375F, 0F);
+            this.xrLabel47.LocationFloat = new DevExpress.Utils.PointFloat(399.3749F, 0F);
             this.xrLabel47.Multiline = true;
             this.xrLabel47.Name = "xrLabel47";
             this.xrLabel47.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 2, 0, 0, 100F);
@@ -878,7 +867,7 @@ namespace ERPMH.Iva.rpt
             // 
             this.xrLabel48.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[REGISTRO]")});
-            this.xrLabel48.LocationFloat = new DevExpress.Utils.PointFloat(641.8751F, 0F);
+            this.xrLabel48.LocationFloat = new DevExpress.Utils.PointFloat(641.8749F, 0F);
             this.xrLabel48.Multiline = true;
             this.xrLabel48.Name = "xrLabel48";
             this.xrLabel48.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 2, 0, 0, 100F);
@@ -888,20 +877,12 @@ namespace ERPMH.Iva.rpt
             this.xrLabel48.Text = "xrLabel16";
             this.xrLabel48.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
-            // GroupFooter1
+            // GroupFooter2
             // 
-            this.GroupFooter1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.GroupFooter2.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLine1});
-            this.GroupFooter1.HeightF = 20F;
-            this.GroupFooter1.Name = "GroupFooter1";
-            // 
-            // xrSubreport1
-            // 
-            this.xrSubreport1.LocationFloat = new DevExpress.Utils.PointFloat(21.56524F, 66.80764F);
-            this.xrSubreport1.Name = "xrSubreport1";
-            this.xrSubreport1.ReportSource = new ERPMH.Iva.rpt.Rpt_lbCcfResumen();
-            this.xrSubreport1.SizeF = new System.Drawing.SizeF(1296.833F, 213.7692F);
-            this.xrSubreport1.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrSubreport1_BeforePrint);
+            this.GroupFooter2.HeightF = 22.53508F;
+            this.GroupFooter2.Name = "GroupFooter2";
             // 
             // Rpt_LbVentasCCF
             // 
@@ -912,11 +893,9 @@ namespace ERPMH.Iva.rpt
             this.PageHeader,
             this.PageFooter,
             this.ReportFooter,
-            this.DtVenta});
+            this.GroupFooter2});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.SqsLibrosIva});
-            this.DataMember = "EIVA_RPT_LBVENT_FA_RESUMEN";
-            this.DataSource = this.SqsLibrosIva;
             this.Font = new System.Drawing.Font("Times New Roman", 10F);
             this.Landscape = true;
             this.Margins = new System.Drawing.Printing.Margins(32, 32, 10, 20);
@@ -960,8 +939,6 @@ namespace ERPMH.Iva.rpt
         private DevExpress.XtraReports.UI.XRLabel xrLabel41;
         private DevExpress.XtraReports.UI.XRLabel xrLabel13;
         private DevExpress.XtraReports.UI.XRLabel xrLabel5;
-        private DevExpress.XtraReports.UI.DetailReportBand DtVenta;
-        private DevExpress.XtraReports.UI.DetailBand Detail1;
         private DevExpress.XtraReports.UI.XRLabel xrLabel15;
         private DevExpress.XtraReports.UI.XRLabel xrLabel16;
         private DevExpress.XtraReports.UI.XRLabel xrLabel18;
@@ -983,6 +960,6 @@ namespace ERPMH.Iva.rpt
         private DevExpress.XtraReports.UI.XRLabel xrLabel71;
         private DevExpress.XtraReports.UI.XRLabel xrLabel72;
         private DevExpress.XtraReports.UI.XRLabel xrLabel6;
-        private DevExpress.XtraReports.UI.GroupFooterBand GroupFooter1;
+        private DevExpress.XtraReports.UI.GroupFooterBand GroupFooter2;
     }
 }
