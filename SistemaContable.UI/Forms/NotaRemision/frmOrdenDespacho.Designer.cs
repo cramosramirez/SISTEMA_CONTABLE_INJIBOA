@@ -645,6 +645,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.txtCOD_GENERACION.ReadOnly = true;
             this.txtCOD_GENERACION.Size = new System.Drawing.Size(446, 22);
             this.txtCOD_GENERACION.TabIndex = 135;
+            this.txtCOD_GENERACION.Visible = false;
             // 
             // label14
             // 
@@ -655,6 +656,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label14.Size = new System.Drawing.Size(97, 14);
             this.label14.TabIndex = 138;
             this.label14.Text = "Cod. Generación";
+            this.label14.Visible = false;
             // 
             // label11
             // 

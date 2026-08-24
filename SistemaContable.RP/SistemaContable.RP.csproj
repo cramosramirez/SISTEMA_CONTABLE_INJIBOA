@@ -225,6 +225,12 @@
     <Compile Include="Traslados\RptOrdDespacho.Designer.cs">
       <DependentUpon>RptOrdDespacho.cs</DependentUpon>
     </Compile>
+    <Compile Include="Traslados\RptSalidaBodega.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Traslados\RptSalidaBodega.Designer.cs">
+      <DependentUpon>RptSalidaBodega.cs</DependentUpon>
+    </Compile>
     <Compile Include="Ventas\rptCreditoFiscal.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -294,6 +300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Traslados\RptOrdDespacho.resx">
       <DependentUpon>RptOrdDespacho.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Traslados\RptSalidaBodega.resx">
+      <DependentUpon>RptSalidaBodega.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ventas\rptCreditoFiscal.resx">
       <DependentUpon>rptCreditoFiscal.cs</DependentUpon>

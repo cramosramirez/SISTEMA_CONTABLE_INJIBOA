@@ -16,11 +16,10 @@ using System.ComponentModel;
 using System.Linq;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraEditors.Repository;
-using SistemaContable.RP.Traslados.NotaRemision;
-
+using SistemaContable.RP.Traslados;
 namespace SistemaContable.UI.Forms.NotaRemision
 {
-    public partial class frmTraslado : Form
+    public partial class frmDespacho : Form
     {
         private enum EstadoFormulario
         {
@@ -35,12 +34,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private int _idEntidad = 0;
         private string _codigoEntidad = string.Empty;
         private string _columnaAnteriorGrid = string.Empty;
-        public int IdTraslado { get; set; } = 0;
+
         private int _ID_PROV_TRANSP = 0;
         private int _ID_MOTORISTA = 0;
+        private int _ID_TEC = 0;
+        private string _Area = string.Empty;
 
-
-        public frmTraslado()
+        public int IdTraslado { get; set; } = 0;
+        public frmDespacho()
         {
             InitializeComponent();
             this.SetStyle(
@@ -50,38 +51,56 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.UpdateStyles();
         }
 
-        private void frmTraslado_Load(object sender, EventArgs e)
+
+        private void ConfigurarToolTips()
         {
+            TooltipHelper.Configurar(
+                            (txtPROVEEDOR, "Ingrese * y presione Enter para mostrar todos los proveedores."),
+                            (txtTecnico, "Ingrese * y presione Enter para mostrar todos los técnicos."),
+                            (txtPROV_TRANSP, "Ingrese * y presione Enter para mostrar todos los proveedores de transporte."),
+                            (txtMotorista, "Ingrese * y presione Enter para mostrar todos los motoristas.")
+                                 );
+        }
+
+
+
+        private void frmOrdenDespacho_Load(object sender, EventArgs e)
+        {
+
             FormHelper.Inicializar(this);
+            CargarSucursal();
             CargarTipoDte();
             CargarTansposte();
+            ConfigurarToolTips();
+
             mskFECHA_EMISION.Text = DateTime.Now.ToString("dd/MM/yyyy");
 
 
             InicializarGridDetalle();
             // Búsqueda * + Enter en txtPROVEEDOR
             FormHelper.RegistrarBusqueda(
-        txtPROVEEDOR,
-        new BusquedaConfig
-        {
-            StoredProcedure = "SP_ENTIDAD",
-            Accion = "BUSCAR_TC",
-            Columnas = new Dictionary<string, string>
-            {
+                txtPROVEEDOR,
+                new BusquedaConfig
+                {
+                    StoredProcedure = "SP_ENTIDAD",
+                    Accion = "BUSCAR_OD",
+                    Columnas = new Dictionary<string, string>
+                    {
                         { "CODIGO_ENTIDAD", "PROVEEDOR" },
                         { "NOMBRE",         "NOMBRE"    },
                         { "NIT",            "NIT"       }
-            },
-            Anchos = new Dictionary<string, int>
-            {
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
                         { "CODIGO_ENTIDAD", 100 },
                         { "NOMBRE",         300 },
                         { "NIT",            120 }
-            },
-            ParametrosExtra = new { ROL = "NR" }
-        },
-        fila => AsignarProveedor(fila)
-    );
+                    },
+                    ParametrosExtra = new { ROL = "" }
+
+                },
+                fila => AsignarProveedor(fila)
+            );
             txtPROVEEDOR.Leave += txtPROVEEDOR_Leave;
 
 
@@ -93,11 +112,13 @@ namespace SistemaContable.UI.Forms.NotaRemision
                    Accion = "BUSCAR",
                    Columnas = new Dictionary<string, string>
                    {
+
                         { "NOMBRE",         "PROVEEDOR"    },
                         { "TRANSPORTE",            "TRANSPORTE"       }
                    },
                    Anchos = new Dictionary<string, int>
                    {
+
                         { "NOMBRE",         300 },
                         { "TRANSPORTE",            300 }
                    }
@@ -115,11 +136,13 @@ namespace SistemaContable.UI.Forms.NotaRemision
                   Accion = "BUSCAR",
                   Columnas = new Dictionary<string, string>
                   {
+
                         { "NOMBRE",         "MOTORISTA"    },
                         { "LICENCIA",            "LICENCIA"       }
                   },
                   Anchos = new Dictionary<string, int>
                   {
+
                         { "NOMBRE",         300 },
                         { "LICENCIA",            60 }
                   }
@@ -128,6 +151,31 @@ namespace SistemaContable.UI.Forms.NotaRemision
               fila => AsignarMotorista(fila)
           );
             txtMotorista.Leave += txtMotorista_Leave;
+
+            FormHelper.RegistrarBusqueda(
+              txtTecnico,
+              new BusquedaConfig
+              {
+                  StoredProcedure = "[EGENERALES].SP_TECNICO",
+                  Accion = "BUSCAR",
+                  Columnas = new Dictionary<string, string>
+                  {
+
+                        { "NOMBRE",         "TECNICO"    },
+                        { "AREA",            "AREA"       }
+                  },
+                  Anchos = new Dictionary<string, int>
+                  {
+
+                        { "NOMBRE",         300 },
+                        { "AREA",            60 }
+                  }
+
+              },
+              fila => AsignarTecnico(fila)
+          );
+            txtTecnico.Leave += txtTecnico_Leave;
+
 
             ConfigurarTextBoxDecimal(
                 txtGRAVADA, txtTOTAL
@@ -144,8 +192,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             else
             {
                 txtCOD_GENERACION.Text = DALBase.NuevoGUID();
-                txtPROV_TRANSP.Text = "INJIBOA S.A. DE C.V.";
-                txtPROV_TRANSP_Leave(null, null);
                 CargarSiguienteNumNotaRemision();
 
                 ConfigurarCRUD(EstadoFormulario.Nuevo);
@@ -161,24 +207,19 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 case EstadoFormulario.Nuevo:
                     txtPROVEEDOR.Enabled = true;
                     btnGuardar.Enabled = true;
-                    btnValidar.Enabled = false;
+
                     btnImprimir.Enabled = false;
-                    btnCorreo.Enabled = false;
 
                     break;
                 case EstadoFormulario.Guardado:
                     txtPROVEEDOR.Enabled = false;
                     btnGuardar.Enabled = true;
-                    btnValidar.Enabled = true;
                     btnImprimir.Enabled = true;
-                    btnCorreo.Enabled = false;
                     break;
                 case EstadoFormulario.Validado:
                     txtPROVEEDOR.Enabled = false;
                     btnGuardar.Enabled = false;
-                    btnValidar.Enabled = false;
                     btnImprimir.Enabled = true;
-                    btnCorreo.Enabled = true;
 
                     break;
             }
@@ -190,11 +231,11 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 Cursor = Cursors.WaitCursor;
 
-                DataTable dt = _dal.EjecutarConsulta("[EDTE].SP_NOTA_REMISION",
+                DataTable dt = _dal.EjecutarConsulta("[EORDEN_DESPACHO].SP_DESPACHO_BODEGA_ENC",
                     new
                     {
                         ACCION = "OBTENER",
-                        ID_NTREMISIONENC = IdTraslado
+                        ID_DBENC = IdTraslado
                     });
 
                 if (dt.Rows.Count == 0)
@@ -227,13 +268,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 mskFECHA_EMISION.Text = AsFecha(r["FECHA"]);
 
                 txtNumero_NR.Text = AsString(r["NUMDOC"]);
-                txtSELLO_RECIBIDO.Text = AsString(r["SELLORECEPCION"]);
-                txtCOD_GENERACION.Text = AsString(r["CODGENERACION"]);
-                txtNUM_CONTROL.Text = AsString(r["NUMCONTROL"]);
+
+                txtCOD_GENERACION.Text = AsString(r["CODGENERACION_DB"]);
+
                 txtObservacion.Text = AsString(r["OBSERVACIONES"]);
 
-                txtGRAVADA.Text = AsString(r["AFECTA"]);
-                txtTOTAL.Text = AsString(r["TOTALVENTA"]);
+                //txtGRAVADA.Text = AsString(r["AFECTA"]);
+                //txtTOTAL.Text = AsString(r["TOTALVENTA"]);
+
 
                 _ID_PROV_TRANSP = Convert.ToInt32(r["ID_PROV_TRANSP"]);
                 txtPROV_TRANSP.Text = r["PROV_TXTTRANSPORTE"].ToString();
@@ -245,8 +287,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 txtMotorista.Text = r["MOTORISTA"].ToString();
                 txtLicencia.Text = r["LICENCIA"].ToString();
 
-                txtOrdenDespacho.Text = r["ID_ODENC"].ToString();
-                txtCodGenera_OrdenDespacho.Text = r["CODGENERACION_OD"].ToString();
+                txtTecnico.Text = r["TECNICO"].ToString();
+
+                _ID_TEC = Convert.ToInt32(r["ID_TEC"]);
+                _Area = r["AREA"].ToString();
+                txtDIRECCION.Text = r["DIRECCION"].ToString();
+                txtOrdenDespacho.Text = r["NUMDOC_OD"].ToString();
+                txtCodGenera_NR.Text = r["NUMDOC_NR"].ToString();
+
 
             }
             catch (Exception ex)
@@ -257,7 +305,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             finally
             {
                 Cursor = Cursors.Default;
-                if (string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text))
+                if (string.IsNullOrWhiteSpace(txtKilogramos.Text))
                 {
                     ConfigurarCRUD(EstadoFormulario.Guardado);
                     if (string.IsNullOrWhiteSpace(txtOrdenDespacho.Text))
@@ -277,11 +325,11 @@ namespace SistemaContable.UI.Forms.NotaRemision
         {
             try
             {
-                DataTable dt2 = _dal.EjecutarConsulta("[EDTE].SP_NOTAREMISION_DET",
+                DataTable dt2 = _dal.EjecutarConsulta("[EORDEN_DESPACHO].SP_DESPACHO_BODEGA_DET",
                     new
                     {
                         ACCION = "OBTENER",
-                        ID_NTREMISIONENC = IdTraslado
+                        ID_DBENC = IdTraslado
                     });
 
                 if (dt2.Rows.Count > 0)
@@ -305,7 +353,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     }
                 }
 
-                if (string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text))
+                if (string.IsNullOrWhiteSpace(txtKilogramos.Text))
                 {
                     AgregarFilaVacia();
                 }
@@ -317,7 +365,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
                 var view = gridControl1.MainView as GridView;
 
-                bool editable = string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text);
+                bool editable = string.IsNullOrWhiteSpace(txtKilogramos.Text);
 
                 view.OptionsBehavior.Editable = editable;
                 view.OptionsBehavior.ReadOnly = !editable;
@@ -372,12 +420,21 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 new
                 {
                     ACCION = "OBTENER",
-                    ID_TIPO_DTE = 3
+                    ID_TIPO_DTE = 27
                 });
 
             cbxTIPO_DTE.DataSource = dt;
             cbxTIPO_DTE.ValueMember = "ID_TIPO_DTE";
             cbxTIPO_DTE.DisplayMember = "ABREVIATURA_E";
+        }
+
+        private void CargarSucursal()
+        {
+            DataTable dt = _dal.EjecutarConsulta("SP_SUCURSAL",
+                new { ACCION = "OBTENER", ID_SUCURSAL = 1 });
+            cbxSUCURSAL.DataSource = dt;
+            cbxSUCURSAL.ValueMember = "ID_SUCURSAL";
+            cbxSUCURSAL.DisplayMember = "NOMBRE";
         }
         private void CargarTansposte()
         {
@@ -401,13 +458,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 cbxIdTransposte.DataSource = null;
             }
         }
+
         private void CargarSiguienteNumNotaRemision()
         {
-            var num = _dal.ObtenerNumeracionPrevia("NR", null);   // sin año -> corrido
+            var num = _dal.ObtenerNumeracionPrevia("DB", null);   // sin año -> corrido
             if (num == null)
             {
                 MessageBox.Show(
-                    "No existe numeración activa para la Nota de Remision.\n" +
+                    "No existe numeración activa para Despacho de Bodega.\n" +
                     "Configúrela en DOCUMENTO_NUMERACION antes de continuar.",
                     "Numeración no encontrada",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -430,9 +488,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 var dt = _dal.EjecutarConsulta("SP_ENTIDAD", new
                 {
-                    ACCION = "BUSCAR_TC",
+                    ACCION = "BUSCAR_OD",
                     FILTRO = codigo,
-                    ROL = "NR"
+                    ROL = ""
                 });
 
                 if (dt.Rows.Count > 0)
@@ -492,31 +550,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 LimpiarProveedorTransporte();
                 return;
             }
-            try
-            {
-                var dt = _dal.EjecutarConsulta("[EGENERALES].SP_PROVEEDOR_TRANSPORTE", new
-                {
-                    ACCION = "BUSCAR",
-                    FILTRO = codigo
-                });
 
-                if (dt.Rows.Count > 0)
-                    AsignarProveedorTransporte(dt.Rows[0]);
-                else
-                {
-                    LimpiarProveedorTransporte();
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        $"No se encontró el proveedor con código '{codigo}'.",
-                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtPROVEEDOR.Focus();
-                }
-            }
-            catch (Exception ex)
-            {
-                DevExpress.XtraEditors.XtraMessageBox.Show(
-                    $"Error al buscar proveedor: {ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
         private void AsignarProveedorTransporte(DataRow fila)
         {
@@ -557,6 +591,34 @@ namespace SistemaContable.UI.Forms.NotaRemision
             txtMotorista.Text = string.Empty;
             txtLicencia.Text = string.Empty;
         }
+
+        private void txtTecnico_Leave(object sender, EventArgs e)
+        {
+            string codigo = txtMotorista.Text.Trim();
+            if (codigo == "*") return;
+            if (string.IsNullOrWhiteSpace(codigo))
+            {
+                LimpiarTecnico();
+                return;
+            }
+
+        }
+        private void AsignarTecnico(DataRow fila)
+        {
+            _ID_TEC = Convert.ToInt32(fila["ID_TEC"]);
+
+            txtTecnico.Text = fila["NOMBRE"].ToString();
+            _Area = fila["AREA"].ToString();
+
+        }
+        private void LimpiarTecnico()
+        {
+            _ID_TEC = 0;
+            txtTecnico.Text = string.Empty;
+            _Area = string.Empty;
+        }
+
+
         private void ConfigurarTextBoxDecimal(params TextBox[] textboxes)
         {
             foreach (var tb in textboxes)
@@ -778,8 +840,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
         }
 
-
-
         private void ConfigurarColumna(GridView view, string fieldName,
         string caption, int width, bool readOnly, bool visible)
         {
@@ -800,10 +860,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
             }
         }
 
-
         private void AgregarFilaVacia()
         {
-            if (string.IsNullOrWhiteSpace(txtSELLO_RECIBIDO.Text))
+            if (string.IsNullOrWhiteSpace(txtKilogramos.Text))
             {
                 var fila = _dtDeta.NewRow();
 
@@ -819,7 +878,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 _dtDeta.Rows.Add(fila);
             }
         }
-
 
 
         private void AgregarFilaPartida(string cod_ref)
@@ -975,7 +1033,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     "ID_PRODUCTO",
                     "ID_UNIDAD_MEDIDA"
                 },
-                ParametrosExtra = new { ROL_PROD = "NRE BODEGA MATERIAL" }
+                ParametrosExtra = new { ROL_PROD = "NRE ORDEN DESPACHO" }
             };
 
 
@@ -1074,7 +1132,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
 
 
-
+            if (string.IsNullOrWhiteSpace(txtTecnico.Text))
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Seleccione un Tecnico.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTecnico.Focus();
+                return false;
+            }
 
             if (string.IsNullOrWhiteSpace(txtPROV_TRANSP.Text))
             {
@@ -1148,45 +1213,42 @@ namespace SistemaContable.UI.Forms.NotaRemision
             try
             {
                 // 1. Guardar encabezado del NR
-                var dtNR = _dal.EjecutarConsulta("[EDTE].SP_NOTA_REMISION", new
+                var dtNR = _dal.EjecutarConsulta("[EORDEN_DESPACHO].SP_DESPACHO_BODEGA_ENC", new
                 {
                     ACCION = "GUARDAR",
-                    ID_NTREMISIONENC = IdTraslado,
-                    ID_EMISOR = 1,
-                    ID_SUCURSAL = 1,
-                    ID_ALMACEN = Configuracion.Id_Almacen,
-                    ID_CAJERO = Configuracion.Id_Cajero,
-                    ID_CONDPAGO = 1,
+                    ID_DBENC = IdTraslado,
+
                     ID_CLIENTE = _idEntidad,
                     COD_REF = _codigoEntidad,
-                    TPDOC = "NRE",
+                    TPDOC = "DB",
                     FECHA = FormHelper.ObtenerFecha(mskFECHA_EMISION),
                     SALFEC = FormHelper.ObtenerSalfec(mskFECHA_EMISION),
                     NUMDOC = txtNumero_NR.Text,
-                    CODGENERACION = txtCOD_GENERACION.Text,
-                    NUMCONTROL = txtNUM_CONTROL.Text,
-                    NUMINTERNO = txtNumero_NR.Text,
-                    AFECTA = txtGRAVADA.Text,
-                    TOTALVENTA = txtTOTAL.Text,
+                    CODGENERACION_DB = txtCOD_GENERACION.Text,
                     OBSERVACIONES = txtObservacion.Text,
                     USER_CREA = Configuracion.UsuarioActual,
-                    OPCIONNR = "NR",
+
+
                     ID_PROV_TRANSP = _ID_PROV_TRANSP,
                     ID_TRANSPORTE = cbxIdTransposte.SelectedValue,
                     PLACA = txtPlaca.Text,
                     REMOLQUE = txtRemolque.Text,
                     ID_MOTORISTA = _ID_MOTORISTA,
-                    ID_ODENC = txtOrdenDespacho.Text,
-                    CODGENERACION_OD = txtCodGenera_OrdenDespacho.Text
 
+                    TECNICO = txtTecnico.Text,
+                    DIRECCION = txtDIRECCION.Text,
+                    NUMDOC_OD = txtOrdenDespacho.Text,
+                    NUMDOC_NR = txtCodGenera_NR.Text,
+                    ID_TEC = _ID_TEC,
+                    AREA = _Area
 
                 });
 
                 if (dtNR.Rows.Count == 0) return;
                 IdTraslado = Convert.ToInt32(dtNR.Rows[0]["ID_GENERADO"]);
                 _idNR = Convert.ToInt32(dtNR.Rows[0]["ID_GENERADO"]);
-                txtNUM_CONTROL.Text = Convert.ToString(dtNR.Rows[0]["NCONT"]);
-                txtNumero_NR.Text = Convert.ToString(dtNR.Rows[0]["INTERN"]);
+
+                txtNumero_NR.Text = Convert.ToString(dtNR.Rows[0]["ID_GENERADO"]);
 
                 // 3. Guardar líneas detalle
                 foreach (DataRow fila in _dtDeta.Rows)
@@ -1194,11 +1256,11 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     string cta = fila["ID_PRODUCTO"].ToString().Trim();
                     if (string.IsNullOrWhiteSpace(cta)) continue;
 
-                    _dal.EjecutarSinRetorno("[EDTE].SP_NOTAREMISION_DET", new
+                    _dal.EjecutarSinRetorno("[EORDEN_DESPACHO].SP_DESPACHO_BODEGA_DET", new
                     {
                         ACCION = "GUARDAR",
-                        ID_NTREMISIONDT = 0,
-                        ID_NTREMISIONENC = _idNR,
+                        ID_DBDT = 0,
+                        ID_DBENC = _idNR,
                         ID_EMISOR = 1,
                         CODGENERACION = txtCOD_GENERACION.Text,
                         ID_PRODUCTO = Convert.ToInt32(fila["ID_PRODUCTO"]),
@@ -1216,18 +1278,13 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 }
 
 
-                _dal.EjecutarSinRetorno("[EDTE].SP_NOTAREMISION_JSON", new
-                {
-                    ID_NTREMISIONENC = IdTraslado
-                });
-
 
                 if (_idNR != 0)
                 {
                     ConfigurarCRUD(EstadoFormulario.Guardado);
                 }
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Nota Remision guarda correctamente.",
+                    "Salida de Bodega guarda correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -1258,7 +1315,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             try
             {
                 Cursor = Cursors.WaitCursor;
-                var reporte = new RptNotaRemision { _id = IdTraslado };
+                var reporte = new RptSalidaBodega { _id = IdTraslado };
                 reporte.MostrarPreview();
             }
             catch (Exception ex)
@@ -1283,7 +1340,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 Cursor = Cursors.WaitCursor;
 
-                DataTable dt = _dal.EjecutarConsulta("[EORDEN_DESPACHO].VIEW_NOTAREMISION_ENC",
+                DataTable dt = _dal.EjecutarConsulta("[EORDEN_DESPACHO].VIEW_NOTAREMISION_ENC_DOC_SALIDA",
                     new
                     {
 
@@ -1299,6 +1356,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 }
 
                 DataRow r = dt.Rows[0];
+
 
                 if (Convert.ToBoolean(r["YA_ASIGNADA"]))
                 {
@@ -1327,12 +1385,12 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
                 // ---------- Documento fiscal ----------
 
-                //mskFECHA_EMISION.Text = AsFecha(r["FECHA"]);
+                mskFECHA_EMISION.Text = AsFecha(r["FECHA"]);
 
-                //txtNumero_NR.Text = AsString(r["NUMDOC"]);
+                txtNumero_NR.Text = AsString(r["NUMDOC"]);
 
-                txtCodGenera_OrdenDespacho.Text = AsString(r["CODGENERACION_OD"]);
-
+                txtCOD_GENERACION.Text = AsString(r["CODGENERACION_OD"]);
+                txtCodGenera_NR.Text = AsString(r["CODGENERA_NR_OD"]);
 
                 txtObservacion.Text = AsString(r["OBSERVACIONES"]);
 
@@ -1353,8 +1411,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
 
 
-                CargarODDTxistente(IdOD);
 
+                CargarODDTxistente(IdOD);
 
             }
             catch (Exception ex)
@@ -1365,7 +1423,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
             finally
             {
                 Cursor = Cursors.Default;
-
+                if (string.IsNullOrWhiteSpace(txtKilogramos.Text))
+                {
+                    ConfigurarCRUD(EstadoFormulario.Guardado);
+                }
+                else
+                {
+                    ConfigurarCRUD(EstadoFormulario.Validado);
+                }
 
 
             }
@@ -1432,6 +1497,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
         #endregion
         private void btOrdenDespacho_Click(object sender, EventArgs e)
         {
@@ -1448,6 +1515,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             }
 
             CargarODxistente(ordenDespacho);
+
         }
     }
 

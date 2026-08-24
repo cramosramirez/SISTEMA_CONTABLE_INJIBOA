@@ -45,6 +45,26 @@ namespace SistemaContable.DAL
             }
         }
 
+        public DynamicParameters EjecutarConSalida(string sp, DynamicParameters parametros)
+        {
+            try
+            {
+                using (var cn = new SqlConnection(CadenaConexion))
+                {
+                    cn.Execute(sp, parametros, commandType: CommandType.StoredProcedure);
+                }
+                return parametros; // trae los valores OUTPUT ya poblados
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message, ex,
+                    modulo: "DALBase.EjecutarConSalida",
+                    spNombre: sp,
+                    parametros: parametros);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         // CASO 2: Retorna entero — ID generado en INSERT
         public int EjecutarEscalar(string sp, object parametros = null)
         {

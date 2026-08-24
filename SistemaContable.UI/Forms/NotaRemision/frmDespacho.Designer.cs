@@ -1,8 +1,9 @@
 ﻿
 namespace SistemaContable.UI.Forms.NotaRemision
 {
-    partial class frmTraslado
+    partial class frmDespacho
     {
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -29,13 +30,17 @@ namespace SistemaContable.UI.Forms.NotaRemision
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtOrdenDespacho = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.txtCodGenera_OrdenDespacho = new System.Windows.Forms.TextBox();
+            this.txtCodGenera_NR = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.btOrdenDespacho = new DevExpress.XtraEditors.SimpleButton();
+            this.txtKilogramos = new System.Windows.Forms.TextBox();
             this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.txtRemolque = new System.Windows.Forms.TextBox();
             this.label32 = new System.Windows.Forms.Label();
@@ -50,12 +55,12 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label25 = new System.Windows.Forms.Label();
             this.txtPROV_TRANSP = new System.Windows.Forms.TextBox();
             this.label24 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
-            this.label35 = new System.Windows.Forms.Label();
+            this.txtTecnico = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.cbxSUCURSAL = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnCorreo = new DevExpress.XtraEditors.SimpleButton();
             this.btnImprimir = new DevExpress.XtraEditors.SimpleButton();
-            this.btnValidar = new DevExpress.XtraEditors.SimpleButton();
             this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -70,10 +75,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.txtNumero_NR = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cbxTIPO_DTE = new System.Windows.Forms.ComboBox();
-            this.txtNUM_CONTROL = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.txtSELLO_RECIBIDO = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
             this.txtCOD_GENERACION = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -92,7 +93,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.txtNRC = new System.Windows.Forms.TextBox();
             this.txtPROVEEDOR = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtKilogramos = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -100,13 +101,15 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.txtKilogramos);
             this.panel1.Controls.Add(this.txtOrdenDespacho);
             this.panel1.Controls.Add(this.label8);
-            this.panel1.Controls.Add(this.txtCodGenera_OrdenDespacho);
+            this.panel1.Controls.Add(this.txtCodGenera_NR);
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.btOrdenDespacho);
+            this.panel1.Controls.Add(this.txtKilogramos);
             this.panel1.Controls.Add(this.label33);
+            this.panel1.Controls.Add(this.label34);
+            this.panel1.Controls.Add(this.label35);
             this.panel1.Controls.Add(this.label31);
             this.panel1.Controls.Add(this.txtRemolque);
             this.panel1.Controls.Add(this.label32);
@@ -121,12 +124,12 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Controls.Add(this.label25);
             this.panel1.Controls.Add(this.txtPROV_TRANSP);
             this.panel1.Controls.Add(this.label24);
-            this.panel1.Controls.Add(this.label34);
-            this.panel1.Controls.Add(this.label35);
+            this.panel1.Controls.Add(this.txtTecnico);
+            this.panel1.Controls.Add(this.label19);
+            this.panel1.Controls.Add(this.cbxSUCURSAL);
+            this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.btnFinalizar);
-            this.panel1.Controls.Add(this.btnCorreo);
             this.panel1.Controls.Add(this.btnImprimir);
-            this.panel1.Controls.Add(this.btnValidar);
             this.panel1.Controls.Add(this.btnGuardar);
             this.panel1.Controls.Add(this.gridControl1);
             this.panel1.Controls.Add(this.label17);
@@ -140,10 +143,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Controls.Add(this.txtNumero_NR);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.cbxTIPO_DTE);
-            this.panel1.Controls.Add(this.txtNUM_CONTROL);
-            this.panel1.Controls.Add(this.label16);
-            this.panel1.Controls.Add(this.txtSELLO_RECIBIDO);
-            this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.txtCOD_GENERACION);
             this.panel1.Controls.Add(this.label14);
             this.panel1.Controls.Add(this.label11);
@@ -165,47 +164,47 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1171, 730);
+            this.panel1.Size = new System.Drawing.Size(1171, 702);
             this.panel1.TabIndex = 0;
             // 
             // txtOrdenDespacho
             // 
             this.txtOrdenDespacho.BackColor = System.Drawing.SystemColors.Window;
             this.txtOrdenDespacho.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOrdenDespacho.Location = new System.Drawing.Point(222, 136);
+            this.txtOrdenDespacho.Location = new System.Drawing.Point(575, 179);
             this.txtOrdenDespacho.Name = "txtOrdenDespacho";
             this.txtOrdenDespacho.Size = new System.Drawing.Size(153, 22);
-            this.txtOrdenDespacho.TabIndex = 218;
+            this.txtOrdenDespacho.TabIndex = 223;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(222, 119);
+            this.label8.Location = new System.Drawing.Point(575, 162);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(120, 14);
-            this.label8.TabIndex = 219;
+            this.label8.TabIndex = 224;
             this.label8.Text = "N° Orden Despacho ";
             // 
-            // txtCodGenera_OrdenDespacho
+            // txtCodGenera_NR
             // 
-            this.txtCodGenera_OrdenDespacho.BackColor = System.Drawing.SystemColors.Window;
-            this.txtCodGenera_OrdenDespacho.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCodGenera_OrdenDespacho.Location = new System.Drawing.Point(385, 136);
-            this.txtCodGenera_OrdenDespacho.Name = "txtCodGenera_OrdenDespacho";
-            this.txtCodGenera_OrdenDespacho.ReadOnly = true;
-            this.txtCodGenera_OrdenDespacho.Size = new System.Drawing.Size(385, 22);
-            this.txtCodGenera_OrdenDespacho.TabIndex = 216;
+            this.txtCodGenera_NR.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCodGenera_NR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCodGenera_NR.Location = new System.Drawing.Point(738, 179);
+            this.txtCodGenera_NR.Name = "txtCodGenera_NR";
+            this.txtCodGenera_NR.ReadOnly = true;
+            this.txtCodGenera_NR.Size = new System.Drawing.Size(385, 22);
+            this.txtCodGenera_NR.TabIndex = 221;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(385, 119);
+            this.label7.Location = new System.Drawing.Point(738, 162);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(200, 14);
-            this.label7.TabIndex = 217;
-            this.label7.Text = "Cod. Generación  Orden Despacho ";
+            this.label7.Size = new System.Drawing.Size(196, 14);
+            this.label7.TabIndex = 222;
+            this.label7.Text = "Cod. Generación Nota de Remision";
             // 
             // btOrdenDespacho
             // 
@@ -214,170 +213,42 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.btOrdenDespacho.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.provision32x32;
             this.btOrdenDespacho.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btOrdenDespacho.ImageOptions.ImageToTextIndent = 10;
-            this.btOrdenDespacho.Location = new System.Drawing.Point(34, 119);
+            this.btOrdenDespacho.Location = new System.Drawing.Point(578, 119);
             this.btOrdenDespacho.Name = "btOrdenDespacho";
-            this.btOrdenDespacho.Size = new System.Drawing.Size(182, 41);
-            this.btOrdenDespacho.TabIndex = 215;
+            this.btOrdenDespacho.Size = new System.Drawing.Size(356, 41);
+            this.btOrdenDespacho.TabIndex = 220;
             this.btOrdenDespacho.Text = "Por Orden Despacho";
             this.btOrdenDespacho.Click += new System.EventHandler(this.btOrdenDespacho_Click);
+            // 
+            // txtKilogramos
+            // 
+            this.txtKilogramos.BackColor = System.Drawing.SystemColors.Window;
+            this.txtKilogramos.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtKilogramos.Location = new System.Drawing.Point(974, 237);
+            this.txtKilogramos.Name = "txtKilogramos";
+            this.txtKilogramos.Size = new System.Drawing.Size(147, 22);
+            this.txtKilogramos.TabIndex = 200;
+            this.txtKilogramos.Visible = false;
             // 
             // label33
             // 
             this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.Location = new System.Drawing.Point(31, 271);
+            this.label33.Location = new System.Drawing.Point(29, 281);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(176, 15);
-            this.label33.TabIndex = 214;
+            this.label33.TabIndex = 199;
             this.label33.Text = "Información de Transporte";
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.BackColor = System.Drawing.SystemColors.Info;
-            this.label31.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label31.Location = new System.Drawing.Point(934, 323);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(42, 14);
-            this.label31.TabIndex = 213;
-            this.label31.Text = "REXXX";
-            // 
-            // txtRemolque
-            // 
-            this.txtRemolque.BackColor = System.Drawing.SystemColors.Window;
-            this.txtRemolque.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRemolque.Location = new System.Drawing.Point(978, 323);
-            this.txtRemolque.Name = "txtRemolque";
-            this.txtRemolque.Size = new System.Drawing.Size(147, 22);
-            this.txtRemolque.TabIndex = 211;
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.Location = new System.Drawing.Point(875, 323);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(61, 14);
-            this.label32.TabIndex = 212;
-            this.label32.Text = "Remolque";
-            // 
-            // txtLicencia
-            // 
-            this.txtLicencia.BackColor = System.Drawing.SystemColors.Window;
-            this.txtLicencia.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLicencia.Location = new System.Drawing.Point(693, 323);
-            this.txtLicencia.Name = "txtLicencia";
-            this.txtLicencia.ReadOnly = true;
-            this.txtLicencia.Size = new System.Drawing.Size(147, 22);
-            this.txtLicencia.TabIndex = 209;
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label30.Location = new System.Drawing.Point(574, 323);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(49, 14);
-            this.label30.TabIndex = 210;
-            this.label30.Text = "Licencia";
-            // 
-            // txtMotorista
-            // 
-            this.txtMotorista.BackColor = System.Drawing.SystemColors.Window;
-            this.txtMotorista.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMotorista.Location = new System.Drawing.Point(161, 323);
-            this.txtMotorista.Name = "txtMotorista";
-            this.txtMotorista.Size = new System.Drawing.Size(385, 22);
-            this.txtMotorista.TabIndex = 207;
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label29.Location = new System.Drawing.Point(31, 323);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(57, 14);
-            this.label29.TabIndex = 208;
-            this.label29.Text = "Motorista";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.BackColor = System.Drawing.SystemColors.Info;
-            this.label28.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label28.Location = new System.Drawing.Point(934, 295);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(42, 14);
-            this.label28.TabIndex = 206;
-            this.label28.Text = "CXXXX";
-            // 
-            // txtPlaca
-            // 
-            this.txtPlaca.BackColor = System.Drawing.SystemColors.Window;
-            this.txtPlaca.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPlaca.Location = new System.Drawing.Point(978, 295);
-            this.txtPlaca.Name = "txtPlaca";
-            this.txtPlaca.Size = new System.Drawing.Size(147, 22);
-            this.txtPlaca.TabIndex = 204;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.Location = new System.Drawing.Point(875, 295);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(34, 14);
-            this.label27.TabIndex = 205;
-            this.label27.Text = "Placa";
-            // 
-            // cbxIdTransposte
-            // 
-            this.cbxIdTransposte.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxIdTransposte.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxIdTransposte.FormattingEnabled = true;
-            this.cbxIdTransposte.Location = new System.Drawing.Point(693, 295);
-            this.cbxIdTransposte.Name = "cbxIdTransposte";
-            this.cbxIdTransposte.Size = new System.Drawing.Size(147, 22);
-            this.cbxIdTransposte.TabIndex = 202;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(574, 295);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(113, 14);
-            this.label25.TabIndex = 203;
-            this.label25.Text = "Tipo de Transporte";
-            // 
-            // txtPROV_TRANSP
-            // 
-            this.txtPROV_TRANSP.BackColor = System.Drawing.SystemColors.Window;
-            this.txtPROV_TRANSP.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPROV_TRANSP.Location = new System.Drawing.Point(161, 295);
-            this.txtPROV_TRANSP.Name = "txtPROV_TRANSP";
-            this.txtPROV_TRANSP.Size = new System.Drawing.Size(385, 22);
-            this.txtPROV_TRANSP.TabIndex = 200;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(31, 295);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(63, 14);
-            this.label24.TabIndex = 201;
-            this.label24.Text = "Proveedor";
             // 
             // label34
             // 
             this.label34.AutoSize = true;
             this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label34.Location = new System.Drawing.Point(31, 169);
+            this.label34.Location = new System.Drawing.Point(31, 126);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(185, 15);
-            this.label34.TabIndex = 199;
-            this.label34.Text = "Información del Movimiento";
+            this.label34.Size = new System.Drawing.Size(201, 15);
+            this.label34.TabIndex = 198;
+            this.label34.Text = "Información Salida de Bodega";
             // 
             // label35
             // 
@@ -389,6 +260,183 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label35.TabIndex = 197;
             this.label35.Text = "Información Destino";
             // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.BackColor = System.Drawing.SystemColors.Info;
+            this.label31.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label31.Location = new System.Drawing.Point(932, 333);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(42, 14);
+            this.label31.TabIndex = 193;
+            this.label31.Text = "REXXX";
+            // 
+            // txtRemolque
+            // 
+            this.txtRemolque.BackColor = System.Drawing.SystemColors.Window;
+            this.txtRemolque.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRemolque.Location = new System.Drawing.Point(976, 333);
+            this.txtRemolque.Name = "txtRemolque";
+            this.txtRemolque.Size = new System.Drawing.Size(147, 22);
+            this.txtRemolque.TabIndex = 191;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label32.Location = new System.Drawing.Point(873, 333);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(61, 14);
+            this.label32.TabIndex = 192;
+            this.label32.Text = "Remolque";
+            // 
+            // txtLicencia
+            // 
+            this.txtLicencia.BackColor = System.Drawing.SystemColors.Window;
+            this.txtLicencia.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLicencia.Location = new System.Drawing.Point(691, 333);
+            this.txtLicencia.Name = "txtLicencia";
+            this.txtLicencia.ReadOnly = true;
+            this.txtLicencia.Size = new System.Drawing.Size(147, 22);
+            this.txtLicencia.TabIndex = 189;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label30.Location = new System.Drawing.Point(572, 333);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(49, 14);
+            this.label30.TabIndex = 190;
+            this.label30.Text = "Licencia";
+            // 
+            // txtMotorista
+            // 
+            this.txtMotorista.BackColor = System.Drawing.SystemColors.Window;
+            this.txtMotorista.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMotorista.Location = new System.Drawing.Point(159, 333);
+            this.txtMotorista.Name = "txtMotorista";
+            this.txtMotorista.Size = new System.Drawing.Size(385, 22);
+            this.txtMotorista.TabIndex = 187;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label29.Location = new System.Drawing.Point(29, 333);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(57, 14);
+            this.label29.TabIndex = 188;
+            this.label29.Text = "Motorista";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.BackColor = System.Drawing.SystemColors.Info;
+            this.label28.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label28.Location = new System.Drawing.Point(932, 305);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(42, 14);
+            this.label28.TabIndex = 186;
+            this.label28.Text = "CXXXX";
+            // 
+            // txtPlaca
+            // 
+            this.txtPlaca.BackColor = System.Drawing.SystemColors.Window;
+            this.txtPlaca.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPlaca.Location = new System.Drawing.Point(976, 305);
+            this.txtPlaca.Name = "txtPlaca";
+            this.txtPlaca.Size = new System.Drawing.Size(147, 22);
+            this.txtPlaca.TabIndex = 184;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.Location = new System.Drawing.Point(873, 305);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(34, 14);
+            this.label27.TabIndex = 185;
+            this.label27.Text = "Placa";
+            // 
+            // cbxIdTransposte
+            // 
+            this.cbxIdTransposte.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxIdTransposte.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbxIdTransposte.FormattingEnabled = true;
+            this.cbxIdTransposte.Location = new System.Drawing.Point(691, 305);
+            this.cbxIdTransposte.Name = "cbxIdTransposte";
+            this.cbxIdTransposte.Size = new System.Drawing.Size(147, 22);
+            this.cbxIdTransposte.TabIndex = 182;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Location = new System.Drawing.Point(572, 305);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(113, 14);
+            this.label25.TabIndex = 183;
+            this.label25.Text = "Tipo de Transporte";
+            // 
+            // txtPROV_TRANSP
+            // 
+            this.txtPROV_TRANSP.BackColor = System.Drawing.SystemColors.Window;
+            this.txtPROV_TRANSP.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPROV_TRANSP.Location = new System.Drawing.Point(159, 305);
+            this.txtPROV_TRANSP.Name = "txtPROV_TRANSP";
+            this.txtPROV_TRANSP.Size = new System.Drawing.Size(385, 22);
+            this.txtPROV_TRANSP.TabIndex = 180;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(29, 305);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(63, 14);
+            this.label24.TabIndex = 181;
+            this.label24.Text = "Proveedor";
+            // 
+            // txtTecnico
+            // 
+            this.txtTecnico.BackColor = System.Drawing.SystemColors.Window;
+            this.txtTecnico.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTecnico.Location = new System.Drawing.Point(159, 240);
+            this.txtTecnico.Name = "txtTecnico";
+            this.txtTecnico.Size = new System.Drawing.Size(385, 22);
+            this.txtTecnico.TabIndex = 172;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(29, 240);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(50, 14);
+            this.label19.TabIndex = 173;
+            this.label19.Text = "Tecnico";
+            // 
+            // cbxSUCURSAL
+            // 
+            this.cbxSUCURSAL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxSUCURSAL.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbxSUCURSAL.FormattingEnabled = true;
+            this.cbxSUCURSAL.Location = new System.Drawing.Point(159, 154);
+            this.cbxSUCURSAL.Name = "cbxSUCURSAL";
+            this.cbxSUCURSAL.Size = new System.Drawing.Size(145, 22);
+            this.cbxSUCURSAL.TabIndex = 164;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(29, 154);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(51, 14);
+            this.label9.TabIndex = 165;
+            this.label9.Text = "Sucursal";
+            // 
             // btnFinalizar
             // 
             this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -396,28 +444,13 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(522, 649);
+            this.btnFinalizar.Location = new System.Drawing.Point(283, 638);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
             this.btnFinalizar.TabIndex = 158;
             this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
-            // 
-            // btnCorreo
-            // 
-            this.btnCorreo.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCorreo.Appearance.Options.UseFont = true;
-            this.btnCorreo.Appearance.Options.UseTextOptions = true;
-            this.btnCorreo.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnCorreo.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.correo32x32;
-            this.btnCorreo.ImageOptions.ImageToTextIndent = 10;
-            this.btnCorreo.Location = new System.Drawing.Point(414, 649);
-            this.btnCorreo.Name = "btnCorreo";
-            this.btnCorreo.Size = new System.Drawing.Size(102, 47);
-            this.btnCorreo.TabIndex = 157;
-            this.btnCorreo.Text = "Correo";
-            this.btnCorreo.Click += new System.EventHandler(this.btnCorreo_Click);
             // 
             // btnImprimir
             // 
@@ -427,26 +460,12 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.btnImprimir.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnImprimir.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.imprimir32x32;
             this.btnImprimir.ImageOptions.ImageToTextIndent = 10;
-            this.btnImprimir.Location = new System.Drawing.Point(292, 649);
+            this.btnImprimir.Location = new System.Drawing.Point(161, 638);
             this.btnImprimir.Name = "btnImprimir";
             this.btnImprimir.Size = new System.Drawing.Size(116, 47);
             this.btnImprimir.TabIndex = 156;
             this.btnImprimir.Text = "Imprimir";
             this.btnImprimir.Click += new System.EventHandler(this.btnImprimirQuedan_Click);
-            // 
-            // btnValidar
-            // 
-            this.btnValidar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnValidar.Appearance.Options.UseFont = true;
-            this.btnValidar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.validar3_32x32;
-            this.btnValidar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnValidar.ImageOptions.ImageToTextIndent = 10;
-            this.btnValidar.Location = new System.Drawing.Point(163, 647);
-            this.btnValidar.Name = "btnValidar";
-            this.btnValidar.Size = new System.Drawing.Size(123, 47);
-            this.btnValidar.TabIndex = 155;
-            this.btnValidar.Text = "Validar";
-            this.btnValidar.Click += new System.EventHandler(this.btnValidar_Click);
             // 
             // btnGuardar
             // 
@@ -455,7 +474,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.btnGuardar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.guardar2_32x32;
             this.btnGuardar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnGuardar.ImageOptions.ImageToTextIndent = 10;
-            this.btnGuardar.Location = new System.Drawing.Point(34, 647);
+            this.btnGuardar.Location = new System.Drawing.Point(32, 636);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(123, 47);
             this.btnGuardar.TabIndex = 153;
@@ -464,7 +483,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             // gridControl1
             // 
-            this.gridControl1.Location = new System.Drawing.Point(34, 380);
+            this.gridControl1.Location = new System.Drawing.Point(30, 389);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.Size = new System.Drawing.Size(1091, 216);
@@ -481,7 +500,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(31, 192);
+            this.label17.Location = new System.Drawing.Point(31, 182);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(39, 14);
             this.label17.TabIndex = 151;
@@ -490,7 +509,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // mskFECHA_EMISION
             // 
             this.mskFECHA_EMISION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mskFECHA_EMISION.Location = new System.Drawing.Point(161, 189);
+            this.mskFECHA_EMISION.Location = new System.Drawing.Point(161, 182);
             this.mskFECHA_EMISION.Mask = "00/00/0000";
             this.mskFECHA_EMISION.Name = "mskFECHA_EMISION";
             this.mskFECHA_EMISION.Size = new System.Drawing.Size(145, 22);
@@ -499,7 +518,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // txtTOTAL
             // 
             this.txtTOTAL.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTOTAL.Location = new System.Drawing.Point(970, 640);
+            this.txtTOTAL.Location = new System.Drawing.Point(966, 649);
             this.txtTOTAL.Name = "txtTOTAL";
             this.txtTOTAL.ReadOnly = true;
             this.txtTOTAL.Size = new System.Drawing.Size(155, 22);
@@ -512,7 +531,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(923, 645);
+            this.label26.Location = new System.Drawing.Point(919, 654);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(35, 14);
             this.label26.TabIndex = 149;
@@ -522,7 +541,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // txtGRAVADA
             // 
             this.txtGRAVADA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtGRAVADA.Location = new System.Drawing.Point(970, 602);
+            this.txtGRAVADA.Location = new System.Drawing.Point(966, 611);
             this.txtGRAVADA.Name = "txtGRAVADA";
             this.txtGRAVADA.ReadOnly = true;
             this.txtGRAVADA.Size = new System.Drawing.Size(155, 22);
@@ -534,7 +553,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(914, 607);
+            this.label22.Location = new System.Drawing.Point(910, 616);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(43, 14);
             this.label22.TabIndex = 147;
@@ -544,7 +563,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // txtObservacion
             // 
             this.txtObservacion.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtObservacion.Location = new System.Drawing.Point(161, 352);
+            this.txtObservacion.Location = new System.Drawing.Point(159, 361);
             this.txtObservacion.Name = "txtObservacion";
             this.txtObservacion.Size = new System.Drawing.Size(964, 22);
             this.txtObservacion.TabIndex = 143;
@@ -553,7 +572,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(31, 352);
+            this.label5.Location = new System.Drawing.Point(29, 361);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(73, 14);
             this.label5.TabIndex = 144;
@@ -563,17 +582,17 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.txtNumero_NR.BackColor = System.Drawing.SystemColors.Window;
             this.txtNumero_NR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNumero_NR.Location = new System.Drawing.Point(393, 214);
+            this.txtNumero_NR.Location = new System.Drawing.Point(412, 212);
             this.txtNumero_NR.Name = "txtNumero_NR";
             this.txtNumero_NR.ReadOnly = true;
-            this.txtNumero_NR.Size = new System.Drawing.Size(153, 22);
+            this.txtNumero_NR.Size = new System.Drawing.Size(130, 22);
             this.txtNumero_NR.TabIndex = 141;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(319, 214);
+            this.label2.Location = new System.Drawing.Point(329, 212);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(50, 14);
             this.label2.TabIndex = 142;
@@ -584,76 +603,38 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.cbxTIPO_DTE.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxTIPO_DTE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxTIPO_DTE.FormattingEnabled = true;
-            this.cbxTIPO_DTE.Location = new System.Drawing.Point(161, 214);
+            this.cbxTIPO_DTE.Location = new System.Drawing.Point(157, 212);
             this.cbxTIPO_DTE.Name = "cbxTIPO_DTE";
             this.cbxTIPO_DTE.Size = new System.Drawing.Size(145, 22);
             this.cbxTIPO_DTE.TabIndex = 133;
-            // 
-            // txtNUM_CONTROL
-            // 
-            this.txtNUM_CONTROL.BackColor = System.Drawing.SystemColors.Window;
-            this.txtNUM_CONTROL.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNUM_CONTROL.Location = new System.Drawing.Point(677, 242);
-            this.txtNUM_CONTROL.Name = "txtNUM_CONTROL";
-            this.txtNUM_CONTROL.ReadOnly = true;
-            this.txtNUM_CONTROL.Size = new System.Drawing.Size(448, 22);
-            this.txtNUM_CONTROL.TabIndex = 136;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(574, 242);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(92, 14);
-            this.label16.TabIndex = 140;
-            this.label16.Text = "Res./N° Control";
-            // 
-            // txtSELLO_RECIBIDO
-            // 
-            this.txtSELLO_RECIBIDO.BackColor = System.Drawing.SystemColors.Window;
-            this.txtSELLO_RECIBIDO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSELLO_RECIBIDO.Location = new System.Drawing.Point(677, 214);
-            this.txtSELLO_RECIBIDO.Name = "txtSELLO_RECIBIDO";
-            this.txtSELLO_RECIBIDO.ReadOnly = true;
-            this.txtSELLO_RECIBIDO.Size = new System.Drawing.Size(448, 22);
-            this.txtSELLO_RECIBIDO.TabIndex = 134;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(574, 214);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(64, 14);
-            this.label15.TabIndex = 139;
-            this.label15.Text = "Serie/Sello";
             // 
             // txtCOD_GENERACION
             // 
             this.txtCOD_GENERACION.BackColor = System.Drawing.SystemColors.Window;
             this.txtCOD_GENERACION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCOD_GENERACION.Location = new System.Drawing.Point(161, 242);
+            this.txtCOD_GENERACION.Location = new System.Drawing.Point(675, 212);
             this.txtCOD_GENERACION.Name = "txtCOD_GENERACION";
             this.txtCOD_GENERACION.ReadOnly = true;
-            this.txtCOD_GENERACION.Size = new System.Drawing.Size(385, 22);
+            this.txtCOD_GENERACION.Size = new System.Drawing.Size(446, 22);
             this.txtCOD_GENERACION.TabIndex = 135;
+            this.txtCOD_GENERACION.Visible = false;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(31, 242);
+            this.label14.Location = new System.Drawing.Point(572, 212);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(116, 14);
+            this.label14.Size = new System.Drawing.Size(97, 14);
             this.label14.TabIndex = 138;
-            this.label14.Text = "N°/Cod. Generación";
+            this.label14.Text = "Cod. Generación";
+            this.label14.Visible = false;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(31, 214);
+            this.label11.Location = new System.Drawing.Point(27, 212);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(98, 14);
             this.label11.TabIndex = 137;
@@ -661,12 +642,11 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             // txtDIRECCION
             // 
-            this.txtDIRECCION.BackColor = System.Drawing.SystemColors.Control;
+            this.txtDIRECCION.BackColor = System.Drawing.SystemColors.Window;
             this.txtDIRECCION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDIRECCION.Location = new System.Drawing.Point(105, 91);
+            this.txtDIRECCION.Location = new System.Drawing.Point(102, 91);
             this.txtDIRECCION.Name = "txtDIRECCION";
-            this.txtDIRECCION.ReadOnly = true;
-            this.txtDIRECCION.Size = new System.Drawing.Size(477, 22);
+            this.txtDIRECCION.Size = new System.Drawing.Size(1021, 22);
             this.txtDIRECCION.TabIndex = 132;
             this.txtDIRECCION.TabStop = false;
             // 
@@ -674,7 +654,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(32, 93);
+            this.label6.Location = new System.Drawing.Point(29, 93);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(56, 14);
             this.label6.TabIndex = 131;
@@ -685,7 +665,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.txtACTIVIDAD_PRIMARIA.BackColor = System.Drawing.SystemColors.Control;
             this.txtACTIVIDAD_PRIMARIA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtACTIVIDAD_PRIMARIA.Location = new System.Drawing.Point(683, 61);
+            this.txtACTIVIDAD_PRIMARIA.Location = new System.Drawing.Point(680, 61);
             this.txtACTIVIDAD_PRIMARIA.Name = "txtACTIVIDAD_PRIMARIA";
             this.txtACTIVIDAD_PRIMARIA.ReadOnly = true;
             this.txtACTIVIDAD_PRIMARIA.Size = new System.Drawing.Size(443, 22);
@@ -696,7 +676,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label38.AutoSize = true;
             this.label38.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label38.Location = new System.Drawing.Point(593, 64);
+            this.label38.Location = new System.Drawing.Point(590, 64);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(75, 14);
             this.label38.TabIndex = 126;
@@ -706,7 +686,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label37.AutoSize = true;
             this.label37.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label37.Location = new System.Drawing.Point(260, 64);
+            this.label37.Location = new System.Drawing.Point(257, 64);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(43, 14);
             this.label37.TabIndex = 125;
@@ -716,7 +696,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.txtCORREO.BackColor = System.Drawing.SystemColors.Control;
             this.txtCORREO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCORREO.Location = new System.Drawing.Point(319, 61);
+            this.txtCORREO.Location = new System.Drawing.Point(316, 61);
             this.txtCORREO.Name = "txtCORREO";
             this.txtCORREO.ReadOnly = true;
             this.txtCORREO.Size = new System.Drawing.Size(263, 22);
@@ -727,7 +707,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(32, 64);
+            this.label13.Location = new System.Drawing.Point(29, 64);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(56, 14);
             this.label13.TabIndex = 123;
@@ -737,7 +717,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.txtTELEFONO.BackColor = System.Drawing.SystemColors.Control;
             this.txtTELEFONO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTELEFONO.Location = new System.Drawing.Point(105, 61);
+            this.txtTELEFONO.Location = new System.Drawing.Point(102, 61);
             this.txtTELEFONO.Name = "txtTELEFONO";
             this.txtTELEFONO.ReadOnly = true;
             this.txtTELEFONO.Size = new System.Drawing.Size(153, 22);
@@ -748,7 +728,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.txtNOMBRE_PROVEEDOR.BackColor = System.Drawing.SystemColors.Control;
             this.txtNOMBRE_PROVEEDOR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNOMBRE_PROVEEDOR.Location = new System.Drawing.Point(259, 31);
+            this.txtNOMBRE_PROVEEDOR.Location = new System.Drawing.Point(256, 31);
             this.txtNOMBRE_PROVEEDOR.Name = "txtNOMBRE_PROVEEDOR";
             this.txtNOMBRE_PROVEEDOR.ReadOnly = true;
             this.txtNOMBRE_PROVEEDOR.Size = new System.Drawing.Size(456, 22);
@@ -759,7 +739,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.txtNIT.BackColor = System.Drawing.SystemColors.Control;
             this.txtNIT.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNIT.Location = new System.Drawing.Point(916, 31);
+            this.txtNIT.Location = new System.Drawing.Point(913, 31);
             this.txtNIT.Name = "txtNIT";
             this.txtNIT.ReadOnly = true;
             this.txtNIT.Size = new System.Drawing.Size(210, 22);
@@ -770,7 +750,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(876, 34);
+            this.label4.Location = new System.Drawing.Point(873, 34);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(27, 14);
             this.label4.TabIndex = 121;
@@ -780,7 +760,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(721, 34);
+            this.label3.Location = new System.Drawing.Point(718, 34);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 14);
             this.label3.TabIndex = 120;
@@ -790,7 +770,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.txtNRC.BackColor = System.Drawing.SystemColors.Control;
             this.txtNRC.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNRC.Location = new System.Drawing.Point(764, 31);
+            this.txtNRC.Location = new System.Drawing.Point(761, 31);
             this.txtNRC.Name = "txtNRC";
             this.txtNRC.ReadOnly = true;
             this.txtNRC.Size = new System.Drawing.Size(106, 22);
@@ -801,7 +781,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.txtPROVEEDOR.BackColor = System.Drawing.SystemColors.Window;
             this.txtPROVEEDOR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPROVEEDOR.Location = new System.Drawing.Point(105, 31);
+            this.txtPROVEEDOR.Location = new System.Drawing.Point(102, 31);
             this.txtPROVEEDOR.Name = "txtPROVEEDOR";
             this.txtPROVEEDOR.Size = new System.Drawing.Size(153, 22);
             this.txtPROVEEDOR.TabIndex = 115;
@@ -810,35 +790,25 @@ namespace SistemaContable.UI.Forms.NotaRemision
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(32, 34);
+            this.label1.Location = new System.Drawing.Point(29, 34);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 14);
             this.label1.TabIndex = 119;
             this.label1.Text = "Cliente";
             // 
-            // txtKilogramos
-            // 
-            this.txtKilogramos.BackColor = System.Drawing.SystemColors.Window;
-            this.txtKilogramos.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtKilogramos.Location = new System.Drawing.Point(978, 189);
-            this.txtKilogramos.Name = "txtKilogramos";
-            this.txtKilogramos.Size = new System.Drawing.Size(147, 22);
-            this.txtKilogramos.TabIndex = 220;
-            this.txtKilogramos.Visible = false;
-            // 
-            // frmTraslado
+            // frmDespacho
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1171, 730);
+            this.ClientSize = new System.Drawing.Size(1171, 702);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmTraslado";
+            this.Name = "frmDespacho";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Nota de Remisión Electrónica";
-            this.Load += new System.EventHandler(this.frmTraslado_Load);
+            this.Text = "Salida de Bodega";
+            this.Load += new System.EventHandler(this.frmOrdenDespacho_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
@@ -870,10 +840,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private System.Windows.Forms.TextBox txtNumero_NR;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbxTIPO_DTE;
-        private System.Windows.Forms.TextBox txtNUM_CONTROL;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox txtSELLO_RECIBIDO;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox txtCOD_GENERACION;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label11;
@@ -885,14 +851,11 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private System.Windows.Forms.MaskedTextBox mskFECHA_EMISION;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
-        private DevExpress.XtraEditors.SimpleButton btnCorreo;
         private DevExpress.XtraEditors.SimpleButton btnImprimir;
-        private DevExpress.XtraEditors.SimpleButton btnValidar;
         private DevExpress.XtraEditors.SimpleButton btnGuardar;
         private DevExpress.XtraEditors.SimpleButton btnFinalizar;
-        private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.ComboBox cbxSUCURSAL;
+        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.TextBox txtRemolque;
         private System.Windows.Forms.Label label32;
@@ -907,11 +870,17 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox txtPROV_TRANSP;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox txtTecnico;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.TextBox txtKilogramos;
         private System.Windows.Forms.TextBox txtOrdenDespacho;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtCodGenera_OrdenDespacho;
+        private System.Windows.Forms.TextBox txtCodGenera_NR;
         private System.Windows.Forms.Label label7;
         private DevExpress.XtraEditors.SimpleButton btOrdenDespacho;
-        private System.Windows.Forms.TextBox txtKilogramos;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

@@ -71,6 +71,16 @@ namespace SistemaContable.UI.Properties {
         }
         
         /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Anexos2_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Anexos2_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Busca un recurso adaptado de tipo DevExpress.Utils.Svg.SvgImage.
         /// </summary>
         public static DevExpress.Utils.Svg.SvgImage banco {
@@ -237,6 +247,16 @@ namespace SistemaContable.UI.Properties {
             get {
                 object obj = ResourceManager.GetObject("cuentabanco", resourceCulture);
                 return ((DevExpress.Utils.Svg.SvgImage)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Docuemt_DB48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Docuemt_DB48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -523,6 +543,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap Mercado48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Mercado48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap nota_deb_cred32x32 {
             get {
                 object obj = ResourceManager.GetObject("nota_deb_cred32x32", resourceCulture);
@@ -633,6 +663,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap Puerto48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Puerto48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap quedan2_16x16 {
             get {
                 object obj = ResourceManager.GetObject("quedan2_16x16", resourceCulture);
@@ -666,6 +706,16 @@ namespace SistemaContable.UI.Properties {
         public static System.Drawing.Bitmap quedan48x48 {
             get {
                 object obj = ResourceManager.GetObject("quedan48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ReporteLibros48x48 {
+            get {
+                object obj = ResourceManager.GetObject("ReporteLibros48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -786,6 +836,16 @@ namespace SistemaContable.UI.Properties {
         public static System.Drawing.Bitmap validar32x32 {
             get {
                 object obj = ResourceManager.GetObject("validar32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Vapor48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Vapor48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
