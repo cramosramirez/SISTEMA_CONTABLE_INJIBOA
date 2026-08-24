@@ -31,6 +31,9 @@ namespace SistemaContable.UI.Forms.Inventario
         private int? _idTpIngresoSeleccionado;
         #endregion
         public int IdProducto { get; set; } = 0;
+        public int? IdProductoSigestaInicial { get; set; }
+        public string NombreProductoSigestaInicial { get; set; }
+
         public frmProducto()
         {
             InitializeComponent();
@@ -54,8 +57,9 @@ namespace SistemaContable.UI.Forms.Inventario
             if (IdProducto == 0)
             {
                 LimpiarFormulario();
+                AplicarProductoSigestaInicial();
                 ConfigurarBotones(esNuevo: true);
-                txtCOD_REF.Focus();
+                BeginInvoke(new Action(EnfocarCodigoLocal));
             }
             else
             {
@@ -171,6 +175,27 @@ namespace SistemaContable.UI.Forms.Inventario
         private void RegistrarBusquedasCatalogos()
         {
             FormHelper.RegistrarBusqueda(
+                txtCODIGO_PRODUCTO_SIGESTA_TAB,
+                new BusquedaConfig
+                {
+                    StoredProcedure = "[EINVENTARIO].[SP_PRODUCTO_SIGESTA]",
+                    Accion = "LISTAR",
+                    Columnas = new Dictionary<string, string>
+                    {
+                        { "CODIGO", "Codigo"      },
+                        { "NOMBRE", "Nombre"      }
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
+                        { "CODIGO", 100 },
+                        { "NOMBRE", 420 }
+                    }
+                },
+                fila => AsignarProductoSigestaTab(fila)
+            );
+            txtCODIGO_PRODUCTO_SIGESTA_TAB.Leave +=
+                (s, e) => BuscarProductoSigestaTabPorCodigo();
+            FormHelper.RegistrarBusqueda(
                 txtCODTRIBUTO,
                 new BusquedaConfig
                 {
@@ -262,6 +287,116 @@ namespace SistemaContable.UI.Forms.Inventario
         {
             _idTpIngresoSeleccionado = Convert.ToInt32(fila["ID_TPINGRESO_VENTAS"]);
             txtTPINGRESO.Text = fila["NOMBRE"].ToString();
+        }
+        private void AsignarProductoSigestaTab(DataRow fila)
+        {
+            txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag = Convert.ToInt32(fila["CODIGO"]);
+            txtCODIGO_PRODUCTO_SIGESTA_TAB.Text = fila["CODIGO"].ToString();
+            txtNOMBRE_PRODUCTO_SIGESTA_TAB.Text = fila["NOMBRE"].ToString();
+        }
+
+        private void AplicarProductoSigestaInicial()
+        {
+            if (!IdProductoSigestaInicial.HasValue || IdProductoSigestaInicial.Value <= 0)
+                return;
+
+            txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag = IdProductoSigestaInicial.Value;
+            txtCODIGO_PRODUCTO_SIGESTA_TAB.Text = IdProductoSigestaInicial.Value.ToString();
+            txtNOMBRE_PRODUCTO_SIGESTA_TAB.Text =
+                (NombreProductoSigestaInicial ?? string.Empty).Trim();
+        }
+
+        private void CargarProductoSigestaExistente(DataRow productoLocal)
+        {
+            txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag = null;
+            txtCODIGO_PRODUCTO_SIGESTA_TAB.Clear();
+            txtNOMBRE_PRODUCTO_SIGESTA_TAB.Clear();
+
+            if (productoLocal == null ||
+                !productoLocal.Table.Columns.Contains("ID_PRODUCTO_SIGESTA") ||
+                productoLocal["ID_PRODUCTO_SIGESTA"] == DBNull.Value)
+                return;
+
+            int idProductoSigesta = Convert.ToInt32(
+                productoLocal["ID_PRODUCTO_SIGESTA"]);
+            if (idProductoSigesta <= 0)
+                return;
+
+            DataTable productosSigesta = _dal.EjecutarConsulta(
+                "[EINVENTARIO].[SP_PRODUCTO_SIGESTA]",
+                new
+                {
+                    ACCION = "LISTAR",
+                    FILTRO = idProductoSigesta.ToString()
+                });
+
+            DataRow productoSigesta = productosSigesta?.AsEnumerable()
+                .FirstOrDefault(fila =>
+                    fila["CODIGO"] != DBNull.Value &&
+                    Convert.ToInt32(fila["CODIGO"]) == idProductoSigesta);
+
+            if (productoSigesta != null)
+            {
+                AsignarProductoSigestaTab(productoSigesta);
+                return;
+            }
+
+            txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag = idProductoSigesta;
+            txtCODIGO_PRODUCTO_SIGESTA_TAB.Text = idProductoSigesta.ToString();
+        }
+
+        private void EnfocarCodigoLocal()
+        {
+            if (IsDisposed || !txtCOD_REF.CanFocus)
+                return;
+
+            txtCOD_REF.Focus();
+            txtCOD_REF.SelectAll();
+        }
+
+        private void BuscarProductoSigestaTabPorCodigo()
+        {
+            string codigo = txtCODIGO_PRODUCTO_SIGESTA_TAB.Text.Trim();
+            if (string.IsNullOrEmpty(codigo) || codigo == "*")
+            {
+                if (string.IsNullOrEmpty(codigo))
+                {
+                    txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag = null;
+                    txtNOMBRE_PRODUCTO_SIGESTA_TAB.Clear();
+                }
+                return;
+            }
+
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta(
+                    "[EINVENTARIO].[SP_PRODUCTO_SIGESTA]",
+                    new { ACCION = "LISTAR", FILTRO = codigo });
+
+                DataRow fila = dt?.AsEnumerable().FirstOrDefault(r =>
+                    string.Equals(r["CODIGO"]?.ToString()?.Trim(), codigo,
+                        StringComparison.OrdinalIgnoreCase));
+
+                if (fila == null)
+                {
+                    txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag = null;
+                    txtNOMBRE_PRODUCTO_SIGESTA_TAB.Clear();
+                    XtraMessageBox.Show(
+                        $"No se encontró el Producto Sigesta con código '{codigo}'.",
+                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtCODIGO_PRODUCTO_SIGESTA_TAB.Focus();
+                    txtCODIGO_PRODUCTO_SIGESTA_TAB.SelectAll();
+                    return;
+                }
+
+                AsignarProductoSigestaTab(fila);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    $"Error buscando Producto Sigesta: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         /// <summary>
         /// Busca en un catálogo ya cargado en memoria el texto a mostrar
@@ -923,6 +1058,7 @@ namespace SistemaContable.UI.Forms.Inventario
                 txtDESC_VENTA.Text = ToDecimal(r["DESC_VENTA"]).ToString("N4");
                 txtULTIMOPRECIOCOMPRA.Text = ToDecimal(r["ULTIMOPRECIOCOMPRA"]).ToString("N6");
                 chkESTADO.Checked = AsString(r["ESTADO"]) == "ACT";
+                CargarProductoSigestaExistente(r);
                 CargarRolesExistentes(idProducto);
                 CargarPreciosExistentes(idProducto);
                 CargarProductoTributosExistentes(idProducto);
@@ -983,6 +1119,8 @@ namespace SistemaContable.UI.Forms.Inventario
                 GuardarPrecios();
                 // Guardar tributos del grid
                 GuardarProductoTributos();
+                // Actualizar el código de referencia del producto seleccionado en SIGESTA
+                ActualizarCodRefProductoSigesta();
                 XtraMessageBox.Show("Producto guardado correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ConfigurarBotones(esNuevo: false);
@@ -995,6 +1133,39 @@ namespace SistemaContable.UI.Forms.Inventario
             finally
             {
                 Cursor = Cursors.Default;
+            }
+        }
+        private void ActualizarCodRefProductoSigesta()
+        {
+            if (string.IsNullOrWhiteSpace(txtCODIGO_PRODUCTO_SIGESTA_TAB.Text))
+                return;
+
+            int idProductoSigesta;
+            if (txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag == null
+                || !int.TryParse(txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag.ToString(), out idProductoSigesta)
+                || idProductoSigesta <= 0)
+            {
+                throw new InvalidOperationException(
+                    "Seleccione un Producto Sigesta válido mediante la búsqueda genérica.");
+            }
+
+            DataTable resultado = _dal.EjecutarConsulta(
+                "[EINVENTARIO].[SP_PRODUCTO_SIGESTA]",
+                new
+                {
+                    ACCION = "ACTUALIZAR_COD_REF",
+                    ID_PRODUCTO = idProductoSigesta,
+                    COD_REF = txtCOD_REF.Text.Trim()
+                });
+
+            if (resultado == null || resultado.Rows.Count == 0
+                || resultado.Rows[0]["FILAS_AFECTADAS"] == DBNull.Value
+                || Convert.ToInt32(resultado.Rows[0]["FILAS_AFECTADAS"]) <= 0
+                || resultado.Rows[0]["FILAS_RELACIONADAS"] == DBNull.Value
+                || Convert.ToInt32(resultado.Rows[0]["FILAS_RELACIONADAS"]) <= 0)
+            {
+                throw new InvalidOperationException(
+                    "No fue posible relacionar el producto local con el producto de SIGESTA.");
             }
         }
         private void GuardarRoles()
@@ -1113,6 +1284,18 @@ namespace SistemaContable.UI.Forms.Inventario
                 txtDESCRIPCION.Focus();
                 return false;
             }
+            int idProductoSigesta;
+            if (!string.IsNullOrWhiteSpace(txtCODIGO_PRODUCTO_SIGESTA_TAB.Text)
+                && (txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag == null
+                    || !int.TryParse(txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag.ToString(), out idProductoSigesta)
+                    || idProductoSigesta <= 0))
+            {
+                XtraMessageBox.Show(
+                    "Seleccione un Producto Sigesta válido mediante la búsqueda genérica.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCODIGO_PRODUCTO_SIGESTA_TAB.Focus();
+                return false;
+            }
             if (cbxCATEGORIA.SelectedValue == null)
             {
                 XtraMessageBox.Show("Seleccione una categoría.",
@@ -1188,6 +1371,9 @@ namespace SistemaContable.UI.Forms.Inventario
             cbxSUBCATEGORIA.Items.Clear();
             cbxPRESENTACION.SelectedIndex = 0;
             cbxTIPOITEM.SelectedIndex = 0;
+            txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag = null;
+            txtCODIGO_PRODUCTO_SIGESTA_TAB.Text = "";
+            txtNOMBRE_PRODUCTO_SIGESTA_TAB.Text = "";
             _codTributoSeleccionado = null;
             txtCODTRIBUTO.Text = "";
             _codUnidadMedidaSeleccionada = null;

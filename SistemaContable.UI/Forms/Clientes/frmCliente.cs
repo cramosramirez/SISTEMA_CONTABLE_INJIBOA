@@ -42,6 +42,11 @@ namespace SistemaContable.UI.Forms.Clientes
             RegistrarBusquedaActividades();
             RegistrarBusquedaTipoPrecio();
             RegistrarBusquedaCuenta();
+            RegistrarBusquedaProveedorIntegracion();
+            RegistrarBusquedaTransportistaIntegracion();
+            RegistrarBusquedaCargadoraIntegracion();
+            RegistrarBusquedaRozaIntegracion();
+            RegistrarBusquedaQuerqueoIntegracion();
             CargarOrigen();
             InicializarGridRoles();
             if (IdEntidad == 0)
@@ -394,6 +399,502 @@ namespace SistemaContable.UI.Forms.Clientes
             });
             txtCUENTA_X_COBRAR.Leave += (s, e) => BuscarCuentaContablePorCodigo(txtCUENTA_X_COBRAR, txtNOMBRE_CUENTA_X_COBRAR);
         }
+
+        /// <summary>
+        /// Registra la búsqueda genérica de proveedores de INJIBOA.
+        /// Escribir * y presionar Enter abre el selector; también se admite
+        /// escribir un código exacto y salir del campo.
+        /// </summary>
+        private void RegistrarBusquedaProveedorIntegracion()
+        {
+            var config = new BusquedaConfig
+            {
+                StoredProcedure = "[EGENERALES].[SP_PROVEEDOR_INTEGRACION]",
+                Accion = "PRODUCTOR",
+                NombreParametroAccion = "ACTION",
+                Columnas = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    { "CODIGO", "CÓDIGO" },
+                    { "NOMBRE", "NOMBRE" },
+                    { "NIT", "NIT" }
+                },
+                Anchos = new System.Collections.Generic.Dictionary<string, int>
+                {
+                    { "CODIGO", 70 },
+                    { "NOMBRE", 420 },
+                    { "NIT", 140 }
+                }
+            };
+
+            FormHelper.RegistrarBusqueda(txtCODIPROVEEDOR, config, fila =>
+            {
+                string nitRelacionado = ObtenerNITIntegracion(fila);
+                if (!ValidarNitRelacionado("Productor", nitRelacionado, txtCODIPROVEEDOR))
+                {
+                    LimpiarProductorRelacionado();
+                    return;
+                }
+
+                txtCODIPROVEEDOR.Text = fila["CODIGO"].ToString();
+                txtNOMBRE_PROVEEDOR_INTEGRACION.Text = fila["NOMBRE"].ToString();
+                txtNIT_PROVEEDOR_INTEGRACION.Text = nitRelacionado;
+            });
+
+            txtCODIPROVEEDOR.Leave += (s, e) => BuscarProveedorIntegracionPorCodigo();
+        }
+
+        private void BuscarProveedorIntegracionPorCodigo(bool validarNit = true)
+        {
+            string codigo = txtCODIPROVEEDOR.Text.Trim();
+            if (string.IsNullOrEmpty(codigo) || codigo == "*")
+            {
+                if (string.IsNullOrEmpty(codigo))
+                {
+                    txtNOMBRE_PROVEEDOR_INTEGRACION.Clear();
+                    txtNIT_PROVEEDOR_INTEGRACION.Clear();
+                }
+                return;
+            }
+
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta(
+                    "[EGENERALES].[SP_PROVEEDOR_INTEGRACION]",
+                    new { ACTION = "PRODUCTOR", FILTRO = codigo });
+
+                DataRow fila = dt?.AsEnumerable().FirstOrDefault(r =>
+                    string.Equals(r["CODIGO"]?.ToString()?.Trim(), codigo,
+                        StringComparison.OrdinalIgnoreCase));
+
+                if (fila == null)
+                {
+                    txtNOMBRE_PROVEEDOR_INTEGRACION.Clear();
+                    txtNIT_PROVEEDOR_INTEGRACION.Clear();
+                    MostrarValidacion($"No se encontró el proveedor con código '{codigo}'.");
+                    txtCODIPROVEEDOR.Focus();
+                    txtCODIPROVEEDOR.SelectAll();
+                    return;
+                }
+
+                string nitRelacionado = ObtenerNITIntegracion(fila);
+                if (validarNit && !ValidarNitRelacionado("Productor", nitRelacionado, txtCODIPROVEEDOR))
+                {
+                    LimpiarProductorRelacionado();
+                    return;
+                }
+
+                txtCODIPROVEEDOR.Text = fila["CODIGO"].ToString();
+                txtNOMBRE_PROVEEDOR_INTEGRACION.Text = fila["NOMBRE"].ToString();
+                txtNIT_PROVEEDOR_INTEGRACION.Text = nitRelacionado;
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error buscando proveedor: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Registra la búsqueda genérica de transportistas de INJIBOA.
+        /// El procedimiento utiliza la acción TRASPORTISTA por contrato.
+        /// </summary>
+        private void RegistrarBusquedaTransportistaIntegracion()
+        {
+            var config = new BusquedaConfig
+            {
+                StoredProcedure = "[EGENERALES].[SP_PROVEEDOR_INTEGRACION]",
+                Accion = "TRASPORTISTA",
+                NombreParametroAccion = "ACTION",
+                Columnas = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    { "CODIGO", "CÓDIGO" },
+                    { "NOMBRE", "NOMBRE" },
+                    { "NIT", "NIT" }
+                },
+                Anchos = new System.Collections.Generic.Dictionary<string, int>
+                {
+                    { "CODIGO", 70 },
+                    { "NOMBRE", 420 },
+                    { "NIT", 140 }
+                }
+            };
+
+            FormHelper.RegistrarBusqueda(txtCODTRANSPORT, config, fila =>
+            {
+                string nitRelacionado = ObtenerNITIntegracion(fila);
+                if (!ValidarNitRelacionado("Transportista", nitRelacionado, txtCODTRANSPORT))
+                {
+                    LimpiarTransportistaRelacionado();
+                    return;
+                }
+
+                txtCODTRANSPORT.Text = fila["CODIGO"].ToString();
+                txtNOMBRE_TRANSPORTISTA_INTEGRACION.Text = fila["NOMBRE"].ToString();
+                txtNIT_TRANSPORTISTA_INTEGRACION.Text = nitRelacionado;
+            });
+
+            txtCODTRANSPORT.Leave += (s, e) => BuscarTransportistaIntegracionPorCodigo();
+        }
+
+        private void BuscarTransportistaIntegracionPorCodigo(bool validarNit = true)
+        {
+            string codigo = txtCODTRANSPORT.Text.Trim();
+            if (string.IsNullOrEmpty(codigo) || codigo == "*")
+            {
+                if (string.IsNullOrEmpty(codigo))
+                {
+                    txtNOMBRE_TRANSPORTISTA_INTEGRACION.Clear();
+                    txtNIT_TRANSPORTISTA_INTEGRACION.Clear();
+                }
+                return;
+            }
+
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta(
+                    "[EGENERALES].[SP_PROVEEDOR_INTEGRACION]",
+                    new { ACTION = "TRASPORTISTA", FILTRO = codigo });
+
+                DataRow fila = dt?.AsEnumerable().FirstOrDefault(r =>
+                    string.Equals(r["CODIGO"]?.ToString()?.Trim(), codigo,
+                        StringComparison.OrdinalIgnoreCase));
+
+                if (fila == null)
+                {
+                    txtNOMBRE_TRANSPORTISTA_INTEGRACION.Clear();
+                    txtNIT_TRANSPORTISTA_INTEGRACION.Clear();
+                    MostrarValidacion($"No se encontró el transportista con código '{codigo}'.");
+                    txtCODTRANSPORT.Focus();
+                    txtCODTRANSPORT.SelectAll();
+                    return;
+                }
+
+                string nitRelacionado = ObtenerNITIntegracion(fila);
+                if (validarNit && !ValidarNitRelacionado("Transportista", nitRelacionado, txtCODTRANSPORT))
+                {
+                    LimpiarTransportistaRelacionado();
+                    return;
+                }
+
+                txtCODTRANSPORT.Text = fila["CODIGO"].ToString();
+                txtNOMBRE_TRANSPORTISTA_INTEGRACION.Text = fila["NOMBRE"].ToString();
+                txtNIT_TRANSPORTISTA_INTEGRACION.Text = nitRelacionado;
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error buscando transportista: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Registra la búsqueda genérica de proveedores de carga de INJIBOA.
+        /// </summary>
+        private void RegistrarBusquedaCargadoraIntegracion()
+        {
+            var config = new BusquedaConfig
+            {
+                StoredProcedure = "[EGENERALES].[SP_PROVEEDOR_INTEGRACION]",
+                Accion = "CARGADORA",
+                NombreParametroAccion = "ACTION",
+                Columnas = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    { "CODIGO", "CÓDIGO" },
+                    { "NOMBRE", "NOMBRE" },
+                    { "NIT", "NIT" }
+                },
+                Anchos = new System.Collections.Generic.Dictionary<string, int>
+                {
+                    { "CODIGO", 140 },
+                    { "NOMBRE", 420 },
+                    { "NIT", 140 }
+                }
+            };
+
+            FormHelper.RegistrarBusqueda(txtID_CARGADORA, config, fila =>
+            {
+                string nitRelacionado = ObtenerNITIntegracion(fila);
+                if (!ValidarNitRelacionado("Cargadora", nitRelacionado, txtID_CARGADORA))
+                {
+                    LimpiarCargadoraRelacionada();
+                    return;
+                }
+
+                txtID_CARGADORA.Text = fila["CODIGO"].ToString();
+                txtNOMBRE_CARGADORA_INTEGRACION.Text = fila["NOMBRE"].ToString();
+                txtNIT_CARGADORA_INTEGRACION.Text = nitRelacionado;
+            });
+
+            txtID_CARGADORA.Leave += (s, e) => BuscarCargadoraIntegracionPorCodigo();
+        }
+
+        private void BuscarCargadoraIntegracionPorCodigo(bool validarNit = true)
+        {
+            string codigo = txtID_CARGADORA.Text.Trim();
+            if (string.IsNullOrEmpty(codigo) || codigo == "*")
+            {
+                if (string.IsNullOrEmpty(codigo))
+                {
+                    txtNOMBRE_CARGADORA_INTEGRACION.Clear();
+                    txtNIT_CARGADORA_INTEGRACION.Clear();
+                }
+                return;
+            }
+
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta(
+                    "[EGENERALES].[SP_PROVEEDOR_INTEGRACION]",
+                    new { ACTION = "CARGADORA", FILTRO = codigo });
+
+                DataRow fila = dt?.AsEnumerable().FirstOrDefault(r =>
+                    string.Equals(r["CODIGO"]?.ToString()?.Trim(), codigo,
+                        StringComparison.OrdinalIgnoreCase));
+
+                if (fila == null)
+                {
+                    txtNOMBRE_CARGADORA_INTEGRACION.Clear();
+                    txtNIT_CARGADORA_INTEGRACION.Clear();
+                    MostrarValidacion($"No se encontró la cargadora con código '{codigo}'.");
+                    txtID_CARGADORA.Focus();
+                    txtID_CARGADORA.SelectAll();
+                    return;
+                }
+
+                string nitRelacionado = ObtenerNITIntegracion(fila);
+                if (validarNit && !ValidarNitRelacionado("Cargadora", nitRelacionado, txtID_CARGADORA))
+                {
+                    LimpiarCargadoraRelacionada();
+                    return;
+                }
+
+                txtID_CARGADORA.Text = fila["CODIGO"].ToString();
+                txtNOMBRE_CARGADORA_INTEGRACION.Text = fila["NOMBRE"].ToString();
+                txtNIT_CARGADORA_INTEGRACION.Text = nitRelacionado;
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error buscando cargadora: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void RegistrarBusquedaRozaIntegracion()
+        {
+            RegistrarBusquedaRelacionada(
+                txtID_PROVEEDOR_ROZA,
+                txtNOMBRE_ROZA_INTEGRACION,
+                txtNIT_ROZA_INTEGRACION,
+                "ROZA",
+                "Roza",
+                LimpiarRozaRelacionada);
+        }
+
+        private void RegistrarBusquedaQuerqueoIntegracion()
+        {
+            RegistrarBusquedaRelacionada(
+                txtID_PROVEE_QQ,
+                txtNOMBRE_QUERQUEO_INTEGRACION,
+                txtNIT_QUERQUEO_INTEGRACION,
+                "QUERQUEO",
+                "Querqueo",
+                LimpiarQuerqueoRelacionado);
+        }
+
+        private void RegistrarBusquedaRelacionada(
+            TextBox campoCodigo,
+            TextBox campoNombre,
+            TextBox campoNit,
+            string accion,
+            string tipoRelacionado,
+            Action limpiarCampos)
+        {
+            var config = new BusquedaConfig
+            {
+                StoredProcedure = "[EGENERALES].[SP_PROVEEDOR_INTEGRACION]",
+                Accion = accion,
+                NombreParametroAccion = "ACTION",
+                Columnas = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    { "CODIGO", "CÓDIGO" },
+                    { "NOMBRE", "NOMBRE" },
+                    { "NIT", "NIT" }
+                },
+                Anchos = new System.Collections.Generic.Dictionary<string, int>
+                {
+                    { "CODIGO", 70 },
+                    { "NOMBRE", 420 },
+                    { "NIT", 140 }
+                }
+            };
+
+            FormHelper.RegistrarBusqueda(campoCodigo, config, fila =>
+            {
+                string nitRelacionado = ObtenerNITIntegracion(fila);
+                if (!ValidarNitRelacionado(tipoRelacionado, nitRelacionado, campoCodigo))
+                {
+                    limpiarCampos();
+                    return;
+                }
+
+                campoCodigo.Text = fila["CODIGO"].ToString();
+                campoNombre.Text = fila["NOMBRE"].ToString();
+                campoNit.Text = nitRelacionado;
+            });
+
+            campoCodigo.Leave += (s, e) => BuscarIntegracionRelacionadaPorCodigo(
+                campoCodigo,
+                campoNombre,
+                campoNit,
+                accion,
+                tipoRelacionado,
+                limpiarCampos);
+        }
+
+        private void BuscarIntegracionRelacionadaPorCodigo(
+            TextBox campoCodigo,
+            TextBox campoNombre,
+            TextBox campoNit,
+            string accion,
+            string tipoRelacionado,
+            Action limpiarCampos,
+            bool validarNit = true)
+        {
+            string codigo = campoCodigo.Text.Trim();
+            if (string.IsNullOrEmpty(codigo) || codigo == "*")
+            {
+                if (string.IsNullOrEmpty(codigo))
+                {
+                    campoNombre.Clear();
+                    campoNit.Clear();
+                }
+                return;
+            }
+
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta(
+                    "[EGENERALES].[SP_PROVEEDOR_INTEGRACION]",
+                    new { ACTION = accion, FILTRO = codigo });
+
+                DataRow fila = dt?.AsEnumerable().FirstOrDefault(r =>
+                    string.Equals(r["CODIGO"]?.ToString()?.Trim(), codigo,
+                        StringComparison.OrdinalIgnoreCase));
+
+                if (fila == null)
+                {
+                    campoNombre.Clear();
+                    campoNit.Clear();
+                    MostrarValidacion($"No se encontró el registro de {tipoRelacionado} con código '{codigo}'.");
+                    campoCodigo.Focus();
+                    campoCodigo.SelectAll();
+                    return;
+                }
+
+                string nitRelacionado = ObtenerNITIntegracion(fila);
+                if (validarNit && !ValidarNitRelacionado(tipoRelacionado, nitRelacionado, campoCodigo))
+                {
+                    limpiarCampos();
+                    return;
+                }
+
+                campoCodigo.Text = fila["CODIGO"].ToString();
+                campoNombre.Text = fila["NOMBRE"].ToString();
+                campoNit.Text = nitRelacionado;
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error buscando {tipoRelacionado}: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private static string ObtenerNITIntegracion(DataRow fila)
+        {
+            if (fila == null || !fila.Table.Columns.Contains("NIT") || fila["NIT"] == DBNull.Value)
+                return "";
+
+            return fila["NIT"].ToString().Trim();
+        }
+
+        private bool ValidarNitRelacionado(string tipoRelacionado, string nitRelacionado, TextBox campoCodigo)
+        {
+            string nitClienteNormalizado = NormalizarNit(txtNIT.Text);
+            string nitRelacionadoNormalizado = NormalizarNit(nitRelacionado);
+
+            if (string.IsNullOrEmpty(nitClienteNormalizado))
+            {
+                XtraMessageBox.Show(
+                    $"Debe ingresar el NIT del cliente antes de seleccionar {tipoRelacionado}.",
+                    "Validación de NIT", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNIT.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(nitRelacionadoNormalizado))
+            {
+                XtraMessageBox.Show(
+                    $"El registro de {tipoRelacionado} seleccionado no tiene NIT y no puede asociarse al cliente.",
+                    "Validación de NIT", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                campoCodigo.Focus();
+                return false;
+            }
+
+            if (!string.Equals(nitClienteNormalizado, nitRelacionadoNormalizado,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                XtraMessageBox.Show(
+                    $"El NIT de {tipoRelacionado} ({nitRelacionado}) no coincide con el NIT del cliente ({txtNIT.Text.Trim()}).",
+                    "Validación de NIT", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                campoCodigo.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private static string NormalizarNit(string nit)
+        {
+            if (string.IsNullOrWhiteSpace(nit))
+                return "";
+
+            return new string(nit.Where(char.IsLetterOrDigit).ToArray()).ToUpperInvariant();
+        }
+
+        private void LimpiarProductorRelacionado()
+        {
+            txtCODIPROVEEDOR.Clear();
+            txtNOMBRE_PROVEEDOR_INTEGRACION.Clear();
+            txtNIT_PROVEEDOR_INTEGRACION.Clear();
+        }
+
+        private void LimpiarTransportistaRelacionado()
+        {
+            txtCODTRANSPORT.Clear();
+            txtNOMBRE_TRANSPORTISTA_INTEGRACION.Clear();
+            txtNIT_TRANSPORTISTA_INTEGRACION.Clear();
+        }
+
+        private void LimpiarCargadoraRelacionada()
+        {
+            txtID_CARGADORA.Clear();
+            txtNOMBRE_CARGADORA_INTEGRACION.Clear();
+            txtNIT_CARGADORA_INTEGRACION.Clear();
+        }
+
+        private void LimpiarRozaRelacionada()
+        {
+            txtID_PROVEEDOR_ROZA.Clear();
+            txtNOMBRE_ROZA_INTEGRACION.Clear();
+            txtNIT_ROZA_INTEGRACION.Clear();
+        }
+
+        private void LimpiarQuerqueoRelacionado()
+        {
+            txtID_PROVEE_QQ.Clear();
+            txtNOMBRE_QUERQUEO_INTEGRACION.Clear();
+            txtNIT_QUERQUEO_INTEGRACION.Clear();
+        }
         /// <summary>
         /// Busca la cuenta contable por su código (CUENTA) al perder el foco.
         /// Mismo comportamiento que BuscarCuentaContablePorCodigo en frmProveedor.
@@ -741,8 +1242,12 @@ namespace SistemaContable.UI.Forms.Clientes
                 txtAPTO_LOCAL.Text = AsString(r["APTO_LOCAL"]);
                 txtCOLONIA.Text = AsString(r["COLONIA"]);
                 txtCODIPROVEEDOR.Text = AsString(r["CODIPROVEEDOR"]);
+                BuscarProveedorIntegracionPorCodigo(validarNit: false);
                 txtCODTRANSPORT.Text = r["CODTRANSPORT"] == DBNull.Value ? "" : r["CODTRANSPORT"].ToString();
+                BuscarTransportistaIntegracionPorCodigo(validarNit: false);
                 txtID_CARGADORA.Text = r["ID_CARGADORA"] == DBNull.Value ? "" : r["ID_CARGADORA"].ToString();
+                BuscarCargadoraIntegracionPorCodigo(validarNit: false);
+                CargarCodigosIntegracion(idEntidad);
                 // Combos
                 SetComboById(cbxTIPO_ENTIDAD, AsInt(r["ID_TIPO_ENTIDAD"]));
                 SetComboById(cbxTIPO_CONTRIB, AsInt(r["ID_TIPO_CONTRIB"]));
@@ -835,6 +1340,7 @@ namespace SistemaContable.UI.Forms.Clientes
                     return;
                 }
                 IdEntidad = Convert.ToInt32(dtResult.Rows[0]["ID_GENERADO"]);
+                GuardarCodigosIntegracion(IdEntidad);
                 GuardarRolCliente(IdEntidad);
                 GuardarEntidadCliente();
                 GuardarRoles();
@@ -851,6 +1357,58 @@ namespace SistemaContable.UI.Forms.Clientes
             {
                 Cursor = Cursors.Default;
             }
+        }
+        private void CargarCodigosIntegracion(int idEntidad)
+        {
+            DataTable dt = _dal.EjecutarConsulta("[EDTE].[SP_ENTIDAD]", new
+            {
+                ACCION = "OBTENER_INTEGRACION",
+                ID_ENTIDAD = idEntidad
+            });
+
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                LimpiarRozaRelacionada();
+                LimpiarQuerqueoRelacionado();
+                return;
+            }
+
+            DataRow fila = dt.Rows[0];
+            txtID_PROVEEDOR_ROZA.Text = fila["ID_PROVEEDOR_ROZA"] == DBNull.Value
+                ? ""
+                : fila["ID_PROVEEDOR_ROZA"].ToString();
+            BuscarIntegracionRelacionadaPorCodigo(
+                txtID_PROVEEDOR_ROZA,
+                txtNOMBRE_ROZA_INTEGRACION,
+                txtNIT_ROZA_INTEGRACION,
+                "ROZA",
+                "Roza",
+                LimpiarRozaRelacionada,
+                validarNit: false);
+
+            txtID_PROVEE_QQ.Text = fila["ID_PROVEE_QQ"] == DBNull.Value
+                ? ""
+                : fila["ID_PROVEE_QQ"].ToString();
+            BuscarIntegracionRelacionadaPorCodigo(
+                txtID_PROVEE_QQ,
+                txtNOMBRE_QUERQUEO_INTEGRACION,
+                txtNIT_QUERQUEO_INTEGRACION,
+                "QUERQUEO",
+                "Querqueo",
+                LimpiarQuerqueoRelacionado,
+                validarNit: false);
+        }
+
+        private void GuardarCodigosIntegracion(int idEntidad)
+        {
+            _dal.EjecutarSinRetorno("[EDTE].[SP_ENTIDAD]", new
+            {
+                ACCION = "GUARDAR_INTEGRACION",
+                ID_ENTIDAD = idEntidad,
+                ID_PROVEEDOR_ROZA = ParseIntNull(txtID_PROVEEDOR_ROZA.Text),
+                ID_PROVEE_QQ = ParseIntNull(txtID_PROVEE_QQ.Text),
+                USUARIO_ACT = Configuracion.UsuarioActual
+            });
         }
         /// <summary>
         /// Da de alta (o reactiva) el rol 'CLI' para la entidad en dbo.ENTIDAD_ROL.
@@ -1038,6 +1596,54 @@ namespace SistemaContable.UI.Forms.Clientes
                 txtCODI_ACTIVIDAD1.Focus();
                 return false;
             }
+            if (!ValidarNitsCodigosRelacionados())
+                return false;
+
+            return true;
+        }
+
+        private bool ValidarNitsCodigosRelacionados()
+        {
+            if (!string.IsNullOrWhiteSpace(txtCODIPROVEEDOR.Text))
+            {
+                tabCodigosRelacionados.SelectedTabPage = tabProveedor;
+                if (!ValidarNitRelacionado("Productor", txtNIT_PROVEEDOR_INTEGRACION.Text,
+                        txtCODIPROVEEDOR))
+                    return false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(txtCODTRANSPORT.Text))
+            {
+                tabCodigosRelacionados.SelectedTabPage = tabTransportista;
+                if (!ValidarNitRelacionado("Transportista", txtNIT_TRANSPORTISTA_INTEGRACION.Text,
+                        txtCODTRANSPORT))
+                    return false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(txtID_CARGADORA.Text))
+            {
+                tabCodigosRelacionados.SelectedTabPage = tabCargadora;
+                if (!ValidarNitRelacionado("Cargadora", txtNIT_CARGADORA_INTEGRACION.Text,
+                        txtID_CARGADORA))
+                    return false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(txtID_PROVEEDOR_ROZA.Text))
+            {
+                tabCodigosRelacionados.SelectedTabPage = tabRoza;
+                if (!ValidarNitRelacionado("Roza", txtNIT_ROZA_INTEGRACION.Text,
+                        txtID_PROVEEDOR_ROZA))
+                    return false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(txtID_PROVEE_QQ.Text))
+            {
+                tabCodigosRelacionados.SelectedTabPage = tabQuerqueo;
+                if (!ValidarNitRelacionado("Querqueo", txtNIT_QUERQUEO_INTEGRACION.Text,
+                        txtID_PROVEE_QQ))
+                    return false;
+            }
+
             return true;
         }
         #endregion
@@ -1069,8 +1675,20 @@ namespace SistemaContable.UI.Forms.Clientes
             txtAPTO_LOCAL.Text = "";
             txtCOLONIA.Text = "";
             txtCODIPROVEEDOR.Text = "";
+            txtNOMBRE_PROVEEDOR_INTEGRACION.Text = "";
+            txtNIT_PROVEEDOR_INTEGRACION.Text = "";
             txtCODTRANSPORT.Text = "";
+            txtNOMBRE_TRANSPORTISTA_INTEGRACION.Text = "";
+            txtNIT_TRANSPORTISTA_INTEGRACION.Text = "";
             txtID_CARGADORA.Text = "";
+            txtNOMBRE_CARGADORA_INTEGRACION.Text = "";
+            txtNIT_CARGADORA_INTEGRACION.Text = "";
+            txtID_PROVEEDOR_ROZA.Text = "";
+            txtNOMBRE_ROZA_INTEGRACION.Text = "";
+            txtNIT_ROZA_INTEGRACION.Text = "";
+            txtID_PROVEE_QQ.Text = "";
+            txtNOMBRE_QUERQUEO_INTEGRACION.Text = "";
+            txtNIT_QUERQUEO_INTEGRACION.Text = "";
             cbxTIPO_ENTIDAD.SelectedIndex = 0;
             cbxTIPO_CONTRIB.SelectedIndex = 0;
             cbxTIPO_DOC_IDEN.SelectedIndex = 0;

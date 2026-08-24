@@ -16,12 +16,28 @@ namespace SistemaContable.UI.Forms.Proveedores
         public int IdCcfCompra { get; set; } = 0;
 
         private readonly DALBase _dal = new DALBase();
+        private readonly string _esquemaProcedimientos;
         private DataTable _dtPartida;  // DataTable que alimenta el grid
         private string _columnaAnteriorGrid = string.Empty;
 
         public frmDocumentoCompraProvision()
+            : this(null)
         {
+        }
+
+        public frmDocumentoCompraProvision(string esquemaProcedimientos)
+        {
+            _esquemaProcedimientos = string.IsNullOrWhiteSpace(esquemaProcedimientos)
+                ? null
+                : esquemaProcedimientos.Trim('[', ']');
             InitializeComponent();
+        }
+
+        private string ObtenerProcedimiento(string nombre)
+        {
+            return string.IsNullOrEmpty(_esquemaProcedimientos)
+                ? nombre
+                : $"[{_esquemaProcedimientos}].[{nombre}]";
         }
 
         private void frmProvisionQuedan_Load(object sender, EventArgs e)
@@ -350,7 +366,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             var config = new BusquedaConfig
             {
-                StoredProcedure = "SP_CATALOGO_CUENTA",
+                StoredProcedure = ObtenerProcedimiento("SP_CATALOGO_CUENTA"),
                 Columnas = new Dictionary<string, string>
         {
             { "CUENTA",        "CUENTA" },
@@ -396,7 +412,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 Cursor = Cursors.WaitCursor;
 
-                DataTable dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_PROVISION",
+                DataTable dt = _dal.EjecutarConsulta(ObtenerProcedimiento("SP_CREDITO_FISCAL_PROVISION"),
                     new
                     {
                         ACCION = "CARGAR_PROVISION",
@@ -585,7 +601,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 }
                 Cursor = Cursors.WaitCursor;
                 int filas = _dal.EjecutarConsultaConTVP(
-                     "SP_CREDITO_FISCAL_PROVISION",
+                     ObtenerProcedimiento("SP_CREDITO_FISCAL_PROVISION"),
                      "PARTIDA_PROVISION",              // nombre del parámetro
                      "typeCREDITO_FISCAL_PROVISION",   // nombre del TYPE
                      _dtPartida,

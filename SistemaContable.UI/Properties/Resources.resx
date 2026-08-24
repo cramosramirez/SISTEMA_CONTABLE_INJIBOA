@@ -148,6 +148,9 @@
   <data name="agregarDoc2_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\agregarDoc2_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="AgregarProducto32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AgregarProducto32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="cuentabanco" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cuenta_bancaria1.svg;DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v20.1, Version=20.1.17.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
   </data>
@@ -340,6 +343,7 @@
   <data name="menu48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\menu48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+<<<<<<< Updated upstream
   <data name="Anexos2_48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Anexos2_48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -357,5 +361,39 @@
   </data>
   <data name="Mercado48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Mercado48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+=======
+  <data name="solicitudAgricola64x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\solicitudes64x64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="solicitudAgricola32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\solicitudes32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BuscarProducto32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BuscarProducto32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cerrarProducto32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cerrarProducto32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="registrarProducto32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\registrarProducto32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="seleccionarProducto32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SeleccionarProducto32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="compraExterior32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\compraExterior32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CCFInt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CCFInt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="facturacionInt32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\facturacionInt32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RetencionInt32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RetencionInt32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SujectoExcInt32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SujectoExcInt32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+>>>>>>> Stashed changes
   </data>
 </root>

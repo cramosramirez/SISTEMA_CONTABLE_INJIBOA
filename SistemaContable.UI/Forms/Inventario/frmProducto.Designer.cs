@@ -65,6 +65,12 @@
             this.lblTPINGRESO = new System.Windows.Forms.Label();
             this.lblTPOPERACION = new System.Windows.Forms.Label();
             this.txtTPOPERACION = new System.Windows.Forms.TextBox();
+            this.tabProductosRelacionados = new DevExpress.XtraTab.XtraTabControl();
+            this.tabProducto = new DevExpress.XtraTab.XtraTabPage();
+            this.lblPRODUCTO_SIGESTA_TAB = new System.Windows.Forms.Label();
+            this.lblNOMBRE_PRODUCTO_SIGESTA_TAB = new System.Windows.Forms.Label();
+            this.txtCODIGO_PRODUCTO_SIGESTA_TAB = new System.Windows.Forms.TextBox();
+            this.txtNOMBRE_PRODUCTO_SIGESTA_TAB = new System.Windows.Forms.TextBox();
             this.grpRoles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridRoles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvRoles)).BeginInit();
@@ -79,6 +85,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvTributos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tabProductosRelacionados)).BeginInit();
+            this.tabProductosRelacionados.SuspendLayout();
+            this.tabProducto.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkES_INVENTARIO.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkES_NOSUJETA.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkES_EXENTO.Properties)).BeginInit();
@@ -157,7 +166,7 @@
             this.grpRoles.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.grpRoles.Location = new System.Drawing.Point(0, 0);
             this.grpRoles.Name = "grpRoles";
-            this.grpRoles.Size = new System.Drawing.Size(999, 338);
+            this.grpRoles.Size = new System.Drawing.Size(999, 286);
             this.grpRoles.TabIndex = 2;
             this.grpRoles.TabStop = false;
             this.grpRoles.Text = "Roles del Producto";
@@ -196,10 +205,10 @@
             // 
             // xtraTabDetalle
             // 
-            this.xtraTabDetalle.Location = new System.Drawing.Point(10, 292);
+            this.xtraTabDetalle.Location = new System.Drawing.Point(10, 365);
             this.xtraTabDetalle.Name = "xtraTabDetalle";
             this.xtraTabDetalle.SelectedTabPage = this.xtraTabPageRoles;
-            this.xtraTabDetalle.Size = new System.Drawing.Size(1001, 363);
+            this.xtraTabDetalle.Size = new System.Drawing.Size(1001, 311);
             this.xtraTabDetalle.TabIndex = 2;
             this.xtraTabDetalle.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPageRoles,
@@ -210,7 +219,7 @@
             // 
             this.xtraTabPageRoles.Controls.Add(this.grpRoles);
             this.xtraTabPageRoles.Name = "xtraTabPageRoles";
-            this.xtraTabPageRoles.Size = new System.Drawing.Size(999, 338);
+            this.xtraTabPageRoles.Size = new System.Drawing.Size(999, 286);
             this.xtraTabPageRoles.Text = "Roles del Producto";
             // 
             // xtraTabPagePrecios
@@ -218,7 +227,7 @@
             this.xtraTabPagePrecios.Controls.Add(this.btnAgregarPrecio);
             this.xtraTabPagePrecios.Controls.Add(this.gridPrecios);
             this.xtraTabPagePrecios.Name = "xtraTabPagePrecios";
-            this.xtraTabPagePrecios.Size = new System.Drawing.Size(1071, 338);
+            this.xtraTabPagePrecios.Size = new System.Drawing.Size(999, 338);
             this.xtraTabPagePrecios.Text = "Detalle de Precios";
             // 
             // btnAgregarPrecio
@@ -258,7 +267,7 @@
             this.xtraTabPageTributos.Controls.Add(this.btnAgregarTributo);
             this.xtraTabPageTributos.Controls.Add(this.gridTributos);
             this.xtraTabPageTributos.Name = "xtraTabPageTributos";
-            this.xtraTabPageTributos.Size = new System.Drawing.Size(1071, 338);
+            this.xtraTabPageTributos.Size = new System.Drawing.Size(999, 338);
             this.xtraTabPageTributos.Text = "Tributos del Producto";
             // 
             // btnAgregarTributo
@@ -300,6 +309,7 @@
             this.groupControl1.AppearanceCaption.Options.UseBackColor = true;
             this.groupControl1.AppearanceCaption.Options.UseTextOptions = true;
             this.groupControl1.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.groupControl1.Controls.Add(this.tabProductosRelacionados);
             this.groupControl1.Controls.Add(this.lblCOD_REF);
             this.groupControl1.Controls.Add(this.txtCOD_REF);
             this.groupControl1.Controls.Add(this.lblValidacionCodigo);
@@ -333,11 +343,72 @@
             this.groupControl1.Controls.Add(this.lblTPINGRESO);
             this.groupControl1.Controls.Add(this.lblTPOPERACION);
             this.groupControl1.Controls.Add(this.txtTPOPERACION);
-            this.groupControl1.Location = new System.Drawing.Point(20, 3);
+            this.groupControl1.Location = new System.Drawing.Point(13, 3);
             this.groupControl1.Name = "groupControl1";
-            this.groupControl1.Size = new System.Drawing.Size(991, 271);
+            this.groupControl1.Size = new System.Drawing.Size(998, 354);
             this.groupControl1.TabIndex = 4;
             this.groupControl1.Text = "Datos del Producto";
+            //
+            //
+            // tabProductosRelacionados
+            //
+            this.tabProductosRelacionados.Location = new System.Drawing.Point(5, 276);
+            this.tabProductosRelacionados.Name = "tabProductosRelacionados";
+            this.tabProductosRelacionados.SelectedTabPage = this.tabProducto;
+            this.tabProductosRelacionados.Size = new System.Drawing.Size(988, 71);
+            this.tabProductosRelacionados.TabIndex = 35;
+            this.tabProductosRelacionados.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
+            this.tabProducto});
+            //
+            // tabProducto
+            //
+            this.tabProducto.Controls.Add(this.lblPRODUCTO_SIGESTA_TAB);
+            this.tabProducto.Controls.Add(this.lblNOMBRE_PRODUCTO_SIGESTA_TAB);
+            this.tabProducto.Controls.Add(this.txtCODIGO_PRODUCTO_SIGESTA_TAB);
+            this.tabProducto.Controls.Add(this.txtNOMBRE_PRODUCTO_SIGESTA_TAB);
+            this.tabProducto.Name = "tabProducto";
+            this.tabProducto.Size = new System.Drawing.Size(986, 46);
+            this.tabProducto.Text = "Sigesta";
+            //
+            // lblPRODUCTO_SIGESTA_TAB
+            //
+            this.lblPRODUCTO_SIGESTA_TAB.AutoSize = true;
+            this.lblPRODUCTO_SIGESTA_TAB.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.lblPRODUCTO_SIGESTA_TAB.Location = new System.Drawing.Point(30, 14);
+            this.lblPRODUCTO_SIGESTA_TAB.Name = "lblPRODUCTO_SIGESTA_TAB";
+            this.lblPRODUCTO_SIGESTA_TAB.Size = new System.Drawing.Size(43, 14);
+            this.lblPRODUCTO_SIGESTA_TAB.TabIndex = 40;
+            this.lblPRODUCTO_SIGESTA_TAB.Text = "Código";
+            //
+            // lblNOMBRE_PRODUCTO_SIGESTA_TAB
+            //
+            this.lblNOMBRE_PRODUCTO_SIGESTA_TAB.AutoSize = true;
+            this.lblNOMBRE_PRODUCTO_SIGESTA_TAB.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.lblNOMBRE_PRODUCTO_SIGESTA_TAB.Location = new System.Drawing.Point(420, 14);
+            this.lblNOMBRE_PRODUCTO_SIGESTA_TAB.Name = "lblNOMBRE_PRODUCTO_SIGESTA_TAB";
+            this.lblNOMBRE_PRODUCTO_SIGESTA_TAB.Size = new System.Drawing.Size(47, 14);
+            this.lblNOMBRE_PRODUCTO_SIGESTA_TAB.TabIndex = 41;
+            this.lblNOMBRE_PRODUCTO_SIGESTA_TAB.Text = "Nombre";
+            //
+            // txtCODIGO_PRODUCTO_SIGESTA_TAB
+            //
+            this.txtCODIGO_PRODUCTO_SIGESTA_TAB.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtCODIGO_PRODUCTO_SIGESTA_TAB.Location = new System.Drawing.Point(116, 8);
+            this.txtCODIGO_PRODUCTO_SIGESTA_TAB.MaxLength = 50;
+            this.txtCODIGO_PRODUCTO_SIGESTA_TAB.Name = "txtCODIGO_PRODUCTO_SIGESTA_TAB";
+            this.txtCODIGO_PRODUCTO_SIGESTA_TAB.Size = new System.Drawing.Size(275, 22);
+            this.txtCODIGO_PRODUCTO_SIGESTA_TAB.TabIndex = 1;
+            //
+            // txtNOMBRE_PRODUCTO_SIGESTA_TAB
+            //
+            this.txtNOMBRE_PRODUCTO_SIGESTA_TAB.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNOMBRE_PRODUCTO_SIGESTA_TAB.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtNOMBRE_PRODUCTO_SIGESTA_TAB.Location = new System.Drawing.Point(490, 8);
+            this.txtNOMBRE_PRODUCTO_SIGESTA_TAB.Name = "txtNOMBRE_PRODUCTO_SIGESTA_TAB";
+            this.txtNOMBRE_PRODUCTO_SIGESTA_TAB.ReadOnly = true;
+            this.txtNOMBRE_PRODUCTO_SIGESTA_TAB.Size = new System.Drawing.Size(475, 22);
+            this.txtNOMBRE_PRODUCTO_SIGESTA_TAB.TabIndex = 2;
+            this.txtNOMBRE_PRODUCTO_SIGESTA_TAB.TabStop = false;
             // 
             // lblCOD_REF
             // 
@@ -370,7 +441,7 @@
             // txtULTIMOPRECIOCOMPRA
             // 
             this.txtULTIMOPRECIOCOMPRA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtULTIMOPRECIOCOMPRA.Location = new System.Drawing.Point(656, 243);
+            this.txtULTIMOPRECIOCOMPRA.Location = new System.Drawing.Point(676, 243);
             this.txtULTIMOPRECIOCOMPRA.Name = "txtULTIMOPRECIOCOMPRA";
             this.txtULTIMOPRECIOCOMPRA.Size = new System.Drawing.Size(160, 22);
             this.txtULTIMOPRECIOCOMPRA.TabIndex = 32;
@@ -390,7 +461,7 @@
             // 
             this.lblULTIMOPRECIOCOMPRA.AutoSize = true;
             this.lblULTIMOPRECIOCOMPRA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblULTIMOPRECIOCOMPRA.Location = new System.Drawing.Point(526, 246);
+            this.lblULTIMOPRECIOCOMPRA.Location = new System.Drawing.Point(546, 246);
             this.lblULTIMOPRECIOCOMPRA.Name = "lblULTIMOPRECIOCOMPRA";
             this.lblULTIMOPRECIOCOMPRA.Size = new System.Drawing.Size(86, 14);
             this.lblULTIMOPRECIOCOMPRA.TabIndex = 31;
@@ -407,7 +478,7 @@
             // txtDESC_VENTA
             // 
             this.txtDESC_VENTA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtDESC_VENTA.Location = new System.Drawing.Point(381, 243);
+            this.txtDESC_VENTA.Location = new System.Drawing.Point(401, 243);
             this.txtDESC_VENTA.Name = "txtDESC_VENTA";
             this.txtDESC_VENTA.Size = new System.Drawing.Size(120, 22);
             this.txtDESC_VENTA.TabIndex = 30;
@@ -427,7 +498,7 @@
             // 
             this.lblDESC_VENTA.AutoSize = true;
             this.lblDESC_VENTA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblDESC_VENTA.Location = new System.Drawing.Point(256, 246);
+            this.lblDESC_VENTA.Location = new System.Drawing.Point(276, 246);
             this.lblDESC_VENTA.Name = "lblDESC_VENTA";
             this.lblDESC_VENTA.Size = new System.Drawing.Size(90, 14);
             this.lblDESC_VENTA.TabIndex = 29;
@@ -447,7 +518,7 @@
             // txtPRECIO
             // 
             this.txtPRECIO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtPRECIO.Location = new System.Drawing.Point(96, 243);
+            this.txtPRECIO.Location = new System.Drawing.Point(116, 243);
             this.txtPRECIO.Name = "txtPRECIO";
             this.txtPRECIO.Size = new System.Drawing.Size(140, 22);
             this.txtPRECIO.TabIndex = 28;
@@ -467,7 +538,7 @@
             // 
             this.lblPRECIO.AutoSize = true;
             this.lblPRECIO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblPRECIO.Location = new System.Drawing.Point(16, 246);
+            this.lblPRECIO.Location = new System.Drawing.Point(65, 251);
             this.lblPRECIO.Name = "lblPRECIO";
             this.lblPRECIO.Size = new System.Drawing.Size(40, 14);
             this.lblPRECIO.TabIndex = 27;
@@ -485,7 +556,7 @@
             // 
             // chkES_INVENTARIO
             // 
-            this.chkES_INVENTARIO.Location = new System.Drawing.Point(251, 214);
+            this.chkES_INVENTARIO.Location = new System.Drawing.Point(232, 214);
             this.chkES_INVENTARIO.Name = "chkES_INVENTARIO";
             this.chkES_INVENTARIO.Properties.Caption = "Maneja Inventario";
             this.chkES_INVENTARIO.Size = new System.Drawing.Size(140, 20);
@@ -503,7 +574,7 @@
             // 
             // chkES_NOSUJETA
             // 
-            this.chkES_NOSUJETA.Location = new System.Drawing.Point(126, 214);
+            this.chkES_NOSUJETA.Location = new System.Drawing.Point(116, 214);
             this.chkES_NOSUJETA.Name = "chkES_NOSUJETA";
             this.chkES_NOSUJETA.Properties.Caption = "Es No Sujeta";
             this.chkES_NOSUJETA.Size = new System.Drawing.Size(110, 20);
@@ -521,10 +592,10 @@
             // 
             // chkES_EXENTO
             // 
-            this.chkES_EXENTO.Location = new System.Drawing.Point(16, 214);
+            this.chkES_EXENTO.Location = new System.Drawing.Point(31, 214);
             this.chkES_EXENTO.Name = "chkES_EXENTO";
             this.chkES_EXENTO.Properties.Caption = "Es Exento";
-            this.chkES_EXENTO.Size = new System.Drawing.Size(95, 20);
+            this.chkES_EXENTO.Size = new System.Drawing.Size(74, 20);
             this.chkES_EXENTO.TabIndex = 24;
             // 
             // lblTIPOITEM
@@ -644,12 +715,11 @@
             this.txtTPOPERACION.Name = "txtTPOPERACION";
             this.txtTPOPERACION.Size = new System.Drawing.Size(360, 22);
             this.txtTPOPERACION.TabIndex = 17;
-            // 
             // frmProducto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1159, 670);
+            this.ClientSize = new System.Drawing.Size(1159, 704);
             this.Controls.Add(this.groupControl1);
             this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.btnEliminar);
@@ -675,6 +745,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tabProductosRelacionados)).EndInit();
+            this.tabProductosRelacionados.ResumeLayout(false);
+            this.tabProducto.ResumeLayout(false);
+            this.tabProducto.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkES_INVENTARIO.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkES_NOSUJETA.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkES_EXENTO.Properties)).EndInit();
@@ -736,5 +810,11 @@
         private System.Windows.Forms.Label lblTPINGRESO;
         private System.Windows.Forms.Label lblTPOPERACION;
         private System.Windows.Forms.TextBox txtTPOPERACION;
+        private DevExpress.XtraTab.XtraTabControl tabProductosRelacionados;
+        private DevExpress.XtraTab.XtraTabPage tabProducto;
+        private System.Windows.Forms.Label lblPRODUCTO_SIGESTA_TAB;
+        private System.Windows.Forms.Label lblNOMBRE_PRODUCTO_SIGESTA_TAB;
+        private System.Windows.Forms.TextBox txtCODIGO_PRODUCTO_SIGESTA_TAB;
+        private System.Windows.Forms.TextBox txtNOMBRE_PRODUCTO_SIGESTA_TAB;
     }
 }

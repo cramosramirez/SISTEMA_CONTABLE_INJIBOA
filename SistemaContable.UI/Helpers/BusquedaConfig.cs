@@ -14,6 +14,12 @@ namespace SistemaContable.UI.Helpers
         public string Accion { get; set; } = "BUSCAR"; // ← por defecto sera BUSCAR
 
         /// <summary>
+        /// Nombre del parámetro de acción esperado por el procedimiento.
+        /// La mayoría usa ACCION; algunos procedimientos de integración usan ACTION.
+        /// </summary>
+        public string NombreParametroAccion { get; set; } = "ACCION";
+
+        /// <summary>
         /// Columnas a mostrar en el grid.
         /// Key   = nombre real del campo en el DataTable
         /// Value = título a mostrar en la columna del grid

@@ -11,6 +11,8 @@ namespace SistemaContable.RP.Bancos.Proveedores
     public partial class rptCompRetencion :  SistemaContable.RP.ReporteBase
     {
         public int IdCcfCompra { get; set; }
+        public string NombreProcedimiento { get; set; } = "SP_COMPROBANTE_RETENCION_RPT";
+
         public rptCompRetencion()
         {
             InitializeComponent();            
@@ -23,7 +25,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
                 throw new InvalidOperationException(
                     "Debe asignar CCF de compra antes de imprimir.");
 
-            DataTable dt = EjecutarSP("SP_COMPROBANTE_RETENCION_RPT", new
+            DataTable dt = EjecutarSP(NombreProcedimiento, new
             {
                 ACCION = "COMPROBANTE_RETENCION",
                 ID_CCF_COMPRA = IdCcfCompra

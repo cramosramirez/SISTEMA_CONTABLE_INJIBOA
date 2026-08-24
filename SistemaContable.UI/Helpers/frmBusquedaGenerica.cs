@@ -150,7 +150,9 @@ namespace SistemaContable.UI.Helpers
                 // Construir parámetros
                 var parametros = new Dictionary<string, object>
                 {
-                    { "ACCION", _config.Accion },
+                    { string.IsNullOrWhiteSpace(_config.NombreParametroAccion)
+                        ? "ACCION"
+                        : _config.NombreParametroAccion, _config.Accion },
                     { "FILTRO", string.IsNullOrWhiteSpace(filtro) ? null : filtro }
                 };
 

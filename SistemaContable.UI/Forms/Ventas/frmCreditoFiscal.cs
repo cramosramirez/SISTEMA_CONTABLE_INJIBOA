@@ -22,6 +22,11 @@ namespace SistemaContable.UI.Forms.Ventas
         private int _idEntidad = 0;
         private string _codigoEntidad = string.Empty;
         private string _columnaAnteriorGrid = string.Empty;
+        // CODIPROVEEDOR del cliente seleccionado, usado para filtrar el combo "Solicitud"
+        // (EDTE.SP_SOLICITUD_AGRICOLA). SUPUESTO: se asume que la rama BUSCAR_CONTRIBUYENTES
+        // de [EDTE].[SP_ENTIDAD] ya devuelve la columna CODIPROVEEDOR; si no la trae, hay que
+        // agregarla a ese SP (Roberto: confirmar).
+        private string _codiProveedorCliente = string.Empty;
         #endregion
         public int IdCCFEnc { get; set; } = 0;
         public int AnioDte { get; set; } = 0;
@@ -40,7 +45,20 @@ namespace SistemaContable.UI.Forms.Ventas
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
+            chkPERCEPCION.CheckedChanged += chkPERCEPCION_CheckedChanged;
         }
+
+        private void chkPERCEPCION_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_dtDetalle == null) return;
+
+            // Confirma cualquier edición pendiente en el detalle antes de alternar
+            // entre retención y percepción, y actualiza los importes de inmediato.
+            gridView1.CloseEditor();
+            gridView1.UpdateCurrentRow();
+            ActualizarTotales();
+        }
+
         #region CARGA INICIAL
         private void frmCreditoFiscal_Load(object sender, EventArgs e)
         {
@@ -48,6 +66,8 @@ namespace SistemaContable.UI.Forms.Ventas
             CargarTipoDte();
             CargarSucursal();
             CargarCondicionPago();
+            CargarZafra();
+            CargarCentroCosto();
             CargarVendedor();
             CargarEmisor(1);
             CargarTasasRetencion();
@@ -57,7 +77,7 @@ namespace SistemaContable.UI.Forms.Ventas
                 txtCLIENTE,
                 new BusquedaConfig
                 {
-                    StoredProcedure = "SP_ENTIDAD",
+                    StoredProcedure = "[EDTE].[SP_ENTIDAD]",
                     Accion = "BUSCAR_CONTRIBUYENTES",      // CCF: solo contribuyentes
                     Columnas = new Dictionary<string, string>
                     {
@@ -111,6 +131,7 @@ namespace SistemaContable.UI.Forms.Ventas
             {
                 case EstadoFormulario.Nuevo:
                     txtCLIENTE.Enabled = true;
+                    btnNuevo.Enabled = false;
                     btnGuardar.Enabled = true;
                     btnValidar.Enabled = false;
                     btnImprimir.Enabled = false;
@@ -118,6 +139,7 @@ namespace SistemaContable.UI.Forms.Ventas
                     break;
                 case EstadoFormulario.Guardado:
                     txtCLIENTE.Enabled = false;
+                    btnNuevo.Enabled = true;
                     btnGuardar.Enabled = true;
                     btnValidar.Enabled = true;
                     btnImprimir.Enabled = true;
@@ -125,6 +147,7 @@ namespace SistemaContable.UI.Forms.Ventas
                     break;
                 case EstadoFormulario.Validado:
                     txtCLIENTE.Enabled = false;
+                    btnNuevo.Enabled = true;
                     btnGuardar.Enabled = false;
                     btnValidar.Enabled = false;
                     btnImprimir.Enabled = true;
@@ -206,7 +229,34 @@ namespace SistemaContable.UI.Forms.Ventas
                                             ? Convert.ToInt32(r["TPCONTRIBUYENTE"]) : 0;
                 if (r.Table.Columns.Contains("TPCONTRIBUYENTEEMISOR") && r["TPCONTRIBUYENTEEMISOR"] != DBNull.Value)
                     _idTipoContribEMISOR = Convert.ToInt32(r["TPCONTRIBUYENTEEMISOR"]);
+                // FIX: SelectedValue = null truena (ArgumentNullException: key) en un combo
+                // enlazado a DataTable (internamente hace DataView.Find(null)). Con ID_ZAFRA/
+                // ID_CENTRO nulos (todos los documentos existentes, campo recién agregado)
+                // hay que usar SelectedIndex = -1 en vez de SelectedValue = null.
+                if (r.Table.Columns.Contains("ID_ZAFRA"))
+                {
+                    if (r["ID_ZAFRA"] == DBNull.Value) cbxZAFRA.SelectedIndex = -1;
+                    else cbxZAFRA.SelectedValue = Convert.ToInt32(r["ID_ZAFRA"]);
+                }
+                if (r.Table.Columns.Contains("ID_CENTRO"))
+                {
+                    if (r["ID_CENTRO"] == DBNull.Value) cbxCENTRO_COSTO.SelectedIndex = -1;
+                    else cbxCENTRO_COSTO.SelectedValue = Convert.ToInt32(r["ID_CENTRO"]);
+                }
+                // Restaurar combo "Solicitud": primero el CODIPROVEEDOR del cliente (viene del
+                // JOIN a ENTIDAD en SP_CREDITOFISCAL_ENC/OBTENER), luego recargar las opciones
+                // (ID_ZAFRA + CODIPROVEEDOR) y por último seleccionar el ID_SOLICITUD guardado.
+                _codiProveedorCliente = r.Table.Columns.Contains("CODIPROVEEDOR") && r["CODIPROVEEDOR"] != DBNull.Value
+                                            ? r["CODIPROVEEDOR"].ToString().Trim() : string.Empty;
+                CargarSolicitudAgricola();
+                ActualizarEstadoBotonSolicitudAgricola();
+                if (r.Table.Columns.Contains("ID_SOLICITUD"))
+                {
+                    if (r["ID_SOLICITUD"] == DBNull.Value) cbxSOLICITUD.SelectedIndex = -1;
+                    else cbxSOLICITUD.SelectedValue = Convert.ToInt32(r["ID_SOLICITUD"]);
+                }
                 CargarCCFDetalleExistente(idCCFEnc);
+                AplicarEstadoCobroPorCondicion();
             }
             catch (Exception ex)
             {
@@ -272,6 +322,10 @@ namespace SistemaContable.UI.Forms.Ventas
         {
             _idEntidad = Convert.ToInt32(fila["ID_ENTIDAD"]);
             _codigoEntidad = fila["CODIGO_ENTIDAD"].ToString();
+            // FIX: FormHelper.AbrirBusqueda limpia el textbox (campo.Text = "") antes de
+            // invocar este callback, así que hay que volver a poner el código aquí o
+            // queda vacío aunque el resto de datos del cliente sí se haya cargado.
+            txtCLIENTE.Text = _codigoEntidad;
             // Lectura segura: si el SP de búsqueda no trae la columna, no se cae y deja 0.
             _idTipoContribCliente = fila.Table.Columns.Contains("ID_TIPO_CONTRIB") && fila["ID_TIPO_CONTRIB"] != DBNull.Value
                                         ? Convert.ToInt32(fila["ID_TIPO_CONTRIB"]) : 0;
@@ -286,8 +340,56 @@ namespace SistemaContable.UI.Forms.Ventas
             txtACTIVIDAD_PRIMARIA.Text = fila["ACTIVIDAD_PRIMARIA"].ToString();
             txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
             txtTIPO_CONTRIBUYENTE.Text = fila["TIPO_CONTRIBUYENTE"].ToString();
+            // Lectura del CODIPROVEEDOR para filtrar las solicitudes. Si la búsqueda
+            // resumida todavía no expone la columna, se recupera desde OBTENER.
+            _codiProveedorCliente = ObtenerCodiProveedorCliente(fila);
             // Al cambiar de cliente cambia la regla de retención/percepción -> recalcular.
             ActualizarTotales();
+            CargarSolicitudAgricola();
+            ActualizarEstadoBotonSolicitudAgricola();
+        }
+        private void ActualizarEstadoBotonSolicitudAgricola()
+        {
+            bool hayDatosVisiblesCliente =
+                !string.IsNullOrWhiteSpace(txtCLIENTE.Text) ||
+                !string.IsNullOrWhiteSpace(txtNOMBRE_CLIENTE.Text) ||
+                !string.IsNullOrWhiteSpace(txtDUI.Text) ||
+                !string.IsNullOrWhiteSpace(txtNIT.Text) ||
+                !string.IsNullOrWhiteSpace(txtTELEFONO.Text) ||
+                !string.IsNullOrWhiteSpace(txtCORREO.Text) ||
+                !string.IsNullOrWhiteSpace(txtACTIVIDAD_PRIMARIA.Text) ||
+                !string.IsNullOrWhiteSpace(txtDIRECCION.Text) ||
+                !string.IsNullOrWhiteSpace(txtTIPO_CONTRIBUYENTE.Text) ||
+                !string.IsNullOrWhiteSpace(txtNRC.Text) ||
+                !string.IsNullOrWhiteSpace(textBox1.Text);
+
+            bool clienteCargado = _idEntidad > 0 && hayDatosVisiblesCliente;
+            btn_solicitudAgricola.Enabled = clienteCargado;
+            btn_solicitudAgricola.ToolTip = clienteCargado
+                ? "Consultar solicitudes agrícolas del cliente seleccionado."
+                : "Seleccione un cliente antes de consultar solicitudes agrícolas.";
+        }
+        private string ObtenerCodiProveedorCliente(DataRow fila)
+        {
+            if (fila.Table.Columns.Contains("CODIPROVEEDOR") &&
+                fila["CODIPROVEEDOR"] != DBNull.Value)
+            {
+                string codiProveedor = fila["CODIPROVEEDOR"].ToString().Trim();
+                if (!string.IsNullOrWhiteSpace(codiProveedor))
+                    return codiProveedor;
+            }
+
+            DataTable entidad = _dal.EjecutarConsulta("[EDTE].[SP_ENTIDAD]", new
+            {
+                ACCION = "OBTENER",
+                ID_ENTIDAD = _idEntidad
+            });
+
+            return entidad != null && entidad.Rows.Count > 0 &&
+                   entidad.Columns.Contains("CODIPROVEEDOR") &&
+                   entidad.Rows[0]["CODIPROVEEDOR"] != DBNull.Value
+                ? entidad.Rows[0]["CODIPROVEEDOR"].ToString().Trim()
+                : string.Empty;
         }
         private void CargarEmisor(int idEmisor)
         {
@@ -347,6 +449,53 @@ namespace SistemaContable.UI.Forms.Ventas
             cbxVENDEDOR.ValueMember = "ID_VENDEDOR";
             cbxVENDEDOR.DisplayMember = "NOMBRE";
         }
+        private void CargarZafra()
+        {
+            DataTable dt = _dal.EjecutarConsulta("[EGENERALES].[SP_ZAFRA]",
+                new { ACCION = "OBTENER", ID_ZAFRA = 1 });
+            cbxZAFRA.DataSource = dt;
+            cbxZAFRA.ValueMember = "ID_ZAFRA";
+            cbxZAFRA.DisplayMember = "NOMBRE_ZAFRA";
+        }
+        /// <summary>
+        /// Llena el combo "Solicitud" (cbxSOLICITUD) con las solicitudes agrícolas del
+        /// cliente/zafra actuales, usando el primer resultado de
+        /// [ESOLICITUD].[SP_SOLICITUDES_SIGESTA].
+        /// Se dispara al asignar cliente (AsignarCliente) y al cambiar de zafra
+        /// (cbxZAFRA_SelectedIndexChanged). Solo carga opciones; el ID_SOLICITUD elegido
+        /// NO se guarda todavía en SP_CREDITOFISCAL_ENC (fuera de alcance por ahora).
+        /// </summary>
+        private void CargarSolicitudAgricola()
+        {
+            int? idZafra = ObtenerIdCombo(cbxZAFRA);
+            if (idZafra == null || idZafra <= 0 || string.IsNullOrWhiteSpace(_codiProveedorCliente))
+            {
+                cbxSOLICITUD.DataSource = null;
+                cbxSOLICITUD.Items.Clear();
+                return;
+            }
+            DataTable dt = _dal.EjecutarConsulta("[ESOLICITUD].[SP_SOLICITUDES_SIGESTA]", new
+            {
+                ACTION = "PRODUCTOR_ENCABEZADO",
+                ID_ZAFRA = idZafra,
+                CODIPROVEEDOR = _codiProveedorCliente
+            });
+            cbxSOLICITUD.DataSource = dt;
+            cbxSOLICITUD.ValueMember = "ID_SOLICITUD";
+            cbxSOLICITUD.DisplayMember = "NUM_SOLICITUD";
+        }
+        private void cbxZAFRA_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CargarSolicitudAgricola();
+        }
+        private void CargarCentroCosto()
+        {
+            DataTable dt = _dal.EjecutarConsulta("[EDTE].[SP_CENTROCOSTO]",
+                new { ACCION = "OBTENER", ID_CENTRO = -1 });
+            cbxCENTRO_COSTO.DataSource = dt;
+            cbxCENTRO_COSTO.ValueMember = "ID_CENTRO";
+            cbxCENTRO_COSTO.DisplayMember = "NOMBRE";
+        }
         private int ObtenerAnioPorDte(int? idTipoDte)
         {
             DataTable dt = _dal.EjecutarConsulta("[dbo].[SP_DOCUMENTO_NUMERACION]",
@@ -383,7 +532,7 @@ namespace SistemaContable.UI.Forms.Ventas
             ConfigurarColumna(view, "DESCRIPCION", "Descripción", 250, true);
             ConfigurarColumna(view, "UM", "U.M.", 55, false);
             ConfigurarColumna(view, "CANTIDAD", "Cantidad", 75, true);
-            ConfigurarColumna(view, "PRECIO", "Precio", 85, true);
+            ConfigurarColumna(view, "PRECIO", "Precio", 105, true);
             ConfigurarColumna(view, "PORC_DESC", "%Desc.", 55, true);
             ConfigurarColumna(view, "GRAVADO", "Gravado", 85, false);
             ConfigurarColumnaCheckBox(view, "ES_EXENTO", "Exento", 55);
@@ -401,6 +550,12 @@ namespace SistemaContable.UI.Forms.Ventas
             view.Columns["ES_EXENTO"].VisibleIndex = 7;
             view.Columns["EXENTO"].VisibleIndex = 8;
             view.Columns["TOTAL"].VisibleIndex = 9;
+            var repoPrecio = new RepositoryItemTextEdit();
+            repoPrecio.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+            repoPrecio.Mask.EditMask = "n6";
+            repoPrecio.Mask.UseMaskAsDisplayFormat = true;
+            gridControl1.RepositoryItems.Add(repoPrecio);
+            view.Columns["PRECIO"].ColumnEdit = repoPrecio;
             var colEliminar = view.Columns.AddField("ELIMINAR");
             colEliminar.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             colEliminar.Caption = " ";
@@ -444,8 +599,22 @@ namespace SistemaContable.UI.Forms.Ventas
             view.Appearance.HeaderPanel.Options.UseFont = true;
             view.CustomColumnDisplayText += (s, ev) =>
             {
+                if (ev.Column.FieldName == "PRECIO")
+                {
+                    if (ev.Value == null || ev.Value == DBNull.Value)
+                    {
+                        ev.DisplayText = "0.000000";
+                        return;
+                    }
+
+                    ev.DisplayText = decimal.TryParse(ev.Value.ToString(), out decimal precio)
+                        ? precio.ToString("N6")
+                        : "0.000000";
+                    return;
+                }
+
                 if (ev.Column.FieldName == "CANTIDAD" || ev.Column.FieldName == "PORC_DESC" ||
-                    ev.Column.FieldName == "PRECIO" || ev.Column.FieldName == "DESCUENTO" ||
+                    ev.Column.FieldName == "DESCUENTO" ||
                     ev.Column.FieldName == "EXENTO" || ev.Column.FieldName == "GRAVADO" ||
                     ev.Column.FieldName == "TOTAL")
                 {
@@ -566,7 +735,9 @@ namespace SistemaContable.UI.Forms.Ventas
             {
                 if (chkPERCEPCION.Checked)
                 {
-                    percepcion = totalGravado >= 100 ? Math.Round(totalGravado * _porcIVAPER, 2) : 0m;
+                    // La percepción se aplica expresamente al marcar el checkbox,
+                    // sin depender del mínimo utilizado por la retención.
+                    percepcion = Math.Round(totalGravado * _porcIVAPER, 2);
                     retencion = 0m;
                 }
                 else
@@ -584,9 +755,15 @@ namespace SistemaContable.UI.Forms.Ventas
             txtPERCEPCION.Text = percepcion.ToString("N2");
             txtDESCUENTO.Text = totalDescuento.ToString("N2");
             txtTOTAL_VENTA.Text = totalFinal.ToString("N2");
-            string condicion = cbxCONDPAGO.Text?.Trim().ToUpper() ?? "";
-            txtRECIB_EFECTIVO.Text = condicion == "CONTADO" && totalFinal > 0
-                ? totalFinal.ToString("N2") : "0.00";
+            if (EsPagoContado())
+            {
+                txtRECIB_EFECTIVO.Text = totalFinal > 0
+                    ? totalFinal.ToString("N2") : "0.00";
+            }
+            else
+            {
+                LimpiarCamposCobro();
+            }
         }
         private decimal ObtenerTextBoxDecimal(TextBox txt)
         {
@@ -650,22 +827,17 @@ namespace SistemaContable.UI.Forms.Ventas
         {
             var view = sender as GridView;
             if (view == null) return;
-            if (_columnaAnteriorGrid == "COD_REF" && e.FocusedColumn?.FieldName == "DESCRIPCION")
+
+            string columnaAnterior = _columnaAnteriorGrid;
+            string columnaActual = e.FocusedColumn?.FieldName ?? "";
+            _columnaAnteriorGrid = columnaActual;
+
+            if (columnaAnterior == "COD_REF" && columnaActual != "COD_REF")
             {
                 string cod = view.GetFocusedRowCellValue("COD_REF")?.ToString()?.Trim();
-                if (string.IsNullOrWhiteSpace(cod)) return;
-                string descActual = view.GetFocusedRowCellValue("DESCRIPCION")?.ToString();
-                if (!string.IsNullOrWhiteSpace(descActual)) return;
-                var dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_PRODUCTO]",
-                    new { ACCION = "BUSCAR", FILTRO = cod });
-                var encontrado = dt.AsEnumerable()
-                    .FirstOrDefault(r => r["COD_REF"].ToString().Trim()
-                        .Equals(cod, StringComparison.OrdinalIgnoreCase));
-                if (encontrado != null) AsignarProductoAFila(view, encontrado);
-                view.ShowEditor();
-                this.BeginInvoke(new Action(() => { view.ActiveEditor?.SelectAll(); }));
+                if (!string.IsNullOrWhiteSpace(cod) && cod != "*")
+                    BuscarProductoPorCodigoExacto(view, cod);
             }
-            _columnaAnteriorGrid = e.FocusedColumn?.FieldName ?? "";
         }
         #endregion
         #region BÚSQUEDA DE PRODUCTO
@@ -723,6 +895,64 @@ namespace SistemaContable.UI.Forms.Ventas
             _dtDetalle.Rows[rowHandle]["ID_PRODUCTO"] = Convert.ToInt32(fila["ID_PRODUCTO"]);
             _dtDetalle.Rows[rowHandle]["ES_EXENTO"] = esExento;
             _dtDetalle.Rows[rowHandle]["ID_UNIDAD_MEDIDA"] = Convert.ToInt32(fila["ID_UNIDAD_MEDIDA"]);
+            RecalcularLinea(view, rowHandle);
+        }
+
+        private void BuscarProductoPorCodigoExacto(GridView view, string codigo)
+        {
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_PRODUCTO]",
+                    new { ACCION = "BUSCAR", FILTRO = codigo });
+
+                DataRow encontrado = dt?.AsEnumerable().FirstOrDefault(r =>
+                    string.Equals(r["COD_REF"]?.ToString()?.Trim(), codigo,
+                        StringComparison.OrdinalIgnoreCase));
+
+                if (encontrado == null)
+                {
+                    LimpiarDatosProductoFila(view);
+                    XtraMessageBox.Show(
+                        $"No se encontró el producto con código '{codigo}'.",
+                        "Producto no encontrado", MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    BeginInvoke(new Action(() =>
+                    {
+                        view.FocusedColumn = view.Columns["COD_REF"];
+                        view.ShowEditor();
+                        view.ActiveEditor?.SelectAll();
+                    }));
+                    return;
+                }
+
+                AsignarProductoAFila(view, encontrado);
+                BeginInvoke(new Action(() =>
+                {
+                    view.FocusedColumn = view.Columns["CANTIDAD"];
+                    view.ShowEditor();
+                    view.ActiveEditor?.SelectAll();
+                }));
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    $"Error buscando el producto: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LimpiarDatosProductoFila(GridView view)
+        {
+            int rowHandle = view?.FocusedRowHandle ?? -1;
+            if (rowHandle < 0 || rowHandle >= _dtDetalle.Rows.Count) return;
+
+            view.SetRowCellValue(rowHandle, "DESCRIPCION", "");
+            view.SetRowCellValue(rowHandle, "UM", "");
+            view.SetRowCellValue(rowHandle, "PRECIO", 0m);
+            view.SetRowCellValue(rowHandle, "ES_EXENTO", false);
+            _dtDetalle.Rows[rowHandle]["ID_PRODUCTO"] = 0;
+            _dtDetalle.Rows[rowHandle]["ID_UNIDAD_MEDIDA"] = 0;
             RecalcularLinea(view, rowHandle);
         }
         #endregion
@@ -834,6 +1064,9 @@ namespace SistemaContable.UI.Forms.Ventas
                     TPCONTRIBUYENTEEMISOR = _idTipoContribEMISOR,
                     NIT = NullIfEmpty(txtNIT.Text),
                     NRC = NullIfEmpty(txtNRC.Text),
+                    ID_ZAFRA = ObtenerIdCombo(cbxZAFRA),
+                    ID_CENTRO = ObtenerIdCombo(cbxCENTRO_COSTO),
+                    ID_SOLICITUD = ObtenerIdCombo(cbxSOLICITUD),
                     ID_ESTADO = 1,
                     USUARIO = Configuracion.UsuarioActual,
                 });
@@ -886,12 +1119,7 @@ namespace SistemaContable.UI.Forms.Ventas
                         USUARIO = Configuracion.UsuarioActual,
                     });
                 }
-                
                 _dal.EjecutarSinRetorno("[EDTE].[SP_CREDITOFISCAL_JSON]", new
-                {
-                    ID_CCFENC = IdCCFEnc
-                });
-                _dal.EjecutarSinRetorno("[EIVA].[SP_LBVENTACCF_INS]", new
                 {
                     ID_CCFENC = IdCCFEnc
                 });
@@ -995,6 +1223,13 @@ namespace SistemaContable.UI.Forms.Ventas
             if (cbxTIPO_DTE.Items.Count > 0) cbxTIPO_DTE.SelectedIndex = 0;
             CargarCondicionPago();
             if (cbxCONDPAGO.Items.Count > 0) cbxCONDPAGO.SelectedIndex = 0;
+            CargarZafra();
+            if (cbxZAFRA.Items.Count > 0) cbxZAFRA.SelectedIndex = 0;
+            _codiProveedorCliente = string.Empty;
+            cbxSOLICITUD.DataSource = null;
+            cbxSOLICITUD.Items.Clear();
+            CargarCentroCosto();
+            if (cbxCENTRO_COSTO.Items.Count > 0) cbxCENTRO_COSTO.SelectedIndex = 0;
             CargarSucursal();
             if (cbxSUCURSAL.Items.Count > 0) cbxSUCURSAL.SelectedIndex = 0;
             CargarVendedor();
@@ -1002,6 +1237,7 @@ namespace SistemaContable.UI.Forms.Ventas
             mskFECHA.Text = DateTime.Today.ToString("dd/MM/yyyy");
             txtCOD_GENERACION.Text = DALBase.NuevoGUID();
             CargarSiguienteNumDocumento(NullIfEmpty(cbxTIPO_DTE.Text), AnioDte);
+            ActualizarEstadoBotonSolicitudAgricola();
         }
         #endregion
         #region HELPERS
@@ -1043,6 +1279,142 @@ namespace SistemaContable.UI.Forms.Ventas
         #endregion
         #region BOTONES
         private void btnEliminar_Click(object sender, EventArgs e) => EliminarFilaDetalle();
+        private void btn_solicitudAgricola_Click(object sender, EventArgs e)
+        {
+            if (_idEntidad <= 0 || string.IsNullOrWhiteSpace(_codiProveedorCliente))
+            {
+                XtraMessageBox.Show(
+                    "Seleccione primero un cliente que tenga código de proveedor asociado.",
+                    "Solicitud agrícola",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                txtCLIENTE.Focus();
+                return;
+            }
+
+            int? idZafra = ObtenerIdCombo(cbxZAFRA);
+            if (!idZafra.HasValue || idZafra.Value <= 0)
+            {
+                XtraMessageBox.Show(
+                    "Seleccione la zafra antes de consultar las solicitudes.",
+                    "Solicitud agrícola",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                cbxZAFRA.Focus();
+                return;
+            }
+
+            using (var frm = new frmConsultaSolicitudAgricola(
+                _codiProveedorCliente,
+                idZafra.Value))
+            {
+                if (frm.ShowDialog(this) != DialogResult.OK ||
+                    frm.SolicitudSeleccionada == null)
+                    return;
+
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+
+                    int idSolicitud = Convert.ToInt32(
+                        frm.SolicitudSeleccionada["ID_SOLICITUD"]);
+
+                    CargarDetalleSolicitudAgricola(frm.DetalleSeleccionado);
+                    CargarSolicitudAgricola();
+                    cbxSOLICITUD.SelectedValue = idSolicitud;
+                }
+                catch (Exception ex)
+                {
+                    XtraMessageBox.Show(
+                        "No fue posible cargar los productos de la solicitud:\n\n" + ex.Message,
+                        "Solicitud agrícola",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
+            }
+        }
+
+        private void CargarDetalleSolicitudAgricola(DataTable detalleSolicitud)
+        {
+            if (detalleSolicitud == null || detalleSolicitud.Rows.Count == 0)
+                throw new InvalidOperationException(
+                    "La solicitud seleccionada no contiene productos para facturar.");
+
+            DataTable detallePreparado = _dtDetalle.Clone();
+
+            foreach (DataRow productoSolicitud in detalleSolicitud.Rows)
+            {
+                string codigoLocal = Convert.ToString(
+                    productoSolicitud["COD_REF"]).Trim();
+
+                if (string.IsNullOrWhiteSpace(codigoLocal))
+                    throw new InvalidOperationException(
+                        "La solicitud contiene un producto que todavía no está relacionado.");
+
+                DataTable productoParaGrid = _dal.EjecutarConsulta(
+                    "[EINVENTARIO].[SP_PRODUCTO]",
+                    new
+                    {
+                        ACCION = "BUSCAR_PRODUCTO_COD_REF",
+                        COD_REF = codigoLocal
+                    });
+
+                DataRow datosProductoGrid = productoParaGrid?.AsEnumerable()
+                    .FirstOrDefault();
+
+                if (datosProductoGrid == null)
+                    throw new InvalidOperationException(
+                        $"No se encontró el producto local con código '{codigoLocal}'.");
+
+                decimal cantidad = productoSolicitud["CANTIDAD"] == DBNull.Value
+                    ? 0m
+                    : Convert.ToDecimal(productoSolicitud["CANTIDAD"]);
+                decimal precio = datosProductoGrid["PRECIO"] == DBNull.Value
+                    ? 0m
+                    : Convert.ToDecimal(datosProductoGrid["PRECIO"]);
+
+                if (cantidad <= 0)
+                    throw new InvalidOperationException(
+                        $"El producto '{codigoLocal}' tiene una cantidad inválida.");
+
+                bool esExento = datosProductoGrid["ES_EXENTO"] != DBNull.Value &&
+                    Convert.ToBoolean(datosProductoGrid["ES_EXENTO"]);
+                decimal total = cantidad * precio;
+
+                DataRow filaDetalle = detallePreparado.NewRow();
+                filaDetalle["ID_PRODUCTO"] = Convert.ToInt32(
+                    datosProductoGrid["ID_PRODUCTO"]);
+                filaDetalle["COD_REF"] = Convert.ToString(
+                    datosProductoGrid["COD_REF"]).Trim();
+                filaDetalle["DESCRIPCION"] = Convert.ToString(
+                    datosProductoGrid["NOMBRE_PRODUCTO"]);
+                filaDetalle["UM"] = Convert.ToString(
+                    datosProductoGrid["UNIMEDIDA"]);
+                filaDetalle["PORC_DESC"] = 0m;
+                filaDetalle["CANTIDAD"] = cantidad;
+                filaDetalle["PRECIO"] = precio;
+                filaDetalle["ES_EXENTO"] = esExento;
+                filaDetalle["DESCUENTO"] = 0m;
+                filaDetalle["EXENTO"] = esExento ? total : 0m;
+                filaDetalle["GRAVADO"] = esExento ? 0m : total;
+                filaDetalle["TOTAL"] = total;
+                filaDetalle["ID_UNIDAD_MEDIDA"] = Convert.ToInt32(
+                    datosProductoGrid["ID_UNIDAD_MEDIDA"]);
+                detallePreparado.Rows.Add(filaDetalle);
+            }
+
+            _dtDetalle.Clear();
+            foreach (DataRow filaPreparada in detallePreparado.Rows)
+                _dtDetalle.ImportRow(filaPreparada);
+
+            AgregarFilaVacia();
+            gridControl1.RefreshDataSource();
+            ActualizarTotales();
+        }
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             LimpiarFormulario();
@@ -1055,7 +1427,66 @@ namespace SistemaContable.UI.Forms.Ventas
         private void cbxCONDPAGO_SelectedIndexChanged(object sender, EventArgs e)
         {
             CalcularDiasVenceDefault();
+            AplicarEstadoCobroPorCondicion();
+
+            if (_dtDetalle != null)
+                ActualizarTotales();
         }
+
+        private bool EsPagoContado()
+        {
+            return ObtenerIdCombo(cbxCONDPAGO) == 1;
+        }
+
+        private void AplicarEstadoCobroPorCondicion()
+        {
+            bool habilitarCobro = EsPagoContado();
+            Control[] camposCobro =
+            {
+                txtRECIB_EFECTIVO,
+                txtRECIB_REMESA,
+                txtRECIB_CHEQUE,
+                txtRECIB_NOTAABONO,
+                txtRECIB_ANTICIPO,
+                txtRECIB_EFECTIVO_CAMBIO,
+                txtRECIB_REMESA_BANCO,
+                txtRECIB_REMESA_CUENTA,
+                txtRECIB_REMESA_MONTO,
+                txtRECIB_CHEQUE_BANCO,
+                txtRECIB_CHEQUE_CUENTA,
+                txtRECIB_CHEQUE_MONTO,
+                txtRECIB_NOTAABONO_BANCO,
+                txtRECIB_NOTAABONO_CUENTA,
+                txtRECIB_NOTAABONO_MONTO
+            };
+
+            foreach (Control campo in camposCobro)
+                campo.Enabled = habilitarCobro;
+
+            if (!habilitarCobro)
+                LimpiarCamposCobro();
+        }
+
+        private void LimpiarCamposCobro()
+        {
+            txtRECIB_EFECTIVO.Text = "0.00";
+            txtRECIB_REMESA.Text = "0.00";
+            txtRECIB_CHEQUE.Text = "0.00";
+            txtRECIB_NOTAABONO.Text = "0.00";
+            txtRECIB_ANTICIPO.Text = "0.00";
+            txtRECIB_EFECTIVO_CAMBIO.Text = "0.00";
+
+            txtRECIB_REMESA_BANCO.Text = string.Empty;
+            txtRECIB_REMESA_CUENTA.Text = string.Empty;
+            txtRECIB_REMESA_MONTO.Text = "0.00";
+            txtRECIB_CHEQUE_BANCO.Text = string.Empty;
+            txtRECIB_CHEQUE_CUENTA.Text = string.Empty;
+            txtRECIB_CHEQUE_MONTO.Text = "0.00";
+            txtRECIB_NOTAABONO_BANCO.Text = string.Empty;
+            txtRECIB_NOTAABONO_CUENTA.Text = string.Empty;
+            txtRECIB_NOTAABONO_MONTO.Text = "0.00";
+        }
+
         private void CalcularDiasVenceDefault()
         {
             int? idCondPago = ObtenerIdCombo(cbxCONDPAGO);

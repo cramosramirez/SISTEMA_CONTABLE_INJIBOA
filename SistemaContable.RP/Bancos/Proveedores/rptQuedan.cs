@@ -10,6 +10,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
     public partial class rptQuedan : SistemaContable.RP.ReporteBase
     {
         public int IdQuedan { get; set; }
+        public string NombreProcedimiento { get; set; } = "SP_QUEDAN_RPT";
 
         public rptQuedan()
         {
@@ -21,7 +22,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
                 throw new InvalidOperationException(
                     "Debe asignar IdQuedan antes de imprimir.");
 
-            DataTable dt = EjecutarSP("SP_QUEDAN_RPT", new
+            DataTable dt = EjecutarSP(NombreProcedimiento, new
             {
                 ACCION = "QUEDAN",
                 ID_QUEDAN = IdQuedan

@@ -21,6 +21,11 @@ namespace SistemaContable.UI.Forms.Ventas
         private int _idEntidad = 0;
         private string _codigoEntidad = string.Empty;
         private string _columnaAnteriorGrid = string.Empty;
+        // CODIPROVEEDOR del cliente seleccionado, usado para filtrar el combo "Solicitud"
+        // (mismo patrón que frmCreditoFiscal). [EDTE].[SP_FACTURA_ENC] @ACCION='OBTENER' todavía
+        // no devuelve la columna CODIPROVEEDOR, así que al reabrir una factura existente el
+        // combo Solicitud queda vacío (igual que en CCF); se completa al buscar el cliente.
+        private string _codiProveedorCliente = string.Empty;
         #endregion
         public int IdFactEnc { get; set; } = 0;
         public int AnioDte { get; set; } = 0;
@@ -202,6 +207,14 @@ namespace SistemaContable.UI.Forms.Ventas
                 chkPERCEPCION.Checked = Convert.ToBoolean(r["AP_PERCEPCION"]);
                 txtOBSERVACION.Text = AsString(r["OBSERVACIONES"]);
 
+                // Restaurar combo "Solicitud": primero el CODIPROVEEDOR del cliente (si
+                // [EDTE].[SP_FACTURA_ENC] llega a exponerlo vía JOIN a ENTIDAD, igual que CCF),
+                // luego recargar las opciones (ID_ZAFRA + CODIPROVEEDOR).
+                _codiProveedorCliente = r.Table.Columns.Contains("CODIPROVEEDOR") && r["CODIPROVEEDOR"] != DBNull.Value
+                                            ? r["CODIPROVEEDOR"].ToString().Trim() : string.Empty;
+                CargarSolicitudAgricola();
+                ActualizarEstadoBotonSolicitudAgricola();
+
                 CargarFacturaDetalleExistente(idFactEnc);
             }
             catch (Exception ex)
@@ -277,6 +290,7 @@ namespace SistemaContable.UI.Forms.Ventas
             _codigoEntidad = fila["CODIGO_ENTIDAD"].ToString();
             _idTipoContribCliente = Convert.ToInt32(fila["ID_TIPO_CONTRIB"]);
             _idTipoPersona = Convert.ToInt32(fila["ID_TIPO_PERSONA"]);
+            txtCLIENTE.Text = _codigoEntidad;
             txtNOMBRE_CLIENTE.Text = fila["NOMBRE"].ToString();
             txtNIT.Text = fila["NIT"].ToString();
             txtDUI.Text = fila["DUI"].ToString();
@@ -285,6 +299,80 @@ namespace SistemaContable.UI.Forms.Ventas
             txtACTIVIDAD_PRIMARIA.Text = fila["ACTIVIDAD_PRIMARIA"].ToString();
             txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
             txtTIPO_CONTRIBUYENTE.Text = fila["TIPO_CONTRIBUYENTE"].ToString();
+            // Lectura del CODIPROVEEDOR para filtrar las solicitudes. Si la búsqueda
+            // resumida todavía no expone la columna, se recupera desde OBTENER.
+            _codiProveedorCliente = ObtenerCodiProveedorCliente(fila);
+            CargarSolicitudAgricola();
+            ActualizarEstadoBotonSolicitudAgricola();
+        }
+        private void ActualizarEstadoBotonSolicitudAgricola()
+        {
+            bool hayDatosVisiblesCliente =
+                !string.IsNullOrWhiteSpace(txtCLIENTE.Text) ||
+                !string.IsNullOrWhiteSpace(txtNOMBRE_CLIENTE.Text) ||
+                !string.IsNullOrWhiteSpace(txtDUI.Text) ||
+                !string.IsNullOrWhiteSpace(txtNIT.Text) ||
+                !string.IsNullOrWhiteSpace(txtTELEFONO.Text) ||
+                !string.IsNullOrWhiteSpace(txtCORREO.Text) ||
+                !string.IsNullOrWhiteSpace(txtACTIVIDAD_PRIMARIA.Text) ||
+                !string.IsNullOrWhiteSpace(txtDIRECCION.Text) ||
+                !string.IsNullOrWhiteSpace(txtTIPO_CONTRIBUYENTE.Text);
+
+            bool clienteCargado = _idEntidad > 0 && hayDatosVisiblesCliente;
+            btn_solicitudAgricola.Enabled = clienteCargado;
+            btn_solicitudAgricola.ToolTip = clienteCargado
+                ? "Consultar solicitudes agrícolas del cliente seleccionado."
+                : "Seleccione un cliente antes de consultar solicitudes agrícolas.";
+        }
+        private string ObtenerCodiProveedorCliente(DataRow fila)
+        {
+            if (fila.Table.Columns.Contains("CODIPROVEEDOR") &&
+                fila["CODIPROVEEDOR"] != DBNull.Value)
+            {
+                string codiProveedor = fila["CODIPROVEEDOR"].ToString().Trim();
+                if (!string.IsNullOrWhiteSpace(codiProveedor))
+                    return codiProveedor;
+            }
+
+            DataTable entidad = _dal.EjecutarConsulta("[EDTE].[SP_ENTIDAD]", new
+            {
+                ACCION = "OBTENER",
+                ID_ENTIDAD = _idEntidad
+            });
+
+            return entidad != null && entidad.Rows.Count > 0 &&
+                   entidad.Columns.Contains("CODIPROVEEDOR") &&
+                   entidad.Rows[0]["CODIPROVEEDOR"] != DBNull.Value
+                ? entidad.Rows[0]["CODIPROVEEDOR"].ToString().Trim()
+                : string.Empty;
+        }
+        /// <summary>
+        /// Llena el combo "Solicitud" (cbxSOLICITUD) con las solicitudes agrícolas del
+        /// cliente/zafra actuales, usando el primer resultado de
+        /// [ESOLICITUD].[SP_SOLICITUDES_SIGESTA]. Mismo patrón que frmCreditoFiscal.
+        /// </summary>
+        private void CargarSolicitudAgricola()
+        {
+            int? idZafra = ObtenerIdCombo(cbxZAFRA);
+            if (idZafra == null || idZafra <= 0 || string.IsNullOrWhiteSpace(_codiProveedorCliente))
+            {
+                cbxSOLICITUD.DataSource = null;
+                cbxSOLICITUD.Items.Clear();
+                return;
+            }
+            DataTable dt = _dal.EjecutarConsulta("[ESOLICITUD].[SP_SOLICITUDES_SIGESTA]", new
+            {
+                ACTION = "PRODUCTOR_ENCABEZADO",
+                ID_ZAFRA = idZafra,
+                CODIPROVEEDOR = _codiProveedorCliente
+            });
+            cbxSOLICITUD.DataSource = dt;
+            cbxSOLICITUD.ValueMember = "ID_SOLICITUD";
+            cbxSOLICITUD.DisplayMember = "NUM_SOLICITUD";
+        }
+        private void cbxZAFRA_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CargarSolicitudAgricola();
         }
         private void CargarEmisor(int idEmisor)
         {
@@ -791,6 +879,147 @@ namespace SistemaContable.UI.Forms.Ventas
             _dtDetalle.Rows[rowHandle]["ES_NOSUJETA"] = esNosujeta;
             _dtDetalle.Rows[rowHandle]["ID_UNIDAD_MEDIDA"] = Convert.ToInt32(fila["ID_UNIDAD_MEDIDA"]);
             RecalcularLinea(view, rowHandle);
+        }
+        #endregion
+        #region SOLICITUD AGRÍCOLA
+        private void btn_solicitudAgricola_Click(object sender, EventArgs e)
+        {
+            if (_idEntidad <= 0 || string.IsNullOrWhiteSpace(_codiProveedorCliente))
+            {
+                XtraMessageBox.Show(
+                    "Seleccione primero un cliente que tenga código de proveedor asociado.",
+                    "Solicitud agrícola",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                txtCLIENTE.Focus();
+                return;
+            }
+
+            int? idZafra = ObtenerIdCombo(cbxZAFRA);
+            if (!idZafra.HasValue || idZafra.Value <= 0)
+            {
+                XtraMessageBox.Show(
+                    "Seleccione la zafra antes de consultar las solicitudes.",
+                    "Solicitud agrícola",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                cbxZAFRA.Focus();
+                return;
+            }
+
+            using (var frm = new frmConsultaSolicitudAgricola(
+                _codiProveedorCliente,
+                idZafra.Value))
+            {
+                if (frm.ShowDialog(this) != DialogResult.OK ||
+                    frm.SolicitudSeleccionada == null)
+                    return;
+
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+
+                    int idSolicitud = Convert.ToInt32(
+                        frm.SolicitudSeleccionada["ID_SOLICITUD"]);
+
+                    CargarDetalleSolicitudAgricola(frm.DetalleSeleccionado);
+                    CargarSolicitudAgricola();
+                    cbxSOLICITUD.SelectedValue = idSolicitud;
+                }
+                catch (Exception ex)
+                {
+                    XtraMessageBox.Show(
+                        "No fue posible cargar los productos de la solicitud:\n\n" + ex.Message,
+                        "Solicitud agrícola",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
+            }
+        }
+        private void CargarDetalleSolicitudAgricola(DataTable detalleSolicitud)
+        {
+            if (detalleSolicitud == null || detalleSolicitud.Rows.Count == 0)
+                throw new InvalidOperationException(
+                    "La solicitud seleccionada no contiene productos para facturar.");
+
+            DataTable detallePreparado = _dtDetalle.Clone();
+
+            foreach (DataRow productoSolicitud in detalleSolicitud.Rows)
+            {
+                string codigoLocal = Convert.ToString(
+                    productoSolicitud["COD_REF"]).Trim();
+
+                if (string.IsNullOrWhiteSpace(codigoLocal))
+                    throw new InvalidOperationException(
+                        "La solicitud contiene un producto que todavía no está relacionado.");
+
+                DataTable productoParaGrid = _dal.EjecutarConsulta(
+                    "[EINVENTARIO].[SP_PRODUCTO]",
+                    new
+                    {
+                        ACCION = "BUSCAR_PRODUCTO_COD_REF",
+                        COD_REF = codigoLocal
+                    });
+
+                DataRow datosProductoGrid = productoParaGrid?.AsEnumerable()
+                    .FirstOrDefault();
+
+                if (datosProductoGrid == null)
+                    throw new InvalidOperationException(
+                        $"No se encontró el producto local con código '{codigoLocal}'.");
+
+                decimal cantidad = productoSolicitud["CANTIDAD"] == DBNull.Value
+                    ? 0m
+                    : Convert.ToDecimal(productoSolicitud["CANTIDAD"]);
+                decimal precio = datosProductoGrid["PRECIO"] == DBNull.Value
+                    ? 0m
+                    : Convert.ToDecimal(datosProductoGrid["PRECIO"]);
+
+                if (cantidad <= 0)
+                    throw new InvalidOperationException(
+                        $"El producto '{codigoLocal}' tiene una cantidad inválida.");
+
+                bool esExento = datosProductoGrid["ES_EXENTO"] != DBNull.Value &&
+                    Convert.ToBoolean(datosProductoGrid["ES_EXENTO"]);
+                decimal total = cantidad * precio;
+
+                DataRow filaDetalle = detallePreparado.NewRow();
+                filaDetalle["ID_PRODUCTO"] = Convert.ToInt32(
+                    datosProductoGrid["ID_PRODUCTO"]);
+                filaDetalle["COD_REF"] = Convert.ToString(
+                    datosProductoGrid["COD_REF"]).Trim();
+                filaDetalle["DESCRIPCION"] = Convert.ToString(
+                    datosProductoGrid["NOMBRE_PRODUCTO"]);
+                filaDetalle["UM"] = Convert.ToString(
+                    datosProductoGrid["UNIMEDIDA"]);
+                filaDetalle["PORC_DESC"] = 0m;
+                filaDetalle["CANTIDAD"] = cantidad;
+                filaDetalle["PRECIO"] = precio;
+                filaDetalle["ES_EXENTO"] = esExento;
+                // frmFactura maneja también "No Sujeta" (columna que CCF no tiene); la solicitud
+                // agrícola no trae ese dato, así que por defecto entra como no-exenta/no-nosujeta.
+                filaDetalle["ES_NOSUJETA"] = false;
+                filaDetalle["DESCUENTO"] = 0m;
+                filaDetalle["NOSUJETA"] = 0m;
+                filaDetalle["EXENTO"] = esExento ? total : 0m;
+                filaDetalle["GRAVADO"] = esExento ? 0m : total;
+                filaDetalle["TOTAL"] = total;
+                filaDetalle["ID_UNIDAD_MEDIDA"] = Convert.ToInt32(
+                    datosProductoGrid["ID_UNIDAD_MEDIDA"]);
+                detallePreparado.Rows.Add(filaDetalle);
+            }
+
+            _dtDetalle.Clear();
+            foreach (DataRow filaPreparada in detallePreparado.Rows)
+                _dtDetalle.ImportRow(filaPreparada);
+
+            AgregarFilaVacia();
+            gridControl1.RefreshDataSource();
+            ActualizarTotales();
         }
         #endregion
         #region ELIMINAR FILA
