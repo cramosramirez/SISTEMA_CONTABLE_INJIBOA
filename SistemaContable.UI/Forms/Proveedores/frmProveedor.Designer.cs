@@ -438,7 +438,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnGuardar.Size = new System.Drawing.Size(119, 47);
             this.btnGuardar.TabIndex = 39;
             this.btnGuardar.TabStop = false;
-            this.btnGuardar.Text = "Guardar";            
+            this.btnGuardar.Text = "Guardar";
             // 
             // txtID_CARGADORA
             // 
