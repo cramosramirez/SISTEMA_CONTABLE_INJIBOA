@@ -325,7 +325,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.cboProducto.Name = "cboProducto";
             this.cboProducto.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] {
             new DevExpress.XtraEditors.Controls.LookUpColumnInfo("COD_REF", "Código", 100, DevExpress.Utils.FormatType.None, "", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None, DevExpress.Utils.DefaultBoolean.Default),
-            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("DESCRIPCION", "Producto"),
+            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("DESCRIPCION", "Producto",300,DevExpress.Utils.FormatType.None, "", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None, DevExpress.Utils.DefaultBoolean.Default),
             new DevExpress.XtraEditors.Controls.LookUpColumnInfo("PRESENTACION", "Presentación", 150, DevExpress.Utils.FormatType.None, "", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None, DevExpress.Utils.DefaultBoolean.Default)});
             this.cboProducto.Properties.DisplayMember = "DESCRIPCION";
             this.cboProducto.Properties.NullText = "";
