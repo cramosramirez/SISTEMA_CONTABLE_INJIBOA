@@ -175,7 +175,7 @@ namespace SistemaContable.UI.Forms.Exportacion
 
                 _dal.EjecutarConSalida("[EEXPORTACION].[SP_EXP_VAPORES_INSERTAR]", parametros);
 
-                int resultado = parametros.Get<int>("@Resultado");
+                int? resultado = parametros.Get<int?>("@Resultado");
                 string mensaje = parametros.Get<string>("@Mensaje");
 
                 if (resultado == 1)

@@ -147,7 +147,28 @@ namespace SistemaContable.UI.Forms.Exportacion
             var dt = _dal.EjecutarConsulta("[EEXPORTACION].[SP_EXP_MERCADOS_CONSULTAR]");
             gridControl1.DataSource = dt;
         }
-
+        private bool ValidarCampos()
+        {
+            if (string.IsNullOrWhiteSpace(txtCodMerc.Text))
+            {
+                Alertas.Advertencia("Ingrese la codigo del Mercado.");
+                txtCodMerc.Focus();
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(txtDescripcion.Text))
+            {
+                Alertas.Advertencia("Ingrese la descripcion del Mercado.");
+                txtDescripcion.Focus();
+                return false;
+            }
+            if (ObtenerCodigoEstadoSeleccionado() == null)
+            {
+                Alertas.Advertencia("Seleccione el estado del Mercado.");
+                cboEstado.Focus();
+                return false;
+            }
+            return true;
+        }
         // ------------------------------------------------------------------
         // Botones
         // ------------------------------------------------------------------
@@ -174,7 +195,7 @@ namespace SistemaContable.UI.Forms.Exportacion
 
                 _dal.EjecutarConSalida("[EEXPORTACION].[SP_EXP_MERCADOS_INSERTAR]", parametros);
 
-                int resultado = parametros.Get<int>("@Resultado");
+                int? resultado = parametros.Get<int?>("@Resultado");
                 string mensaje = parametros.Get<string>("@Mensaje");
 
                 if (resultado == 1)
@@ -290,28 +311,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             LimpiarControles();
         }
 
-        private bool ValidarCampos()
-        {
-            if (string.IsNullOrWhiteSpace(txtCodMerc.Text))
-            {
-                Alertas.Advertencia("Ingrese la codigo del Mercado.");
-                txtCodMerc.Focus();
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(txtDescripcion.Text))
-            {
-                Alertas.Advertencia("Ingrese la descripcion del Mercado.");
-                txtDescripcion.Focus();
-                return false;
-            }
-            if (ObtenerCodigoEstadoSeleccionado() == null)
-            {
-                Alertas.Advertencia("Seleccione el estado del Mercado.");
-                cboEstado.Focus();
-                return false;
-            }
-            return true;
-        }
+       
 
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
