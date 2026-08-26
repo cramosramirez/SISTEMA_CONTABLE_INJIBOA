@@ -13,13 +13,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClosedXML.Excel;
+using DevExpress.XtraEditors;
 using SistemaContable.DAL;
 using SistemaContable.UI.Helpers;
-
 namespace SistemaContable.UI.Forms.Iva
 {
     public partial class frmF07 : Form
     {
+        public FormBorderEffect FormBorderEffect { get; }
+        public object IconOptions { get; }
+
         private void InicializarMeses()
         {
             cb_Mes.DataSource = FormHelper.ObtenerMeses();
@@ -67,8 +70,7 @@ namespace SistemaContable.UI.Forms.Iva
             InicializarMeses();
             InicializarDatos();
             ActivarSeleccionUnica(groupControl2);
-
-
+           
         }
         #region Generar Anexos
         private DataTable ObtenerDatosAnexo1(string anio, string mes)

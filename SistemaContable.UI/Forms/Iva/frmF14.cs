@@ -17,10 +17,9 @@ using DevExpress.LookAndFeel;
 using SistemaContable.DAL;
 using SistemaContable.UI.Helpers;
 
-
 namespace SistemaContable.UI.Forms.Iva
 {
-    public partial class frmF28 : Form
+    public partial class frmF14 : Form
     {
         private void InicializarMeses()
         {
@@ -63,13 +62,13 @@ namespace SistemaContable.UI.Forms.Iva
                 }
             }
         }
-        public frmF28()
+        public frmF14()
         {
             InitializeComponent();
             InicializarMeses();
             InicializarDatos();
             ActivarSeleccionUnica(groupControl2);
-           
+
 
         }
         #region Generar Anexos
@@ -79,7 +78,7 @@ namespace SistemaContable.UI.Forms.Iva
 
             using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
             {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_COMPRA_F28]", conn))
+                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_COMPRAS_F14]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -125,13 +124,13 @@ namespace SistemaContable.UI.Forms.Iva
 
             using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
             {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_EXPORTACION_F28]", conn))
+                using (SqlCommand cmd = new SqlCommand("[EIVA].VIEW_ANEXO_PERSONAL_F14", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // ✅ Parámetros de entrada
-                    cmd.Parameters.AddWithValue("@anio", anio);
-                    cmd.Parameters.AddWithValue("@mes", mes);
+                    cmd.Parameters.AddWithValue("@anio_", anio);
+                    cmd.Parameters.AddWithValue("@mes_", mes);
                     cmd.Parameters.AddWithValue("@USER_CREA", Configuracion.UsuarioActual);
 
                     // ✅ Parámetros OUTPUT
@@ -171,7 +170,7 @@ namespace SistemaContable.UI.Forms.Iva
 
             using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
             {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_CONSUMIDORFINAL_F28]", conn))
+                using (SqlCommand cmd = new SqlCommand("[EIVA].VIEW_ANEXO_UNIFICADO_F14", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -211,53 +210,8 @@ namespace SistemaContable.UI.Forms.Iva
 
             return dt;
         }
-        private DataTable ObtenerDatosAnexo5(string anio, string mes)
-        {
-            DataTable dt = new DataTable();
 
-            using (SqlConnection conn = new SqlConnection(Configuracion.CadenaConexion))
-            {
-                using (SqlCommand cmd = new SqlCommand("[EIVA].[VIEW_ANEXO_CONTRIBUYENTE_F28]", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
 
-                    // ✅ Parámetros de entrada
-                    cmd.Parameters.AddWithValue("@anio", anio);
-                    cmd.Parameters.AddWithValue("@mes", mes);
-                    cmd.Parameters.AddWithValue("@USER_CREA", Configuracion.UsuarioActual);
-
-                    // ✅ Parámetros OUTPUT
-                    SqlParameter msg = new SqlParameter("@msg", SqlDbType.NVarChar, 800)
-                    {
-                        Direction = ParameterDirection.Output
-                    };
-                    cmd.Parameters.Add(msg);
-
-                    SqlParameter code = new SqlParameter("@pResCode", SqlDbType.Int)
-                    {
-                        Direction = ParameterDirection.Output
-                    };
-                    cmd.Parameters.Add(code);
-
-                    // ✅ Ejecutar y llenar DataTable
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    da.Fill(dt);
-
-                    // ✅ Validación resultado del SP
-                    int res = code.Value != DBNull.Value ? (int)code.Value : -1;
-                    string mensaje = msg.Value?.ToString();
-
-                    if (res != 0)
-                    {
-                        Alertas.Error(mensaje);
-                        return null;
-                    }
-                }
-            }
-
-            return dt;
-        }
-       
         #endregion
 
         #region Exportar
@@ -275,7 +229,7 @@ namespace SistemaContable.UI.Forms.Iva
             // Ruta base: Escritorio
             string escritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F28", anio, nombreMes, "Xls");
+            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F14", anio, nombreMes, "Xls");
 
             // Crear carpetas si no existen
             Directory.CreateDirectory(rutaBase);
@@ -320,7 +274,7 @@ namespace SistemaContable.UI.Forms.Iva
 
             string escritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F28", anio, nombreMes, "Csv");
+            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F14", anio, nombreMes, "Csv");
 
             Directory.CreateDirectory(rutaBase);
 
@@ -442,7 +396,7 @@ namespace SistemaContable.UI.Forms.Iva
                 progressBar1.Maximum = 100;
                 progressBar1.Value = 0;
 
-                if (ck_Anexo1.Checked == false && ck_Anexo2.Checked == false && ck_Anexo3.Checked == false && ck_Anexo5.Checked == false )
+                if (ck_Anexo1.Checked == false && ck_Anexo2.Checked == false && ck_Anexo3.Checked == false)
                 {
                     Alertas.Error("Seleccione el Informe a Emitir");
                     return;
@@ -460,8 +414,8 @@ namespace SistemaContable.UI.Forms.Iva
 
                     if (dt != null)
                     {
-                        ExportarExcel(dt, "Anexo_1_Vtas_Contribuyentes", anio, mes, "Anexo_1");
-                         progressBar1.Value = 100; // Excel generado
+                        ExportarExcel(dt, "Anexo_compras", anio, mes, "Anexo");
+                        progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
                 }
@@ -476,8 +430,8 @@ namespace SistemaContable.UI.Forms.Iva
                     var dt = ObtenerDatosAnexo2(anio, mes);
                     if (dt != null)
                     {
-                        ExportarExcel(dt, "Anexo_2_Vtas_Consumidor", anio, mes, "Anexo_2");
-                         progressBar1.Value = 100; // Excel generado
+                        ExportarExcel(dt, "Anexo_Personal", anio, mes, "Anexo");
+                        progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
                 }
@@ -492,29 +446,15 @@ namespace SistemaContable.UI.Forms.Iva
                     var dt = ObtenerDatosAnexo3(anio, mes);
                     if (dt != null)
                     {
-                        ExportarExcel(dt, "Anexo_3_Compras", anio, mes, "Anexo_3");
-                         progressBar1.Value = 100; // Excel generado
+                        ExportarExcel(dt, "Anexo_Unificado", anio, mes, "Anexo");
+                        progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
                 }
 
-                if (ck_Anexo5.Checked)
-                {
-                    progressBar1.Visible = true;
-                    progressBar1.Value = 65;
-                    lblEstado.Visible = true;
-                    lblEstado.Text = "Procesando... 65%";
-                    Application.DoEvents();
-                    var dt = ObtenerDatosAnexo5(anio, mes);
-                    if (dt != null)
-                    {
-                        ExportarExcel(dt, "Anexo_5_Compras_Sujetos", anio, mes, "Anexo_5");
-                         progressBar1.Value = 100; // Excel generado
-                        lblEstado.Text = "Completado 100%";
-                    }
-                }
+                
 
-              }
+            }
             catch (Exception ex)
             {
                 Alertas.Error(ex.Message);
@@ -555,8 +495,8 @@ namespace SistemaContable.UI.Forms.Iva
                 progressBar1.Maximum = 100;
                 progressBar1.Value = 0;
 
-                if (ck_Anexo1.Checked == false && ck_Anexo2.Checked == false && ck_Anexo3.Checked == false && ck_Anexo5.Checked == false )
-                  
+                if (ck_Anexo1.Checked == false && ck_Anexo2.Checked == false && ck_Anexo3.Checked == false )
+
                 {
                     Alertas.Error("Seleccione el Informe a Emitir");
                     return;
@@ -574,8 +514,8 @@ namespace SistemaContable.UI.Forms.Iva
                     if (dt != null)
                     {
 
-                        ExportarCsv(dt, "Anexo_1_Vtas_Contribuyentes", anio, mes, "Anexo_1");
-                         progressBar1.Value = 100; // Excel generado
+                        ExportarCsv(dt, "Anexo_Compras", anio, mes, "Anexo");
+                        progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
                 }
@@ -590,8 +530,8 @@ namespace SistemaContable.UI.Forms.Iva
                     var dt = ObtenerDatosAnexo2(anio, mes);
                     if (dt != null)
                     {
-                        ExportarCsv(dt, "Anexo_2_Vtas_Consumidor", anio, mes, "Anexo_2");
-                         progressBar1.Value = 100; // Excel generado
+                        ExportarCsv(dt, "Anexo_Personal", anio, mes, "Anexo");
+                        progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
                 }
@@ -606,29 +546,15 @@ namespace SistemaContable.UI.Forms.Iva
                     var dt = ObtenerDatosAnexo3(anio, mes);
                     if (dt != null)
                     {
-                        ExportarCsv(dt, "Anexo_3_Compras", anio, mes, "Anexo_3");
-                         progressBar1.Value = 100; // Excel generado
+                        ExportarCsv(dt, "Anexo_Unificado", anio, mes, "Anexo");
+                        progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
                 }
 
-                if (ck_Anexo5.Checked)
-                {
-                    progressBar1.Visible = true;
-                    progressBar1.Value = 65;
-                    lblEstado.Visible = true;
-                    lblEstado.Text = "Procesando... 65%";
-                    Application.DoEvents();
-                    var dt = ObtenerDatosAnexo5(anio, mes);
-                    if (dt != null)
-                    {
-                        ExportarCsv(dt, "Anexo_5_Compras_Sujetos", anio, mes, "Anexo_5");
-                         progressBar1.Value = 100; // Excel generado
-                        lblEstado.Text = "Completado 100%";
-                    }
-                }
+               
 
-                
+
             }
             catch (Exception ex)
             {
@@ -644,7 +570,7 @@ namespace SistemaContable.UI.Forms.Iva
         {
             string nombreMes = ObtenerMesEspanol(cb_Mes.SelectedValue.ToString());
             string escritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F28", txt_Anio.Text, nombreMes);
+            string rutaBase = Path.Combine(escritorio, "AnexosMH", "Injiboa", "F14", txt_Anio.Text, nombreMes);
 
             if (Directory.Exists(rutaBase))
             {

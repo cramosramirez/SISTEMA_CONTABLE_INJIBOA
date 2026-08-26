@@ -753,7 +753,7 @@ namespace SistemaContable.UI.Forms.Iva
                         return;
                     }
 
-                    progressBar1.Visible = false;
+                progressBar1.Visible = false;
                 lblEstado.Visible = false;
                 progressBar1.Style = ProgressBarStyle.Blocks;
                 progressBar1.Minimum = 0;
