@@ -69,6 +69,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             CargarTipoImportacion(); // Independiente
             CargarTipoOperacion();  // Independiente (al cambiar dispara cascada)
             CargarTipoRenta();
+            CargarTipoServicio();
             LimpiarCombo(cbxCLASIFICACION, "ID_CLASIFICA");
             LimpiarCombo(cbxSECTOR, "ID_SECTOR");
             LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
@@ -257,6 +258,10 @@ namespace SistemaContable.UI.Forms.Proveedores
                 if (r["ID_TIPO_RENTA"] != DBNull.Value)
                     cbxTIPO_RENTA.SelectedValue = Convert.ToInt32(r["ID_TIPO_RENTA"]);
 
+                // ---------- Tipo de servicio ----------
+                if (r["ID_TIPO_SERVI"] != DBNull.Value)
+                    cbxTIPO_SERVICIO.SelectedValue = Convert.ToInt32(r["ID_TIPO_SERVI"]);
+
                 // ---------- Montos ----------
                 AsignarDecimal(txtGRAVADA, ToDecimal(r["GRAVADA"]));
                 AsignarDecimal(txtEXENTA, ToDecimal(r["EXENTA"]));
@@ -417,6 +422,16 @@ namespace SistemaContable.UI.Forms.Proveedores
             cbxTIPO_RENTA.DataSource = dt;
             cbxTIPO_RENTA.ValueMember = "ID_TIPO_RENTA";
             cbxTIPO_RENTA.DisplayMember = "DESCRIPCION";
+        }
+
+        private void CargarTipoServicio()
+        {
+            DataTable dt = _dal.EjecutarConsulta("SP_COMPRA_TIPO_SERVICIO",
+                new { ACCION = "COMBO" });
+            InsertarFilaSeleccione(dt, "ID_TIPO_SERVI");
+            cbxTIPO_SERVICIO.DataSource = dt;
+            cbxTIPO_SERVICIO.ValueMember = "ID_TIPO_SERVI";
+            cbxTIPO_SERVICIO.DisplayMember = "NOMBRE";
         }
 
         private void InsertarFilaSeleccione(DataTable dt, string idField)
@@ -995,6 +1010,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     FECHA_VENCE = ParsearFechaOpcional(mskFECHA_VENCE.Text),
                     ORDEN = NullIfEmpty(txtORDEN.Text),
                     ID_SUCURSAL = Convert.ToInt32(cbxSUCURSAL.SelectedValue),
+                    ID_TIPO_SERVI = ObtenerIdCombo(cbxTIPO_SERVICIO),
                     ID_TIPO_IMPORTACION = ObtenerIdCombo(cbxTIPO_IMPORTACION),
                     ID_TIPO_OPERA = ObtenerIdCombo(cbxTIPO_OPERACION),
                     ID_CLASIFICA = ObtenerIdCombo(cbxCLASIFICACION),
@@ -1097,6 +1113,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             LimpiarCombo(cbxSECTOR, "ID_SECTOR");
             LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
             cbxTIPO_RENTA.SelectedIndex = 0;
+            cbxTIPO_SERVICIO.SelectedIndex = 0;
 
             foreach (var tb in new[] {
                 txtGRAVADA, txtEXENTA, txtEXCLUIDO,
@@ -1106,7 +1123,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 tb.Text = "";
             }
-            txtCONSULTA_MH.Focus();
+            txtPROVEEDOR.Focus();
         }
 
         #endregion

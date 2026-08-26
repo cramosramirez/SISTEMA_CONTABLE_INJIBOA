@@ -243,6 +243,12 @@
     <Compile Include="Ventas\rptFactura.Designer.cs">
       <DependentUpon>rptFactura.cs</DependentUpon>
     </Compile>
+    <Compile Include="Ventas\rptNotaCredito.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ventas\rptNotaCredito.Designer.cs">
+      <DependentUpon>rptNotaCredito.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Bancos\Proveedores\rptChequeAnexo.resx">
@@ -309,6 +315,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ventas\rptFactura.resx">
       <DependentUpon>rptFactura.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ventas\rptNotaCredito.resx">
+      <DependentUpon>rptNotaCredito.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,305 @@
+USE [PH2]
+GO
+/****** Object:  StoredProcedure [EDTE].[SP_FACTURA_ENC]    Script Date: 25/8/2026 16:31:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [EDTE].[SP_FACTURA_ENC]
+    @ACCION                  VARCHAR(50),
+    @ID_FACTENC              INT             = NULL,
+    @ID_EMISOR               INT             = NULL,
+    @ID_SUCURSAL             INT             = NULL,
+    @ID_ALMACEN              INT             = NULL,
+    @ID_CAJA                 INT             = NULL,
+    @ID_CAJERO               INT             = NULL,
+    @ID_CONDPAGO             INT             = NULL,
+    @ID_CLIENTE              CHAR(10)        = NULL,
+    @COD_REF                 NVARCHAR(15)    = NULL,
+    @ID_TIPO_DTE             INT             = NULL,
+    @TPDOC                   NVARCHAR(6)     = NULL,
+    @FECHA                   DATE            = NULL,
+    @SALFEC                  NVARCHAR(6)     = NULL,
+    @NUMDOC                  NVARCHAR(15)    = NULL,
+    @CODGENERACION           NVARCHAR(40)    = NULL,
+    @NUMCONTROL              NVARCHAR(40)    = NULL,
+    @SELLORECEPCION          NVARCHAR(40)    = NULL,
+    @NUMINTERNO              NVARCHAR(15)    = NULL,
+    @FHPROCESAMIENTO         NVARCHAR(40)    = NULL,
+    @FECHA_ANULACION         NVARCHAR(40)    = NULL,
+    @CODGENERACION_ANULACION NVARCHAR(40)    = NULL,
+    @SELLO_ANULACION         NVARCHAR(40)    = NULL,
+    @FECHA_VENCE             DATE            = NULL,
+    @DIAS_CREDITO            INT             = NULL,
+    @RECIB_EFECTIVO          NUMERIC(20,2)   = 0,
+    @RECIB_REMESA            NUMERIC(20,2)   = 0,
+    @RECIB_CHEQUE            NUMERIC(20,2)   = 0,
+    @RECIB_NOTAABONO         NUMERIC(20,2)   = 0,
+    @RECIB_ANTICIPO          NUMERIC(20,2)   = 0,
+    @RECIB_EFECTIVO_CAMBIO   NUMERIC(20,2)   = 0,
+    @AFECTA                  NUMERIC(20,2)   = 0,
+    @EXCENTA                 NUMERIC(20,2)   = 0,
+    @DESCUENTO               NUMERIC(20,2)   = 0,
+    @DESCUENTO_VALOR         NUMERIC(20,2)   = 0,
+    @SUBTOTAL                NUMERIC(20,2)   = 0,
+    @IVA                     NUMERIC(20,2)   = 0,
+    @IVARETENIDO             NUMERIC(20,2)   = 0,
+    @IVAPERCIBIDO            NUMERIC(20,2)   = 0,
+    @TOTALVENTA              NUMERIC(20,2)   = 0,
+    @TOTALLETRAS             NVARCHAR(500)   = NULL,
+    @AP_PERCEPCION           BIT             = 0,
+    @EMAIL_ENVIADO           BIT             = 0,
+    @ANULADA                 BIT             = 0,
+    @ID_ESTADO               INT             = 0,
+    @OBSERVACIONES           NVARCHAR(500)   = NULL,
+    @TPCONTRIBUYENTE         INT             = NULL,
+    @NORDEN_COMPRA           NVARCHAR(10)    = NULL,
+    @USERC_ID                NVARCHAR(50)    = NULL,
+    @TPCONTRIBUYENTEEMISOR   INT             = NULL,
+    @TPDOCRECTOR             NVARCHAR(2)     = NULL,
+    @NDOCRECTOR              NVARCHAR(25)    = NULL,
+    @JSONCOMPLETO            BIT             = 0,
+    @USER_APSELLO            NVARCHAR(50)    = NULL,
+    @CODIGO_EMPRESA          CHAR(10)        = NULL,
+    @CODIGO_EMISION          INT             = NULL,
+    @CODIGO_COMPROBANTE      INT             = NULL,
+    @CODIGO_TIPO_DOC         INT             = NULL,
+    @NUMERO_SOLICITUD        INT             = NULL,
+    @NUMERO_COBRO            INT             = NULL,
+    @ID_ZAFRA                INT             = NULL,
+    @ID_CENTRO               INT             = NULL,
+    @ID_TIPO_ENTIDAD         INT             = NULL,
+    @USUARIO                 NVARCHAR(50)    = NULL,
+    -- ===== NUEVOS PARÁMETROS =====
+    @RECIB_REMESA_BANCO      NVARCHAR(200)   = NULL,
+    @RECIB_REMESA_CUENTA     NVARCHAR(50)    = NULL,
+    @RECIB_REMESA_MONTO      NUMERIC(20,2)   = NULL,
+    @RECIB_CHEQUE_BANCO      NVARCHAR(200)   = NULL,
+    @RECIB_CHEQUE_CUENTA     NVARCHAR(50)    = NULL,
+    @RECIB_CHEQUE_MONTO      NUMERIC(20,2)   = NULL,
+    @RECIB_NOTAABONO_BANCO   NVARCHAR(200)   = NULL,
+    @RECIB_NOTAABONO_CUENTA  NVARCHAR(50)    = NULL,
+    @RECIB_NOTAABONO_MONTO   NUMERIC(20,2)   = NULL,
+    -- ===== Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25 =====
+    @ID_SOLICITUD            INT             = NULL,
+    @NUM_SOLICITUD           NVARCHAR(20)    = NULL,
+    @NOMBRE_CUENTA           NVARCHAR(200)   = NULL,
+    @UID_SOLIC_AGRICOLA      NVARCHAR(40)    = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    -- ===================== OBTENER =====================
+    IF @ACCION = 'OBTENER'
+    BEGIN
+        SELECT
+            F.ID_FACTENC, F.ID_EMISOR, F.ID_SUCURSAL, F.ID_ALMACEN, F.ID_CAJA, F.ID_CAJERO,
+            F.ID_CONDPAGO, F.ID_CLIENTE, F.COD_REF, F.ID_TIPO_DTE, F.TPDOC, F.FECHA, F.SALFEC,
+            F.NUMDOC, F.CODGENERACION, F.NUMCONTROL, F.SELLORECEPCION, F.NUMINTERNO,
+            F.FHPROCESAMIENTO, F.FECHA_ANULACION, F.CODGENERACION_ANULACION, F.SELLO_ANULACION,
+            F.FECHA_VENCE, F.DIAS_CREDITO, F.RECIB_EFECTIVO, F.RECIB_REMESA, F.RECIB_CHEQUE,
+            F.RECIB_NOTAABONO, F.RECIB_ANTICIPO, F.RECIB_EFECTIVO_CAMBIO, F.AFECTA, F.EXCENTA,
+            F.DESCUENTO, F.DESCUENTO_VALOR, F.SUBTOTAL, F.IVA, F.IVARETENIDO, F.IVAPERCIBIDO,
+            F.TOTALVENTA, F.TOTALLETRAS, F.AP_PERCEPCION, F.EMAIL_ENVIADO, F.ANULADA, F.ID_ESTADO,
+            F.OBSERVACIONES, F.TPCONTRIBUYENTE, F.NORDEN_COMPRA, F.FECHA_CREA, F.USER_CREA,
+            F.FECHA_ACT, F.USER_ACT, F.FECHAID, F.USERC_ID, F.TPCONTRIBUYENTEEMISOR, F.TPDOCRECTOR,
+            F.NDOCRECTOR, F.JSONCOMPLETO, F.USER_APSELLO, F.codigo_empresa, F.codigo_emision,
+            F.codigo_comprobante, F.codigo_tipo_doc, F.numero_solicitud, F.numero_cobro,
+            F.ID_ZAFRA, F.ID_CENTRO,
+            -- NUEVOS
+            F.RECIB_REMESA_BANCO, F.RECIB_REMESA_CUENTA, F.RECIB_REMESA_MONTO,
+            F.RECIB_CHEQUE_BANCO, F.RECIB_CHEQUE_CUENTA, F.RECIB_CHEQUE_MONTO,
+            F.RECIB_NOTAABONO_BANCO, F.RECIB_NOTAABONO_CUENTA, F.RECIB_NOTAABONO_MONTO,
+            -- Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25
+            F.ID_SOLICITUD, F.NUM_SOLICITUD, F.NOMBRE_CUENTA, F.UID_SOLIC_AGRICOLA,
+            TC.NOMBRE AS TIPO_CONTRIBUYENTE, E.NOMBRE AS NOMBRE_ENTIDAD, E.DUI, E.NIT, E.CELULAR,
+            E.CORREO, '' AS ACTIVIDAD_PRIMARIA, E.COMPLEMENTO, E.ID_TIPO_ENTIDAD, E.CODIPROVEEDOR
+        FROM EDTE.FACTURA_ENC F
+        INNER JOIN DBO.[ENTIDAD] E ON F.ID_CLIENTE = E.ID_ENTIDAD
+        LEFT JOIN DBO.TIPO_CONTRIBUYENTE TC ON F.TPCONTRIBUYENTE = TC.ID_TIPO_CONTRIB
+        WHERE (@ID_EMISOR IS NULL OR F.ID_EMISOR = @ID_EMISOR)
+          AND F.ID_FACTENC = @ID_FACTENC
+    END
+    -- ===================== LISTAR =====================
+    ELSE IF @ACCION = 'LISTAR'
+    BEGIN
+        SELECT ENCA.[ID_FACTENC], ENCA.[ID_EMISOR], ENCA.[FECHA], ENCA.[NUMINTERNO],
+            ENCA.[ID_CLIENTE], E.NOMBRE AS NOM_CLIENTE, ENCA.[TOTALVENTA], ENCA.[CODGENERACION],
+            ENCA.[NUMCONTROL], ENCA.[SELLORECEPCION], ENCA.[FECHA_ANULACION],
+            ENCA.[CODGENERACION_ANULACION], ENCA.[SELLO_ANULACION]
+        FROM [EDTE].[FACTURA_ENC] ENCA
+        INNER JOIN DBO.[ENTIDAD] E ON ENCA.ID_CLIENTE = E.ID_ENTIDAD
+        WHERE (@ID_EMISOR IS NULL OR ENCA.ID_EMISOR = @ID_EMISOR)
+        ORDER BY ENCA.ID_FACTENC DESC
+    END
+    -- ===================== GUARDAR =====================
+    ELSE IF @ACCION = 'GUARDAR'
+    BEGIN
+        IF @ID_CONDPAGO = 1
+        BEGIN
+            SET @FECHA_VENCE  = NULL
+            SET @DIAS_CREDITO = NULL
+        END
+        ELSE
+        BEGIN
+            IF @FECHA IS NOT NULL AND @FECHA_VENCE IS NOT NULL
+                SET @DIAS_CREDITO = DATEDIFF(DAY, @FECHA, @FECHA_VENCE)
+            ELSE IF @FECHA IS NOT NULL AND @FECHA_VENCE IS NULL
+            BEGIN
+                SET @DIAS_CREDITO = 15
+                SET @FECHA_VENCE  = DATEADD(DAY, 15, @FECHA)
+            END
+        END
+        IF ISNULL(@ID_FACTENC, 0) = 0
+        BEGIN
+            -- ── INSERT ──────────────────────────────────────────────────
+            BEGIN TRY
+                BEGIN TRAN
+                DECLARE @NUEVO_ID_FACTURA_ENC INT, @NUMCONTROL_ NVARCHAR(40),
+                        @NUMINTERNO_ NVARCHAR(15), @CODSUCURSAL NVARCHAR(8);
+                SELECT @NUEVO_ID_FACTURA_ENC = ISNULL(MAX(ID_FACTENC), 0) + 1
+                FROM EDTE.FACTURA_ENC WITH (UPDLOCK, HOLDLOCK);
+                SELECT @CODSUCURSAL = CODSUCURSAL FROM dbo.SUCURSAL WHERE ID_SUCURSAL = @ID_SUCURSAL;
+                SET @NUMCONTROL_ = (SELECT NUMCONTROL FROM [EMH].F_NUMCONTROL_FA(@CODSUCURSAL))
+                SET @NUMINTERNO_ = (SELECT NUMINTERNO FROM [EMH].F_NUMCONTROL_FA(@CODSUCURSAL))
+                INSERT INTO EDTE.FACTURA_ENC (
+                    ID_FACTENC, ID_EMISOR, ID_SUCURSAL, ID_ALMACEN, ID_CAJA, ID_CAJERO, ID_CONDPAGO,
+                    ID_CLIENTE, COD_REF, ID_TIPO_DTE, TPDOC, FECHA, SALFEC, NUMDOC,
+                    CODGENERACION, NUMCONTROL, SELLORECEPCION, NUMINTERNO, FHPROCESAMIENTO,
+                    FECHA_VENCE, DIAS_CREDITO, RECIB_EFECTIVO, RECIB_REMESA, RECIB_CHEQUE,
+                    RECIB_NOTAABONO, RECIB_ANTICIPO, RECIB_EFECTIVO_CAMBIO, AFECTA, EXCENTA,
+                    DESCUENTO, DESCUENTO_VALOR, SUBTOTAL, IVA, IVARETENIDO, IVAPERCIBIDO,
+                    TOTALVENTA, TOTALLETRAS, AP_PERCEPCION, EMAIL_ENVIADO, ANULADA, ID_ESTADO,
+                    OBSERVACIONES, TPCONTRIBUYENTE, NORDEN_COMPRA, FECHA_CREA, USER_CREA,
+                    FECHA_ACT, USER_ACT, FECHAID, USERC_ID, TPCONTRIBUYENTEEMISOR, TPDOCRECTOR,
+                    NDOCRECTOR, JSONCOMPLETO, USER_APSELLO, codigo_empresa, codigo_emision,
+                    codigo_comprobante, codigo_tipo_doc, numero_solicitud, numero_cobro,
+                    ID_ZAFRA, ID_CENTRO, ID_TIPO_ENTIDAD,
+                    -- NUEVOS
+                    RECIB_REMESA_BANCO, RECIB_REMESA_CUENTA, RECIB_REMESA_MONTO,
+                    RECIB_CHEQUE_BANCO, RECIB_CHEQUE_CUENTA, RECIB_CHEQUE_MONTO,
+                    RECIB_NOTAABONO_BANCO, RECIB_NOTAABONO_CUENTA, RECIB_NOTAABONO_MONTO,
+                    -- Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25
+                    ID_SOLICITUD, NUM_SOLICITUD, NOMBRE_CUENTA, UID_SOLIC_AGRICOLA
+                )
+                VALUES (
+                    @NUEVO_ID_FACTURA_ENC, @ID_EMISOR, @ID_SUCURSAL, @ID_ALMACEN, @ID_CAJA, @ID_CAJERO, @ID_CONDPAGO,
+                    @ID_CLIENTE, @COD_REF, @ID_TIPO_DTE, @TPDOC, @FECHA, @SALFEC, CAST(@NUMINTERNO_ AS INT),
+                    CASE WHEN ISNULL(@CODGENERACION,'') = '' THEN CONVERT(NVARCHAR(40), NEWID()) ELSE @CODGENERACION END,
+                    @NUMCONTROL_, @SELLORECEPCION, @NUMINTERNO_, @FHPROCESAMIENTO,
+                    @FECHA_VENCE, @DIAS_CREDITO,
+                    ISNULL(@RECIB_EFECTIVO, 0), ISNULL(@RECIB_REMESA, 0), ISNULL(@RECIB_CHEQUE, 0),
+                    ISNULL(@RECIB_NOTAABONO, 0), ISNULL(@RECIB_ANTICIPO, 0), ISNULL(@RECIB_EFECTIVO_CAMBIO, 0),
+                    ISNULL(@AFECTA, 0), ISNULL(@EXCENTA, 0), ISNULL(@DESCUENTO, 0), ISNULL(@DESCUENTO_VALOR, 0),
+                    ISNULL(@SUBTOTAL, 0), ISNULL(@IVA, 0), ISNULL(@IVARETENIDO, 0), ISNULL(@IVAPERCIBIDO, 0),
+                    ISNULL(@TOTALVENTA, 0), [EDTE].[fNumero_a_Letras](@TOTALVENTA,' DOLARES DE ESTADOS UNIDOS DE AMERICA'),
+                    ISNULL(@AP_PERCEPCION, 0), ISNULL(@EMAIL_ENVIADO, 0), 0, ISNULL(@ID_ESTADO, 0),
+                    @OBSERVACIONES, @TPCONTRIBUYENTE, @NORDEN_COMPRA,
+                    GETDATE(), @USUARIO, GETDATE(), @USUARIO, GETDATE(), @USERC_ID,
+                    @TPCONTRIBUYENTEEMISOR, @TPDOCRECTOR, @NDOCRECTOR,
+                    ISNULL(@JSONCOMPLETO, 0), @USER_APSELLO,
+                    @CODIGO_EMPRESA, @CODIGO_EMISION, @CODIGO_COMPROBANTE,
+                    @CODIGO_TIPO_DOC, @NUMERO_SOLICITUD, @NUMERO_COBRO,
+                    @ID_ZAFRA, @ID_CENTRO, @ID_TIPO_ENTIDAD,
+                    -- NUEVOS
+                    @RECIB_REMESA_BANCO, @RECIB_REMESA_CUENTA, @RECIB_REMESA_MONTO,
+                    @RECIB_CHEQUE_BANCO, @RECIB_CHEQUE_CUENTA, @RECIB_CHEQUE_MONTO,
+                    @RECIB_NOTAABONO_BANCO, @RECIB_NOTAABONO_CUENTA, @RECIB_NOTAABONO_MONTO,
+                    -- Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25
+                    @ID_SOLICITUD, @NUM_SOLICITUD, @NOMBRE_CUENTA, @UID_SOLIC_AGRICOLA
+                )
+                UPDATE [dbo].[DOCUMENTO_NUMERACION]
+                SET ULT_NUM_ASIGNADO = CAST(@NUMINTERNO_ AS INT)
+                WHERE ESTADO = 1 AND ID_TIPO_DTE = 1
+                SELECT @NUEVO_ID_FACTURA_ENC AS ID_GENERADO, @NUMCONTROL_ AS NCONT, CAST(@NUMINTERNO_ AS INT) AS INTERN
+                COMMIT TRAN
+            END TRY
+            BEGIN CATCH
+                IF @@TRANCOUNT > 0 ROLLBACK TRAN
+                ;THROW
+            END CATCH
+        END
+        ELSE
+        BEGIN
+            -- ── UPDATE ──────────────────────────────────────────────────
+            BEGIN TRY
+                BEGIN TRAN
+                UPDATE EDTE.FACTURA_ENC SET
+                    ID_SUCURSAL = @ID_SUCURSAL, ID_ALMACEN = @ID_ALMACEN, ID_CAJA = @ID_CAJA,
+                    ID_CAJERO = @ID_CAJERO, ID_CONDPAGO = @ID_CONDPAGO, ID_CLIENTE = @ID_CLIENTE,
+                    COD_REF = @COD_REF, ID_TIPO_DTE = @ID_TIPO_DTE, TPDOC = @TPDOC, FECHA = @FECHA,
+                    SALFEC = @SALFEC, NUMDOC = @NUMDOC,
+                    CODGENERACION = CASE WHEN ISNULL(@CODGENERACION,'') = '' THEN CONVERT(NVARCHAR(40), NEWID()) ELSE @CODGENERACION END,
+                    NUMCONTROL = @NUMCONTROL, SELLORECEPCION = @SELLORECEPCION, NUMINTERNO = @NUMINTERNO,
+                    FHPROCESAMIENTO = @FHPROCESAMIENTO, FECHA_VENCE = @FECHA_VENCE, DIAS_CREDITO = @DIAS_CREDITO,
+                    RECIB_EFECTIVO = ISNULL(@RECIB_EFECTIVO, 0), RECIB_REMESA = ISNULL(@RECIB_REMESA, 0),
+                    RECIB_CHEQUE = ISNULL(@RECIB_CHEQUE, 0), RECIB_NOTAABONO = ISNULL(@RECIB_NOTAABONO, 0),
+                    RECIB_ANTICIPO = ISNULL(@RECIB_ANTICIPO, 0), RECIB_EFECTIVO_CAMBIO = ISNULL(@RECIB_EFECTIVO_CAMBIO, 0),
+                    AFECTA = ISNULL(@AFECTA, 0), EXCENTA = ISNULL(@EXCENTA, 0),
+                    DESCUENTO = ISNULL(@DESCUENTO, 0), DESCUENTO_VALOR = ISNULL(@DESCUENTO_VALOR, 0),
+                    SUBTOTAL = ISNULL(@SUBTOTAL, 0), IVA = ISNULL(@IVA, 0),
+                    IVARETENIDO = ISNULL(@IVARETENIDO, 0), IVAPERCIBIDO = ISNULL(@IVAPERCIBIDO, 0),
+                    TOTALVENTA = ISNULL(@TOTALVENTA, 0),
+                    TOTALLETRAS = [EDTE].[fNumero_a_Letras](@TOTALVENTA,' DOLARES DE ESTADOS UNIDOS DE AMERICA'),
+                    AP_PERCEPCION = ISNULL(@AP_PERCEPCION, 0), ID_ESTADO = ISNULL(@ID_ESTADO, ID_ESTADO),
+                    OBSERVACIONES = @OBSERVACIONES, TPCONTRIBUYENTE = @TPCONTRIBUYENTE, NORDEN_COMPRA = @NORDEN_COMPRA,
+                    TPCONTRIBUYENTEEMISOR = @TPCONTRIBUYENTEEMISOR, TPDOCRECTOR = @TPDOCRECTOR, NDOCRECTOR = @NDOCRECTOR,
+                    JSONCOMPLETO = ISNULL(@JSONCOMPLETO, 0), USER_APSELLO = @USER_APSELLO,
+                    codigo_empresa = @CODIGO_EMPRESA, codigo_emision = @CODIGO_EMISION,
+                    codigo_comprobante = @CODIGO_COMPROBANTE, codigo_tipo_doc = @CODIGO_TIPO_DOC,
+                    numero_solicitud = @NUMERO_SOLICITUD, numero_cobro = @NUMERO_COBRO,
+                    ID_ZAFRA = @ID_ZAFRA, ID_CENTRO = @ID_CENTRO, ID_TIPO_ENTIDAD = @ID_TIPO_ENTIDAD,
+                    FECHA_ACT = GETDATE(), USER_ACT = @USUARIO,
+                    -- NUEVOS
+                    RECIB_REMESA_BANCO = @RECIB_REMESA_BANCO, RECIB_REMESA_CUENTA = @RECIB_REMESA_CUENTA,
+                    RECIB_REMESA_MONTO = @RECIB_REMESA_MONTO, RECIB_CHEQUE_BANCO = @RECIB_CHEQUE_BANCO,
+                    RECIB_CHEQUE_CUENTA = @RECIB_CHEQUE_CUENTA, RECIB_CHEQUE_MONTO = @RECIB_CHEQUE_MONTO,
+                    RECIB_NOTAABONO_BANCO = @RECIB_NOTAABONO_BANCO, RECIB_NOTAABONO_CUENTA = @RECIB_NOTAABONO_CUENTA,
+                    RECIB_NOTAABONO_MONTO = @RECIB_NOTAABONO_MONTO,
+                    -- Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25
+                    ID_SOLICITUD = @ID_SOLICITUD, NUM_SOLICITUD = @NUM_SOLICITUD,
+                    NOMBRE_CUENTA = @NOMBRE_CUENTA, UID_SOLIC_AGRICOLA = @UID_SOLIC_AGRICOLA
+                WHERE ID_FACTENC = @ID_FACTENC AND ID_EMISOR = @ID_EMISOR
+                SELECT F.ID_FACTENC AS ID_GENERADO, F.NUMCONTROL AS NCONT, F.NUMINTERNO AS INTERN
+                FROM EDTE.FACTURA_ENC F
+                WHERE F.ID_FACTENC = @ID_FACTENC AND F.ID_EMISOR = @ID_EMISOR
+                COMMIT TRAN
+            END TRY
+            BEGIN CATCH
+                IF @@TRANCOUNT > 0 ROLLBACK TRAN
+                ;THROW
+            END CATCH
+        END
+    END
+    -- ===================== ANULAR =====================
+    ELSE IF @ACCION = 'ANULAR'
+    BEGIN
+        BEGIN TRY
+            BEGIN TRAN
+            UPDATE EDTE.FACTURA_ENC SET
+                ANULADA = 1, FECHA_ANULACION = @FECHA_ANULACION,
+                CODGENERACION_ANULACION = @CODGENERACION_ANULACION, SELLO_ANULACION = @SELLO_ANULACION,
+                ID_ESTADO = ISNULL(@ID_ESTADO, ID_ESTADO), FECHA_ACT = GETDATE(), USER_ACT = @USUARIO
+            WHERE ID_FACTENC = @ID_FACTENC AND ID_EMISOR = @ID_EMISOR
+            SELECT @ID_FACTENC AS ID_GENERADO
+            COMMIT TRAN
+        END TRY
+        BEGIN CATCH
+            IF @@TRANCOUNT > 0 ROLLBACK TRAN
+            ;THROW
+        END CATCH
+    END
+    -- ===================== ELIMINAR =====================
+    ELSE IF @ACCION = 'ELIMINAR'
+    BEGIN
+        BEGIN TRY
+            BEGIN TRAN
+            DELETE FROM EDTE.FACTURA_DET WHERE ID_FACTENC = @ID_FACTENC AND ID_EMISOR = @ID_EMISOR
+            DELETE FROM EDTE.FACTURA_ENC WHERE ID_FACTENC = @ID_FACTENC AND ID_EMISOR = @ID_EMISOR
+            COMMIT TRAN
+        END TRY
+        BEGIN CATCH
+            IF @@TRANCOUNT > 0 ROLLBACK TRAN
+            ;THROW
+        END CATCH
+    END
+END

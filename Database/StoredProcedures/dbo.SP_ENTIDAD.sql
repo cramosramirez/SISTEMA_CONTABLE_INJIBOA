@@ -1,12 +1,11 @@
-USE [PH2];
+USE [PH2]
 GO
-
-SET ANSI_NULLS ON;
+/****** Object:  StoredProcedure [dbo].[SP_ENTIDAD]    Script Date: 25/8/2026 12:03:55 ******/
+SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER ON;
+SET QUOTED_IDENTIFIER ON
 GO
-
-CREATE OR ALTER PROCEDURE [EPROVEEDOR].[SP_ENTIDAD]
+ALTER PROCEDURE [dbo].[SP_ENTIDAD]
     @ACCION             VARCHAR(100),
     @ID_ENTIDAD         INT             = NULL,
     @CODIGO_ENTIDAD     NVARCHAR(20)    = NULL,
@@ -53,7 +52,6 @@ CREATE OR ALTER PROCEDURE [EPROVEEDOR].[SP_ENTIDAD]
 AS
 BEGIN
     SET NOCOUNT ON;
-
     -- ============================================================
     -- BUSCAR
     -- ============================================================
@@ -78,17 +76,15 @@ BEGIN
                OR E.NRC            LIKE '%' + @FILTRO + '%'
                OR E.NIT            LIKE '%' + @FILTRO + '%'
                OR E.DUI            LIKE '%' + @FILTRO + '%'
-               OR E.NOMBRE         LIKE '%' + @FILTRO + '%'
+               OR NOT EXISTS ( SELECT 1 FROM STRING_SPLIT(@FILTRO, ' ') AS palabra WHERE E.NOMBRE NOT LIKE '%' + palabra.value + '%')
 			   OR E.DOCUMENTO      LIKE '%' + @FILTRO + '%'
                OR E.CODIGO_ENTIDAD LIKE '%' + @FILTRO + '%')
         ORDER BY E.NOMBRE
     END
-
     IF @ACCION = 'BUSCAR_TC'
     BEGIN
-    declare @TIPO_CLIENTE nvarchar(50) 
+    declare @TIPO_CLIENTE nvarchar(50)
     SET @TIPO_CLIENTE=@ROL
-
         SELECT TOP 25
             E.ID_ENTIDAD, E.CODIGO_ENTIDAD, E.NRC, E.NIT, E.DUI,
             E.NOMBRE, E.TELEFONO, E.CELULAR, E.CORREO,
@@ -108,17 +104,15 @@ BEGIN
                OR E.NRC            LIKE '%' + @FILTRO + '%'
                OR E.NIT            LIKE '%' + @FILTRO + '%'
                OR E.DUI            LIKE '%' + @FILTRO + '%'
-               OR E.NOMBRE         LIKE '%' + @FILTRO + '%'
+               OR NOT EXISTS ( SELECT 1 FROM STRING_SPLIT(@FILTRO, ' ') AS palabra WHERE E.NOMBRE NOT LIKE '%' + palabra.value + '%')
 			   OR E.DOCUMENTO      LIKE '%' + @FILTRO + '%'
                OR E.CODIGO_ENTIDAD LIKE '%' + @FILTRO + '%')
         ORDER BY E.NOMBRE
     END
-
 IF @ACCION = 'BUSCAR_OD'
     BEGIN
-    
-    SET @TIPO_CLIENTE=@ROL
 
+    SET @TIPO_CLIENTE=@ROL
         SELECT TOP 25
             E.ID_ENTIDAD, E.CODIGO_ENTIDAD, E.NRC, E.NIT, E.DUI,
             E.NOMBRE, E.TELEFONO, E.CELULAR, E.CORREO,
@@ -138,12 +132,11 @@ IF @ACCION = 'BUSCAR_OD'
                OR E.NRC            LIKE '%' + @FILTRO + '%'
                OR E.NIT            LIKE '%' + @FILTRO + '%'
                OR E.DUI            LIKE '%' + @FILTRO + '%'
-               OR E.NOMBRE         LIKE '%' + @FILTRO + '%'
+               OR NOT EXISTS ( SELECT 1 FROM STRING_SPLIT(@FILTRO, ' ') AS palabra WHERE E.NOMBRE NOT LIKE '%' + palabra.value + '%')
 			   OR E.DOCUMENTO      LIKE '%' + @FILTRO + '%'
                OR E.CODIGO_ENTIDAD LIKE '%' + @FILTRO + '%')
         ORDER BY E.NOMBRE
     END
-
     --IF @ACCION = 'BUSCAR'
     --BEGIN
     --    SELECT TOP 25
@@ -165,19 +158,17 @@ IF @ACCION = 'BUSCAR_OD'
     --           OR E.NRC            LIKE '%' + @FILTRO + '%'
     --           OR E.NIT            LIKE '%' + @FILTRO + '%'
     --           OR E.DUI            LIKE '%' + @FILTRO + '%'
-    --           OR E.NOMBRE         LIKE '%' + @FILTRO + '%'
+    --           OR NOT EXISTS ( SELECT 1 FROM STRING_SPLIT(@FILTRO, ' ') AS palabra WHERE E.NOMBRE NOT LIKE '%' + palabra.value + '%')
 			 --  OR E.DOCUMENTO      LIKE '%' + @FILTRO + '%'
     --           OR E.CODIGO_ENTIDAD LIKE '%' + @FILTRO + '%')
     --    ORDER BY E.NOMBRE
     --END
-
-
 	-- ================================================================================================================
     -- BUSCAR_DUPLICADOS Se utilizará para validar documentos desde las diferentes pantallas de creación de entidades
     -- ================================================================================================================
     IF @ACCION = 'BUSCAR_DUPLICADOS'
     BEGIN
-        SELECT 
+        SELECT
             E.ID_ENTIDAD, E.CODIGO_ENTIDAD, E.NRC, E.NIT, E.DUI, E.DOCUMENTO,
             E.NOMBRE, E.TELEFONO, E.CELULAR, E.CORREO,
             E.ID_TIPO_CONTRIB, E.COMPLEMENTO,
@@ -187,16 +178,15 @@ IF @ACCION = 'BUSCAR_OD'
             (SELECT T.CODI_MH + ' - ' + T.VALORES FROM ACTIVIDAD_ECONOMICA T WHERE T.ID_ACTIVIDAD = E.ID_ACTIVIDAD_1) AS ACTIVIDAD_PRIMARIA
         FROM ENTIDAD E
         INNER JOIN TIPO_PERSONA TP ON TP.ID_TIPO_PERSONA = E.ID_TIPO_ENTIDAD
-        INNER JOIN TIPO_CONTRIBUYENTE TC ON TC.ID_TIPO_CONTRIB = E.ID_TIPO_CONTRIB       
+        INNER JOIN TIPO_CONTRIBUYENTE TC ON TC.ID_TIPO_CONTRIB = E.ID_TIPO_CONTRIB
         WHERE EXISTS(SELECT 1 FROM ENTIDAD_ROL R WHERE R.ID_ENTIDAD = E.ID_ENTIDAD AND R.ROL = @ROL)
           AND (@FILTRO IS NULL
                OR E.NRC						       LIKE '%' + @FILTRO + '%'
                OR REPLACE(E.NIT,'-','')			   LIKE '%' + REPLACE(@FILTRO,'-','') + '%'
-               OR REPLACE(E.DUI,'-','')			   LIKE '%' + REPLACE(@FILTRO,'-','') + '%'               
+               OR REPLACE(E.DUI,'-','')			   LIKE '%' + REPLACE(@FILTRO,'-','') + '%'
 			   OR REPLACE(E.DOCUMENTO,'-','')      LIKE '%' + @FILTRO + '%')
         ORDER BY E.NOMBRE
     END
-
     -- ============================================================
     -- CONSULTA_TODOS_PROVEEDORES (mantenido tal cual)
     -- ============================================================
@@ -221,7 +211,6 @@ IF @ACCION = 'BUSCAR_OD'
         )
         ORDER BY E.NOMBRE
     END
-
     -- ============================================================
     -- BUSCAR_NO_CONTRIBUYENTES (mantenido tal cual)
     -- ============================================================
@@ -250,12 +239,11 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
                OR E.NRC            LIKE '%' + @FILTRO + '%'
                OR E.NIT            LIKE '%' + @FILTRO + '%'
                OR E.DUI            LIKE '%' + @FILTRO + '%'
-               OR E.NOMBRE         LIKE '%' + @FILTRO + '%'
+               OR NOT EXISTS ( SELECT 1 FROM STRING_SPLIT(@FILTRO, ' ') AS palabra WHERE E.NOMBRE NOT LIKE '%' + palabra.value + '%')
                OR E.DOCUMENTO      LIKE '%' + @FILTRO + '%'
                OR E.CODIGO_ENTIDAD LIKE '%' + @FILTRO + '%')
         ORDER BY E.NOMBRE
     END
-
     -- ============================================================
     -- BUSCAR_CONTRIBUYENTES (mantenido tal cual)
     -- ============================================================
@@ -284,12 +272,11 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
                OR E.NRC            LIKE '%' + @FILTRO + '%'
                OR E.NIT            LIKE '%' + @FILTRO + '%'
                OR E.DUI            LIKE '%' + @FILTRO + '%'
-               OR E.NOMBRE         LIKE '%' + @FILTRO + '%'
+               OR NOT EXISTS ( SELECT 1 FROM STRING_SPLIT(@FILTRO, ' ') AS palabra WHERE E.NOMBRE NOT LIKE '%' + palabra.value + '%')
                OR E.DOCUMENTO      LIKE '%' + @FILTRO + '%'
                OR E.CODIGO_ENTIDAD LIKE '%' + @FILTRO + '%')
         ORDER BY E.NOMBRE
     END
-
     -- ============================================================
     -- BUSCAR_POR_CODIGO (mantenido tal cual)
     -- ============================================================
@@ -315,7 +302,6 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
           AND (E.CODIGO_ENTIDAD = @FILTRO)
         ORDER BY E.NOMBRE
     END
-
     -- ============================================================
     -- OBTENER (ampliado: NOMBRE_COMERCIAL, ID_ORIGEN, CODIPROVEEDOR,
     --          CODTRANSPORT, ID_CARGADORA, RETENER_RENTA, PORC_RENTA,
@@ -351,12 +337,10 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
         LEFT JOIN MUNICIPIO M ON M.CODI_DEPTO = E.CODI_DEPTO AND M.CODI_MUNI = E.CODI_MUNI
         LEFT JOIN DEPARTAMENTO D ON D.CODI_DEPTO = E.CODI_DEPTO
         WHERE E.ID_ENTIDAD = @ID_ENTIDAD
-
         SELECT ID_ENTIDAD_ROL, ROL, ACTIVO, FECHA_ASIGNACION
         FROM ENTIDAD_ROL
         WHERE ID_ENTIDAD = @ID_ENTIDAD
     END
-
     -- ============================================================
     -- OBTENER_POR_NRC (sin cambios)
     -- ============================================================
@@ -370,7 +354,6 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
         INNER JOIN TIPO_CONTRIBUYENTE TC ON TC.ID_TIPO_CONTRIB = E.ID_TIPO_CONTRIB
         WHERE E.NRC = @NRC
     END
-
     -- ============================================================
     -- GUARDAR: INSERT o UPDATE + validaciones + manejo de rol
     -- ============================================================
@@ -378,25 +361,22 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
     BEGIN
         BEGIN TRY
             BEGIN TRAN
-
             -- ----------------------------------------------------
             -- Validación de duplicados
             -- ----------------------------------------------------
             DECLARE @MSG_DUP NVARCHAR(400)
             DECLARE @ID_COMPARA INT = ISNULL(@ID_ENTIDAD, 0)
-
             IF ISNULL(@CODIGO_ENTIDAD, '') <> '' AND EXISTS (
                 SELECT 1 FROM ENTIDAD E
                 WHERE CODIGO_ENTIDAD = @CODIGO_ENTIDAD
                   AND ID_ENTIDAD <> @ID_COMPARA
 				  AND EXISTS(SELECT 1 FROM ENTIDAD_ROL R WHERE R.ID_ENTIDAD = E.ID_ENTIDAD AND R.ROL = @ROL)
-            )			
+            )
             BEGIN
                 SET @MSG_DUP = 'Ya existe otra entidad con el c' + NCHAR(243) + 'digo: ' + @CODIGO_ENTIDAD
                 RAISERROR(@MSG_DUP, 16, 1)
                 RETURN
             END
-
             IF ISNULL(@DUI, '') <> '' AND EXISTS (
                 SELECT 1 FROM ENTIDAD E
                 WHERE REPLACE(DUI,'-','') = REPLACE(@DUI,'-','')
@@ -408,7 +388,6 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
                 RAISERROR(@MSG_DUP, 16, 1)
                 RETURN
             END
-
             IF ISNULL(@NIT, '') <> '' AND EXISTS (
                 SELECT 1 FROM ENTIDAD E
                 WHERE REPLACE(NIT,'-','') = REPLACE(@NIT,'-','')
@@ -420,7 +399,6 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
                 RAISERROR(@MSG_DUP, 16, 1)
                 RETURN
             END
-
             IF ISNULL(@NRC, '') <> '' AND EXISTS (
                 SELECT 1 FROM ENTIDAD E
                 WHERE NRC = @NRC
@@ -432,17 +410,14 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
                 RAISERROR(@MSG_DUP, 16, 1)
                 RETURN
             END
-
             -- ----------------------------------------------------
             -- INSERT o UPDATE
             -- ----------------------------------------------------
             DECLARE @ID_FINAL INT
-
             IF ISNULL(@ID_ENTIDAD, 0) = 0
             BEGIN
                 DECLARE @NUEVO_ID_E INT
                 SELECT @NUEVO_ID_E = ISNULL(MAX(ID_ENTIDAD), 0) + 1 FROM ENTIDAD
-
                 INSERT INTO ENTIDAD (
                     ID_ENTIDAD, CODIGO_ENTIDAD, ID_TIPO_ENTIDAD, ID_TIPO_CONTRIB,
                     ID_TIPO_DOC_INDEN, DOCUMENTO, NRC, DUI, NIT,
@@ -467,7 +442,6 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
                     @ID_CARGADORA, @RETENER_RENTA, @PORC_RENTA,
                     @USUARIO_CREA, GETDATE(), @OTROS_DATOS, @CUENTA_GASTO, @ACTIVIDAD_EXT
                 )
-
                 SET @ID_FINAL = @NUEVO_ID_E
             END
             ELSE
@@ -513,10 +487,8 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
 					CUENTA_GASTO	  = @CUENTA_GASTO,
 					ACTIVIDAD_EXT	  = @ACTIVIDAD_EXT
                 WHERE ID_ENTIDAD = @ID_ENTIDAD
-
                 SET @ID_FINAL = @ID_ENTIDAD
             END
-
             -- ----------------------------------------------------
             -- Manejo idempotente del rol
             -- ----------------------------------------------------
@@ -536,7 +508,6 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
                     DECLARE @NUEVO_ID_ROL INT
                     SELECT @NUEVO_ID_ROL = ISNULL(MAX(ID_ENTIDAD_ROL), 0) + 1
                     FROM ENTIDAD_ROL
-
                     INSERT INTO ENTIDAD_ROL (
                         ID_ENTIDAD_ROL, ID_ENTIDAD, ROL, ACTIVO, FECHA_ASIGNACION
                     )
@@ -545,14 +516,11 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
                     )
                 END
             END
-
             COMMIT TRAN
-
             SELECT @ID_FINAL AS ID_GENERADO
         END TRY
         BEGIN CATCH
             IF @@TRANCOUNT > 0 ROLLBACK TRAN
-
             DECLARE @ERR_MSG NVARCHAR(4000) = ERROR_MESSAGE()
             DECLARE @ERR_SEV INT             = ERROR_SEVERITY()
             DECLARE @ERR_ST  INT             = ERROR_STATE()
@@ -560,7 +528,6 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
             RETURN
         END CATCH
     END
-
     -- ============================================================
     -- ELIMINAR: baja lógica del rol
     -- ============================================================
@@ -571,4 +538,3 @@ IF @ACCION = 'BUSCAR_NO_CONTRIBUYENTES'
           AND (@ROL IS NULL OR ROL = @ROL)
     END
 END
-GO

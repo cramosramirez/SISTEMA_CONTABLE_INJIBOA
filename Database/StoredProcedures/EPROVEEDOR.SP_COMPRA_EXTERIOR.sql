@@ -51,7 +51,8 @@ CREATE OR ALTER PROCEDURE [EPROVEEDOR].[SP_COMPRA_EXTERIOR]
     @ID_CCF_COMPRA_ASOCIADO INT        = NULL,
     @OBSERVACION        NVARCHAR(1000) = NULL,
     @USUARIO            NVARCHAR(100) = NULL,
-    @UID_ENLACE_CHEQUE  NVARCHAR(60) = ''
+    @UID_ENLACE_CHEQUE  NVARCHAR(60) = '',
+    @ULTIMOS_3_MESES    BIT            = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -138,10 +139,11 @@ BEGIN
             FROM [EPROVEEDOR].[COMPRA_EXTERIOR] C
             INNER JOIN QUEDAN   Q  ON Q.ID_QUEDAN   = C.ID_QUEDAN
             INNER JOIN TIPO_DTE TD ON TD.ID_TIPO_DTE = C.ID_TIPO_DTE
-            LEFT  JOIN ENTIDAD  E  ON E.ID_ENTIDAD  = C.ID_ENTIDAD      
+            LEFT  JOIN ENTIDAD  E  ON E.ID_ENTIDAD  = C.ID_ENTIDAD
             WHERE C.ID_TIPO_DTE NOT IN (4,5,22,23) -- excluir NC/ND, que tienen su propia consulta (ver NOTA_CRED_DEB_DETALLE_LISTAR)
+              AND (ISNULL(@ULTIMOS_3_MESES, 0) = 0 OR C.FECHA_RECIBIDO >= DATEADD(MONTH, -3, CAST(GETDATE() AS DATE)))
             ORDER BY Q.NUM_QUEDAN DESC, C.ID_COMPRA_EXTERIOR ASC, C.FECHA_EMISION
-        END   
+        END
 	ELSE IF @ACCION = 'OBTENER_CHEQUE'
 		BEGIN
 		SELECT 
@@ -312,13 +314,19 @@ BEGIN
                              EXEC EIVA.SP_LBCOMPRAS_RET_INS @NUEVO_ID_COMPRA_EXTERIOR
                         END
                         -- Actualizar el libro de compras de retención
-                        IF @IVAR > 0 AND EXISTS(    SELECT 1 
-                                                    FROM [EPROVEEDOR].[COMPRA_EXTERIOR] 
+                        -- DESHABILITADO (Roberto, 2026-08-25): esta actualización pertenece a un
+                        -- proceso que se dispara desde otra pantalla (ej. registro de retención /
+                        -- cheque). Aquí NO se debe generar/actualizar retención, por lo que se deja
+                        -- comentado en vez de ejecutarse.
+                        /*
+                        IF @IVAR > 0 AND EXISTS(    SELECT 1
+                                                    FROM [EPROVEEDOR].[COMPRA_EXTERIOR]
                                                     WHERE ID_COMPRA_EXTERIOR = @ID_COMPRA_EXTERIOR AND  NOT ID_COMPROBANTE_RET IS NULL
                                                 )
                         BEGIN
-                            EXEC EIVA.SP_LBCOMPRAS_RET_INS @ID_COMPRA_EXTERIOR  
+                            EXEC EIVA.SP_LBCOMPRAS_RET_INS @ID_COMPRA_EXTERIOR
                         END
+                        */
  
                     COMMIT TRAN
  
@@ -391,13 +399,19 @@ BEGIN
                             EXEC EIVA.SP_LBCOMPRAS_RET_INS @ID_COMPRA_EXTERIOR  
                         END
                         -- Actualizar el libro de compras de retención
-                        IF @IVAR > 0 AND EXISTS(    SELECT 1 
-                                                    FROM [EPROVEEDOR].[COMPRA_EXTERIOR] 
+                        -- DESHABILITADO (Roberto, 2026-08-25): esta actualización pertenece a un
+                        -- proceso que se dispara desde otra pantalla (ej. registro de retención /
+                        -- cheque). Aquí NO se debe generar/actualizar retención, por lo que se deja
+                        -- comentado en vez de ejecutarse.
+                        /*
+                        IF @IVAR > 0 AND EXISTS(    SELECT 1
+                                                    FROM [EPROVEEDOR].[COMPRA_EXTERIOR]
                                                     WHERE ID_COMPRA_EXTERIOR = @ID_COMPRA_EXTERIOR AND  NOT ID_COMPROBANTE_RET IS NULL
                                                 )
                         BEGIN
-                            EXEC EIVA.SP_LBCOMPRAS_RET_INS @ID_COMPRA_EXTERIOR  
+                            EXEC EIVA.SP_LBCOMPRAS_RET_INS @ID_COMPRA_EXTERIOR
                         END
+                        */
  
                     -- Devuelve la misma estructura para que el front maneje todos los casos uniformemente
                     SELECT

@@ -26,6 +26,14 @@ namespace SistemaContable.UI.Forms.Ventas
         // no devuelve la columna CODIPROVEEDOR, así que al reabrir una factura existente el
         // combo Solicitud queda vacío (igual que en CCF); se completa al buscar el cliente.
         private string _codiProveedorCliente = string.Empty;
+        // Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25:
+        // igual que frmCreditoFiscal, se conserva el ID_SOLICITUD internamente
+        // (ya no hay combo visible) para poder guardarlo en [EDTE].[SP_FACTURA_ENC].
+        private int? _idSolicitudSeleccionada = null;
+        // (2026-08-26) ID_CUENTA_FINAN de la solicitud agrícola seleccionada (mismo patrón
+        // que frmCreditoFiscal). Se guarda directo en FACTURA_ENC.ID_CUENTA_FINAN para que
+        // [ESOLICITUD].[SP_CREDITO_ENCA] (GUARDAR_DESDE_FACTURA) lo lea sin hacer joins.
+        private int? _idCuentaFinanSolicitud = null;
         #endregion
         public int IdFactEnc { get; set; } = 0;
         public int AnioDte { get; set; } = 0;
@@ -50,10 +58,23 @@ namespace SistemaContable.UI.Forms.Ventas
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
         }
+
+        /// <summary>
+        /// ToolTip de búsqueda genérica ("*" + Enter), igual que en frmCreditoFiscal,
+        /// para el campo de búsqueda de Cliente.
+        /// </summary>
+        private void ConfigurarToolTips()
+        {
+            TooltipHelper.Configurar(
+                            (txtCLIENTE, "Ingrese * y presione Enter para mostrar todos los clientes.")
+                                 );
+        }
+
         #region CARGA INICIAL
         private void frmFactura_Load(object sender, EventArgs e)
         {
             FormHelper.Inicializar(this);
+            ConfigurarToolTips();
             CargarTipoDte();
             CargarSucursal();
             CargarCondicionPago();
@@ -207,12 +228,19 @@ namespace SistemaContable.UI.Forms.Ventas
                 chkPERCEPCION.Checked = Convert.ToBoolean(r["AP_PERCEPCION"]);
                 txtOBSERVACION.Text = AsString(r["OBSERVACIONES"]);
 
-                // Restaurar combo "Solicitud": primero el CODIPROVEEDOR del cliente (si
-                // [EDTE].[SP_FACTURA_ENC] llega a exponerlo vía JOIN a ENTIDAD, igual que CCF),
-                // luego recargar las opciones (ID_ZAFRA + CODIPROVEEDOR).
+                // CODIPROVEEDOR del cliente (necesario para "Solicitud Agrícola" al reabrir).
                 _codiProveedorCliente = r.Table.Columns.Contains("CODIPROVEEDOR") && r["CODIPROVEEDOR"] != DBNull.Value
                                             ? r["CODIPROVEEDOR"].ToString().Trim() : string.Empty;
-                CargarSolicitudAgricola();
+
+                // Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25
+                _idSolicitudSeleccionada = r.Table.Columns.Contains("ID_SOLICITUD") && r["ID_SOLICITUD"] != DBNull.Value
+                                                ? Convert.ToInt32(r["ID_SOLICITUD"]) : (int?)null;
+                AsignarDatosHistorialSolicitud(r);
+                // (2026-08-26) AsignarDatosHistorialSolicitud ya intenta leer ID_CUENTA_FINAN de
+                // "r", pero por claridad se deja explícito aquí también (mismo patrón que CCF).
+                _idCuentaFinanSolicitud = r.Table.Columns.Contains("ID_CUENTA_FINAN") && r["ID_CUENTA_FINAN"] != DBNull.Value
+                    ? (int?)Convert.ToInt32(r["ID_CUENTA_FINAN"]) : null;
+
                 ActualizarEstadoBotonSolicitudAgricola();
 
                 CargarFacturaDetalleExistente(idFactEnc);
@@ -261,6 +289,14 @@ namespace SistemaContable.UI.Forms.Ventas
                     f["TOTAL"] = row["TOTAL"];
                     f["ID_UNIDAD_MEDIDA"] = row.Table.Columns.Contains("ID_UNIDAD_MEDIDA")
                                             ? row["ID_UNIDAD_MEDIDA"] : (object)0;
+                    // Historial de integración SIGESTA: conservar la trazabilidad al reabrir,
+                    // para que un re-guardado no la pierda.
+                    f["ID_SOLICITUD"] = row.Table.Columns.Contains("ID_SOLICITUD")
+                                            ? row["ID_SOLICITUD"] : (object)DBNull.Value;
+                    f["ID_SOLIC_AGRI_PROD"] = row.Table.Columns.Contains("ID_SOLIC_AGRI_PROD")
+                                            ? row["ID_SOLIC_AGRI_PROD"] : (object)DBNull.Value;
+                    f["UID_SOLIC_AGRI_PROD"] = row.Table.Columns.Contains("UID_SOLIC_AGRI_PROD")
+                                            ? row["UID_SOLIC_AGRI_PROD"] : (object)DBNull.Value;
                     _dtDetalle.Rows.Add(f);
                 }
             }
@@ -302,7 +338,8 @@ namespace SistemaContable.UI.Forms.Ventas
             // Lectura del CODIPROVEEDOR para filtrar las solicitudes. Si la búsqueda
             // resumida todavía no expone la columna, se recupera desde OBTENER.
             _codiProveedorCliente = ObtenerCodiProveedorCliente(fila);
-            CargarSolicitudAgricola();
+            _idSolicitudSeleccionada = null;
+            AsignarDatosHistorialSolicitud(null);
             ActualizarEstadoBotonSolicitudAgricola();
         }
         private void ActualizarEstadoBotonSolicitudAgricola()
@@ -347,32 +384,39 @@ namespace SistemaContable.UI.Forms.Ventas
                 : string.Empty;
         }
         /// <summary>
-        /// Llena el combo "Solicitud" (cbxSOLICITUD) con las solicitudes agrícolas del
-        /// cliente/zafra actuales, usando el primer resultado de
-        /// [ESOLICITUD].[SP_SOLICITUDES_SIGESTA]. Mismo patrón que frmCreditoFiscal.
+        /// Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25:
+        /// refleja en los 3 campos de solo lectura (txtNUM_SOLICITUD, txtNOMBRE_CUENTA,
+        /// txtREFERENCIA) los datos de la solicitud agrícola vinculada, o los limpia si
+        /// encabezadoSolicitud es null. Mismo patrón que frmCreditoFiscal.
         /// </summary>
-        private void CargarSolicitudAgricola()
+        private void AsignarDatosHistorialSolicitud(DataRow encabezadoSolicitud)
         {
-            int? idZafra = ObtenerIdCombo(cbxZAFRA);
-            if (idZafra == null || idZafra <= 0 || string.IsNullOrWhiteSpace(_codiProveedorCliente))
+            if (encabezadoSolicitud == null)
             {
-                cbxSOLICITUD.DataSource = null;
-                cbxSOLICITUD.Items.Clear();
+                txtNUM_SOLICITUD.Text = "";
+                txtNOMBRE_CUENTA.Text = "";
+                txtREFERENCIA.Text = "";
+                _idCuentaFinanSolicitud = null;
                 return;
             }
-            DataTable dt = _dal.EjecutarConsulta("[ESOLICITUD].[SP_SOLICITUDES_SIGESTA]", new
-            {
-                ACTION = "PRODUCTOR_ENCABEZADO",
-                ID_ZAFRA = idZafra,
-                CODIPROVEEDOR = _codiProveedorCliente
-            });
-            cbxSOLICITUD.DataSource = dt;
-            cbxSOLICITUD.ValueMember = "ID_SOLICITUD";
-            cbxSOLICITUD.DisplayMember = "NUM_SOLICITUD";
+            txtNUM_SOLICITUD.Text = encabezadoSolicitud.Table.Columns.Contains("NUM_SOLICITUD") &&
+                                     encabezadoSolicitud["NUM_SOLICITUD"] != DBNull.Value
+                ? encabezadoSolicitud["NUM_SOLICITUD"].ToString() : "";
+            txtNOMBRE_CUENTA.Text = encabezadoSolicitud.Table.Columns.Contains("NOMBRE_CUENTA") &&
+                                     encabezadoSolicitud["NOMBRE_CUENTA"] != DBNull.Value
+                ? encabezadoSolicitud["NOMBRE_CUENTA"].ToString() : "";
+            txtREFERENCIA.Text = encabezadoSolicitud.Table.Columns.Contains("UID_SOLIC_AGRICOLA") &&
+                                  encabezadoSolicitud["UID_SOLIC_AGRICOLA"] != DBNull.Value
+                ? encabezadoSolicitud["UID_SOLIC_AGRICOLA"].ToString() : "";
+            // (2026-08-26) Igual que frmCreditoFiscal.
+            _idCuentaFinanSolicitud = encabezadoSolicitud.Table.Columns.Contains("ID_CUENTA_FINAN") &&
+                                       encabezadoSolicitud["ID_CUENTA_FINAN"] != DBNull.Value
+                ? (int?)Convert.ToInt32(encabezadoSolicitud["ID_CUENTA_FINAN"]) : null;
         }
         private void cbxZAFRA_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CargarSolicitudAgricola();
+            _idSolicitudSeleccionada = null;
+            AsignarDatosHistorialSolicitud(null);
         }
         private void CargarEmisor(int idEmisor)
         {
@@ -473,6 +517,13 @@ namespace SistemaContable.UI.Forms.Ventas
             _dtDetalle.Columns.Add("GRAVADO", typeof(decimal));
             _dtDetalle.Columns.Add("TOTAL", typeof(decimal));
             _dtDetalle.Columns.Add("ID_UNIDAD_MEDIDA", typeof(int));
+            // Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25:
+            // trazabilidad por línea hacia [ESOLICITUD].[SP_SOLICITUDES_SIGESTA]
+            // ACTION='PRODUCTOR_DETALLE'. No se muestran en el grid (ver OcultarColumna abajo);
+            // se envían a [EDTE].[SP_FACTURA_DET] al guardar.
+            _dtDetalle.Columns.Add("ID_SOLICITUD", typeof(int));
+            _dtDetalle.Columns.Add("ID_SOLIC_AGRI_PROD", typeof(int));
+            _dtDetalle.Columns.Add("UID_SOLIC_AGRI_PROD", typeof(string));
             AgregarFilaVacia();
             gridControl1.DataSource = _dtDetalle;
             var view = gridControl1.MainView as GridView;
@@ -480,6 +531,9 @@ namespace SistemaContable.UI.Forms.Ventas
             view.Columns.Clear();
             view.PopulateColumns();
             OcultarColumna(view, "ID_PRODUCTO");
+            OcultarColumna(view, "ID_SOLICITUD");
+            OcultarColumna(view, "ID_SOLIC_AGRI_PROD");
+            OcultarColumna(view, "UID_SOLIC_AGRI_PROD");
             ConfigurarColumna(view, "COD_REF", "Código", 90, true);
             ConfigurarColumna(view, "DESCRIPCION", "Descripción", 250, true);
             ConfigurarColumna(view, "UM", "U.M.", 55, false);
@@ -617,6 +671,9 @@ namespace SistemaContable.UI.Forms.Ventas
             fila["ES_EXENTO"] = false;
             fila["ES_NOSUJETA"] = false;
             fila["ID_UNIDAD_MEDIDA"] = 0;
+            fila["ID_SOLICITUD"] = DBNull.Value;
+            fila["ID_SOLIC_AGRI_PROD"] = DBNull.Value;
+            fila["UID_SOLIC_AGRI_PROD"] = DBNull.Value;
             _dtDetalle.Rows.Add(fila);
         }
         private void RecalcularLinea(GridView view, int rowHandle)
@@ -923,8 +980,8 @@ namespace SistemaContable.UI.Forms.Ventas
                         frm.SolicitudSeleccionada["ID_SOLICITUD"]);
 
                     CargarDetalleSolicitudAgricola(frm.DetalleSeleccionado);
-                    CargarSolicitudAgricola();
-                    cbxSOLICITUD.SelectedValue = idSolicitud;
+                    _idSolicitudSeleccionada = idSolicitud;
+                    AsignarDatosHistorialSolicitud(frm.SolicitudSeleccionada);
                 }
                 catch (Exception ex)
                 {
@@ -1010,6 +1067,17 @@ namespace SistemaContable.UI.Forms.Ventas
                 filaDetalle["TOTAL"] = total;
                 filaDetalle["ID_UNIDAD_MEDIDA"] = Convert.ToInt32(
                     datosProductoGrid["ID_UNIDAD_MEDIDA"]);
+                // Historial de integración SIGESTA: trazabilidad hacia la línea de la
+                // solicitud agrícola de origen (ACTION='PRODUCTOR_DETALLE').
+                filaDetalle["ID_SOLICITUD"] = productoSolicitud.Table.Columns.Contains("ID_SOLICITUD") &&
+                                               productoSolicitud["ID_SOLICITUD"] != DBNull.Value
+                    ? (object)Convert.ToInt32(productoSolicitud["ID_SOLICITUD"]) : DBNull.Value;
+                filaDetalle["ID_SOLIC_AGRI_PROD"] = productoSolicitud.Table.Columns.Contains("ID_SOLIC_AGRI_PROD") &&
+                                                     productoSolicitud["ID_SOLIC_AGRI_PROD"] != DBNull.Value
+                    ? (object)Convert.ToInt32(productoSolicitud["ID_SOLIC_AGRI_PROD"]) : DBNull.Value;
+                filaDetalle["UID_SOLIC_AGRI_PROD"] = productoSolicitud.Table.Columns.Contains("UID_SOLIC_AGRI_PROD") &&
+                                                      productoSolicitud["UID_SOLIC_AGRI_PROD"] != DBNull.Value
+                    ? (object)productoSolicitud["UID_SOLIC_AGRI_PROD"].ToString() : DBNull.Value;
                 detallePreparado.Rows.Add(filaDetalle);
             }
 
@@ -1073,6 +1141,10 @@ namespace SistemaContable.UI.Forms.Ventas
                 var view = gridControl1.MainView as GridView;
                 view?.CloseEditor();
                 view?.UpdateCurrentRow();
+                // (2026-08-26) Igual que frmCreditoFiscal: para disparar GUARDAR_DESDE_FACTURA
+                // en SP_CREDITO_ENCA solo la primera vez que se guarda esta factura (INSERT),
+                // no en cada UPDATE/re-guardado.
+                bool esNuevaFactura = IdFactEnc == 0;
                 string NUMDOC = NullIfEmpty(txtNUMINTERNO.Text);
                 var dtVenta = _dal.EjecutarConsulta("[EDTE].[SP_FACTURA_ENC]", new
                 {
@@ -1130,6 +1202,15 @@ namespace SistemaContable.UI.Forms.Ventas
                     ID_CENTRO = ObtenerIdCombo(cbxCENTRO_COSTO),
                     ID_TIPO_ENTIDAD = _idTipoPersona,
                     USUARIO = Configuracion.UsuarioActual,
+                    // Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25
+                    ID_SOLICITUD = _idSolicitudSeleccionada,
+                    NUM_SOLICITUD = NullIfEmpty(txtNUM_SOLICITUD.Text),
+                    NOMBRE_CUENTA = NullIfEmpty(txtNOMBRE_CUENTA.Text),
+                    UID_SOLIC_AGRICOLA = NullIfEmpty(txtREFERENCIA.Text),
+                    // (2026-08-26) NUEVO: se guardan directo en la factura para que
+                    // [ESOLICITUD].[SP_CREDITO_ENCA] los lea sin hacer joins.
+                    ID_CUENTA_FINAN = _idCuentaFinanSolicitud,
+                    CODIPROVEEDOR = NullIfEmpty(_codiProveedorCliente),
                 });
                 if (dtVenta == null || dtVenta.Rows.Count == 0)
                 {
@@ -1177,6 +1258,13 @@ namespace SistemaContable.UI.Forms.Ventas
                         GRAVADA = Convert.ToDecimal(fila["GRAVADO"]),
                         TOTAL = Convert.ToDecimal(fila["TOTAL"]),
                         USUARIO = Configuracion.UsuarioActual,
+                        // Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25
+                        ID_SOLICITUD = fila.Table.Columns.Contains("ID_SOLICITUD") && fila["ID_SOLICITUD"] != DBNull.Value
+                            ? (int?)Convert.ToInt32(fila["ID_SOLICITUD"]) : null,
+                        ID_SOLIC_AGRI_PROD = fila.Table.Columns.Contains("ID_SOLIC_AGRI_PROD") && fila["ID_SOLIC_AGRI_PROD"] != DBNull.Value
+                            ? (int?)Convert.ToInt32(fila["ID_SOLIC_AGRI_PROD"]) : null,
+                        UID_SOLIC_AGRI_PROD = fila.Table.Columns.Contains("UID_SOLIC_AGRI_PROD") && fila["UID_SOLIC_AGRI_PROD"] != DBNull.Value
+                            ? fila["UID_SOLIC_AGRI_PROD"].ToString() : null,
                     });
                 }
 
@@ -1189,6 +1277,32 @@ namespace SistemaContable.UI.Forms.Ventas
                 {
                     ID_FACTENC = IdFactEnc
                 });
+
+                // (2026-08-26) Igual que frmCreditoFiscal: si esta Factura viene de una
+                // Solicitud Agrícola y es la primera vez que se guarda, se genera el registro
+                // en [INJIBOA].[dbo].[CREDITO_ENCA] llamando explícitamente a
+                // [ESOLICITUD].[SP_CREDITO_ENCA] ACCION='GUARDAR_DESDE_FACTURA'. NO es un
+                // disparador de base de datos. Si falla, la Factura queda guardada igual.
+                if (esNuevaFactura && _idSolicitudSeleccionada.HasValue)
+                {
+                    try
+                    {
+                        _dal.EjecutarSinRetorno("[ESOLICITUD].[SP_CREDITO_ENCA]", new
+                        {
+                            ACCION = "GUARDAR_DESDE_FACTURA",
+                            ID_FACTENC = IdFactEnc,
+                            ID_EMISOR = 1,
+                            USUARIO = Configuracion.UsuarioActual,
+                        });
+                    }
+                    catch (Exception exCredito)
+                    {
+                        XtraMessageBox.Show(
+                            "La factura se guardó correctamente, pero no se pudo generar " +
+                            "el registro de crédito agrícola asociado:\n\n" + exCredito.Message,
+                            "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
 
                 XtraMessageBox.Show("Factura guardada correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1303,6 +1417,9 @@ namespace SistemaContable.UI.Forms.Ventas
             mskFECHA.Text = DateTime.Today.ToString("dd/MM/yyyy");
             txtCOD_GENERACION.Text = DALBase.NuevoGUID();
             CargarSiguienteNumFactura(NullIfEmpty(cbxTIPO_DTE.Text), AnioDte);
+            // Historial de integración SIGESTA (solicitud agrícola importada) - 2026-08-25
+            _idSolicitudSeleccionada = null;
+            AsignarDatosHistorialSolicitud(null);
         }
         #endregion
         #region HELPERS

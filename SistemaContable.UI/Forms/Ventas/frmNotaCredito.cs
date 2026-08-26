@@ -1,4 +1,5 @@
 ﻿using SistemaContable.DAL;
+using SistemaContable.RP.Ventas;
 using SistemaContable.UI.Helpers;
 using System;
 using System.Collections.Generic;
@@ -67,13 +68,17 @@ namespace SistemaContable.UI.Forms.Ventas
             if (cbxTIPO_DTE.Items.Count > 0) cbxTIPO_DTE.SelectedIndex = 0;
             InicializarGridDetalle();
 
-            // Búsqueda del CCF origen
+            // Búsqueda del CCF origen.
+            // NOTA (2026-08-26): antes apuntaba a [EDTE].[SP_CREDITOFISCAL_ENC] con Accion="LISTAR",
+            // pero esa rama del SP no acepta @FILTRO y FormHelper.RegistrarBusqueda siempre lo envía,
+            // lo que provoca el error "@FILTRO no es parámetro de SP_CREDITOFISCAL_ENC" y bloquea
+            // por completo la creación de una Nota de Crédito nueva. Se usa un SP dedicado
+            // (SP_BUSCAR_CCF_PARA_NCR) que sí acepta @FILTRO y solo lista CCF ya sellados/no anulados.
             FormHelper.RegistrarBusqueda(
                 txtCCF_ORIGEN,
                 new BusquedaConfig
                 {
-                    StoredProcedure = "[EDTE].[SP_CREDITOFISCAL_ENC]",
-                    Accion = "LISTAR",
+                    StoredProcedure = "[EDTE].[SP_BUSCAR_CCF_PARA_NCR]",
                     Columnas = new Dictionary<string, string>
                     {
                         { "NUMINTERNO",    "N° Interno" },
@@ -85,10 +90,10 @@ namespace SistemaContable.UI.Forms.Ventas
                     Anchos = new Dictionary<string, int>
                     {
                         { "NUMINTERNO",    100 },
-                        { "NUMCONTROL",    200 },
-                        { "NOMBRE_ENTIDAD",250 },
-                        { "FECHA",         100 },
-                        { "TOTALVENTA",    100 }
+                        { "NUMCONTROL",    220 },  // suficiente para el N° Control completo (formato DTE-XX-MxxxPxxx-...)
+                        { "NOMBRE_ENTIDAD",280 },  // más ancho para no cortar nombres largos de cliente
+                        { "FECHA",         80 },
+                        { "TOTALVENTA",    86 }
                     },
                     ParametrosExtra = new { ID_EMISOR = 1 }
                 },
@@ -1160,6 +1165,25 @@ namespace SistemaContable.UI.Forms.Ventas
         #endregion
 
         #region BOTONES
+        // (2026-08-26) Reporte de impresión, mismo patrón que frmCreditoFiscal.btnImprimir_Click.
+        private void btnImprimir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var reporte = new rptNotaCredito { IdNTCEnc = IdNTCEnc };
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
         private void btnEliminar_Click(object sender, EventArgs e) => EliminarFilaDetalle();
         private void btnNuevo_Click(object sender, EventArgs e)
         {

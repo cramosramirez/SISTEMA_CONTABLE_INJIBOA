@@ -39,6 +39,7 @@ namespace SistemaContable.UI.Forms.Clientes
             CargarTipoDocIdentidad();
             CargarPaises();
             CargarDepartamentos();
+            ConfigurarToolTips();
             RegistrarBusquedaActividades();
             RegistrarBusquedaTipoPrecio();
             RegistrarBusquedaCuenta();
@@ -180,6 +181,27 @@ namespace SistemaContable.UI.Forms.Clientes
             cbxDIST.ValueMember = "CODI_DIST";
             cbxDIST.DisplayMember = "NOMBRE_DISTRITO";
             cbxDIST.SelectedIndex = 0;
+        }
+        /// <summary>
+        /// ToolTips de búsqueda genérica ("*" + Enter), igual que en NotaRemision\frmDespacho.cs,
+        /// para todos los campos de código que usan FormHelper.RegistrarBusqueda en este formulario:
+        /// Actividad Económica 1/2/3, Tipo de Precio, Cuenta x Cobrar y las integraciones
+        /// (Productor, Transportista, Cargadora, Roza, Querqueo) - 2026-08-25.
+        /// </summary>
+        private void ConfigurarToolTips()
+        {
+            TooltipHelper.Configurar(
+                            (txtCODI_ACTIVIDAD1, "Ingrese * y presione Enter para mostrar todas las actividades económicas."),
+                            (txtCODI_ACTIVIDAD2, "Ingrese * y presione Enter para mostrar todas las actividades económicas."),
+                            (txtCODI_ACTIVIDAD3, "Ingrese * y presione Enter para mostrar todas las actividades económicas."),
+                            (txtID_TIPO_PRECIO, "Ingrese * y presione Enter para mostrar todos los tipos de precio."),
+                            (txtCUENTA_X_COBRAR, "Ingrese * y presione Enter para mostrar todas las cuentas contables."),
+                            (txtCODIPROVEEDOR, "Ingrese * y presione Enter para mostrar todos los productores."),
+                            (txtCODTRANSPORT, "Ingrese * y presione Enter para mostrar todos los transportistas."),
+                            (txtID_CARGADORA, "Ingrese * y presione Enter para mostrar todas las cargadoras."),
+                            (txtID_PROVEEDOR_ROZA, "Ingrese * y presione Enter para mostrar todos los proveedores de roza."),
+                            (txtID_PROVEE_QQ, "Ingrese * y presione Enter para mostrar todos los proveedores de querqueo.")
+                                 );
         }
         private void RegistrarBusquedaActividades()
         {
@@ -1237,10 +1259,7 @@ namespace SistemaContable.UI.Forms.Clientes
                 txtTELEFONO.Text = AsString(r["TELEFONO"]);
                 txtDIAS_PLAZO.Text = r["DIAS_PLAZO"] == DBNull.Value ? "" : r["DIAS_PLAZO"].ToString();
                 txtCOMPLEMENTO.Text = AsString(r["COMPLEMENTO"]);
-                txtCALLE.Text = AsString(r["CALLE"]);
-                txtCASA.Text = AsString(r["CASA"]);
-                txtAPTO_LOCAL.Text = AsString(r["APTO_LOCAL"]);
-                txtCOLONIA.Text = AsString(r["COLONIA"]);
+                txtACTIVIDAD_EXT.Text = AsString(r["ACTIVIDAD_EXT"]);
                 txtCODIPROVEEDOR.Text = AsString(r["CODIPROVEEDOR"]);
                 BuscarProveedorIntegracionPorCodigo(validarNit: false);
                 txtCODTRANSPORT.Text = r["CODTRANSPORT"] == DBNull.Value ? "" : r["CODTRANSPORT"].ToString();
@@ -1317,10 +1336,6 @@ namespace SistemaContable.UI.Forms.Clientes
                     TELEFONO = NullIfEmpty(txtTELEFONO.Text),
                     DIAS_PLAZO = ParseInt(txtDIAS_PLAZO.Text),
                     COMPLEMENTO = NullIfEmpty(txtCOMPLEMENTO.Text),
-                    CALLE = NullIfEmpty(txtCALLE.Text),
-                    CASA = NullIfEmpty(txtCASA.Text),
-                    APTO_LOCAL = NullIfEmpty(txtAPTO_LOCAL.Text),
-                    COLONIA = NullIfEmpty(txtCOLONIA.Text),
                     ID_PAIS = ObtenerIdCombo(cbxPAIS),
                     CODI_DEPTO = ObtenerCodigoCombo(cbxDEPTO),
                     CODI_MUNI = ObtenerCodigoCombo(cbxMUNI),
@@ -1331,6 +1346,7 @@ namespace SistemaContable.UI.Forms.Clientes
                     CODIPROVEEDOR = NullIfEmpty(txtCODIPROVEEDOR.Text),
                     CODTRANSPORT = ParseIntNull(txtCODTRANSPORT.Text),
                     ID_CARGADORA = ParseIntNull(txtID_CARGADORA.Text),
+                    ACTIVIDAD_EXT = NullIfEmpty(txtACTIVIDAD_EXT.Text),
                     USER = Configuracion.UsuarioActual
                 });
                 if (dtResult == null || dtResult.Rows.Count == 0)
@@ -1504,98 +1520,203 @@ namespace SistemaContable.UI.Forms.Clientes
             bool esExterior = origen == "EXTERIOR";
             cbxTIPO_DOC_IDEN.Enabled = esExterior;
             txtDOCUMENTO.Enabled = esExterior;
+            txtACTIVIDAD_EXT.Enabled = esExterior;
+            // Actividad 1/2/3 (código + descripción) solo aplican para origen LOCAL
+            bool esLocal = !esExterior;
+            txtCODI_ACTIVIDAD1.Enabled = esLocal;
+            txtACTIVIDAD_1.Enabled = esLocal;
+            txtCODI_ACTIVIDAD2.Enabled = esLocal;
+            txtACTIVIDAD_2.Enabled = esLocal;
+            txtCODI_ACTIVIDAD3.Enabled = esLocal;
+            txtACTIVIDAD_3.Enabled = esLocal;
             if (!esExterior)
             {
                 cbxTIPO_DOC_IDEN.SelectedIndex = 0;
                 txtDOCUMENTO.Clear();
+                txtACTIVIDAD_EXT.Clear();
+            }
+            else
+            {
+                _idActividad1 = 0;
+                _idActividad2 = 0;
+                _idActividad3 = 0;
+                txtCODI_ACTIVIDAD1.Text = "";
+                txtACTIVIDAD_1.Text = "";
+                txtCODI_ACTIVIDAD2.Text = "";
+                txtACTIVIDAD_2.Text = "";
+                txtCODI_ACTIVIDAD3.Text = "";
+                txtACTIVIDAD_3.Text = "";
+            }
+            // Origen LOCAL implica País = EL SALVADOR (se autoselecciona)
+            if (origen == "LOCAL")
+            {
+                SeleccionarPaisElSalvador();
+            }
+            // Origen EXTERIOR: si quedó EL SALVADOR seleccionado, se limpia
+            else if (esExterior && cbxPAIS.Text.Trim().ToUpper() == "EL SALVADOR")
+            {
+                cbxPAIS.SelectedIndex = 0;
+            }
+            // NRC y NIT solo se habilitan para origen LOCAL
+            txtNIT.Enabled = esLocal;
+            if (!esLocal)
+                txtNIT.Clear();
+            ActualizarEstadoNRC();
+        }
+        /// <summary>
+        /// El NRC solo se habilita cuando Origen = LOCAL y el tipo de contribuyente no es "No Contribuyente".
+        /// Se invoca desde cbxORIGEN_SelectedIndexChanged y cbxTIPO_CONTRIB_SelectedIndexChanged
+        /// para mantener ambas reglas sincronizadas sobre el mismo control.
+        /// </summary>
+        private void ActualizarEstadoNRC()
+        {
+            string origen = cbxORIGEN.Text.Trim().ToUpper();
+            string contrib = cbxTIPO_CONTRIB.Text.Trim().ToUpper();
+            bool esNoContribuyente = contrib.Contains("NO CONTRIBUYENTE");
+            bool habilitar = origen == "LOCAL" && !esNoContribuyente;
+            txtNRC.Enabled = habilitar;
+            if (!habilitar)
+                txtNRC.Clear();
+        }
+        private void cbxTIPO_ENTIDAD_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // El DUI es un documento de persona natural; se deshabilita para JURIDICA.
+            string tipoPersona = cbxTIPO_ENTIDAD.Text.Trim().ToUpper();
+            txtDUI.Enabled = tipoPersona != "JURIDICA";
+        }
+        /// <summary>
+        /// Busca "EL SALVADOR" en el catálogo cargado de cbxPAIS y lo selecciona.
+        /// Usado cuando Origen = LOCAL, ya que ese origen exige país El Salvador.
+        /// </summary>
+        private void SeleccionarPaisElSalvador()
+        {
+            if (cbxPAIS.Text.Trim().ToUpper() == "EL SALVADOR") return;
+            if (cbxPAIS.DataSource is DataTable dtPaises)
+            {
+                DataRow[] filas = dtPaises.Select("VALORES = 'EL SALVADOR'");
+                if (filas.Length > 0)
+                {
+                    cbxPAIS.SelectedValue = filas[0]["ID_PAIS"];
+                }
             }
         }
         private void cbxTIPO_CONTRIB_SelectedIndexChanged(object sender, EventArgs e)
         {
             string contrib = cbxTIPO_CONTRIB.Text.Trim().ToUpper();
             bool esNoContribuyente = contrib.Contains("NO CONTRIBUYENTE");
-            txtNRC.Enabled = !esNoContribuyente;
-            if (esNoContribuyente)
-                txtNRC.Clear();
+            string tipoPersona = cbxTIPO_ENTIDAD.Text.Trim().ToUpper();
+            if (esNoContribuyente && tipoPersona == "JURIDICA")
+            {
+                XtraMessageBox.Show("No se puede seleccionar No Contribuyente cuando el tipo persona es 'JURIDICO'.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbxTIPO_CONTRIB.SelectedIndex = 0;
+                return;
+            }
+            ActualizarEstadoNRC();
         }
         #endregion
         #region === VALIDAR ===
         private bool ValidarCampos()
         {
-            if (string.IsNullOrWhiteSpace(txtNOMBRE.Text))
+            // Limpia errores previos de una validación anterior
+            Control[] controlesValidables =
             {
-                XtraMessageBox.Show("El nombre de la entidad es obligatorio.",
-                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNOMBRE.Focus();
-                return false;
+                txtNOMBRE, cbxTIPO_CONTRIB, txtDUI, txtNIT, txtNRC,
+                cbxTIPO_DOC_IDEN, txtDOCUMENTO, cbxPAIS, txtNOMBRE_COMERCIAL,
+                txtTELEFONO, txtCELULAR, txtCORREO, txtCOMPLEMENTO,
+                cbxDEPTO, cbxMUNI, cbxDIST, txtCODI_ACTIVIDAD1
+            };
+            foreach (Control c in controlesValidables)
+                errorProvider1.SetError(c, "");
+
+            bool esValido = true;
+            Control primerControlError = null;
+            void MarcarError(Control control, string mensaje)
+            {
+                errorProvider1.SetError(control, mensaje);
+                esValido = false;
+                if (primerControlError == null) primerControlError = control;
             }
+
+            if (string.IsNullOrWhiteSpace(txtNOMBRE.Text))
+                MarcarError(txtNOMBRE, "El nombre de la entidad es obligatorio.");
+
             // Validación por Tipo Persona
             string tipoPersona = cbxTIPO_ENTIDAD.Text.Trim().ToUpper();
             string tipoContrib = cbxTIPO_CONTRIB.Text.Trim().ToUpper();
             bool esNoContrib = tipoContrib.Contains("NO CONTRIBUYENTE");
+            string origen = cbxORIGEN.Text.Trim().ToUpper();
+            if (tipoPersona == "JURIDICA" && esNoContrib)
+                MarcarError(cbxTIPO_CONTRIB, "Se debe seleccionar un tipo de contribuyente diferente.");
+
             if (tipoPersona == "NATURAL")
             {
                 if (string.IsNullOrWhiteSpace(txtDUI.Text))
-                {
-                    XtraMessageBox.Show("El DUI es obligatorio para personas naturales.",
-                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtDUI.Focus();
-                    return false;
-                }
-                if (string.IsNullOrWhiteSpace(txtNIT.Text))
-                {
-                    XtraMessageBox.Show("El NIT es obligatorio para personas naturales.",
-                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtNIT.Focus();
-                    return false;
-                }
+                    MarcarError(txtDUI, "El DUI es obligatorio para personas naturales.");
+                // NIT solo aplica (y solo está habilitado) para origen LOCAL
+                if (origen == "LOCAL" && string.IsNullOrWhiteSpace(txtNIT.Text))
+                    MarcarError(txtNIT, "El NIT es obligatorio para personas naturales.");
             }
             else if (tipoPersona == "JURIDICA" && !esNoContrib)
             {
-                if (string.IsNullOrWhiteSpace(txtNRC.Text))
-                {
-                    XtraMessageBox.Show("El NRC es obligatorio para personas jurídicas.",
-                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtNRC.Focus();
-                    return false;
-                }
+                // NRC solo aplica (y solo está habilitado) para origen LOCAL
+                if (origen == "LOCAL" && string.IsNullOrWhiteSpace(txtNRC.Text))
+                    MarcarError(txtNRC, "El NRC es obligatorio para personas jurídicas.");
             }
+
             // Validación por Origen (EXTERIOR)
-            string origen = cbxORIGEN.Text.Trim().ToUpper();
             if (origen == "EXTERIOR")
             {
                 if (ObtenerIdCombo(cbxTIPO_DOC_IDEN) == null)
-                {
-                    XtraMessageBox.Show("El Tipo de Documento es obligatorio para origen EXTERIOR.",
-                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    cbxTIPO_DOC_IDEN.Focus();
-                    return false;
-                }
+                    MarcarError(cbxTIPO_DOC_IDEN, "El Tipo de Documento es obligatorio para origen EXTERIOR.");
                 if (string.IsNullOrWhiteSpace(txtDOCUMENTO.Text))
-                {
-                    XtraMessageBox.Show("El Documento es obligatorio para origen EXTERIOR.",
-                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtDOCUMENTO.Focus();
-                    return false;
-                }
+                    MarcarError(txtDOCUMENTO, "El Documento es obligatorio para origen EXTERIOR.");
             }
-            // Validación por Tipo Contribuyente
-            bool requiereNRC = !esNoContrib && (tipoContrib == "GRANDE" || tipoContrib == "MEDIANO" ||
+
+            // Validación por Origen (LOCAL): país + campos mínimos requeridos
+            if (origen == "LOCAL")
+            {
+                string pais = cbxPAIS.Text.Trim().ToUpper();
+                if (pais != "EL SALVADOR")
+                    MarcarError(cbxPAIS, "Si el Origen es LOCAL, el País debe ser EL SALVADOR.");
+                if (string.IsNullOrWhiteSpace(txtNOMBRE_COMERCIAL.Text))
+                    MarcarError(txtNOMBRE_COMERCIAL, "El Nombre Comercial es obligatorio para origen LOCAL.");
+                if (string.IsNullOrWhiteSpace(txtNIT.Text))
+                    MarcarError(txtNIT, "El NIT es obligatorio para origen LOCAL.");
+                if (string.IsNullOrWhiteSpace(txtTELEFONO.Text))
+                    MarcarError(txtTELEFONO, "El Teléfono es obligatorio para origen LOCAL.");
+                if (string.IsNullOrWhiteSpace(txtCELULAR.Text))
+                    MarcarError(txtCELULAR, "El Celular es obligatorio para origen LOCAL.");
+                if (string.IsNullOrWhiteSpace(txtCORREO.Text))
+                    MarcarError(txtCORREO, "El Correo es obligatorio para origen LOCAL.");
+                if (string.IsNullOrWhiteSpace(txtCOMPLEMENTO.Text))
+                    MarcarError(txtCOMPLEMENTO, "La Dirección es obligatoria para origen LOCAL.");
+                if (ObtenerCodigoCombo(cbxDEPTO) == null)
+                    MarcarError(cbxDEPTO, "El Departamento es obligatorio para origen LOCAL.");
+                if (ObtenerCodigoCombo(cbxMUNI) == null)
+                    MarcarError(cbxMUNI, "El Municipio es obligatorio para origen LOCAL.");
+                if (ObtenerCodigoCombo(cbxDIST) == null)
+                    MarcarError(cbxDIST, "El Distrito es obligatorio para origen LOCAL.");
+                if (_idActividad1 == 0)
+                    MarcarError(txtCODI_ACTIVIDAD1, "La Actividad 1 es obligatoria para origen LOCAL.");
+            }
+
+            // Validación por Tipo Contribuyente (NRC solo aplica para origen LOCAL)
+            bool requiereNRC = origen == "LOCAL" && !esNoContrib && (tipoContrib == "GRANDE" || tipoContrib == "MEDIANO" ||
                                tipoContrib.StartsWith("PEQUEÑO"));
             if (requiereNRC && string.IsNullOrWhiteSpace(txtNRC.Text))
-            {
-                XtraMessageBox.Show("El NRC es obligatorio para este tipo de contribuyente.",
-                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNRC.Focus();
-                return false;
-            }
+                MarcarError(txtNRC, "El NRC es obligatorio para este tipo de contribuyente.");
             if (requiereNRC && _idActividad1 == 0)
+                MarcarError(txtCODI_ACTIVIDAD1, "Debe seleccionar al menos la Actividad Económica 1.");
+
+            if (!esValido)
             {
-                XtraMessageBox.Show("Debe seleccionar al menos la Actividad Económica 1.",
+                XtraMessageBox.Show("Hay campos obligatorios sin completar. Revise los campos marcados en rojo.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtCODI_ACTIVIDAD1.Focus();
+                primerControlError?.Focus();
                 return false;
             }
+
             if (!ValidarNitsCodigosRelacionados())
                 return false;
 
@@ -1670,10 +1791,6 @@ namespace SistemaContable.UI.Forms.Clientes
             _idTipoPrecioSeleccionado = null;
             txtID_TIPO_PRECIO.Text = "";
             txtCOMPLEMENTO.Text = "";
-            txtCALLE.Text = "";
-            txtCASA.Text = "";
-            txtAPTO_LOCAL.Text = "";
-            txtCOLONIA.Text = "";
             txtCODIPROVEEDOR.Text = "";
             txtNOMBRE_PROVEEDOR_INTEGRACION.Text = "";
             txtNIT_PROVEEDOR_INTEGRACION.Text = "";

@@ -12,11 +12,15 @@
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnNuevo = new DevExpress.XtraEditors.SimpleButton();
             this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.btnEliminar = new DevExpress.XtraEditors.SimpleButton();
             this.btnSalir = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.txtACTIVIDAD_EXT = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.lblCODIGO_ENTIDAD = new System.Windows.Forms.Label();
             this.txtCODIGO_ENTIDAD = new System.Windows.Forms.TextBox();
             this.tabCodigosRelacionados = new DevExpress.XtraTab.XtraTabControl();
@@ -84,14 +88,6 @@
             this.txtTELEFONO = new System.Windows.Forms.TextBox();
             this.lblCOMPLEMENTO = new System.Windows.Forms.Label();
             this.txtCOMPLEMENTO = new System.Windows.Forms.TextBox();
-            this.lblCALLE = new System.Windows.Forms.Label();
-            this.txtCALLE = new System.Windows.Forms.TextBox();
-            this.lblCASA = new System.Windows.Forms.Label();
-            this.txtCASA = new System.Windows.Forms.TextBox();
-            this.lblAPTO_LOCAL = new System.Windows.Forms.Label();
-            this.txtAPTO_LOCAL = new System.Windows.Forms.TextBox();
-            this.lblCOLONIA = new System.Windows.Forms.Label();
-            this.txtCOLONIA = new System.Windows.Forms.TextBox();
             this.lblPAIS = new System.Windows.Forms.Label();
             this.cbxPAIS = new System.Windows.Forms.ComboBox();
             this.lblDEPTO = new System.Windows.Forms.Label();
@@ -123,6 +119,7 @@
             this.gridRoles = new DevExpress.XtraGrid.GridControl();
             this.gvRoles = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabCodigosRelacionados)).BeginInit();
@@ -139,6 +136,11 @@
             this.groupControl2.SuspendLayout();
             this.SuspendLayout();
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.AlwaysBlink;
+            this.errorProvider1.ContainerControl = this;
+            // 
             // btnNuevo
             // 
             this.btnNuevo.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold);
@@ -146,7 +148,7 @@
             this.btnNuevo.Appearance.Options.UseTextOptions = true;
             this.btnNuevo.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnNuevo.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.nuevo32x32;
-            this.btnNuevo.Location = new System.Drawing.Point(1116, 183);
+            this.btnNuevo.Location = new System.Drawing.Point(1146, 185);
             this.btnNuevo.Name = "btnNuevo";
             this.btnNuevo.Size = new System.Drawing.Size(101, 47);
             this.btnNuevo.TabIndex = 0;
@@ -159,7 +161,7 @@
             this.btnGuardar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold);
             this.btnGuardar.Appearance.Options.UseFont = true;
             this.btnGuardar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.guardar2_32x32;
-            this.btnGuardar.Location = new System.Drawing.Point(1116, 237);
+            this.btnGuardar.Location = new System.Drawing.Point(1146, 239);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(101, 47);
             this.btnGuardar.TabIndex = 1;
@@ -173,7 +175,7 @@
             this.btnEliminar.Appearance.Options.UseTextOptions = true;
             this.btnEliminar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnEliminar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminar32x32;
-            this.btnEliminar.Location = new System.Drawing.Point(1116, 291);
+            this.btnEliminar.Location = new System.Drawing.Point(1146, 293);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(101, 47);
             this.btnEliminar.TabIndex = 2;
@@ -188,7 +190,7 @@
             this.btnSalir.Appearance.Options.UseTextOptions = true;
             this.btnSalir.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnSalir.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnSalir.Location = new System.Drawing.Point(1116, 345);
+            this.btnSalir.Location = new System.Drawing.Point(1146, 347);
             this.btnSalir.Name = "btnSalir";
             this.btnSalir.Size = new System.Drawing.Size(101, 47);
             this.btnSalir.TabIndex = 3;
@@ -203,6 +205,8 @@
             this.groupControl1.AppearanceCaption.Options.UseBackColor = true;
             this.groupControl1.AppearanceCaption.Options.UseTextOptions = true;
             this.groupControl1.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.groupControl1.Controls.Add(this.txtACTIVIDAD_EXT);
+            this.groupControl1.Controls.Add(this.label1);
             this.groupControl1.Controls.Add(this.lblCODIGO_ENTIDAD);
             this.groupControl1.Controls.Add(this.txtCODIGO_ENTIDAD);
             this.groupControl1.Controls.Add(this.tabCodigosRelacionados);
@@ -235,14 +239,6 @@
             this.groupControl1.Controls.Add(this.txtTELEFONO);
             this.groupControl1.Controls.Add(this.lblCOMPLEMENTO);
             this.groupControl1.Controls.Add(this.txtCOMPLEMENTO);
-            this.groupControl1.Controls.Add(this.lblCALLE);
-            this.groupControl1.Controls.Add(this.txtCALLE);
-            this.groupControl1.Controls.Add(this.lblCASA);
-            this.groupControl1.Controls.Add(this.txtCASA);
-            this.groupControl1.Controls.Add(this.lblAPTO_LOCAL);
-            this.groupControl1.Controls.Add(this.txtAPTO_LOCAL);
-            this.groupControl1.Controls.Add(this.lblCOLONIA);
-            this.groupControl1.Controls.Add(this.txtCOLONIA);
             this.groupControl1.Controls.Add(this.lblPAIS);
             this.groupControl1.Controls.Add(this.cbxPAIS);
             this.groupControl1.Controls.Add(this.lblDEPTO);
@@ -264,9 +260,27 @@
             this.groupControl1.Controls.Add(this.cbxORIGEN);
             this.groupControl1.Location = new System.Drawing.Point(10, 3);
             this.groupControl1.Name = "groupControl1";
-            this.groupControl1.Size = new System.Drawing.Size(1098, 483);
+            this.groupControl1.Size = new System.Drawing.Size(1114, 483);
             this.groupControl1.TabIndex = 4;
             this.groupControl1.Text = "Datos Personales";
+            // 
+            // txtACTIVIDAD_EXT
+            // 
+            this.txtACTIVIDAD_EXT.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtACTIVIDAD_EXT.Location = new System.Drawing.Point(116, 434);
+            this.txtACTIVIDAD_EXT.Name = "txtACTIVIDAD_EXT";
+            this.txtACTIVIDAD_EXT.Size = new System.Drawing.Size(970, 22);
+            this.txtACTIVIDAD_EXT.TabIndex = 130;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.label1.Location = new System.Drawing.Point(36, 437);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(78, 14);
+            this.label1.TabIndex = 129;
+            this.label1.Text = "Actividad Ext";
             // 
             // lblCODIGO_ENTIDAD
             // 
@@ -658,7 +672,7 @@
             // lblValidacionCodigo
             // 
             this.lblValidacionCodigo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblValidacionCodigo.Location = new System.Drawing.Point(281, 162);
+            this.lblValidacionCodigo.Location = new System.Drawing.Point(289, 27);
             this.lblValidacionCodigo.Name = "lblValidacionCodigo";
             this.lblValidacionCodigo.Size = new System.Drawing.Size(35, 22);
             this.lblValidacionCodigo.TabIndex = 99;
@@ -677,17 +691,17 @@
             // txtNOMBRE
             // 
             this.txtNOMBRE.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtNOMBRE.Location = new System.Drawing.Point(119, 187);
+            this.txtNOMBRE.Location = new System.Drawing.Point(116, 190);
             this.txtNOMBRE.MaxLength = 300;
             this.txtNOMBRE.Name = "txtNOMBRE";
-            this.txtNOMBRE.Size = new System.Drawing.Size(395, 22);
+            this.txtNOMBRE.Size = new System.Drawing.Size(477, 22);
             this.txtNOMBRE.TabIndex = 2;
             // 
             // lblNOMBRE_COMERCIAL
             // 
             this.lblNOMBRE_COMERCIAL.AutoSize = true;
             this.lblNOMBRE_COMERCIAL.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblNOMBRE_COMERCIAL.Location = new System.Drawing.Point(523, 190);
+            this.lblNOMBRE_COMERCIAL.Location = new System.Drawing.Point(9, 213);
             this.lblNOMBRE_COMERCIAL.Name = "lblNOMBRE_COMERCIAL";
             this.lblNOMBRE_COMERCIAL.Size = new System.Drawing.Size(105, 14);
             this.lblNOMBRE_COMERCIAL.TabIndex = 3;
@@ -696,10 +710,10 @@
             // txtNOMBRE_COMERCIAL
             // 
             this.txtNOMBRE_COMERCIAL.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtNOMBRE_COMERCIAL.Location = new System.Drawing.Point(632, 190);
+            this.txtNOMBRE_COMERCIAL.Location = new System.Drawing.Point(116, 218);
             this.txtNOMBRE_COMERCIAL.MaxLength = 300;
             this.txtNOMBRE_COMERCIAL.Name = "txtNOMBRE_COMERCIAL";
-            this.txtNOMBRE_COMERCIAL.Size = new System.Drawing.Size(457, 22);
+            this.txtNOMBRE_COMERCIAL.Size = new System.Drawing.Size(477, 22);
             this.txtNOMBRE_COMERCIAL.TabIndex = 3;
             // 
             // lblTIPO_ENTIDAD
@@ -717,16 +731,17 @@
             this.cbxTIPO_ENTIDAD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxTIPO_ENTIDAD.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.cbxTIPO_ENTIDAD.FormattingEnabled = true;
-            this.cbxTIPO_ENTIDAD.Location = new System.Drawing.Point(120, 162);
+            this.cbxTIPO_ENTIDAD.Location = new System.Drawing.Point(116, 161);
             this.cbxTIPO_ENTIDAD.Name = "cbxTIPO_ENTIDAD";
             this.cbxTIPO_ENTIDAD.Size = new System.Drawing.Size(157, 22);
             this.cbxTIPO_ENTIDAD.TabIndex = 4;
+            this.cbxTIPO_ENTIDAD.SelectedIndexChanged += new System.EventHandler(this.cbxTIPO_ENTIDAD_SelectedIndexChanged);
             // 
             // lblTIPO_CONTRIB
             // 
             this.lblTIPO_CONTRIB.AutoSize = true;
             this.lblTIPO_CONTRIB.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblTIPO_CONTRIB.Location = new System.Drawing.Point(4, 360);
+            this.lblTIPO_CONTRIB.Location = new System.Drawing.Point(275, 166);
             this.lblTIPO_CONTRIB.Name = "lblTIPO_CONTRIB";
             this.lblTIPO_CONTRIB.Size = new System.Drawing.Size(113, 14);
             this.lblTIPO_CONTRIB.TabIndex = 5;
@@ -737,9 +752,9 @@
             this.cbxTIPO_CONTRIB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxTIPO_CONTRIB.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.cbxTIPO_CONTRIB.FormattingEnabled = true;
-            this.cbxTIPO_CONTRIB.Location = new System.Drawing.Point(119, 360);
+            this.cbxTIPO_CONTRIB.Location = new System.Drawing.Point(394, 163);
             this.cbxTIPO_CONTRIB.Name = "cbxTIPO_CONTRIB";
-            this.cbxTIPO_CONTRIB.Size = new System.Drawing.Size(163, 22);
+            this.cbxTIPO_CONTRIB.Size = new System.Drawing.Size(202, 22);
             this.cbxTIPO_CONTRIB.TabIndex = 5;
             this.cbxTIPO_CONTRIB.SelectedIndexChanged += new System.EventHandler(this.cbxTIPO_CONTRIB_SelectedIndexChanged);
             // 
@@ -768,7 +783,7 @@
             // 
             this.lblNRC.AutoSize = true;
             this.lblNRC.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblNRC.Location = new System.Drawing.Point(319, 366);
+            this.lblNRC.Location = new System.Drawing.Point(640, 166);
             this.lblNRC.Name = "lblNRC";
             this.lblNRC.Size = new System.Drawing.Size(29, 14);
             this.lblNRC.TabIndex = 7;
@@ -777,7 +792,7 @@
             // txtNRC
             // 
             this.txtNRC.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtNRC.Location = new System.Drawing.Point(355, 363);
+            this.txtNRC.Location = new System.Drawing.Point(676, 163);
             this.txtNRC.MaxLength = 20;
             this.txtNRC.Name = "txtNRC";
             this.txtNRC.Size = new System.Drawing.Size(157, 22);
@@ -787,7 +802,7 @@
             // 
             this.lblDUI.AutoSize = true;
             this.lblDUI.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblDUI.Location = new System.Drawing.Point(322, 307);
+            this.lblDUI.Location = new System.Drawing.Point(643, 194);
             this.lblDUI.Name = "lblDUI";
             this.lblDUI.Size = new System.Drawing.Size(27, 14);
             this.lblDUI.TabIndex = 8;
@@ -796,7 +811,7 @@
             // txtDUI
             // 
             this.txtDUI.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtDUI.Location = new System.Drawing.Point(355, 304);
+            this.txtDUI.Location = new System.Drawing.Point(677, 191);
             this.txtDUI.MaxLength = 20;
             this.txtDUI.Name = "txtDUI";
             this.txtDUI.Size = new System.Drawing.Size(158, 22);
@@ -806,7 +821,7 @@
             // 
             this.lblNIT.AutoSize = true;
             this.lblNIT.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblNIT.Location = new System.Drawing.Point(86, 307);
+            this.lblNIT.Location = new System.Drawing.Point(883, 198);
             this.lblNIT.Name = "lblNIT";
             this.lblNIT.Size = new System.Drawing.Size(27, 14);
             this.lblNIT.TabIndex = 9;
@@ -815,10 +830,10 @@
             // txtNIT
             // 
             this.txtNIT.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtNIT.Location = new System.Drawing.Point(119, 304);
+            this.txtNIT.Location = new System.Drawing.Point(917, 195);
             this.txtNIT.MaxLength = 20;
             this.txtNIT.Name = "txtNIT";
-            this.txtNIT.Size = new System.Drawing.Size(157, 22);
+            this.txtNIT.Size = new System.Drawing.Size(169, 22);
             this.txtNIT.TabIndex = 9;
             // 
             // lblDOCUMENTO
@@ -838,14 +853,14 @@
             this.txtDOCUMENTO.Location = new System.Drawing.Point(677, 138);
             this.txtDOCUMENTO.MaxLength = 20;
             this.txtDOCUMENTO.Name = "txtDOCUMENTO";
-            this.txtDOCUMENTO.Size = new System.Drawing.Size(172, 22);
+            this.txtDOCUMENTO.Size = new System.Drawing.Size(156, 22);
             this.txtDOCUMENTO.TabIndex = 10;
             // 
             // lblCORREO
             // 
             this.lblCORREO.AutoSize = true;
             this.lblCORREO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblCORREO.Location = new System.Drawing.Point(70, 332);
+            this.lblCORREO.Location = new System.Drawing.Point(67, 314);
             this.lblCORREO.Name = "lblCORREO";
             this.lblCORREO.Size = new System.Drawing.Size(43, 14);
             this.lblCORREO.TabIndex = 11;
@@ -854,7 +869,7 @@
             // txtCORREO
             // 
             this.txtCORREO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCORREO.Location = new System.Drawing.Point(119, 332);
+            this.txtCORREO.Location = new System.Drawing.Point(116, 314);
             this.txtCORREO.MaxLength = 100;
             this.txtCORREO.Name = "txtCORREO";
             this.txtCORREO.Size = new System.Drawing.Size(394, 22);
@@ -864,7 +879,7 @@
             // 
             this.lblCORREO_CC.AutoSize = true;
             this.lblCORREO_CC.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblCORREO_CC.Location = new System.Drawing.Point(567, 337);
+            this.lblCORREO_CC.Location = new System.Drawing.Point(564, 319);
             this.lblCORREO_CC.Name = "lblCORREO_CC";
             this.lblCORREO_CC.Size = new System.Drawing.Size(61, 14);
             this.lblCORREO_CC.TabIndex = 12;
@@ -873,7 +888,7 @@
             // txtCORREO_CC
             // 
             this.txtCORREO_CC.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCORREO_CC.Location = new System.Drawing.Point(632, 332);
+            this.txtCORREO_CC.Location = new System.Drawing.Point(629, 314);
             this.txtCORREO_CC.MaxLength = 100;
             this.txtCORREO_CC.Name = "txtCORREO_CC";
             this.txtCORREO_CC.Size = new System.Drawing.Size(457, 22);
@@ -883,7 +898,7 @@
             // 
             this.lblCELULAR.AutoSize = true;
             this.lblCELULAR.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblCELULAR.Location = new System.Drawing.Point(586, 304);
+            this.lblCELULAR.Location = new System.Drawing.Point(870, 175);
             this.lblCELULAR.Name = "lblCELULAR";
             this.lblCELULAR.Size = new System.Drawing.Size(42, 14);
             this.lblCELULAR.TabIndex = 13;
@@ -892,17 +907,17 @@
             // txtCELULAR
             // 
             this.txtCELULAR.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCELULAR.Location = new System.Drawing.Point(631, 302);
+            this.txtCELULAR.Location = new System.Drawing.Point(918, 167);
             this.txtCELULAR.MaxLength = 50;
             this.txtCELULAR.Name = "txtCELULAR";
-            this.txtCELULAR.Size = new System.Drawing.Size(202, 22);
+            this.txtCELULAR.Size = new System.Drawing.Size(168, 22);
             this.txtCELULAR.TabIndex = 13;
             // 
             // lblTELEFONO
             // 
             this.lblTELEFONO.AutoSize = true;
             this.lblTELEFONO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblTELEFONO.Location = new System.Drawing.Point(854, 307);
+            this.lblTELEFONO.Location = new System.Drawing.Point(855, 146);
             this.lblTELEFONO.Name = "lblTELEFONO";
             this.lblTELEFONO.Size = new System.Drawing.Size(56, 14);
             this.lblTELEFONO.TabIndex = 14;
@@ -911,17 +926,17 @@
             // txtTELEFONO
             // 
             this.txtTELEFONO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtTELEFONO.Location = new System.Drawing.Point(915, 302);
+            this.txtTELEFONO.Location = new System.Drawing.Point(918, 139);
             this.txtTELEFONO.MaxLength = 50;
             this.txtTELEFONO.Name = "txtTELEFONO";
-            this.txtTELEFONO.Size = new System.Drawing.Size(172, 22);
+            this.txtTELEFONO.Size = new System.Drawing.Size(168, 22);
             this.txtTELEFONO.TabIndex = 14;
             // 
             // lblCOMPLEMENTO
             // 
             this.lblCOMPLEMENTO.AutoSize = true;
             this.lblCOMPLEMENTO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblCOMPLEMENTO.Location = new System.Drawing.Point(57, 251);
+            this.lblCOMPLEMENTO.Location = new System.Drawing.Point(57, 289);
             this.lblCOMPLEMENTO.Name = "lblCOMPLEMENTO";
             this.lblCOMPLEMENTO.Size = new System.Drawing.Size(56, 14);
             this.lblCOMPLEMENTO.TabIndex = 18;
@@ -930,93 +945,17 @@
             // txtCOMPLEMENTO
             // 
             this.txtCOMPLEMENTO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCOMPLEMENTO.Location = new System.Drawing.Point(119, 248);
+            this.txtCOMPLEMENTO.Location = new System.Drawing.Point(116, 284);
             this.txtCOMPLEMENTO.MaxLength = 300;
             this.txtCOMPLEMENTO.Name = "txtCOMPLEMENTO";
-            this.txtCOMPLEMENTO.Size = new System.Drawing.Size(395, 22);
+            this.txtCOMPLEMENTO.Size = new System.Drawing.Size(717, 22);
             this.txtCOMPLEMENTO.TabIndex = 18;
-            // 
-            // lblCALLE
-            // 
-            this.lblCALLE.AutoSize = true;
-            this.lblCALLE.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblCALLE.Location = new System.Drawing.Point(597, 249);
-            this.lblCALLE.Name = "lblCALLE";
-            this.lblCALLE.Size = new System.Drawing.Size(31, 14);
-            this.lblCALLE.TabIndex = 19;
-            this.lblCALLE.Text = "Calle";
-            // 
-            // txtCALLE
-            // 
-            this.txtCALLE.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCALLE.Location = new System.Drawing.Point(631, 246);
-            this.txtCALLE.MaxLength = 100;
-            this.txtCALLE.Name = "txtCALLE";
-            this.txtCALLE.Size = new System.Drawing.Size(457, 22);
-            this.txtCALLE.TabIndex = 19;
-            // 
-            // lblCASA
-            // 
-            this.lblCASA.AutoSize = true;
-            this.lblCASA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblCASA.Location = new System.Drawing.Point(82, 279);
-            this.lblCASA.Name = "lblCASA";
-            this.lblCASA.Size = new System.Drawing.Size(31, 14);
-            this.lblCASA.TabIndex = 20;
-            this.lblCASA.Text = "Casa";
-            // 
-            // txtCASA
-            // 
-            this.txtCASA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCASA.Location = new System.Drawing.Point(119, 276);
-            this.txtCASA.MaxLength = 100;
-            this.txtCASA.Name = "txtCASA";
-            this.txtCASA.Size = new System.Drawing.Size(157, 22);
-            this.txtCASA.TabIndex = 20;
-            // 
-            // lblAPTO_LOCAL
-            // 
-            this.lblAPTO_LOCAL.AutoSize = true;
-            this.lblAPTO_LOCAL.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblAPTO_LOCAL.Location = new System.Drawing.Point(282, 284);
-            this.lblAPTO_LOCAL.Name = "lblAPTO_LOCAL";
-            this.lblAPTO_LOCAL.Size = new System.Drawing.Size(66, 14);
-            this.lblAPTO_LOCAL.TabIndex = 21;
-            this.lblAPTO_LOCAL.Text = "Apto/Local";
-            // 
-            // txtAPTO_LOCAL
-            // 
-            this.txtAPTO_LOCAL.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtAPTO_LOCAL.Location = new System.Drawing.Point(354, 276);
-            this.txtAPTO_LOCAL.MaxLength = 100;
-            this.txtAPTO_LOCAL.Name = "txtAPTO_LOCAL";
-            this.txtAPTO_LOCAL.Size = new System.Drawing.Size(160, 22);
-            this.txtAPTO_LOCAL.TabIndex = 21;
-            // 
-            // lblCOLONIA
-            // 
-            this.lblCOLONIA.AutoSize = true;
-            this.lblCOLONIA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblCOLONIA.Location = new System.Drawing.Point(583, 276);
-            this.lblCOLONIA.Name = "lblCOLONIA";
-            this.lblCOLONIA.Size = new System.Drawing.Size(45, 14);
-            this.lblCOLONIA.TabIndex = 22;
-            this.lblCOLONIA.Text = "Colonia";
-            // 
-            // txtCOLONIA
-            // 
-            this.txtCOLONIA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCOLONIA.Location = new System.Drawing.Point(631, 274);
-            this.txtCOLONIA.MaxLength = 100;
-            this.txtCOLONIA.Name = "txtCOLONIA";
-            this.txtCOLONIA.Size = new System.Drawing.Size(457, 22);
-            this.txtCOLONIA.TabIndex = 22;
             // 
             // lblPAIS
             // 
             this.lblPAIS.AutoSize = true;
             this.lblPAIS.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblPAIS.Location = new System.Drawing.Point(86, 218);
+            this.lblPAIS.Location = new System.Drawing.Point(86, 256);
             this.lblPAIS.Name = "lblPAIS";
             this.lblPAIS.Size = new System.Drawing.Size(27, 14);
             this.lblPAIS.TabIndex = 23;
@@ -1027,7 +966,7 @@
             this.cbxPAIS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxPAIS.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.cbxPAIS.FormattingEnabled = true;
-            this.cbxPAIS.Location = new System.Drawing.Point(119, 215);
+            this.cbxPAIS.Location = new System.Drawing.Point(116, 253);
             this.cbxPAIS.Name = "cbxPAIS";
             this.cbxPAIS.Size = new System.Drawing.Size(124, 22);
             this.cbxPAIS.TabIndex = 23;
@@ -1036,7 +975,7 @@
             // 
             this.lblDEPTO.AutoSize = true;
             this.lblDEPTO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblDEPTO.Location = new System.Drawing.Point(262, 215);
+            this.lblDEPTO.Location = new System.Drawing.Point(262, 253);
             this.lblDEPTO.Name = "lblDEPTO";
             this.lblDEPTO.Size = new System.Drawing.Size(86, 14);
             this.lblDEPTO.TabIndex = 24;
@@ -1047,7 +986,7 @@
             this.cbxDEPTO.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxDEPTO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.cbxDEPTO.FormattingEnabled = true;
-            this.cbxDEPTO.Location = new System.Drawing.Point(354, 215);
+            this.cbxDEPTO.Location = new System.Drawing.Point(354, 253);
             this.cbxDEPTO.Name = "cbxDEPTO";
             this.cbxDEPTO.Size = new System.Drawing.Size(160, 22);
             this.cbxDEPTO.TabIndex = 24;
@@ -1057,7 +996,7 @@
             // 
             this.lblMUNI.AutoSize = true;
             this.lblMUNI.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblMUNI.Location = new System.Drawing.Point(572, 218);
+            this.lblMUNI.Location = new System.Drawing.Point(572, 256);
             this.lblMUNI.Name = "lblMUNI";
             this.lblMUNI.Size = new System.Drawing.Size(56, 14);
             this.lblMUNI.TabIndex = 25;
@@ -1068,7 +1007,7 @@
             this.cbxMUNI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxMUNI.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.cbxMUNI.FormattingEnabled = true;
-            this.cbxMUNI.Location = new System.Drawing.Point(631, 218);
+            this.cbxMUNI.Location = new System.Drawing.Point(629, 253);
             this.cbxMUNI.Name = "cbxMUNI";
             this.cbxMUNI.Size = new System.Drawing.Size(202, 22);
             this.cbxMUNI.TabIndex = 25;
@@ -1078,7 +1017,7 @@
             // 
             this.lblDIST.AutoSize = true;
             this.lblDIST.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblDIST.Location = new System.Drawing.Point(865, 223);
+            this.lblDIST.Location = new System.Drawing.Point(865, 261);
             this.lblDIST.Name = "lblDIST";
             this.lblDIST.Size = new System.Drawing.Size(45, 14);
             this.lblDIST.TabIndex = 26;
@@ -1089,7 +1028,7 @@
             this.cbxDIST.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxDIST.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.cbxDIST.FormattingEnabled = true;
-            this.cbxDIST.Location = new System.Drawing.Point(917, 218);
+            this.cbxDIST.Location = new System.Drawing.Point(917, 253);
             this.cbxDIST.Name = "cbxDIST";
             this.cbxDIST.Size = new System.Drawing.Size(171, 22);
             this.cbxDIST.TabIndex = 26;
@@ -1098,7 +1037,7 @@
             // 
             this.lblACTIVIDAD_1.AutoSize = true;
             this.lblACTIVIDAD_1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblACTIVIDAD_1.Location = new System.Drawing.Point(47, 394);
+            this.lblACTIVIDAD_1.Location = new System.Drawing.Point(44, 350);
             this.lblACTIVIDAD_1.Name = "lblACTIVIDAD_1";
             this.lblACTIVIDAD_1.Size = new System.Drawing.Size(67, 14);
             this.lblACTIVIDAD_1.TabIndex = 27;
@@ -1107,7 +1046,7 @@
             // txtCODI_ACTIVIDAD1
             // 
             this.txtCODI_ACTIVIDAD1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCODI_ACTIVIDAD1.Location = new System.Drawing.Point(119, 391);
+            this.txtCODI_ACTIVIDAD1.Location = new System.Drawing.Point(116, 347);
             this.txtCODI_ACTIVIDAD1.Name = "txtCODI_ACTIVIDAD1";
             this.txtCODI_ACTIVIDAD1.Size = new System.Drawing.Size(90, 22);
             this.txtCODI_ACTIVIDAD1.TabIndex = 26;
@@ -1116,7 +1055,7 @@
             // 
             this.txtACTIVIDAD_1.BackColor = System.Drawing.SystemColors.Control;
             this.txtACTIVIDAD_1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtACTIVIDAD_1.Location = new System.Drawing.Point(215, 391);
+            this.txtACTIVIDAD_1.Location = new System.Drawing.Point(212, 347);
             this.txtACTIVIDAD_1.Name = "txtACTIVIDAD_1";
             this.txtACTIVIDAD_1.ReadOnly = true;
             this.txtACTIVIDAD_1.Size = new System.Drawing.Size(874, 22);
@@ -1127,7 +1066,7 @@
             // 
             this.lblACTIVIDAD_2.AutoSize = true;
             this.lblACTIVIDAD_2.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblACTIVIDAD_2.Location = new System.Drawing.Point(47, 422);
+            this.lblACTIVIDAD_2.Location = new System.Drawing.Point(44, 378);
             this.lblACTIVIDAD_2.Name = "lblACTIVIDAD_2";
             this.lblACTIVIDAD_2.Size = new System.Drawing.Size(67, 14);
             this.lblACTIVIDAD_2.TabIndex = 28;
@@ -1136,7 +1075,7 @@
             // txtCODI_ACTIVIDAD2
             // 
             this.txtCODI_ACTIVIDAD2.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCODI_ACTIVIDAD2.Location = new System.Drawing.Point(119, 419);
+            this.txtCODI_ACTIVIDAD2.Location = new System.Drawing.Point(116, 375);
             this.txtCODI_ACTIVIDAD2.Name = "txtCODI_ACTIVIDAD2";
             this.txtCODI_ACTIVIDAD2.Size = new System.Drawing.Size(90, 22);
             this.txtCODI_ACTIVIDAD2.TabIndex = 27;
@@ -1145,7 +1084,7 @@
             // 
             this.txtACTIVIDAD_2.BackColor = System.Drawing.SystemColors.Control;
             this.txtACTIVIDAD_2.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtACTIVIDAD_2.Location = new System.Drawing.Point(215, 419);
+            this.txtACTIVIDAD_2.Location = new System.Drawing.Point(212, 375);
             this.txtACTIVIDAD_2.Name = "txtACTIVIDAD_2";
             this.txtACTIVIDAD_2.ReadOnly = true;
             this.txtACTIVIDAD_2.Size = new System.Drawing.Size(874, 22);
@@ -1156,7 +1095,7 @@
             // 
             this.lblACTIVIDAD_3.AutoSize = true;
             this.lblACTIVIDAD_3.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblACTIVIDAD_3.Location = new System.Drawing.Point(46, 450);
+            this.lblACTIVIDAD_3.Location = new System.Drawing.Point(43, 406);
             this.lblACTIVIDAD_3.Name = "lblACTIVIDAD_3";
             this.lblACTIVIDAD_3.Size = new System.Drawing.Size(67, 14);
             this.lblACTIVIDAD_3.TabIndex = 29;
@@ -1165,7 +1104,7 @@
             // txtCODI_ACTIVIDAD3
             // 
             this.txtCODI_ACTIVIDAD3.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCODI_ACTIVIDAD3.Location = new System.Drawing.Point(119, 450);
+            this.txtCODI_ACTIVIDAD3.Location = new System.Drawing.Point(116, 406);
             this.txtCODI_ACTIVIDAD3.Name = "txtCODI_ACTIVIDAD3";
             this.txtCODI_ACTIVIDAD3.Size = new System.Drawing.Size(90, 22);
             this.txtCODI_ACTIVIDAD3.TabIndex = 28;
@@ -1174,7 +1113,7 @@
             // 
             this.txtACTIVIDAD_3.BackColor = System.Drawing.SystemColors.Control;
             this.txtACTIVIDAD_3.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtACTIVIDAD_3.Location = new System.Drawing.Point(215, 450);
+            this.txtACTIVIDAD_3.Location = new System.Drawing.Point(212, 406);
             this.txtACTIVIDAD_3.Name = "txtACTIVIDAD_3";
             this.txtACTIVIDAD_3.ReadOnly = true;
             this.txtACTIVIDAD_3.Size = new System.Drawing.Size(874, 22);
@@ -1276,7 +1215,7 @@
             this.grpRoles.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.grpRoles.Location = new System.Drawing.Point(10, 553);
             this.grpRoles.Name = "grpRoles";
-            this.grpRoles.Size = new System.Drawing.Size(1098, 212);
+            this.grpRoles.Size = new System.Drawing.Size(1114, 212);
             this.grpRoles.TabIndex = 5;
             this.grpRoles.TabStop = false;
             this.grpRoles.Text = "Tipo de Cliente";
@@ -1301,7 +1240,7 @@
             this.gridRoles.Location = new System.Drawing.Point(6, 61);
             this.gridRoles.MainView = this.gvRoles;
             this.gridRoles.Name = "gridRoles";
-            this.gridRoles.Size = new System.Drawing.Size(1086, 138);
+            this.gridRoles.Size = new System.Drawing.Size(1102, 138);
             this.gridRoles.TabIndex = 1;
             this.gridRoles.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvRoles});
@@ -1324,7 +1263,7 @@
             this.groupControl2.Controls.Add(this.txtID_TIPO_PRECIO);
             this.groupControl2.Location = new System.Drawing.Point(10, 492);
             this.groupControl2.Name = "groupControl2";
-            this.groupControl2.Size = new System.Drawing.Size(1098, 55);
+            this.groupControl2.Size = new System.Drawing.Size(1114, 55);
             this.groupControl2.TabIndex = 6;
             this.groupControl2.Text = "Datos de Cliente";
             // 
@@ -1332,7 +1271,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1223, 777);
+            this.ClientSize = new System.Drawing.Size(1259, 777);
             this.Controls.Add(this.groupControl2);
             this.Controls.Add(this.groupControl1);
             this.Controls.Add(this.grpRoles);
@@ -1343,6 +1282,7 @@
             this.Name = "frmCliente";
             this.Text = "Mantenimiento de Clientes";
             this.Load += new System.EventHandler(this.frmEntidad_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
@@ -1447,14 +1387,6 @@
         // Row 6
         private System.Windows.Forms.Label lblCOMPLEMENTO;
         private System.Windows.Forms.TextBox txtCOMPLEMENTO;
-        private System.Windows.Forms.Label lblCALLE;
-        private System.Windows.Forms.TextBox txtCALLE;
-        private System.Windows.Forms.Label lblCASA;
-        private System.Windows.Forms.TextBox txtCASA;
-        private System.Windows.Forms.Label lblAPTO_LOCAL;
-        private System.Windows.Forms.TextBox txtAPTO_LOCAL;
-        private System.Windows.Forms.Label lblCOLONIA;
-        private System.Windows.Forms.TextBox txtCOLONIA;
         // Row 7
         private System.Windows.Forms.Label lblPAIS;
         private System.Windows.Forms.ComboBox cbxPAIS;
@@ -1490,5 +1422,8 @@
         private DevExpress.XtraGrid.GridControl gridRoles;
         private DevExpress.XtraGrid.Views.Grid.GridView gvRoles;
         private DevExpress.XtraEditors.GroupControl groupControl2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtACTIVIDAD_EXT;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

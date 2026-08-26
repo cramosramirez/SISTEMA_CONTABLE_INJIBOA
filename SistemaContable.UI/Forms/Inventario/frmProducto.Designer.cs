@@ -446,6 +446,7 @@
             this.txtULTIMOPRECIOCOMPRA.Size = new System.Drawing.Size(160, 22);
             this.txtULTIMOPRECIOCOMPRA.TabIndex = 32;
             this.txtULTIMOPRECIOCOMPRA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtULTIMOPRECIOCOMPRA.Visible = false;
             // 
             // lblDESCRIPCION
             // 
@@ -466,6 +467,7 @@
             this.lblULTIMOPRECIOCOMPRA.Size = new System.Drawing.Size(86, 14);
             this.lblULTIMOPRECIOCOMPRA.TabIndex = 31;
             this.lblULTIMOPRECIOCOMPRA.Text = "Últ. P. Compra";
+            this.lblULTIMOPRECIOCOMPRA.Visible = false;
             // 
             // txtDESCRIPCION
             // 
@@ -483,6 +485,7 @@
             this.txtDESC_VENTA.Size = new System.Drawing.Size(120, 22);
             this.txtDESC_VENTA.TabIndex = 30;
             this.txtDESC_VENTA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtDESC_VENTA.Visible = false;
             // 
             // lblCATEGORIA
             // 
@@ -493,6 +496,7 @@
             this.lblCATEGORIA.Size = new System.Drawing.Size(58, 14);
             this.lblCATEGORIA.TabIndex = 4;
             this.lblCATEGORIA.Text = "Categoría";
+            this.lblCATEGORIA.Visible = false;
             // 
             // lblDESC_VENTA
             // 
@@ -503,6 +507,7 @@
             this.lblDESC_VENTA.Size = new System.Drawing.Size(90, 14);
             this.lblDESC_VENTA.TabIndex = 29;
             this.lblDESC_VENTA.Text = "% Desc. Venta";
+            this.lblDESC_VENTA.Visible = false;
             // 
             // cbxCATEGORIA
             // 
@@ -513,12 +518,13 @@
             this.cbxCATEGORIA.Name = "cbxCATEGORIA";
             this.cbxCATEGORIA.Size = new System.Drawing.Size(280, 22);
             this.cbxCATEGORIA.TabIndex = 5;
+            this.cbxCATEGORIA.Visible = false;
             this.cbxCATEGORIA.SelectedIndexChanged += new System.EventHandler(this.cbxCATEGORIA_SelectedIndexChanged);
             // 
             // txtPRECIO
             // 
             this.txtPRECIO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtPRECIO.Location = new System.Drawing.Point(116, 243);
+            this.txtPRECIO.Location = new System.Drawing.Point(116, 180);
             this.txtPRECIO.Name = "txtPRECIO";
             this.txtPRECIO.Size = new System.Drawing.Size(140, 22);
             this.txtPRECIO.TabIndex = 28;
@@ -533,12 +539,13 @@
             this.lblSUBCATEGORIA.Size = new System.Drawing.Size(78, 14);
             this.lblSUBCATEGORIA.TabIndex = 6;
             this.lblSUBCATEGORIA.Text = "Subcategoría";
+            this.lblSUBCATEGORIA.Visible = false;
             // 
             // lblPRECIO
             // 
             this.lblPRECIO.AutoSize = true;
             this.lblPRECIO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblPRECIO.Location = new System.Drawing.Point(65, 251);
+            this.lblPRECIO.Location = new System.Drawing.Point(65, 188);
             this.lblPRECIO.Name = "lblPRECIO";
             this.lblPRECIO.Size = new System.Drawing.Size(40, 14);
             this.lblPRECIO.TabIndex = 27;
@@ -553,6 +560,7 @@
             this.cbxSUBCATEGORIA.Name = "cbxSUBCATEGORIA";
             this.cbxSUBCATEGORIA.Size = new System.Drawing.Size(280, 22);
             this.cbxSUBCATEGORIA.TabIndex = 7;
+            this.cbxSUBCATEGORIA.Visible = false;
             // 
             // chkES_INVENTARIO
             // 
@@ -561,6 +569,7 @@
             this.chkES_INVENTARIO.Properties.Caption = "Maneja Inventario";
             this.chkES_INVENTARIO.Size = new System.Drawing.Size(140, 20);
             this.chkES_INVENTARIO.TabIndex = 26;
+            this.chkES_INVENTARIO.Visible = false;
             // 
             // lblPRESENTACION
             // 
@@ -571,6 +580,7 @@
             this.lblPRESENTACION.Size = new System.Drawing.Size(77, 14);
             this.lblPRESENTACION.TabIndex = 8;
             this.lblPRESENTACION.Text = "Presentación";
+            this.lblPRESENTACION.Visible = false;
             // 
             // chkES_NOSUJETA
             // 
@@ -579,6 +589,7 @@
             this.chkES_NOSUJETA.Properties.Caption = "Es No Sujeta";
             this.chkES_NOSUJETA.Size = new System.Drawing.Size(110, 20);
             this.chkES_NOSUJETA.TabIndex = 25;
+            this.chkES_NOSUJETA.Visible = false;
             // 
             // cbxPRESENTACION
             // 
@@ -589,6 +600,7 @@
             this.cbxPRESENTACION.Name = "cbxPRESENTACION";
             this.cbxPRESENTACION.Size = new System.Drawing.Size(280, 22);
             this.cbxPRESENTACION.TabIndex = 9;
+            this.cbxPRESENTACION.Visible = false;
             // 
             // chkES_EXENTO
             // 
@@ -597,12 +609,13 @@
             this.chkES_EXENTO.Properties.Caption = "Es Exento";
             this.chkES_EXENTO.Size = new System.Drawing.Size(74, 20);
             this.chkES_EXENTO.TabIndex = 24;
+            this.chkES_EXENTO.Visible = false;
             // 
             // lblTIPOITEM
             // 
             this.lblTIPOITEM.AutoSize = true;
             this.lblTIPOITEM.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblTIPOITEM.Location = new System.Drawing.Point(486, 99);
+            this.lblTIPOITEM.Location = new System.Drawing.Point(486, 69);
             this.lblTIPOITEM.Name = "lblTIPOITEM";
             this.lblTIPOITEM.Size = new System.Drawing.Size(61, 14);
             this.lblTIPOITEM.TabIndex = 10;
@@ -610,7 +623,7 @@
             // 
             // chkESTADO
             // 
-            this.chkESTADO.Location = new System.Drawing.Point(291, 181);
+            this.chkESTADO.Location = new System.Drawing.Point(291, 151);
             this.chkESTADO.Name = "chkESTADO";
             this.chkESTADO.Properties.Caption = "Activo";
             this.chkESTADO.Size = new System.Drawing.Size(150, 20);
@@ -621,7 +634,7 @@
             this.cbxTIPOITEM.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxTIPOITEM.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.cbxTIPOITEM.FormattingEnabled = true;
-            this.cbxTIPOITEM.Location = new System.Drawing.Point(606, 96);
+            this.cbxTIPOITEM.Location = new System.Drawing.Point(606, 66);
             this.cbxTIPOITEM.Name = "cbxTIPOITEM";
             this.cbxTIPOITEM.Size = new System.Drawing.Size(280, 22);
             this.cbxTIPOITEM.TabIndex = 11;
@@ -630,7 +643,7 @@
             // 
             this.lblCODTRIBUTO.AutoSize = true;
             this.lblCODTRIBUTO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblCODTRIBUTO.Location = new System.Drawing.Point(16, 124);
+            this.lblCODTRIBUTO.Location = new System.Drawing.Point(16, 94);
             this.lblCODTRIBUTO.Name = "lblCODTRIBUTO";
             this.lblCODTRIBUTO.Size = new System.Drawing.Size(47, 14);
             this.lblCODTRIBUTO.TabIndex = 12;
@@ -639,7 +652,7 @@
             // txtCCT_INVENT
             // 
             this.txtCCT_INVENT.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCCT_INVENT.Location = new System.Drawing.Point(116, 181);
+            this.txtCCT_INVENT.Location = new System.Drawing.Point(116, 151);
             this.txtCCT_INVENT.Name = "txtCCT_INVENT";
             this.txtCCT_INVENT.Size = new System.Drawing.Size(150, 22);
             this.txtCCT_INVENT.TabIndex = 21;
@@ -647,7 +660,7 @@
             // txtCODTRIBUTO
             // 
             this.txtCODTRIBUTO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCODTRIBUTO.Location = new System.Drawing.Point(116, 121);
+            this.txtCODTRIBUTO.Location = new System.Drawing.Point(116, 91);
             this.txtCODTRIBUTO.Name = "txtCODTRIBUTO";
             this.txtCODTRIBUTO.Size = new System.Drawing.Size(280, 22);
             this.txtCODTRIBUTO.TabIndex = 13;
@@ -656,7 +669,7 @@
             // 
             this.lblCCT_INVENT.AutoSize = true;
             this.lblCCT_INVENT.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblCCT_INVENT.Location = new System.Drawing.Point(16, 184);
+            this.lblCCT_INVENT.Location = new System.Drawing.Point(16, 154);
             this.lblCCT_INVENT.Name = "lblCCT_INVENT";
             this.lblCCT_INVENT.Size = new System.Drawing.Size(73, 14);
             this.lblCCT_INVENT.TabIndex = 20;
@@ -666,7 +679,7 @@
             // 
             this.lblUNIMEDIDA.AutoSize = true;
             this.lblUNIMEDIDA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblUNIMEDIDA.Location = new System.Drawing.Point(486, 129);
+            this.lblUNIMEDIDA.Location = new System.Drawing.Point(486, 99);
             this.lblUNIMEDIDA.Name = "lblUNIMEDIDA";
             this.lblUNIMEDIDA.Size = new System.Drawing.Size(86, 14);
             this.lblUNIMEDIDA.TabIndex = 14;
@@ -675,7 +688,7 @@
             // txtTPINGRESO
             // 
             this.txtTPINGRESO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtTPINGRESO.Location = new System.Drawing.Point(606, 154);
+            this.txtTPINGRESO.Location = new System.Drawing.Point(606, 124);
             this.txtTPINGRESO.Name = "txtTPINGRESO";
             this.txtTPINGRESO.Size = new System.Drawing.Size(360, 22);
             this.txtTPINGRESO.TabIndex = 19;
@@ -683,7 +696,7 @@
             // txtUNIMEDIDA
             // 
             this.txtUNIMEDIDA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtUNIMEDIDA.Location = new System.Drawing.Point(606, 126);
+            this.txtUNIMEDIDA.Location = new System.Drawing.Point(606, 96);
             this.txtUNIMEDIDA.Name = "txtUNIMEDIDA";
             this.txtUNIMEDIDA.Size = new System.Drawing.Size(280, 22);
             this.txtUNIMEDIDA.TabIndex = 15;
@@ -692,7 +705,7 @@
             // 
             this.lblTPINGRESO.AutoSize = true;
             this.lblTPINGRESO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblTPINGRESO.Location = new System.Drawing.Point(493, 154);
+            this.lblTPINGRESO.Location = new System.Drawing.Point(493, 124);
             this.lblTPINGRESO.Name = "lblTPINGRESO";
             this.lblTPINGRESO.Size = new System.Drawing.Size(71, 14);
             this.lblTPINGRESO.TabIndex = 18;
@@ -702,7 +715,7 @@
             // 
             this.lblTPOPERACION.AutoSize = true;
             this.lblTPOPERACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblTPOPERACION.Location = new System.Drawing.Point(16, 154);
+            this.lblTPOPERACION.Location = new System.Drawing.Point(16, 124);
             this.lblTPOPERACION.Name = "lblTPOPERACION";
             this.lblTPOPERACION.Size = new System.Drawing.Size(85, 14);
             this.lblTPOPERACION.TabIndex = 16;
@@ -711,7 +724,7 @@
             // txtTPOPERACION
             // 
             this.txtTPOPERACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtTPOPERACION.Location = new System.Drawing.Point(116, 149);
+            this.txtTPOPERACION.Location = new System.Drawing.Point(116, 119);
             this.txtTPOPERACION.Name = "txtTPOPERACION";
             this.txtTPOPERACION.Size = new System.Drawing.Size(360, 22);
             this.txtTPOPERACION.TabIndex = 17;

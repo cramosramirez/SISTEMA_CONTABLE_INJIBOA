@@ -1,4 +1,5 @@
 ﻿using SistemaContable.DAL;
+using SistemaContable.RP.Ventas;
 using System;
 using System.Data;
 using System.Drawing;
@@ -81,9 +82,10 @@ namespace SistemaContable.UI.Forms.Ventas
             colNOMBRE_ENTIDAD.Width = 220;
 
             // N° Control NCR
-            colNUMCONTROL.Caption = "N° Control NCR";
-            colNUMCONTROL.OptionsColumn.AllowEdit = false;
-            colNUMCONTROL.Width = 220;
+            // (2026-08-26) Roberto pidió quitar esta columna del grid (ocupaba espacio
+            // mostrando el N° Control de la NCR truncado; ya se ve el de origen -
+            // "N° Control CCF" - que es el relevante para esta consulta).
+            colNUMCONTROL.Visible = false;
 
             // N° Control CCF origen
             colNUMCONTROLCCF.Caption = "N° Control CCF";
@@ -121,6 +123,11 @@ namespace SistemaContable.UI.Forms.Ventas
         #region === CARGA DE DATOS ===
         private void CargarDatos()
         {
+            // (2026-08-26) Se usa de nuevo el SP oficial [EDTE].[SP_NOTACREDITO_ENC]
+            // ACCION="LISTAR" (ya corregido: trae NOMBRE_ENTIDAD vía JOIN a ENTIDAD, y el
+            // N° Interno del CCF de origen vía JOIN a CREDITOFISCAL_ENC). Ya no se usa el
+            // SP aislado SP_NOTACREDITO_LISTAR creado temporalmente antes de tener el texto
+            // completo de este SP.
             _dtDatos = _dal.EjecutarConsulta("[EDTE].[SP_NOTACREDITO_ENC]", new
             {
                 ACCION = "LISTAR",
@@ -174,10 +181,23 @@ namespace SistemaContable.UI.Forms.Ventas
             {
                 int? id = ObtenerIdFilaActiva();
                 if (!id.HasValue) return;
-                // TODO: abrir reporte de Nota de Crédito
-                DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Reporte Nota de Crédito",
-                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // (2026-08-26) Mismo patrón que frmNotaCredito.btnImprimir_Click.
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    var reporte = new rptNotaCredito { IdNTCEnc = id.Value };
+                    reporte.MostrarPreview();
+                }
+                catch (Exception ex)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Error al mostrar el reporte:\n\n" + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
             }
         }
         #endregion

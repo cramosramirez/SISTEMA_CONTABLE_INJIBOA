@@ -43,10 +43,13 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             // --- Vista general ---
             gridControl1.ForceInitialize();
+            gvDetalle.OptionsBehavior.AutoPopulateColumns = false; // solo usar las columnas definidas en el diseñador
             gvDetalle.OptionsView.ShowGroupPanel = false;   // panel de agrupación visible
-            gvDetalle.OptionsView.ShowAutoFilterRow = true;            
+            gvDetalle.OptionsView.ShowAutoFilterRow = true;
             gvDetalle.OptionsBehavior.AutoExpandAllGroups = true;
             gvDetalle.OptionsBehavior.Editable = true;   // necesario para los botones por fila
+            colVER_R.Visible = false; // "Ver R" oculto a pedido de Roberto (2026-08-25)
+            colVER_Q.Visible = false; // "Ver Q" oculto a pedido de Roberto (2026-08-25)
 
             // --- Buscador global ---
             gvDetalle.OptionsFind.AlwaysVisible = true;
@@ -111,8 +114,14 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void CargarDatos()
         {
             _dtDetalle = _dal.EjecutarConsulta("[EPROVEEDOR].[SP_COMPRA_EXTERIOR]",
-                new { ACCION = "COMPRA_EXTERIOR_LISTAR" });
-            gridControl1.DataSource = _dtDetalle;            
+                new { ACCION = "COMPRA_EXTERIOR_LISTAR", ULTIMOS_3_MESES = chkUltimos3Meses.Checked });
+            gridControl1.DataSource = _dtDetalle;
+
+            // Forzado explícito: se reafirma oculta después del binding porque al asignar
+            // el DataSource, DevExpress puede repoblar/recalcular columnas y revertir
+            // el Visible=false definido en el diseñador.
+            colVER_R.Visible = false;
+            colVER_Q.Visible = false;
         }
         #endregion
                       
@@ -161,6 +170,11 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void btnNuevoQuedan_Click(object sender, EventArgs e)
         {
             AbrirDocumento(0);
+        }
+
+        private void chkUltimos3Meses_CheckedChanged(object sender, EventArgs e)
+        {
+            CargarDatos();
         }
 
         private void riVerQ_ButtonClick(object sender, ButtonPressedEventArgs e)

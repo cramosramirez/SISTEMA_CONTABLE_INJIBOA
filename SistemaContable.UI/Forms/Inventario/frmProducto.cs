@@ -94,6 +94,24 @@ namespace SistemaContable.UI.Forms.Inventario
             }
             dt.Rows.InsertAt(fila, 0);
         }
+        // Selecciona en el combo la fila cuyo DisplayMember coincide con el texto dado
+        // (p.ej. "N/A"); si no existe esa fila, deja el placeholder en blanco (índice 0).
+        private static void SeleccionarPorNombre(System.Windows.Forms.ComboBox cbx, string nombreBuscado)
+        {
+            if (cbx.DataSource is DataTable dt && !string.IsNullOrEmpty(cbx.DisplayMember))
+            {
+                foreach (DataRow fila in dt.Rows)
+                {
+                    if (string.Equals(fila[cbx.DisplayMember]?.ToString()?.Trim(), nombreBuscado,
+                            StringComparison.OrdinalIgnoreCase))
+                    {
+                        cbx.SelectedValue = fila[cbx.ValueMember];
+                        return;
+                    }
+                }
+            }
+            cbx.SelectedIndex = 0;
+        }
         private void CargarCategorias()
         {
             DataTable dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_CATEGORIA]",
@@ -102,7 +120,7 @@ namespace SistemaContable.UI.Forms.Inventario
             cbxCATEGORIA.DataSource = dt;
             cbxCATEGORIA.ValueMember = "ID_CATEGORIA";
             cbxCATEGORIA.DisplayMember = "NOMBRE";
-            cbxCATEGORIA.SelectedIndex = 0;
+            SeleccionarPorNombre(cbxCATEGORIA, "N/A");
         }
         private void CargarSubCategorias(int idCategoria)
         {
@@ -112,7 +130,7 @@ namespace SistemaContable.UI.Forms.Inventario
             cbxSUBCATEGORIA.DataSource = dt;
             cbxSUBCATEGORIA.ValueMember = "ID_SUBCATEGORIA";
             cbxSUBCATEGORIA.DisplayMember = "NOMBRE";
-            cbxSUBCATEGORIA.SelectedIndex = 0;
+            SeleccionarPorNombre(cbxSUBCATEGORIA, "N/A");
         }
         private void CargarPresentaciones()
         {
@@ -122,7 +140,7 @@ namespace SistemaContable.UI.Forms.Inventario
             cbxPRESENTACION.DataSource = dt;
             cbxPRESENTACION.ValueMember = "ID_PRESENTACION";
             cbxPRESENTACION.DisplayMember = "NOMBRE";
-            cbxPRESENTACION.SelectedIndex = 0;
+            SeleccionarPorNombre(cbxPRESENTACION, "N/A");
         }
         private void CargarTipoItem()
         {
@@ -1038,9 +1056,25 @@ namespace SistemaContable.UI.Forms.Inventario
                 txtDESCRIPCION.Text = AsString(r["DESCRIPCION"]);
                 txtCCT_INVENT.Text = AsString(r["CCT_INVENT"]);
                 // Combos — primero categoría (dispara carga de subcategorías)
-                cbxCATEGORIA.SelectedValue = AsInt(r["ID_CATEGORIA"]);
-                cbxSUBCATEGORIA.SelectedValue = AsInt(r["ID_SUBCATEGORIA"]);
-                cbxPRESENTACION.SelectedValue = AsInt(r["ID_PRESENTACION"]);
+                // Si el producto no tiene categoría/subcategoría/presentación asignada
+                // (NULL en BD), se muestra "N/A" en vez de dejar el combo en blanco.
+                int? idCategoriaExistente = AsInt(r["ID_CATEGORIA"]);
+                if (idCategoriaExistente.HasValue)
+                    cbxCATEGORIA.SelectedValue = idCategoriaExistente.Value;
+                else
+                    SeleccionarPorNombre(cbxCATEGORIA, "N/A");
+
+                int? idSubcategoriaExistente = AsInt(r["ID_SUBCATEGORIA"]);
+                if (idSubcategoriaExistente.HasValue)
+                    cbxSUBCATEGORIA.SelectedValue = idSubcategoriaExistente.Value;
+                else
+                    SeleccionarPorNombre(cbxSUBCATEGORIA, "N/A");
+
+                int? idPresentacionExistente = AsInt(r["ID_PRESENTACION"]);
+                if (idPresentacionExistente.HasValue)
+                    cbxPRESENTACION.SelectedValue = idPresentacionExistente.Value;
+                else
+                    SeleccionarPorNombre(cbxPRESENTACION, "N/A");
                 cbxTIPOITEM.SelectedValue = AsString(r["TIPOITEM"]);
                 // Búsqueda genérica — se resuelve el texto a mostrar contra el catálogo ya cargado
                 _codTributoSeleccionado = AsString(r["CODTRIBUTO"]);
@@ -1366,10 +1400,9 @@ namespace SistemaContable.UI.Forms.Inventario
             chkES_EXENTO.Checked = false;
             chkES_NOSUJETA.Checked = false;
             chkES_INVENTARIO.Checked = false;
-            cbxCATEGORIA.SelectedIndex = 0;
-            cbxSUBCATEGORIA.DataSource = null;
-            cbxSUBCATEGORIA.Items.Clear();
-            cbxPRESENTACION.SelectedIndex = 0;
+            SeleccionarPorNombre(cbxCATEGORIA, "N/A");
+            SeleccionarPorNombre(cbxSUBCATEGORIA, "N/A");
+            SeleccionarPorNombre(cbxPRESENTACION, "N/A");
             cbxTIPOITEM.SelectedIndex = 0;
             txtCODIGO_PRODUCTO_SIGESTA_TAB.Tag = null;
             txtCODIGO_PRODUCTO_SIGESTA_TAB.Text = "";

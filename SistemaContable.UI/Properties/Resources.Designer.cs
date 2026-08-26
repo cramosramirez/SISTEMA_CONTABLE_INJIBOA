@@ -73,6 +73,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+<<<<<<< Updated upstream
         public static System.Drawing.Bitmap AgregarProducto32x32 {
             get {
                 object obj = ResourceManager.GetObject("AgregarProducto32x32", resourceCulture);
@@ -86,6 +87,21 @@ namespace SistemaContable.UI.Properties {
         public static System.Drawing.Bitmap Anexos2_48x48 {
             get {
                 object obj = ResourceManager.GetObject("Anexos2_48x48", resourceCulture);
+=======
+        public static System.Drawing.Bitmap Anexos2_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Anexos2_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AgregarProducto32x32 {
+            get {
+                object obj = ResourceManager.GetObject("AgregarProducto32x32", resourceCulture);
+>>>>>>> Stashed changes
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -773,6 +789,7 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+<<<<<<< Updated upstream
         public static System.Drawing.Bitmap registrarProducto32x32 {
             get {
                 object obj = ResourceManager.GetObject("registrarProducto32x32", resourceCulture);
@@ -786,6 +803,21 @@ namespace SistemaContable.UI.Properties {
         public static System.Drawing.Bitmap ReporteLibros48x48 {
             get {
                 object obj = ResourceManager.GetObject("ReporteLibros48x48", resourceCulture);
+=======
+        public static System.Drawing.Bitmap ReporteLibros48x48 {
+            get {
+                object obj = ResourceManager.GetObject("ReporteLibros48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap registrarProducto32x32 {
+            get {
+                object obj = ResourceManager.GetObject("registrarProducto32x32", resourceCulture);
+>>>>>>> Stashed changes
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
