@@ -140,12 +140,30 @@ namespace SistemaContable.UI.Forms
             }
         }
 
+                    private static readonly System.Resources.ResourceManager[] ResourceManagers = new[]
+            {
+                Properties.Resources.ResourceManager,
+                Properties.Resource_Fredy.ResourceManager,
+                Properties.Resource_Christam.ResourceManager
+            };
+
+                    private object ObtenerRecurso(string nombre)
+                    {
+                        foreach (var rm in ResourceManagers)
+                        {
+                            object recurso = rm.GetObject(nombre, System.Globalization.CultureInfo.InvariantCulture);
+                            if (recurso != null)
+                                return recurso;
+                        }
+                        return null;
+                    }
+
         private void AsignarIcono(BarItem item, DataRow row)
         {
             string imagenSvg = row["IMAGEN_SVG"]?.ToString();
             if (string.IsNullOrEmpty(imagenSvg)) return;
 
-            object recurso = Properties.Resources.ResourceManager.GetObject(imagenSvg);
+            object recurso = ObtenerRecurso(imagenSvg);
 
             if (recurso is SvgImage svg)
             {
@@ -156,6 +174,23 @@ namespace SistemaContable.UI.Forms
                 item.ImageOptions.Image = bmp;
             }
         }
+
+        //private void AsignarIcono(BarItem item, DataRow row)
+        //{
+        //    string imagenSvg = row["IMAGEN_SVG"]?.ToString();
+        //    if (string.IsNullOrEmpty(imagenSvg)) return;
+
+        //    object recurso = Properties.Resources.ResourceManager.GetObject(imagenSvg);
+
+        //    if (recurso is SvgImage svg)
+        //    {
+        //        item.ImageOptions.SvgImage = svg;
+        //    }
+        //    else if (recurso is Bitmap bmp)
+        //    {
+        //        item.ImageOptions.Image = bmp;
+        //    }
+        //}
 
         // Cache para mejorar rendimiento (opcional pero recomendado)
         private static readonly Dictionary<string, Type> _formCache = new Dictionary<string, Type>();
