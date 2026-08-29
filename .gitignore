@@ -427,4 +427,7 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Temporary Codex build and UI verification artifacts
+.codex-build/
 SistemaContable.UI/App.config
