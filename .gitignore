@@ -431,3 +431,6 @@ FodyWeavers.xsd
 # Temporary Codex build and UI verification artifacts
 .codex-build/
 SistemaContable.UI/App.config
+
+# Database scripts are maintained outside this repository
+Database/
