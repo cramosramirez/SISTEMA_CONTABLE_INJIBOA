@@ -70,6 +70,14 @@
   <PropertyGroup>
 	<DevExpressPath>C:\Program Files (x86)\DevExpress 20.1\Components\Bin\Framework</DevExpressPath>
 	<ApplicationManifest>app.manifest</ApplicationManifest>
+	<!-- ClickOnce firma sus manifiestos desde el perfil de publicación.
+	     No firmar solo el EXE: DAL y RP no tienen nombre seguro y el CLR
+	     rechaza su carga al iniciar la aplicación. -->
+	<SignAssembly>false</SignAssembly>
+	<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>5</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v20.1">
