@@ -1,7 +1,7 @@
 ﻿
 namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
 {
-    partial class frmParametroDocumentosQuedan
+    partial class frmExportarDocumentosQuedan
     {
         /// <summary>
         /// Required designer variable.
@@ -29,10 +29,9 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmParametroDocumentosQuedan));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnExportar = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnImprimir = new DevExpress.XtraEditors.SimpleButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dteFECHA_FIN = new DevExpress.XtraEditors.DateEdit();
             this.label1 = new System.Windows.Forms.Label();
@@ -48,14 +47,29 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnExportar);
             this.panel1.Controls.Add(this.btnFinalizar);
-            this.panel1.Controls.Add(this.btnImprimir);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(551, 209);
-            this.panel1.TabIndex = 0;
+            this.panel1.Size = new System.Drawing.Size(553, 215);
+            this.panel1.TabIndex = 1;
+            // 
+            // btnExportar
+            // 
+            this.btnExportar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExportar.Appearance.Options.UseFont = true;
+            this.btnExportar.Appearance.Options.UseTextOptions = true;
+            this.btnExportar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnExportar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.excel_48x48;
+            this.btnExportar.ImageOptions.ImageToTextIndent = 10;
+            this.btnExportar.Location = new System.Drawing.Point(134, 141);
+            this.btnExportar.Name = "btnExportar";
+            this.btnExportar.Size = new System.Drawing.Size(119, 47);
+            this.btnExportar.TabIndex = 0;
+            this.btnExportar.Text = "Exportar";
+            this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
             // 
             // btnFinalizar
             // 
@@ -64,28 +78,13 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(289, 141);
+            this.btnFinalizar.Location = new System.Drawing.Point(299, 141);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
-            this.btnFinalizar.TabIndex = 2;
+            this.btnFinalizar.TabIndex = 1;
             this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
-            // 
-            // btnImprimir
-            // 
-            this.btnImprimir.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnImprimir.Appearance.Options.UseFont = true;
-            this.btnImprimir.Appearance.Options.UseTextOptions = true;
-            this.btnImprimir.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnImprimir.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimir.ImageOptions.Image")));
-            this.btnImprimir.ImageOptions.ImageToTextIndent = 10;
-            this.btnImprimir.Location = new System.Drawing.Point(142, 141);
-            this.btnImprimir.Name = "btnImprimir";
-            this.btnImprimir.Size = new System.Drawing.Size(119, 47);
-            this.btnImprimir.TabIndex = 0;
-            this.btnImprimir.Text = "Imprimir";
-            this.btnImprimir.Click += new System.EventHandler(this.btnImprimir_Click);
             // 
             // groupBox1
             // 
@@ -122,7 +121,7 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.dteFECHA_FIN.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dteFECHA_FIN.Properties.Mask.EditMask = "dd/MM/yyyy";
             this.dteFECHA_FIN.Size = new System.Drawing.Size(123, 24);
-            this.dteFECHA_FIN.TabIndex = 2;
+            this.dteFECHA_FIN.TabIndex = 1;
             // 
             // label1
             // 
@@ -155,7 +154,7 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.dteFECHA_INICIO.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dteFECHA_INICIO.Properties.Mask.EditMask = "dd/MM/yyyy";
             this.dteFECHA_INICIO.Size = new System.Drawing.Size(123, 24);
-            this.dteFECHA_INICIO.TabIndex = 1;
+            this.dteFECHA_INICIO.TabIndex = 0;
             // 
             // label18
             // 
@@ -167,20 +166,18 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             this.label18.Text = "Del:";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // frmParametroDocumentosQuedan
+            // frmExportarDocumentosQuedan
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(551, 209);
+            this.ClientSize = new System.Drawing.Size(553, 215);
             this.Controls.Add(this.panel1);
-            this.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmParametroDocumentosQuedan";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Listado de comprobantes recibidos";
-            this.Load += new System.EventHandler(this.frmParametroDocumentosQuedan_Load);
+            this.Name = "frmExportarDocumentosQuedan";
+            this.Text = "Exportar documentos recibidos por Quedan";
+            this.Load += new System.EventHandler(this.frmExportarDocumentosQuedan_Load);
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_FIN.Properties.CalendarTimeProperties)).EndInit();
@@ -194,12 +191,12 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
         #endregion
 
         private System.Windows.Forms.Panel panel1;
+        private DevExpress.XtraEditors.SimpleButton btnExportar;
+        private DevExpress.XtraEditors.SimpleButton btnFinalizar;
         private System.Windows.Forms.GroupBox groupBox1;
         private DevExpress.XtraEditors.DateEdit dteFECHA_FIN;
         private System.Windows.Forms.Label label1;
         private DevExpress.XtraEditors.DateEdit dteFECHA_INICIO;
         private System.Windows.Forms.Label label18;
-        private DevExpress.XtraEditors.SimpleButton btnImprimir;
-        private DevExpress.XtraEditors.SimpleButton btnFinalizar;
     }
 }

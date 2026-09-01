@@ -71,6 +71,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridDETALLE_PROD = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.cbxGENTRAS = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
             this.cbxLUGAR_DESPACHO = new System.Windows.Forms.ComboBox();
@@ -94,8 +96,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label23 = new System.Windows.Forms.Label();
             this.txtGRAVADA = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
-            this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
+            this.chkPERCEPCION = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA.Properties)).BeginInit();
@@ -557,6 +558,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.chkPERCEPCION);
             this.panel3.Controls.Add(this.btnFinalizar);
             this.panel3.Controls.Add(this.btnGuardar);
             this.panel3.Controls.Add(this.cbxGENTRAS);
@@ -588,6 +590,35 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panel3.Size = new System.Drawing.Size(1323, 241);
             this.panel3.TabIndex = 2;
             // 
+            // btnFinalizar
+            // 
+            this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFinalizar.Appearance.Options.UseFont = true;
+            this.btnFinalizar.Appearance.Options.UseTextOptions = true;
+            this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
+            this.btnFinalizar.Location = new System.Drawing.Point(677, 174);
+            this.btnFinalizar.Name = "btnFinalizar";
+            this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
+            this.btnFinalizar.TabIndex = 99;
+            this.btnFinalizar.TabStop = false;
+            this.btnFinalizar.Text = "Finalizar";
+            this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
+            // 
+            // btnGuardar
+            // 
+            this.btnGuardar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGuardar.Appearance.Options.UseFont = true;
+            this.btnGuardar.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardar.ImageOptions.Image")));
+            this.btnGuardar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnGuardar.ImageOptions.ImageToTextIndent = 10;
+            this.btnGuardar.Location = new System.Drawing.Point(521, 174);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(119, 47);
+            this.btnGuardar.TabIndex = 98;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            // 
             // cbxGENTRAS
             // 
             this.cbxGENTRAS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -597,6 +628,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.cbxGENTRAS.Name = "cbxGENTRAS";
             this.cbxGENTRAS.Size = new System.Drawing.Size(255, 25);
             this.cbxGENTRAS.TabIndex = 2;
+            this.cbxGENTRAS.Visible = false;
             // 
             // label25
             // 
@@ -607,6 +639,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label25.TabIndex = 97;
             this.label25.Text = "Gen transacción";
             this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label25.Visible = false;
             // 
             // cbxLUGAR_DESPACHO
             // 
@@ -617,6 +650,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.cbxLUGAR_DESPACHO.Name = "cbxLUGAR_DESPACHO";
             this.cbxLUGAR_DESPACHO.Size = new System.Drawing.Size(255, 25);
             this.cbxLUGAR_DESPACHO.TabIndex = 1;
+            this.cbxLUGAR_DESPACHO.Visible = false;
             // 
             // label24
             // 
@@ -627,6 +661,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label24.TabIndex = 95;
             this.label24.Text = "Lugar de despacho";
             this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label24.Visible = false;
             // 
             // cbxTIPO_VENTA
             // 
@@ -637,6 +672,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.cbxTIPO_VENTA.Name = "cbxTIPO_VENTA";
             this.cbxTIPO_VENTA.Size = new System.Drawing.Size(255, 25);
             this.cbxTIPO_VENTA.TabIndex = 0;
+            this.cbxTIPO_VENTA.Visible = false;
             // 
             // label21
             // 
@@ -647,6 +683,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label21.TabIndex = 93;
             this.label21.Text = "Tipo de Venta";
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label21.Visible = false;
             // 
             // txtTOTAL
             // 
@@ -809,34 +846,15 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label22.Text = "Gravada";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // btnGuardar
+            // chkPERCEPCION
             // 
-            this.btnGuardar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardar.Appearance.Options.UseFont = true;
-            this.btnGuardar.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardar.ImageOptions.Image")));
-            this.btnGuardar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnGuardar.ImageOptions.ImageToTextIndent = 10;
-            this.btnGuardar.Location = new System.Drawing.Point(521, 174);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(119, 47);
-            this.btnGuardar.TabIndex = 98;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
-            // 
-            // btnFinalizar
-            // 
-            this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFinalizar.Appearance.Options.UseFont = true;
-            this.btnFinalizar.Appearance.Options.UseTextOptions = true;
-            this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(677, 174);
-            this.btnFinalizar.Name = "btnFinalizar";
-            this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
-            this.btnFinalizar.TabIndex = 99;
-            this.btnFinalizar.TabStop = false;
-            this.btnFinalizar.Text = "Finalizar";
-            this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
+            this.chkPERCEPCION.AutoSize = true;
+            this.chkPERCEPCION.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkPERCEPCION.Location = new System.Drawing.Point(986, 178);
+            this.chkPERCEPCION.Name = "chkPERCEPCION";
+            this.chkPERCEPCION.Size = new System.Drawing.Size(14, 13);
+            this.chkPERCEPCION.TabIndex = 100;
+            this.chkPERCEPCION.UseVisualStyleBackColor = true;
             // 
             // frmDocumento_CLQ
             // 
@@ -933,5 +951,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private System.Windows.Forms.Label label21;
         private DevExpress.XtraEditors.SimpleButton btnGuardar;
         private DevExpress.XtraEditors.SimpleButton btnFinalizar;
+        private System.Windows.Forms.CheckBox chkPERCEPCION;
     }
 }

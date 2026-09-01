@@ -73,6 +73,36 @@ namespace SistemaContable.UI {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap clq_48X48 {
+            get {
+                object obj = ResourceManager.GetObject("clq_48X48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap descargar20x20 {
+            get {
+                object obj = ResourceManager.GetObject("descargar20x20", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap descargar48x48 {
+            get {
+                object obj = ResourceManager.GetObject("descargar48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap dizucar_logo {
             get {
                 object obj = ResourceManager.GetObject("dizucar_logo", resourceCulture);
@@ -83,9 +113,49 @@ namespace SistemaContable.UI {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap editar_20x20 {
+            get {
+                object obj = ResourceManager.GetObject("editar_20x20", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap editar2_20x20 {
+            get {
+                object obj = ResourceManager.GetObject("editar2_20x20", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap liquidacion_diaria_48x48 {
             get {
                 object obj = ResourceManager.GetObject("liquidacion_diaria_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap quedan20x20 {
+            get {
+                object obj = ResourceManager.GetObject("quedan20x20", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap retencion20x20 {
+            get {
+                object obj = ResourceManager.GetObject("retencion20x20", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

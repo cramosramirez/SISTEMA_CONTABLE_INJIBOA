@@ -24,6 +24,10 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private GridView gridProductos;
         private GridView gridGastosDetalle;
 
+        private bool _todosExpandidosClq = false;
+        private bool _todosExpandidosGastos = false;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit _riBotonGenerar;
+
         public frmLiquidacionDIZUCAR()
         {
             InitializeComponent();
@@ -38,7 +42,93 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             dteFECHA_LIQUIDACION.EditValueChanged += (s, ev) => CargarDatos();
             cbxEMPRESA.SelectedIndexChanged += (s, ev) => AplicarFiltroEmpresa();
 
+            linkExpandirContraer.Click += LinkExpandirContraer_Click;
+            linkGenerarTodos.Click += LinkGenerarTodos_Click;
+            ActualizarTextoLink(); 
+            tabPane1.SelectedPageChanged += (s, ev) => ActualizarTextoLink();
+
             CargarDatos();
+        }
+
+        private void LinkExpandirContraer_Click(object sender, EventArgs e)
+        {
+            if (tabPane1.SelectedPageIndex == 0)   // CLQ y Documentos de Venta
+            {
+                _todosExpandidosClq = !_todosExpandidosClq;
+                ExpandirTodasLasFilas(gridCLQ, _todosExpandidosClq);
+            }
+            else   // Gastos Aplicados
+            {
+                _todosExpandidosGastos = !_todosExpandidosGastos;
+                ExpandirTodasLasFilas(gridGASTOS, _todosExpandidosGastos);
+            }
+            ActualizarTextoLink();
+        }
+
+        private void LinkGenerarTodos_Click(object sender, EventArgs e)
+        {
+            if (cbxEMPRESA.SelectedValue == null || cbxEMPRESA.SelectedValue == DBNull.Value)
+            {
+                XtraMessageBox.Show("Debe seleccionar una empresa antes de generar.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int idEmpresa = Convert.ToInt32(cbxEMPRESA.SelectedValue);
+            DateTime fecha = dteFECHA_LIQUIDACION.DateTime.Date;
+
+            var respuesta = XtraMessageBox.Show(
+                $"Se generarán todos los comprobantes de liquidación pendientes para " +
+                $"{cbxEMPRESA.Text} en la fecha {fecha:dd/MM/yyyy}.\n\n¿Desea continuar?",
+                "Confirmar generación masiva", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (respuesta != DialogResult.Yes) return;
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                var dt = _dal.EjecutarConsulta("DISTRIB.SP_LIQUIDACION_GENERAR_CLQ", new
+                {
+                    ACCION = "GENERAR_MASIVO",
+                    ID_EMPRESA = idEmpresa,
+                    FECHA_PROCESA = fecha,
+                    USUARIO = Configuracion.UsuarioActual
+                });
+
+                int generados = dt.Rows.Count > 0 ? Convert.ToInt32(dt.Rows[0]["CANTIDAD_GENERADOS"]) : 0;
+                string errores = dt.Rows.Count > 0 ? dt.Rows[0]["ERRORES"]?.ToString() : "";
+
+                string mensaje = $"Se generaron {generados} comprobante(s) correctamente.";
+                if (!string.IsNullOrWhiteSpace(errores))
+                    mensaje += $"\n\nOcurrieron errores en algunos documentos:\n{errores}";
+
+                XtraMessageBox.Show(mensaje, "Generación masiva",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                CargarDatos();   // recarga el grid para reflejar los nuevos documento_generado = 1
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al generar los comprobantes:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void ActualizarTextoLink()
+        {
+            bool estadoActual = tabPane1.SelectedPageIndex == 0 ? _todosExpandidosClq : _todosExpandidosGastos;
+            linkExpandirContraer.Text = estadoActual ? "Contraer todos" : "Expandir todos";
+        }
+
+        private void ExpandirTodasLasFilas(GridView view, bool expandir)
+        {
+            for (int i = 0; i < view.RowCount; i++)
+                view.SetMasterRowExpanded(i, expandir);
         }
 
         // ============================================================
@@ -246,6 +336,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         {
             ConfigurarEstiloBase(gridCLQ);
             gridCLQ.OptionsView.ShowIndicator = false;
+            gridCLQ.OptionsFind.AlwaysVisible = true;
             gridCLQ.Appearance.Row.Font = new Font(gridCLQ.Appearance.Row.Font, FontStyle.Bold);
             gridCLQ.Appearance.Row.Options.UseFont = true;
 
@@ -261,15 +352,116 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
             if (gridCLQ.Columns["numliq"] != null) gridCLQ.Columns["numliq"].Width = 100;
             if (gridCLQ.Columns["serieclq"] != null) gridCLQ.Columns["serieclq"].Width = 130;
-            if (gridCLQ.Columns["fecha"] != null) gridCLQ.Columns["fecha"].Width = 600;  // ✅ compensa el prefijo más corto de este nivel
+            if (gridCLQ.Columns["fecha"] != null) gridCLQ.Columns["fecha"].Width = 380;   
+           
+            var colGenerado = AgregarColumna(gridCLQ, "documento_generado", "Generado");
+            colGenerado.Width = 80;
+            colGenerado.VisibleIndex = 3;
+            colGenerado.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit
+            {
+                ReadOnly = true
+            };
+            colGenerado.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            colGenerado.AppearanceCell.Options.UseTextOptions = true;
+            colGenerado.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            colGenerado.AppearanceHeader.Options.UseTextOptions = true;
+
+            var colSacos = AgregarColumnaNumero(gridCLQ, "total_sacos", "Sacos");
+            colSacos.Width = 80;
+            colSacos.VisibleIndex = 4;
 
             AgregarColumnaCalculada(gridCLQ, "SUBTOTAL_CLQ", "Subtotal").Width = 150;
             AgregarColumnaCalculada(gridCLQ, "IVA_CLQ", "IVA").Width = 150;
             AgregarColumnaCalculada(gridCLQ, "RETENCION_CLQ", "Retención").Width = 150;
             AgregarColumnaCalculada(gridCLQ, "TOTAL_CLQ", "Total").Width = 150;
 
+            gridCLQ.OptionsBehavior.Editable = true;
+            foreach (DevExpress.XtraGrid.Columns.GridColumn col in gridCLQ.Columns)
+                col.OptionsColumn.AllowEdit = (col.FieldName == "accion_generar");
+
             gridCLQ.CustomUnboundColumnData -= GridCLQ_CustomUnboundColumnData;
             gridCLQ.CustomUnboundColumnData += GridCLQ_CustomUnboundColumnData;
+
+            ConfigurarBotonGenerarGrid();
+        }
+
+        private void ConfigurarBotonGenerarGrid()
+        {
+            // Botón de Generar/Regenerar comprobante de liquidación
+            _riBotonGenerar = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            _riBotonGenerar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            _riBotonGenerar.Buttons.Clear();
+
+            var boton = new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)
+            {
+                Image = ObtenerImagenRecurso("descargar20x20")
+            };
+            var superTip = new DevExpress.Utils.SuperToolTip();
+            superTip.Items.Add("Generar comprobante de liquidación (CLQ)");
+            boton.SuperTip = superTip;
+            _riBotonGenerar.Buttons.Add(boton);
+            _riBotonGenerar.ButtonClick += RiBotonGenerar_ButtonClick;
+
+            gridControl1.RepositoryItems.Add(_riBotonGenerar);
+
+            var colGenerar = AgregarColumna(gridCLQ, " ", "");
+            colGenerar.Width = 40;
+            colGenerar.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            colGenerar.ColumnEdit = _riBotonGenerar;
+            colGenerar.OptionsColumn.AllowEdit = true;   // el botón necesita que la celda sea "editable" para responder al clic
+        }
+
+        private Image ObtenerImagenRecurso(string nombre)
+        {
+            object recurso = Properties.Resources.ResourceManager.GetObject(nombre)
+                              ?? SistemaContable.UI.RecursosAdicionales01.ResourceManager.GetObject(nombre);
+            return recurso as Image;
+        }
+
+        private void RiBotonGenerar_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            int rowHandle = gridCLQ.FocusedRowHandle;
+            if (rowHandle < 0) return;
+
+            int idClq = Convert.ToInt32(gridCLQ.GetRowCellValue(rowHandle, "id_clq"));
+            bool yaGenerado = gridCLQ.GetRowCellValue(rowHandle, "documento_generado") != DBNull.Value
+                               && Convert.ToBoolean(gridCLQ.GetRowCellValue(rowHandle, "documento_generado"));
+
+            if (yaGenerado)
+            {
+                var respuesta = XtraMessageBox.Show(
+                    "Este CLQ ya tiene un comprobante generado. ¿Desea regenerarlo? " +
+                    "El documento existente se eliminará y se creará uno nuevo.",
+                    "Confirmar regeneración", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (respuesta != DialogResult.Yes) return;
+            }
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                var dt = _dal.EjecutarConsulta("DISTRIB.SP_LIQUIDACION_GENERAR_CLQ", new
+                {
+                    ACCION = "GENERAR",
+                    ID_CLQ = idClq,
+                    USUARIO = Configuracion.UsuarioActual
+                });
+
+                XtraMessageBox.Show("Comprobante generado correctamente.",
+                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                CargarDatos();   // recarga el grid para reflejar documento_generado = 1
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al generar el comprobante:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
 
@@ -321,6 +513,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             AgregarColumnaMoneda(gridDocumentos, "iva", "IVA").Width = 150;
             AgregarColumnaMoneda(gridDocumentos, "retencion", "Retención").Width = 150;
             AgregarColumnaMoneda(gridDocumentos, "total", "Total").Width = 150;
+
+            gridDocumentos.RowStyle -= GridDocumentos_RowStyle;
+            gridDocumentos.RowStyle += GridDocumentos_RowStyle;
         }
 
         // ============================================================
@@ -340,6 +535,20 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             AgregarColumnaMoneda(gridProductos, "subtotal", "Subtotal").Width = 80;
             AgregarColumnaMoneda(gridProductos, "iva", "IVA").Width = 80;
             AgregarColumnaMoneda(gridProductos, "total", "Total").Width = 150;
+        }
+
+        private void GridDocumentos_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
+        {
+            var view = sender as GridView;
+            if (view == null || e.RowHandle < 0) return;
+
+            string condicion = view.GetRowCellValue(e.RowHandle, "condicion_de_pago")?.ToString() ?? "";
+
+            if (condicion.ToUpper().Contains("CREDITO"))
+            {
+                e.Appearance.BackColor = Color.FromArgb(253, 226, 226);   // rojo pálido
+                e.Appearance.Options.UseBackColor = true;
+            }
         }
 
         private void ConfigurarEstiloBase(GridView view)
@@ -416,14 +625,14 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             AgregarColumnaMoneda(gridGastosDetalle, "total", "Total").Width = 150;
         }
 
-        
+
         // ============================================================
         // Helpers compartidos
         // ============================================================      
 
         private DevExpress.XtraGrid.Columns.GridColumn AgregarColumna(GridView view, string field, string caption)
         {
-            var col = view.Columns.AddField(field);
+            var col = view.Columns[field] ?? view.Columns.AddField(field);   
             col.Caption = caption;
             col.Visible = true;
             col.VisibleIndex = view.Columns.Count - 1;

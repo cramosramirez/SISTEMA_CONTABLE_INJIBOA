@@ -110,9 +110,11 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             txtDESCUENTO.ReadOnly = true;
             txtSUBTOTAL.ReadOnly = true;
             txtIVA.ReadOnly = true;
-            txtTOTAL.ReadOnly = true;
+            txtPERCEPCION.ReadOnly = true;
+            txtTOTAL.ReadOnly = true;            
 
-            EngancharRecalculo(txtGRAVADA, txtEXENTA, txtPORC_DESCUENTO, txtIVAR, txtPERCEPCION);
+            EngancharRecalculo(txtGRAVADA, txtEXENTA, txtPORC_DESCUENTO, txtIVAR);
+            chkPERCEPCION.CheckedChanged += (s, ev) => RecalcularTotales();
 
             FormHelper.ResaltarCombosEnFoco(this);
 
@@ -130,10 +132,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
         private void ConfigurarCRUD(EstadoFormulario estado)
         {
-            bool esNuevo = estado == EstadoFormulario.Nuevo;
-            txtCLIENTE.Enabled = esNuevo;
-            txtCODIGO_CLQ.Enabled = esNuevo;
-            txtNUMERO_CLQ.Enabled = esNuevo;
+            bool esNuevo = estado == EstadoFormulario.Nuevo;    
         }
 
         // ============================================================
@@ -376,7 +375,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             _dtDetalle.Columns.Add("COD_REF", typeof(string));
             _dtDetalle.Columns.Add("DESCRIPCION", typeof(string));
             _dtDetalle.Columns.Add("CANTIDAD", typeof(decimal));
-            _dtDetalle.Columns.Add("UNIDAD", typeof(string));
+            //_dtDetalle.Columns.Add("UNIDAD", typeof(string));
             _dtDetalle.Columns.Add("ES_EXENTO", typeof(bool));
             _dtDetalle.Columns.Add("PRECIO", typeof(decimal));
             _dtDetalle.Columns.Add("GRAVADO", typeof(decimal));
@@ -399,12 +398,12 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             gridDETALLE_PROD.Columns["EXENTO"].OptionsColumn.AllowEdit = false;
             gridDETALLE_PROD.Columns["SUBTOTAL"].OptionsColumn.AllowEdit = false;
             gridDETALLE_PROD.Columns["DESCRIPCION"].OptionsColumn.AllowEdit = false;
-            gridDETALLE_PROD.Columns["UNIDAD"].OptionsColumn.AllowEdit = false;
+            //gridDETALLE_PROD.Columns["UNIDAD"].OptionsColumn.AllowEdit = false;
             // Anchos fijos, sin poder redimensionar ni ordenar
             ConfigurarColumnaDetalle(gridDETALLE_PROD.Columns["COD_REF"], "CODIGO", 100);
             ConfigurarColumnaDetalle(gridDETALLE_PROD.Columns["DESCRIPCION"], "DESCRIPCIÓN", 320);
             ConfigurarColumnaDetalle(gridDETALLE_PROD.Columns["CANTIDAD"], "CANTIDAD", 90);
-            ConfigurarColumnaDetalle(gridDETALLE_PROD.Columns["UNIDAD"], "UNIDAD", 90);
+            //ConfigurarColumnaDetalle(gridDETALLE_PROD.Columns["UNIDAD"], "UNIDAD", 90);
             ConfigurarColumnaDetalle(gridDETALLE_PROD.Columns["ES_EXENTO"], "Es Exento", 70);
             ConfigurarColumnaDetalle(gridDETALLE_PROD.Columns["PRECIO"], "PRECIO", 110);
             ConfigurarColumnaDetalle(gridDETALLE_PROD.Columns["GRAVADO"], "GRAVADO", 110);
@@ -479,7 +478,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     gridDETALLE_PROD.SetFocusedRowCellValue("ID_PRODUCTO", fila["ID_PRODUCTO"]);
                     gridDETALLE_PROD.SetFocusedRowCellValue("COD_REF", fila["COD_REF"]);
                     gridDETALLE_PROD.SetFocusedRowCellValue("DESCRIPCION", fila["DESCRIPCION"]);
-                    gridDETALLE_PROD.SetFocusedRowCellValue("UNIDAD", SafeStr(fila, "UNIMEDIDA"));
+                    //gridDETALLE_PROD.SetFocusedRowCellValue("UNIDAD", SafeStr(fila, "UNIMEDIDA"));
                     gridDETALLE_PROD.SetFocusedRowCellValue("ES_EXENTO", esExento);
 
                     gridDETALLE_PROD.FocusedColumn = gridDETALLE_PROD.Columns["CANTIDAD"];   
@@ -552,7 +551,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             if (campo != "CANTIDAD" && campo != "PRECIO" && campo != "ES_EXENTO") return;
             RecalcularDetalleYEncabezado();
         }
-        
+       
         private void ValidarCodigoProductoManual(string codigo)
         {
             codigo = codigo?.Trim();
@@ -598,7 +597,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                 _actualizandoDesdeBusqueda = true;
                 gridDETALLE_PROD.SetFocusedRowCellValue("ID_PRODUCTO", fila["ID_PRODUCTO"]);
                 gridDETALLE_PROD.SetFocusedRowCellValue("DESCRIPCION", fila["DESCRIPCION"]);
-                gridDETALLE_PROD.SetFocusedRowCellValue("UNIDAD", SafeStr(fila, "UNIMEDIDA"));
+                //gridDETALLE_PROD.SetFocusedRowCellValue("UNIDAD", SafeStr(fila, "UNIMEDIDA"));
                 gridDETALLE_PROD.SetFocusedRowCellValue("ES_EXENTO", esExento);
                 _actualizandoDesdeBusqueda = false;
 
@@ -617,7 +616,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             gridDETALLE_PROD.SetFocusedRowCellValue("ID_PRODUCTO", DBNull.Value);
             gridDETALLE_PROD.SetFocusedRowCellValue("COD_REF", string.Empty);
             gridDETALLE_PROD.SetFocusedRowCellValue("DESCRIPCION", string.Empty);
-            gridDETALLE_PROD.SetFocusedRowCellValue("UNIDAD", string.Empty);
+            //gridDETALLE_PROD.SetFocusedRowCellValue("UNIDAD", string.Empty);
             gridDETALLE_PROD.SetFocusedRowCellValue("ES_EXENTO", false);
             _actualizandoDesdeBusqueda = false;
         }
@@ -648,14 +647,15 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         }
 
         // SUBTOTAL_BRUTO = GRAVADO+EXENTO; DESCUENTO sobre el bruto;
-        // IVA = 13% sobre GRAVADO neto de descuento; TOTAL = SUBTOTAL + IVA - IVAR + PERCEPCION
+        // IVA = 13% sobre GRAVADO neto de descuento;
+        // PERCEPCION = 1% del SUBTOTAL si chkPERCEPCION está marcado;
+        // TOTAL = SUBTOTAL + IVA - IVAR + PERCEPCION
         private void RecalcularTotales()
         {
             decimal gravado = ObtenerDecimal(txtGRAVADA);
             decimal exenta = ObtenerDecimal(txtEXENTA);
             decimal porcDescto = ObtenerDecimal(txtPORC_DESCUENTO);
             decimal ivar = ObtenerDecimal(txtIVAR);
-            decimal percepcion = ObtenerDecimal(txtPERCEPCION);
 
             decimal subtotalBruto = gravado + exenta;
             decimal descuento = Calculo.Redondear(subtotalBruto * porcDescto / 100m, 2);
@@ -664,11 +664,17 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             decimal gravadoNeto = gravado - Calculo.Redondear(gravado * porcDescto / 100m, 2);
             decimal iva = Calculo.Redondear(gravadoNeto * 0.13m, 2);
 
+            // ✅ Ahora sobre GRAVADO neto de descuento, no sobre SUBTOTAL
+            decimal percepcion = chkPERCEPCION.Checked
+                ? Calculo.Redondear(gravadoNeto * 0.01m, 2)
+                : 0;
+
             decimal total = subtotal + iva - ivar + percepcion;
 
             AsignarDecimal(txtDESCUENTO, descuento);
             AsignarDecimal(txtSUBTOTAL, subtotal);
             AsignarDecimal(txtIVA, iva);
+            AsignarDecimal(txtPERCEPCION, percepcion);
             AsignarDecimal(txtTOTAL, total);
         }
 
@@ -680,13 +686,11 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             try
             {
                 Cursor = Cursors.WaitCursor;
-
                 var ds = _dal.EjecutarMultiple("DISTRIB.SP_CLQ_ENCA", new
                 {
                     ACCION = "OBTENER",
                     ID_CLQ_ENCA = idClqEnca
                 });
-
                 if (ds.Tables[0].Rows.Count == 0)
                 {
                     XtraMessageBox.Show("No se encontró el comprobante solicitado.",
@@ -694,12 +698,21 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     Close();
                     return;
                 }
-
                 DataRow r = ds.Tables[0].Rows[0];
-
                 _idEntidad = ToInt(r["ID_ENTIDAD"]);
                 _codigoEntidad = SafeStr(r, "CODIGO_ENTIDAD");
+                _parametrosTipoClq.CODIGO_ENTIDAD = _codigoEntidad;   // ✅ NUEVO — mantiene sincronizada la búsqueda de tipo CLQ
 
+                // ✅ Reutiliza AsignarCliente para no duplicar los campos del cliente
+                var dtCliente = _dal.EjecutarConsulta("SP_ENTIDAD", new
+                {
+                    ACCION = "BUSCAR_POR_CODIGO",
+                    FILTRO = _codigoEntidad,
+                    ROL = "CLI"
+                });
+                if (dtCliente.Rows.Count > 0)
+                    AsignarCliente(dtCliente.Rows[0]);
+                               
                 txtCODIGO_CLQ.Tag = SafeStr(r, "ID_TIPO_CLQ");
                 txtCODIGO_CLQ.Text = SafeStr(r, "CODIGO_CLQ");
                 txtNOMBRE_TIPO_CLQ.Text = SafeStr(r, "NOMBRE_TIPO_CLQ");
@@ -707,18 +720,14 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                 txtRESOLUCION.Text = SafeStr(r, "RESOLUCION");
                 txtNUMERO_CLQ.Text = SafeStr(r, "NUMERO_CLQ");
                 dteFECHA.DateTime = r["FECHA"] != DBNull.Value ? Convert.ToDateTime(r["FECHA"]) : DateTime.Today;
-
-                txtCLIENTE.Text = _codigoEntidad;
-                txtNOMBRE_CLIENTE.Text = SafeStr(r, "NOMBRE_ENTIDAD");
-                txtNRC.Text = SafeStr(r, "NRC");
-                txtNIT.Text = SafeStr(r, "NIT");
-
+                             
                 cbxCONDICION_PAGO.SelectedValue = ToInt(r["ID_COND_PAGO"]);
                 cbxSUCURSAL.SelectedValue = ToInt(r["ID_SUCURSAL"]);
-                cbxCENTRO_COSTO.SelectedValue = ToInt(r["ID_CENTRO"]);
+                cbxCENTRO_COSTO.SelectedValue = ToInt(r["ID_CENTRO"]);   // ahora sí encuentra coincidencia
                 cbxTIPO_VENTA.SelectedValue = ToInt(r["ID_TVTA"]);
                 cbxLUGAR_DESPACHO.SelectedValue = ToInt(r["ID_LDESPACHO"]);
                 cbxGENTRAS.SelectedValue = ToInt(r["ID_GVTA"]);
+                cbxZAFRA.SelectedValue = ToInt(r["ID_ZAFRA"]);
 
                 AsignarDecimal(txtGRAVADA, ToDecimal(r["GRAVADO"]));
                 AsignarDecimal(txtEXENTA, ToDecimal(r["EXENTO"]));
@@ -727,6 +736,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                 AsignarDecimal(txtSUBTOTAL, ToDecimal(r["SUBTOTAL"]));
                 AsignarDecimal(txtIVA, ToDecimal(r["IVA"]));
                 AsignarDecimal(txtIVAR, ToDecimal(r["IVAR"]));
+                chkPERCEPCION.Checked = ToDecimal(r["PERCEPCION"]) > 0;
                 AsignarDecimal(txtPERCEPCION, ToDecimal(r["PERCEPCION"]));
                 AsignarDecimal(txtTOTAL, ToDecimal(r["TOTAL"]));
 
@@ -737,11 +747,12 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     _dtDetalle.Rows[0]["COD_REF"] = SafeStr(d, "COD_REF");
                     _dtDetalle.Rows[0]["DESCRIPCION"] = SafeStr(d, "DESCRIPCION");
                     _dtDetalle.Rows[0]["CANTIDAD"] = ToDecimal(d["CANTIDAD"]);
-                    _dtDetalle.Rows[0]["UNIDAD"] = SafeStr(d, "UNIDAD");
+                    //_dtDetalle.Rows[0]["UNIDAD"] = SafeStr(d, "UNIDAD");
                     _dtDetalle.Rows[0]["PRECIO"] = ToDecimal(d["PRECIO"]);
                     _dtDetalle.Rows[0]["GRAVADO"] = ToDecimal(d["GRAVADO"]);
                     _dtDetalle.Rows[0]["EXENTO"] = ToDecimal(d["EXENTO"]);
                     _dtDetalle.Rows[0]["SUBTOTAL"] = ToDecimal(d["SUBTOTAL"]);
+                    _ultimoCodigoValidado = SafeStr(d, "COD_REF").Trim();   // por si ya lo tenías de la corrección anterior
                     gridControl1.RefreshDataSource();
                 }
             }
@@ -867,7 +878,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     DET_COD_REF = NullIfEmpty(SafeStr2(_dtDetalle.Rows[0]["COD_REF"])),
                     DET_DESCRIPCION = NullIfEmpty(SafeStr2(_dtDetalle.Rows[0]["DESCRIPCION"])),
                     DET_CANTIDAD = ToDecimal(_dtDetalle.Rows[0]["CANTIDAD"]),
-                    DET_UNIDAD = NullIfEmpty(SafeStr2(_dtDetalle.Rows[0]["UNIDAD"])),
+                    //DET_UNIDAD = NullIfEmpty(SafeStr2(_dtDetalle.Rows[0]["UNIDAD"])),
+                    DET_UNIDAD = "",
                     DET_ES_EXENTO = _dtDetalle.Rows[0]["ES_EXENTO"] != DBNull.Value && Convert.ToBoolean(_dtDetalle.Rows[0]["ES_EXENTO"]),
                     DET_PRECIO = ToDecimal(_dtDetalle.Rows[0]["PRECIO"]),
                     DET_GRAVADO = ToDecimal(_dtDetalle.Rows[0]["GRAVADO"]),

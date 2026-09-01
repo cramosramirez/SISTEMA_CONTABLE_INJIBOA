@@ -33,7 +33,7 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             try
             {
                 Cursor = Cursors.WaitCursor;
-                var reporte = new rptListadoDocumentosRecibidos { FechaInicial = dteFECHA_INICIO.DateTime, FechaFinal = dteFECHA_FIN.DateTime, ClasificarPorOrden = chkClasificarPorOrden.Checked };
+                var reporte = new rptListadoDocumentosRecibidos { FechaInicial = dteFECHA_INICIO.DateTime, FechaFinal = dteFECHA_FIN.DateTime, ClasificarPorOrden = false };
                 reporte.MostrarPreview();
               
             }
@@ -46,15 +46,7 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             {
                 Cursor = Cursors.Default;
             }
-
         }
-
-        private void btnExportar_Click(object sender, EventArgs e)
-        {
-            var reporte = new rptListadoDocumentosRecibidos { FechaInicial = dteFECHA_INICIO.DateTime, FechaFinal = dteFECHA_FIN.DateTime, ClasificarPorOrden = chkClasificarPorOrden.Checked };
-            bool exportado = reporte.ExportarAExcel();
-            if (exportado)
-                XtraMessageBox.Show("Archivo exportado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
+        
     }
 }

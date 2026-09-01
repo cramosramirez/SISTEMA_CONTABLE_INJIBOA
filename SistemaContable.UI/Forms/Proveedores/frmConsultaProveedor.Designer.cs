@@ -29,11 +29,11 @@ namespace SistemaContable.UI.Forms.Proveedores
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.riEditar = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
@@ -63,9 +63,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.riEditar.AllowFocused = false;
             this.riEditar.AutoHeight = false;
-            editorButtonImageOptions3.Image = global::SistemaContable.UI.Properties.Resources.editar3_32x32;
+            editorButtonImageOptions1.Image = global::SistemaContable.UI.RecursosAdicionales01.editar2_20x20;
             this.riEditar.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riEditar.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
             this.riEditar.Name = "riEditar";
             this.riEditar.ReadOnly = true;
@@ -191,7 +191,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.colEDITAR.ColumnEdit = this.riEditar;
             this.colEDITAR.ImageOptions.Alignment = System.Drawing.StringAlignment.Center;
-            this.colEDITAR.MinWidth = 60;
+            this.colEDITAR.MaxWidth = 30;
+            this.colEDITAR.MinWidth = 30;
             this.colEDITAR.Name = "colEDITAR";
             this.colEDITAR.OptionsColumn.AllowSize = false;
             this.colEDITAR.OptionsColumn.FixedWidth = true;
@@ -199,7 +200,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colEDITAR.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colEDITAR.Visible = true;
             this.colEDITAR.VisibleIndex = 0;
-            this.colEDITAR.Width = 31;
+            this.colEDITAR.Width = 30;
             // 
             // colCODIGO_ENTIDAD
             // 
@@ -209,7 +210,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colCODIGO_ENTIDAD.Name = "colCODIGO_ENTIDAD";
             this.colCODIGO_ENTIDAD.Visible = true;
             this.colCODIGO_ENTIDAD.VisibleIndex = 1;
-            this.colCODIGO_ENTIDAD.Width = 90;
+            this.colCODIGO_ENTIDAD.Width = 111;
             // 
             // colNOMBRE_ENTIDAD
             // 
@@ -222,7 +223,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colNOMBRE_ENTIDAD.SortMode = DevExpress.XtraGrid.ColumnSortMode.Value;
             this.colNOMBRE_ENTIDAD.Visible = true;
             this.colNOMBRE_ENTIDAD.VisibleIndex = 2;
-            this.colNOMBRE_ENTIDAD.Width = 200;
+            this.colNOMBRE_ENTIDAD.Width = 248;
             // 
             // colNRC
             // 
@@ -235,7 +236,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colNRC.OptionsColumn.AllowEdit = false;
             this.colNRC.Visible = true;
             this.colNRC.VisibleIndex = 3;
-            this.colNRC.Width = 100;
+            this.colNRC.Width = 123;
             // 
             // colDUI
             // 
@@ -246,7 +247,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colDUI.OptionsColumn.AllowEdit = false;
             this.colDUI.Visible = true;
             this.colDUI.VisibleIndex = 4;
-            this.colDUI.Width = 276;
+            this.colDUI.Width = 343;
             // 
             // colNIT
             // 
@@ -258,7 +259,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colNIT.OptionsColumn.AllowEdit = false;
             this.colNIT.Visible = true;
             this.colNIT.VisibleIndex = 5;
-            this.colNIT.Width = 105;
+            this.colNIT.Width = 130;
             // 
             // colTELEFONO
             // 
@@ -273,7 +274,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colTELEFONO.OptionsColumn.AllowEdit = false;
             this.colTELEFONO.Visible = true;
             this.colTELEFONO.VisibleIndex = 6;
-            this.colTELEFONO.Width = 87;
+            this.colTELEFONO.Width = 107;
             // 
             // colCORREO
             // 
@@ -288,7 +289,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colCORREO.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colCORREO.Visible = true;
             this.colCORREO.VisibleIndex = 7;
-            this.colCORREO.Width = 87;
+            this.colCORREO.Width = 107;
             // 
             // colTIPO_CONTRIBUYENTE
             // 
@@ -298,7 +299,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colTIPO_CONTRIBUYENTE.Name = "colTIPO_CONTRIBUYENTE";
             this.colTIPO_CONTRIBUYENTE.Visible = true;
             this.colTIPO_CONTRIBUYENTE.VisibleIndex = 8;
-            this.colTIPO_CONTRIBUYENTE.Width = 90;
+            this.colTIPO_CONTRIBUYENTE.Width = 120;
             // 
             // frmConsultaProveedor
             // 
