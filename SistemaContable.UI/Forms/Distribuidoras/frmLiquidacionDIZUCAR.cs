@@ -701,5 +701,38 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             return col;   
         }
 
+        private void linkImportarDIZUCAR_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DateTime fecha = dteFECHA_LIQUIDACION.DateTime.Date;
+
+            var respuesta = XtraMessageBox.Show(
+                $"Se importarán ventas y gastos desde el API para la fecha {fecha:dd/MM/yyyy}.\n\n¿Desea continuar?",
+                "Confirmar importación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (respuesta != DialogResult.Yes) return;
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                var importador = new SistemaContable.UI.ImportaDistrib.ImportadorDizucar();
+                var (ventas, gastos) = importador.ImportarTodo(fecha);
+
+                XtraMessageBox.Show(
+                    $"Importación completada:\n\n{ventas} registro(s) de ventas\n{gastos} registro(s) de gastos",
+                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                CargarDatos();   // recarga el grid con los datos ya transformados
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al importar desde el API:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
     }
 }

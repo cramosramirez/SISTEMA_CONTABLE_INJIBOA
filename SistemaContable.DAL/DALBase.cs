@@ -17,6 +17,13 @@ namespace SistemaContable.DAL
                 return ConfigurationManager.ConnectionStrings["SistemaContable"].ConnectionString;
             }
         }
+        protected string CadenaConexionDistrib
+        {
+            get
+            {
+                return ConfigurationManager.ConnectionStrings["ConexionDistrib"].ConnectionString;
+            }
+        }    
 
         // CASO 1: Retorna DataTable — BUSCAR, CONSULTAR, LISTAR
         public DataTable EjecutarConsulta(string sp, object parametros = null)

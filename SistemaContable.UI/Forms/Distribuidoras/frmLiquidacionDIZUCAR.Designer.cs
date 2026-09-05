@@ -36,6 +36,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.dteFECHA_LIQUIDACION = new DevExpress.XtraEditors.DateEdit();
             this.label1 = new System.Windows.Forms.Label();
             this.panelResumen = new System.Windows.Forms.Panel();
+            this.linkGenerarTodos = new System.Windows.Forms.LinkLabel();
             this.linkExpandirContraer = new System.Windows.Forms.LinkLabel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.lblVENTAS_MENOS_GASTOS = new System.Windows.Forms.Label();
@@ -57,7 +58,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.tabNavigationPage2 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gridGASTOS = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.linkGenerarTodos = new System.Windows.Forms.LinkLabel();
+            this.linkImportarDIZUCAR = new System.Windows.Forms.LinkLabel();
             this.panelFiltros.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties)).BeginInit();
@@ -88,7 +89,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panelFiltros.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelFiltros.Location = new System.Drawing.Point(0, 0);
             this.panelFiltros.Name = "panelFiltros";
-            this.panelFiltros.Size = new System.Drawing.Size(1401, 95);
+            this.panelFiltros.Size = new System.Drawing.Size(1539, 95);
             this.panelFiltros.TabIndex = 0;
             // 
             // cbxEMPRESA
@@ -155,6 +156,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             // 
             // panelResumen
             // 
+            this.panelResumen.Controls.Add(this.linkImportarDIZUCAR);
             this.panelResumen.Controls.Add(this.linkGenerarTodos);
             this.panelResumen.Controls.Add(this.linkExpandirContraer);
             this.panelResumen.Controls.Add(this.panel4);
@@ -164,8 +166,19 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panelResumen.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelResumen.Location = new System.Drawing.Point(0, 95);
             this.panelResumen.Name = "panelResumen";
-            this.panelResumen.Size = new System.Drawing.Size(1401, 99);
+            this.panelResumen.Size = new System.Drawing.Size(1539, 99);
             this.panelResumen.TabIndex = 1;
+            // 
+            // linkGenerarTodos
+            // 
+            this.linkGenerarTodos.AutoSize = true;
+            this.linkGenerarTodos.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkGenerarTodos.Location = new System.Drawing.Point(1187, 17);
+            this.linkGenerarTodos.Name = "linkGenerarTodos";
+            this.linkGenerarTodos.Size = new System.Drawing.Size(264, 21);
+            this.linkGenerarTodos.TabIndex = 5;
+            this.linkGenerarTodos.TabStop = true;
+            this.linkGenerarTodos.Text = "Generar masivamente todos los CLQ";
             // 
             // linkExpandirContraer
             // 
@@ -300,7 +313,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panelGASTOS.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelGASTOS.Location = new System.Drawing.Point(0, 194);
             this.panelGASTOS.Name = "panelGASTOS";
-            this.panelGASTOS.Size = new System.Drawing.Size(1401, 568);
+            this.panelGASTOS.Size = new System.Drawing.Size(1539, 568);
             this.panelGASTOS.TabIndex = 3;
             // 
             // tabPane1
@@ -320,9 +333,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.tabPane1.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabNavigationPage1,
             this.tabNavigationPage2});
-            this.tabPane1.RegularSize = new System.Drawing.Size(1401, 568);
+            this.tabPane1.RegularSize = new System.Drawing.Size(1539, 568);
             this.tabPane1.SelectedPage = this.tabNavigationPage1;
-            this.tabPane1.Size = new System.Drawing.Size(1401, 568);
+            this.tabPane1.Size = new System.Drawing.Size(1539, 568);
             this.tabPane1.TabIndex = 0;
             this.tabPane1.Text = "tabPane1";
             // 
@@ -334,7 +347,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.tabNavigationPage1.Controls.Add(this.gridControl1);
             this.tabNavigationPage1.Name = "tabNavigationPage1";
             this.tabNavigationPage1.PageText = "CLQ Y DOCUMENTOS DE VENTA";
-            this.tabNavigationPage1.Size = new System.Drawing.Size(1401, 528);
+            this.tabNavigationPage1.Size = new System.Drawing.Size(1539, 528);
             // 
             // gridControl1
             // 
@@ -342,7 +355,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.gridControl1.Location = new System.Drawing.Point(0, 0);
             this.gridControl1.MainView = this.gridCLQ;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1401, 528);
+            this.gridControl1.Size = new System.Drawing.Size(1539, 528);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridCLQ});
@@ -377,22 +390,23 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.gridGASTOS.GridControl = this.gridControl2;
             this.gridGASTOS.Name = "gridGASTOS";
             // 
-            // linkGenerarTodos
+            // linkImportarDIZUCAR
             // 
-            this.linkGenerarTodos.AutoSize = true;
-            this.linkGenerarTodos.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkGenerarTodos.Location = new System.Drawing.Point(1187, 17);
-            this.linkGenerarTodos.Name = "linkGenerarTodos";
-            this.linkGenerarTodos.Size = new System.Drawing.Size(264, 21);
-            this.linkGenerarTodos.TabIndex = 5;
-            this.linkGenerarTodos.TabStop = true;
-            this.linkGenerarTodos.Text = "Generar masivamente todos los CLQ";
+            this.linkImportarDIZUCAR.AutoSize = true;
+            this.linkImportarDIZUCAR.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkImportarDIZUCAR.Location = new System.Drawing.Point(1187, 52);
+            this.linkImportarDIZUCAR.Name = "linkImportarDIZUCAR";
+            this.linkImportarDIZUCAR.Size = new System.Drawing.Size(203, 21);
+            this.linkImportarDIZUCAR.TabIndex = 6;
+            this.linkImportarDIZUCAR.TabStop = true;
+            this.linkImportarDIZUCAR.Text = "Importar datos de DIZUCAR";
+            this.linkImportarDIZUCAR.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkImportarDIZUCAR_LinkClicked);
             // 
             // frmLiquidacionDIZUCAR
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1401, 762);
+            this.ClientSize = new System.Drawing.Size(1539, 762);
             this.Controls.Add(this.panelGASTOS);
             this.Controls.Add(this.panelResumen);
             this.Controls.Add(this.panelFiltros);
@@ -457,5 +471,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private DevExpress.XtraGrid.Views.Grid.GridView gridGASTOS;
         private System.Windows.Forms.LinkLabel linkExpandirContraer;
         private System.Windows.Forms.LinkLabel linkGenerarTodos;
+        private System.Windows.Forms.LinkLabel linkImportarDIZUCAR;
     }
 }
