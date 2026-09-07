@@ -96,6 +96,8 @@
             this.cbxMUNI = new System.Windows.Forms.ComboBox();
             this.lblDIST = new System.Windows.Forms.Label();
             this.cbxDIST = new System.Windows.Forms.ComboBox();
+            this.lblPROFESION = new System.Windows.Forms.Label();
+            this.txtPROFESION = new System.Windows.Forms.TextBox();
             this.lblACTIVIDAD_1 = new System.Windows.Forms.Label();
             this.txtCODI_ACTIVIDAD1 = new System.Windows.Forms.TextBox();
             this.txtACTIVIDAD_1 = new System.Windows.Forms.TextBox();
@@ -247,6 +249,8 @@
             this.groupControl1.Controls.Add(this.cbxMUNI);
             this.groupControl1.Controls.Add(this.lblDIST);
             this.groupControl1.Controls.Add(this.cbxDIST);
+            this.groupControl1.Controls.Add(this.lblPROFESION);
+            this.groupControl1.Controls.Add(this.txtPROFESION);
             this.groupControl1.Controls.Add(this.lblACTIVIDAD_1);
             this.groupControl1.Controls.Add(this.txtCODI_ACTIVIDAD1);
             this.groupControl1.Controls.Add(this.txtACTIVIDAD_1);
@@ -260,14 +264,14 @@
             this.groupControl1.Controls.Add(this.cbxORIGEN);
             this.groupControl1.Location = new System.Drawing.Point(10, 3);
             this.groupControl1.Name = "groupControl1";
-            this.groupControl1.Size = new System.Drawing.Size(1114, 483);
+            this.groupControl1.Size = new System.Drawing.Size(1114, 513);
             this.groupControl1.TabIndex = 4;
             this.groupControl1.Text = "Datos Personales";
             // 
             // txtACTIVIDAD_EXT
             // 
             this.txtACTIVIDAD_EXT.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtACTIVIDAD_EXT.Location = new System.Drawing.Point(116, 434);
+            this.txtACTIVIDAD_EXT.Location = new System.Drawing.Point(116, 464);
             this.txtACTIVIDAD_EXT.Name = "txtACTIVIDAD_EXT";
             this.txtACTIVIDAD_EXT.Size = new System.Drawing.Size(970, 22);
             this.txtACTIVIDAD_EXT.TabIndex = 130;
@@ -276,7 +280,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.label1.Location = new System.Drawing.Point(36, 437);
+            this.label1.Location = new System.Drawing.Point(36, 467);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(78, 14);
             this.label1.TabIndex = 129;
@@ -1033,11 +1037,30 @@
             this.cbxDIST.Size = new System.Drawing.Size(171, 22);
             this.cbxDIST.TabIndex = 26;
             // 
+            // lblPROFESION
+            // 
+            this.lblPROFESION.AutoSize = true;
+            this.lblPROFESION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.lblPROFESION.Location = new System.Drawing.Point(57, 350);
+            this.lblPROFESION.Name = "lblPROFESION";
+            this.lblPROFESION.Size = new System.Drawing.Size(53, 14);
+            this.lblPROFESION.TabIndex = 27;
+            this.lblPROFESION.Text = "Profesión";
+            // 
+            // txtPROFESION
+            // 
+            this.txtPROFESION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtPROFESION.Location = new System.Drawing.Point(116, 347);
+            this.txtPROFESION.MaxLength = 300;
+            this.txtPROFESION.Name = "txtPROFESION";
+            this.txtPROFESION.Size = new System.Drawing.Size(717, 22);
+            this.txtPROFESION.TabIndex = 28;
+            // 
             // lblACTIVIDAD_1
             // 
             this.lblACTIVIDAD_1.AutoSize = true;
             this.lblACTIVIDAD_1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblACTIVIDAD_1.Location = new System.Drawing.Point(44, 350);
+            this.lblACTIVIDAD_1.Location = new System.Drawing.Point(44, 380);
             this.lblACTIVIDAD_1.Name = "lblACTIVIDAD_1";
             this.lblACTIVIDAD_1.Size = new System.Drawing.Size(67, 14);
             this.lblACTIVIDAD_1.TabIndex = 27;
@@ -1046,7 +1069,7 @@
             // txtCODI_ACTIVIDAD1
             // 
             this.txtCODI_ACTIVIDAD1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCODI_ACTIVIDAD1.Location = new System.Drawing.Point(116, 347);
+            this.txtCODI_ACTIVIDAD1.Location = new System.Drawing.Point(116, 377);
             this.txtCODI_ACTIVIDAD1.Name = "txtCODI_ACTIVIDAD1";
             this.txtCODI_ACTIVIDAD1.Size = new System.Drawing.Size(90, 22);
             this.txtCODI_ACTIVIDAD1.TabIndex = 26;
@@ -1055,7 +1078,7 @@
             // 
             this.txtACTIVIDAD_1.BackColor = System.Drawing.SystemColors.Control;
             this.txtACTIVIDAD_1.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtACTIVIDAD_1.Location = new System.Drawing.Point(212, 347);
+            this.txtACTIVIDAD_1.Location = new System.Drawing.Point(212, 377);
             this.txtACTIVIDAD_1.Name = "txtACTIVIDAD_1";
             this.txtACTIVIDAD_1.ReadOnly = true;
             this.txtACTIVIDAD_1.Size = new System.Drawing.Size(874, 22);
@@ -1066,7 +1089,7 @@
             // 
             this.lblACTIVIDAD_2.AutoSize = true;
             this.lblACTIVIDAD_2.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblACTIVIDAD_2.Location = new System.Drawing.Point(44, 378);
+            this.lblACTIVIDAD_2.Location = new System.Drawing.Point(44, 408);
             this.lblACTIVIDAD_2.Name = "lblACTIVIDAD_2";
             this.lblACTIVIDAD_2.Size = new System.Drawing.Size(67, 14);
             this.lblACTIVIDAD_2.TabIndex = 28;
@@ -1075,7 +1098,7 @@
             // txtCODI_ACTIVIDAD2
             // 
             this.txtCODI_ACTIVIDAD2.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCODI_ACTIVIDAD2.Location = new System.Drawing.Point(116, 375);
+            this.txtCODI_ACTIVIDAD2.Location = new System.Drawing.Point(116, 405);
             this.txtCODI_ACTIVIDAD2.Name = "txtCODI_ACTIVIDAD2";
             this.txtCODI_ACTIVIDAD2.Size = new System.Drawing.Size(90, 22);
             this.txtCODI_ACTIVIDAD2.TabIndex = 27;
@@ -1084,7 +1107,7 @@
             // 
             this.txtACTIVIDAD_2.BackColor = System.Drawing.SystemColors.Control;
             this.txtACTIVIDAD_2.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtACTIVIDAD_2.Location = new System.Drawing.Point(212, 375);
+            this.txtACTIVIDAD_2.Location = new System.Drawing.Point(212, 405);
             this.txtACTIVIDAD_2.Name = "txtACTIVIDAD_2";
             this.txtACTIVIDAD_2.ReadOnly = true;
             this.txtACTIVIDAD_2.Size = new System.Drawing.Size(874, 22);
@@ -1095,7 +1118,7 @@
             // 
             this.lblACTIVIDAD_3.AutoSize = true;
             this.lblACTIVIDAD_3.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblACTIVIDAD_3.Location = new System.Drawing.Point(43, 406);
+            this.lblACTIVIDAD_3.Location = new System.Drawing.Point(43, 436);
             this.lblACTIVIDAD_3.Name = "lblACTIVIDAD_3";
             this.lblACTIVIDAD_3.Size = new System.Drawing.Size(67, 14);
             this.lblACTIVIDAD_3.TabIndex = 29;
@@ -1104,7 +1127,7 @@
             // txtCODI_ACTIVIDAD3
             // 
             this.txtCODI_ACTIVIDAD3.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtCODI_ACTIVIDAD3.Location = new System.Drawing.Point(116, 406);
+            this.txtCODI_ACTIVIDAD3.Location = new System.Drawing.Point(116, 436);
             this.txtCODI_ACTIVIDAD3.Name = "txtCODI_ACTIVIDAD3";
             this.txtCODI_ACTIVIDAD3.Size = new System.Drawing.Size(90, 22);
             this.txtCODI_ACTIVIDAD3.TabIndex = 28;
@@ -1113,7 +1136,7 @@
             // 
             this.txtACTIVIDAD_3.BackColor = System.Drawing.SystemColors.Control;
             this.txtACTIVIDAD_3.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtACTIVIDAD_3.Location = new System.Drawing.Point(212, 406);
+            this.txtACTIVIDAD_3.Location = new System.Drawing.Point(212, 436);
             this.txtACTIVIDAD_3.Name = "txtACTIVIDAD_3";
             this.txtACTIVIDAD_3.ReadOnly = true;
             this.txtACTIVIDAD_3.Size = new System.Drawing.Size(874, 22);
@@ -1213,7 +1236,7 @@
             this.grpRoles.Controls.Add(this.btnAgregarRol);
             this.grpRoles.Controls.Add(this.gridRoles);
             this.grpRoles.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.grpRoles.Location = new System.Drawing.Point(10, 553);
+            this.grpRoles.Location = new System.Drawing.Point(10, 583);
             this.grpRoles.Name = "grpRoles";
             this.grpRoles.Size = new System.Drawing.Size(1114, 212);
             this.grpRoles.TabIndex = 5;
@@ -1261,7 +1284,7 @@
             this.groupControl2.Controls.Add(this.lblDIAS_PLAZO);
             this.groupControl2.Controls.Add(this.lblID_TIPO_PRECIO);
             this.groupControl2.Controls.Add(this.txtID_TIPO_PRECIO);
-            this.groupControl2.Location = new System.Drawing.Point(10, 492);
+            this.groupControl2.Location = new System.Drawing.Point(10, 522);
             this.groupControl2.Name = "groupControl2";
             this.groupControl2.Size = new System.Drawing.Size(1114, 55);
             this.groupControl2.TabIndex = 6;
@@ -1271,7 +1294,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1259, 777);
+            this.ClientSize = new System.Drawing.Size(1259, 807);
             this.Controls.Add(this.groupControl2);
             this.Controls.Add(this.groupControl1);
             this.Controls.Add(this.grpRoles);
@@ -1396,6 +1419,9 @@
         private System.Windows.Forms.ComboBox cbxDIST;
         private System.Windows.Forms.Label lblMUNI;
         private System.Windows.Forms.ComboBox cbxMUNI;
+        // Profesión (ALTER TABLE ENTIDAD ADD PROFESION NVARCHAR(300))
+        private System.Windows.Forms.Label lblPROFESION;
+        private System.Windows.Forms.TextBox txtPROFESION;
         // Row 8
         private System.Windows.Forms.Label lblACTIVIDAD_1;
         private System.Windows.Forms.TextBox txtCODI_ACTIVIDAD1;

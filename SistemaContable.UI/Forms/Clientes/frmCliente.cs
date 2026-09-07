@@ -1249,8 +1249,8 @@ namespace SistemaContable.UI.Forms.Clientes
                 txtCODIGO_ENTIDAD.Text = AsString(r["CODIGO_ENTIDAD"]);
                 txtNOMBRE.Text = AsString(r["NOMBRE"]);
                 txtNOMBRE_COMERCIAL.Text = AsString(r["NOMBRE_COMERCIAL"]);
-                txtNRC.Text = AsString(r["NRC"]);
                 txtDUI.Text = AsString(r["DUI"]);
+                txtPROFESION.Text = AsString(r["PROFESION"]);
                 txtNIT.Text = AsString(r["NIT"]);
                 txtDOCUMENTO.Text = AsString(r["DOCUMENTO"]);
                 txtCORREO.Text = AsString(r["CORREO"]);
@@ -1279,6 +1279,10 @@ namespace SistemaContable.UI.Forms.Clientes
                 CargarActividadPorId(_idActividad2, txtCODI_ACTIVIDAD2, txtACTIVIDAD_2);
                 CargarActividadPorId(_idActividad3, txtCODI_ACTIVIDAD3, txtACTIVIDAD_3);
                 SetComboById(cbxORIGEN, AsInt(r["ID_ORIGEN"]));
+                // El NRC se restaura después de fijar Origen y Tipo Contribuyente: ambos combos
+                // disparan ActualizarEstadoNRC() (que limpia txtNRC si aún no coinciden entre sí),
+                // por lo que asignarlo antes de que ambos queden fijados se perdía durante la carga.
+                txtNRC.Text = AsString(r["NRC"]);
                 // Departamento → Municipio → Distrito
                 string codiDepto = AsString(r["CODI_DEPTO"]);
                 string codiMuni = AsString(r["CODI_MUNI"]);
@@ -1327,6 +1331,7 @@ namespace SistemaContable.UI.Forms.Clientes
                     ID_TIPO_CONTRIB = ObtenerIdCombo(cbxTIPO_CONTRIB),
                     ID_TIPO_DOC_INDEN = ObtenerIdCombo(cbxTIPO_DOC_IDEN),
                     NRC = NullIfEmpty(txtNRC.Text),
+                    PROFESION = NullIfEmpty(txtPROFESION.Text),
                     DUI = NullIfEmpty(txtDUI.Text),
                     NIT = NullIfEmpty(txtNIT.Text),
                     DOCUMENTO = NullIfEmpty(txtDOCUMENTO.Text),
@@ -1778,6 +1783,7 @@ namespace SistemaContable.UI.Forms.Clientes
             txtNOMBRE.Text = "";
             txtNOMBRE_COMERCIAL.Text = "";
             txtNRC.Text = "";
+            txtPROFESION.Text = "";
             txtDUI.Text = "";
             txtNIT.Text = "";
             txtDOCUMENTO.Text = "";

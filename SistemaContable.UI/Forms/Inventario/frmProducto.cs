@@ -1409,6 +1409,7 @@ namespace SistemaContable.UI.Forms.Inventario
             txtNOMBRE_PRODUCTO_SIGESTA_TAB.Text = "";
             _codTributoSeleccionado = null;
             txtCODTRIBUTO.Text = "";
+            SeleccionarTributoPorDefecto();
             _codUnidadMedidaSeleccionada = null;
             txtUNIMEDIDA.Text = "";
             _idTpOperacionSeleccionado = null;
@@ -1510,6 +1511,20 @@ namespace SistemaContable.UI.Forms.Inventario
         }
         #endregion
         #region === HELPERS ===
+        /// <summary>
+        /// Al crear un producto nuevo, el Tributo se preselecciona en
+        /// "IMPUESTO AL VALOR AGREGADO 13%" (el caso más común); el usuario puede
+        /// cambiarlo escribiendo "*" y Enter como en cualquier otro campo de búsqueda genérica.
+        /// </summary>
+        private void SeleccionarTributoPorDefecto()
+        {
+            if (_dtTributos == null) return;
+            DataRow fila = _dtTributos.AsEnumerable()
+                .FirstOrDefault(r => AsString(r["VALORES"]).Trim().ToUpper() == "IMPUESTO AL VALOR AGREGADO 13%");
+            if (fila == null) return;
+            _codTributoSeleccionado = fila["CODIGO"].ToString();
+            txtCODTRIBUTO.Text = fila["VALORES"].ToString();
+        }
         private static string AsString(object val)
             => val == null || val == DBNull.Value ? "" : val.ToString();
         private static decimal ToDecimal(object val)

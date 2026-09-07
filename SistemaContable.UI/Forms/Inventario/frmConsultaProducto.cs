@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Base;
@@ -11,6 +12,7 @@ namespace SistemaContable.UI.Forms.Inventario
     {
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtProductos;
+        private DataTable _dtUnidadMedida;
         public frmConsultaProducto()
         {
             InitializeComponent();
@@ -64,26 +66,19 @@ namespace SistemaContable.UI.Forms.Inventario
             colDESCRIPCION.Width = 280;
             colDESCRIPCION.VisibleIndex = 2;
             colDESCRIPCION.Visible = true;
-            // ── Categoría ──────────────────────────────────────────
+            // ── Categoría / Subcategoría: ocultas de la lista (a pedido de Roberto) ─
             colCATEGORIA.FieldName = "NOMBRE_CATEGORIA";
             colCATEGORIA.Caption = "Categoría";
-            colCATEGORIA.OptionsColumn.AllowEdit = false;
-            colCATEGORIA.Width = 150;
-            colCATEGORIA.VisibleIndex = 3;
-            colCATEGORIA.Visible = true;
-            // ── Subcategoría ───────────────────────────────────────
+            colCATEGORIA.Visible = false;
             colSUBCATEGORIA.FieldName = "NOMBRE_SUBCATEGORIA";
             colSUBCATEGORIA.Caption = "Subcategoría";
-            colSUBCATEGORIA.OptionsColumn.AllowEdit = false;
-            colSUBCATEGORIA.Width = 150;
-            colSUBCATEGORIA.VisibleIndex = 4;
-            colSUBCATEGORIA.Visible = true;
-            // ── Unidad de medida ───────────────────────────────────
-            colUNIMEDIDA.FieldName = "UNIMEDIDA";
-            colUNIMEDIDA.Caption = "U/M";
+            colSUBCATEGORIA.Visible = false;
+            // ── Unidad de medida (texto del catálogo, no el código) ─
+            colUNIMEDIDA.FieldName = "UNIMEDIDA_TEXTO";
+            colUNIMEDIDA.Caption = "Unidad de Medida";
             colUNIMEDIDA.OptionsColumn.AllowEdit = false;
-            colUNIMEDIDA.Width = 55;
-            colUNIMEDIDA.VisibleIndex = 5;
+            colUNIMEDIDA.Width = 130;
+            colUNIMEDIDA.VisibleIndex = 3;
             colUNIMEDIDA.Visible = true;
             colUNIMEDIDA.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             colUNIMEDIDA.AppearanceCell.Options.UseTextOptions = true;
@@ -94,7 +89,7 @@ namespace SistemaContable.UI.Forms.Inventario
             colPRECIO.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             colPRECIO.OptionsColumn.AllowEdit = false;
             colPRECIO.Width = 90;
-            colPRECIO.VisibleIndex = 6;
+            colPRECIO.VisibleIndex = 4;
             colPRECIO.Visible = true;
             colPRECIO.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             colPRECIO.AppearanceCell.Options.UseTextOptions = true;
@@ -103,7 +98,7 @@ namespace SistemaContable.UI.Forms.Inventario
             colESTADO.Caption = "Activo";
             colESTADO.OptionsColumn.AllowEdit = false;
             colESTADO.Width = 60;
-            colESTADO.VisibleIndex = 7;
+            colESTADO.VisibleIndex = 5;
             colESTADO.Visible = true;
             colESTADO.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             colESTADO.AppearanceCell.Options.UseTextOptions = true;
@@ -130,7 +125,35 @@ namespace SistemaContable.UI.Forms.Inventario
             {
                 ACCION = "LISTAR"
             });
+            // El SP devuelve el código de UNIMEDIDA (mismo patrón que Tributo en frmProducto);
+            // se resuelve aquí a texto contra el catálogo para mostrarlo en la lista.
+            _dtUnidadMedida = _dal.EjecutarConsulta("[EMH].[SP_UNIDAD_MEDIDA]", new
+            {
+                ACCION = "LISTAR"
+            });
+            AgregarColumnaUnidadMedidaTexto();
             gridControl1.DataSource = _dtProductos;
+        }
+        private void AgregarColumnaUnidadMedidaTexto()
+        {
+            if (!_dtProductos.Columns.Contains("UNIMEDIDA_TEXTO"))
+                _dtProductos.Columns.Add("UNIMEDIDA_TEXTO", typeof(string));
+            foreach (DataRow fila in _dtProductos.Rows)
+            {
+                object valorCodigo = fila["UNIMEDIDA"];
+                fila["UNIMEDIDA_TEXTO"] = ObtenerDescripcionCatalogo(_dtUnidadMedida, "CODIGO", valorCodigo, "VALORES");
+            }
+        }
+        /// <summary>
+        /// Busca en un catálogo ya cargado en memoria el texto a mostrar para un
+        /// código dado (mismo patrón que frmProducto.ObtenerDescripcionCatalogo).
+        /// </summary>
+        private static string ObtenerDescripcionCatalogo(DataTable dt, string campoClave, object valorClave, string campoDescripcion)
+        {
+            if (dt == null || valorClave == null || valorClave == DBNull.Value) return "";
+            var fila = dt.AsEnumerable().FirstOrDefault(r =>
+                r[campoClave]?.ToString() == valorClave.ToString());
+            return fila == null ? "" : fila[campoDescripcion].ToString();
         }
         #endregion
         #region === HELPERS ===
