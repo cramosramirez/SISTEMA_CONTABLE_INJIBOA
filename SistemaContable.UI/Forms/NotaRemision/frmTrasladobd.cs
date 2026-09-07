@@ -49,7 +49,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
                  true);
             this.UpdateStyles();
         }
-
+        private void ConfigurarToolTips()
+        {
+            TooltipHelper.Configurar(
+                            (txtPROVEEDOR, "Ingrese * y presione Enter para mostrar todos los proveedores."),
+                            (txtPROV_TRANSP, "Ingrese * y presione Enter para mostrar todos los proveedores de transporte."),
+                            (txtMotorista, "Ingrese * y presione Enter para mostrar todos los motoristas.")
+                                 );
+        }
         private void frmTrasladobd_Load(object sender, EventArgs e)
         {
             FormHelper.Inicializar(this);
@@ -57,6 +64,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
             CargarTipoDte();
             CargarTansposte();
             CargarZafra();
+            ConfigurarToolTips();
 
             mskFECHA_EMISION.Text = DateTime.Now.ToString("dd/MM/yyyy");
 
@@ -683,12 +691,12 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
             ConfigurarColumna(view, "ID_PRODUCTO", "ID_PRODUCTO", 80, false, false);
             ConfigurarColumna(view, "COD_REF", "COD_REF", 80, false, true);
-            ConfigurarColumna(view, "DESCRIPCION", "DESCRIPCION", 350, false, true);
+            ConfigurarColumna(view, "DESCRIPCION", "DESCRIPCION", 350, true, true);
             ConfigurarColumna(view, "ID_UNIDAD_MEDIDA", "ID_UNIDAD_MEDIDA", 80, false, false);
             ConfigurarColumna(view, "UNIDAD_MEDIDA", "UM", 100, true, true);
             ConfigurarColumna(view, "CANTIDAD", "CANTIDAD", 75, false, true);
-            ConfigurarColumna(view, "PRECIO", "PRECIO", 75, true, true);
-            ConfigurarColumna(view, "TOTAL", "TOTAL", 75, true, true);
+            ConfigurarColumna(view, "PRECIO", "PRECIO", 75, false, false);
+            ConfigurarColumna(view, "TOTAL", "TOTAL", 75, false, false);
 
             // Crear columna de botón eliminar
             var colEliminar = view.Columns.AddField("ELIMINAR");
@@ -722,8 +730,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
                     if (result == DialogResult.Yes)
                     {
-
-
                         object valor = view_item.GetRowCellValue(fila, "ID_PRODUCTO");
 
                         // ✅ Si es fila nueva (no existe en BD)
@@ -739,8 +745,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
                         // ⚠️ Si ya está guardado en BD → eliminar en BD
                         if (IdTraslado > 0)
                         {
-
-
                             _dal.EjecutarSinRetorno("[EDTE].SP_NOTAREMISION_DET", new
                             {
                                 ACCION = "ELIMINAR",
@@ -795,7 +799,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 if (ev.Column.FieldName == "CANTIDAD" || ev.Column.FieldName == "PRECIO")
                 { ActualizarCuadre(); }
-
             };
 
             // Selección de fila completa
@@ -812,11 +815,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             view.Appearance.HeaderPanel.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
             view.Appearance.HeaderPanel.Options.UseFont = true;
             //ActualizarCuadre();
-
-
-
-
-
         }
 
         private void ConfigurarColumna(GridView view, string fieldName,
@@ -828,13 +826,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
             {
                 col.Caption = caption;
                 col.Width = width;
-                // ✅ usar el parámetro visible
                 col.Visible = visible;
-
-                // ✅ validación correcta
                 col.OptionsColumn.ReadOnly = readOnly;
-
-                // ✅ opcional (recomendado)
                 col.OptionsColumn.AllowEdit = !readOnly;
             }
         }
@@ -852,44 +845,9 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 fila["UNIDAD_MEDIDA"] = string.Empty;
                 fila["CANTIDAD"] = 0m;
                 fila["PRECIO"] = 0m;
-
                 fila["TOTAL"] = 0m;
                 _dtDeta.Rows.Add(fila);
             }
-        }
-
-
-        private void AgregarFilaPartida(string cod_ref)
-        {
-            // Limpiar filas vacías antes de agregar
-            for (int i = _dtDeta.Rows.Count - 1; i >= 0; i--)
-            {
-                var r = _dtDeta.Rows[i];
-                if (string.IsNullOrWhiteSpace(r["COD_REF"].ToString()) &&
-                    Convert.ToDecimal(r["CANTIDAD"]) == 0 &&
-                    Convert.ToDecimal(r["TOTAL"]) == 0)
-                    _dtDeta.Rows.RemoveAt(i);
-            }
-
-            // Agregar fila con la cuenta contable
-            var fila = _dtDeta.NewRow();
-
-
-
-            fila["ID_PRODUCTO"] = DBNull.Value;
-            fila["COD_REF"] = cod_ref;
-            fila["DESCRIPCION"] = string.Empty;
-            fila["ID_UNIDAD_MEDIDA"] = DBNull.Value;
-            fila["UNIDAD_MEDIDA"] = string.Empty;
-            fila["CANTIDAD"] = string.Empty;
-            fila["PRECIO"] = 0m;
-            fila["TOTAL"] = 0m;
-            _dtDeta.Rows.Add(fila);
-
-            // Agregar fila vacía para siguiente ingreso
-            AgregarFilaVacia();
-            // Agregar fila vacía para siguiente ingreso
-            ActualizarCuadre();
         }
 
         private void GridView_KeyDown(object sender, KeyEventArgs e)
@@ -901,22 +859,42 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
             string colActual = view.FocusedColumn?.FieldName;
 
-            // Verificar * en CTACONTABLE PRIMERO antes de cualquier otra acción
+            // Verificar * en COD_REF PRIMERO antes de cualquier otra acción
             if (colActual == "COD_REF")
             {
-                string texto = view.ActiveEditor?.Text?.Trim();
-                if (string.IsNullOrEmpty(texto))
-                    texto = view.GetFocusedDisplayText()?.Trim();
+                // Capturamos la fila ANTES de tocar el editor, para no depender
+                // del foco después de PostEditor/CloseEditor
+                int rowHandle = view.FocusedRowHandle;
+
+                string texto = view.ActiveEditor?.Text?.Trim()
+                           ?? view.GetFocusedDisplayText()?.Trim();
+
+                e.Handled = true; // controlamos manualmente la navegación en este campo
 
                 if (texto == "*")
                 {
-                    e.Handled = true;
+                    view.PostEditor();
                     AbrirBusquedaCuenta(view);
-                    return; // salir sin hacer nada más
+                    return;
                 }
+
+                if (!string.IsNullOrWhiteSpace(texto))
+                {
+                    // PostEditor hace commit del valor tecleado al DataRow
+                    // sin perder el editor/foco (más estable que CloseEditor aquí)
+                    view.PostEditor();
+                    _codRefPorEnter = true; // evita doble disparo desde FocusedColumnChanged
+                    codref(view, rowHandle, texto);
+                }
+                else
+                {
+                    _codRefPorEnter = false;
+                }
+
+                return;
             }
 
-            // Si está en CARGO presiona Enter → saltar directo a CTACONTABLE de la siguiente fila
+            // Si está en CANTIDAD presiona Enter → saltar directo a COD_REF de la siguiente fila
             if (colActual == "CANTIDAD")
             {
                 e.Handled = true;
@@ -957,35 +935,27 @@ namespace SistemaContable.UI.Forms.NotaRemision
             e.Handled = true;
         }
 
+        private bool _codRefPorEnter = false;
+
         private void GridView_FocusedColumnChanged(object sender,
             DevExpress.XtraGrid.Views.Base.FocusedColumnChangedEventArgs e)
         {
             var view = sender as GridView;
             if (view == null) return;
 
-            if (_columnaAnteriorGrid == "COD_REF" &&
-                e.FocusedColumn?.FieldName == "DETALLE")
+            string columnaAnterior = _columnaAnteriorGrid;
+            string columnaActual = e.FocusedColumn?.FieldName ?? "";
+            _columnaAnteriorGrid = columnaActual;
+
+            // Fallback: cubre el caso de salir de COD_REF con mouse/Tab en vez de Enter
+            if (columnaAnterior == "COD_REF" && columnaActual != "COD_REF" && !_codRefPorEnter)
             {
-                string cta = view.GetFocusedRowCellValue("COD_REF")?.ToString();
-                if (string.IsNullOrWhiteSpace(cta)) return;
-
-                string detalleActual = view.GetFocusedRowCellValue("DESCRIPCION")?.ToString();
-                if (!string.IsNullOrWhiteSpace(detalleActual)) return;
-
-                //string detalle = $"CH # {txtNUMERO_CHEQUE.Text.Trim()} " +
-                //                 $"{txtNOMBRE_CHEQUE.Text.Trim()}";
-
-                //view.SetFocusedRowCellValue("DETALLE", detalle);
-                view.ShowEditor();
-
-                // Diferir el SelectAll hasta que el editor esté completamente activo
-                this.BeginInvoke(new Action(() =>
-                {
-                    if (view.ActiveEditor != null)
-                        view.ActiveEditor.SelectAll();
-                }));
+                int rowHandle = view.FocusedRowHandle;
+                string cod = view.GetRowCellValue(rowHandle, "COD_REF")?.ToString()?.Trim();
+                if (!string.IsNullOrWhiteSpace(cod) && cod != "*")
+                    codref(view, rowHandle, cod);
             }
-            _columnaAnteriorGrid = e.FocusedColumn?.FieldName ?? string.Empty;
+            _codRefPorEnter = false;
         }
 
         private void AbrirBusquedaCuenta(GridView view)
@@ -1012,10 +982,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     "ID_PRODUCTO",
                     "ID_UNIDAD_MEDIDA"
                 },
-                ParametrosExtra = new { ROL_PROD = "NRE BODEGA AZUCAR" }
+                ParametrosExtra = new { ROL_PROD = "NRE ORDEN DESPACHO" }
             };
-
-
 
             using (var frm = new frmBusquedaGenerica(config))
             {
@@ -1032,44 +1000,25 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 frm.StartPosition = FormStartPosition.Manual;
                 frm.Location = new Point(posX, posY);
 
+                int rowHandle = view.FocusedRowHandle;
+
                 if (frm.ShowDialog() == DialogResult.OK
                     && frm.FilaSeleccionada != null)
                 {
-                    view.SetFocusedRowCellValue("ID_PRODUCTO",
-                        frm.FilaSeleccionada["ID_PRODUCTO"].ToString());
+                    AsignarProductoAFila(view, rowHandle, frm.FilaSeleccionada);
 
-                    view.SetFocusedRowCellValue("COD_REF",
-                        frm.FilaSeleccionada["COD_REF"].ToString());
-
-                    view.SetFocusedRowCellValue("DESCRIPCION",
-                        frm.FilaSeleccionada["DESCRIPCION"].ToString());
-
-                    view.SetFocusedRowCellValue("ID_UNIDAD_MEDIDA",
-                        frm.FilaSeleccionada["ID_UNIDAD_MEDIDA"].ToString());
-
-                    view.SetFocusedRowCellValue("UNIDAD_MEDIDA",
-                       frm.FilaSeleccionada["UNIMEDIDA"].ToString());
-
-                    view.SetFocusedRowCellValue("UNIDAD_MEDIDA",
-                       frm.FilaSeleccionada["UNIMEDIDA"].ToString());
-
-
-                    view.FocusedColumn = view.Columns["DESCRIPCION"];
-                    view.ShowEditor();
+                    BeginInvoke(new Action(() =>
+                    {
+                        view.FocusedRowHandle = rowHandle;
+                        view.FocusedColumn = view.Columns["DESCRIPCION"];
+                        view.ShowEditor();
+                    }));
                 }
                 else
                 {
-                    view.SetFocusedRowCellValue("COD_REF", string.Empty);
+                    view.SetRowCellValue(rowHandle, "COD_REF", string.Empty);
                 }
             }
-        }
-
-        private decimal CalcularTotalCargo()
-        {
-            decimal total = 0;
-            foreach (DataRow fila in _dtDeta.Rows)
-                total += Convert.ToDecimal(fila["TOTAL"]);
-            return total;
         }
 
         private void ActualizarCuadre()
@@ -1078,20 +1027,93 @@ namespace SistemaContable.UI.Forms.NotaRemision
 
             foreach (DataRow fila in _dtDeta.Rows)
             {
-                // Leer directo como decimal sin pasar por ToString
                 if (fila["TOTAL"] != DBNull.Value)
                     totalN += Convert.ToDecimal(fila["TOTAL"]);
-
             }
-
-
 
             txtGRAVADA.Text = $"{totalN:N2}";
             txtTOTAL.Text = $"{totalN:N2}";
-
-
-
         }
+
+        private decimal ObtenerDecimal(GridView view, int rowHandle, string field)
+        {
+            var val = view.GetRowCellValue(rowHandle, field);
+            if (val == null || val == DBNull.Value) return 0m;
+            return decimal.TryParse(val.ToString(), out decimal d) ? d : 0m;
+        }
+
+        private void codref(GridView view, int rowHandle, string codigo)
+        {
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_PRODUCTO]",
+                    new { ACCION = "BUSCAR", FILTRO = codigo });
+
+                DataRow encontrado = dt?.AsEnumerable().FirstOrDefault(r =>
+                    string.Equals(r["COD_REF"]?.ToString()?.Trim(), codigo,
+                        StringComparison.OrdinalIgnoreCase));
+
+                if (encontrado == null)
+                {
+                    XtraMessageBox.Show(
+                        $"No se encontró el producto con código '{codigo}'.",
+                        "Producto no encontrado", MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    BeginInvoke(new Action(() =>
+                    {
+                        if (rowHandle < 0 || rowHandle >= view.RowCount) return;
+                        view.FocusedRowHandle = rowHandle;
+                        view.FocusedColumn = view.Columns["COD_REF"];
+                        view.ShowEditor();
+                        view.ActiveEditor?.SelectAll();
+                    }));
+                    return;
+                }
+
+                AsignarProductoAFila(view, rowHandle, encontrado);
+
+                BeginInvoke(new Action(() =>
+                {
+                    if (rowHandle < 0 || rowHandle >= view.RowCount) return;
+                    view.FocusedRowHandle = rowHandle;
+                    view.FocusedColumn = view.Columns["CANTIDAD"];
+                    view.ShowEditor();
+                    view.ActiveEditor?.SelectAll();
+                }));
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    $"Error buscando el producto: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AsignarProductoAFila(GridView view, int rowHandle, DataRow fila)
+        {
+            if (rowHandle < 0 || rowHandle >= view.RowCount) return;
+
+            view.SetRowCellValue(rowHandle, "ID_PRODUCTO",
+                Convert.IsDBNull(fila["ID_PRODUCTO"]) ? (object)DBNull.Value : fila["ID_PRODUCTO"]);
+
+            view.SetRowCellValue(rowHandle, "COD_REF",
+                Convert.IsDBNull(fila["COD_REF"]) ? string.Empty : fila["COD_REF"].ToString());
+
+            view.SetRowCellValue(rowHandle, "DESCRIPCION",
+                Convert.IsDBNull(fila["DESCRIPCION"]) ? string.Empty : fila["DESCRIPCION"].ToString());
+
+            view.SetRowCellValue(rowHandle, "ID_UNIDAD_MEDIDA",
+                Convert.IsDBNull(fila["ID_UNIDAD_MEDIDA"]) ? (object)DBNull.Value : fila["ID_UNIDAD_MEDIDA"]);
+
+            // OJO: el nombre de columna en el resultado del SP es "UNIMEDIDA",
+            // no "UNIDAD_MEDIDA" — se mantiene el mapeo original
+            view.SetRowCellValue(rowHandle, "UNIDAD_MEDIDA",
+                fila.Table.Columns.Contains("UNIMEDIDA") && !Convert.IsDBNull(fila["UNIMEDIDA"])
+                    ? fila["UNIMEDIDA"].ToString()
+                    : string.Empty);
+        }
+
         #endregion
 
         private bool ValidarCampos()

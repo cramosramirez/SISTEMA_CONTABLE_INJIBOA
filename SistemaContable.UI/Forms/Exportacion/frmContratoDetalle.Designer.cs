@@ -76,6 +76,7 @@ namespace SistemaContable.UI.Forms.Exportacion
         private void InitializeComponent()
         {
             DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmContratoDetalle));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -107,6 +108,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liMercado = new DevExpress.XtraLayout.LayoutControlItem();
             this.liCliente = new DevExpress.XtraLayout.LayoutControlItem();
             this.liFechaContrato = new DevExpress.XtraLayout.LayoutControlItem();
+            this.liFechaFijarVolumen = new DevExpress.XtraLayout.LayoutControlItem();
             this.liNumeroContrato = new DevExpress.XtraLayout.LayoutControlItem();
             this.liZafra = new DevExpress.XtraLayout.LayoutControlItem();
             this.liProducto = new DevExpress.XtraLayout.LayoutControlItem();
@@ -114,7 +116,6 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liPrecio = new DevExpress.XtraLayout.LayoutControlItem();
             this.liVariacionAvg = new DevExpress.XtraLayout.LayoutControlItem();
             this.liToneladas = new DevExpress.XtraLayout.LayoutControlItem();
-            this.liFechaFijarVolumen = new DevExpress.XtraLayout.LayoutControlItem();
             this.liToneladasMin = new DevExpress.XtraLayout.LayoutControlItem();
             this.liToneladasMax = new DevExpress.XtraLayout.LayoutControlItem();
             this.liAplicaNominacion = new DevExpress.XtraLayout.LayoutControlItem();
@@ -123,6 +124,10 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.pnlSeparador = new DevExpress.XtraEditors.PanelControl();
             this.lblDatos = new DevExpress.XtraEditors.LabelControl();
             this.pnlBotonesAccion = new DevExpress.XtraEditors.PanelControl();
+            this.btnNuevo = new DevExpress.XtraEditors.SimpleButton();
+            this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnEliminar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.pnlTitulo)).BeginInit();
             this.pnlTitulo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pnlContenido)).BeginInit();
@@ -153,6 +158,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             ((System.ComponentModel.ISupportInitialize)(this.liMercado)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.liCliente)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.liFechaContrato)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.liFechaFijarVolumen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.liNumeroContrato)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.liZafra)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.liProducto)).BeginInit();
@@ -160,7 +166,6 @@ namespace SistemaContable.UI.Forms.Exportacion
             ((System.ComponentModel.ISupportInitialize)(this.liPrecio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.liVariacionAvg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.liToneladas)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.liFechaFijarVolumen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.liToneladasMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.liToneladasMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.liAplicaNominacion)).BeginInit();
@@ -168,6 +173,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             ((System.ComponentModel.ISupportInitialize)(this.liPdf)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlSeparador)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlBotonesAccion)).BeginInit();
+            this.pnlBotonesAccion.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlTitulo
@@ -225,7 +231,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.pnlContenido.Location = new System.Drawing.Point(0, 48);
             this.pnlContenido.Name = "pnlContenido";
             this.pnlContenido.Padding = new System.Windows.Forms.Padding(20, 15, 20, 10);
-            this.pnlContenido.Size = new System.Drawing.Size(746, 615);
+            this.pnlContenido.Size = new System.Drawing.Size(746, 432);
             this.pnlContenido.TabIndex = 1;
             // 
             // layoutControl1
@@ -249,14 +255,14 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.layoutControl1.Location = new System.Drawing.Point(22, 39);
             this.layoutControl1.Name = "layoutControl1";
-            this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(771, 355, 650, 400);
+            this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(771, 355, 650, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(702, 560);
+            this.layoutControl1.Size = new System.Drawing.Size(702, 365);
             this.layoutControl1.TabIndex = 2;
             // 
             // cboMercado
             // 
-            this.cboMercado.Location = new System.Drawing.Point(151, 3);
+            this.cboMercado.Location = new System.Drawing.Point(123, 3);
             this.cboMercado.Name = "cboMercado";
             this.cboMercado.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] {
             new DevExpress.XtraEditors.Controls.LookUpColumnInfo("CODMDO", "Codigo"),
@@ -264,13 +270,13 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.cboMercado.Properties.DisplayMember = "DESCRIPCION";
             this.cboMercado.Properties.NullText = "";
             this.cboMercado.Properties.ValueMember = "CODMDO";
-            this.cboMercado.Size = new System.Drawing.Size(548, 20);
+            this.cboMercado.Size = new System.Drawing.Size(576, 20);
             this.cboMercado.StyleController = this.layoutControl1;
             this.cboMercado.TabIndex = 3;
             // 
             // cboCliente
             // 
-            this.cboCliente.Location = new System.Drawing.Point(151, 27);
+            this.cboCliente.Location = new System.Drawing.Point(123, 27);
             this.cboCliente.Name = "cboCliente";
             this.cboCliente.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] {
             new DevExpress.XtraEditors.Controls.LookUpColumnInfo("ID_ENTIDAD", "Codigo"),
@@ -278,69 +284,69 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.cboCliente.Properties.DisplayMember = "NOMBRE";
             this.cboCliente.Properties.NullText = "";
             this.cboCliente.Properties.ValueMember = "ID_ENTIDAD";
-            this.cboCliente.Size = new System.Drawing.Size(548, 20);
+            this.cboCliente.Size = new System.Drawing.Size(576, 20);
             this.cboCliente.StyleController = this.layoutControl1;
             this.cboCliente.TabIndex = 4;
             // 
             // deFechaContrato
             // 
             this.deFechaContrato.EditValue = null;
-            this.deFechaContrato.Location = new System.Drawing.Point(151, 51);
+            this.deFechaContrato.Location = new System.Drawing.Point(123, 51);
             this.deFechaContrato.Name = "deFechaContrato";
             this.deFechaContrato.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
             this.deFechaContrato.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.deFechaContrato.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.deFechaContrato.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.deFechaContrato.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.deFechaContrato.Size = new System.Drawing.Size(548, 20);
+            this.deFechaContrato.Size = new System.Drawing.Size(226, 20);
             this.deFechaContrato.StyleController = this.layoutControl1;
             this.deFechaContrato.TabIndex = 5;
             // 
             // txtNumeroContrato
             // 
-            this.txtNumeroContrato.Location = new System.Drawing.Point(151, 75);
+            this.txtNumeroContrato.Location = new System.Drawing.Point(123, 75);
             this.txtNumeroContrato.Name = "txtNumeroContrato";
             this.txtNumeroContrato.Properties.MaxLength = 100;
-            this.txtNumeroContrato.Size = new System.Drawing.Size(548, 20);
+            this.txtNumeroContrato.Size = new System.Drawing.Size(576, 20);
             this.txtNumeroContrato.StyleController = this.layoutControl1;
             this.txtNumeroContrato.TabIndex = 6;
             // 
             // cboZafra
             // 
-            this.cboZafra.Location = new System.Drawing.Point(151, 99);
+            this.cboZafra.Location = new System.Drawing.Point(123, 99);
             this.cboZafra.Name = "cboZafra";
             this.cboZafra.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] {
             new DevExpress.XtraEditors.Controls.LookUpColumnInfo("ID_ZAFRA", "Codigo"),
-            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("DESCRIPCION", "Zafra")});
-            this.cboZafra.Properties.DisplayMember = "DESCRIPCION";
+            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("NOMBRE_ZAFRA", "Zafra")});
+            this.cboZafra.Properties.DisplayMember = "NOMBRE_ZAFRA";
             this.cboZafra.Properties.NullText = "";
             this.cboZafra.Properties.ValueMember = "ID_ZAFRA";
-            this.cboZafra.Size = new System.Drawing.Size(548, 20);
+            this.cboZafra.Size = new System.Drawing.Size(576, 20);
             this.cboZafra.StyleController = this.layoutControl1;
             this.cboZafra.TabIndex = 7;
             // 
             // cboProducto
             // 
-            this.cboProducto.Location = new System.Drawing.Point(151, 123);
+            this.cboProducto.Location = new System.Drawing.Point(123, 123);
             this.cboProducto.Name = "cboProducto";
             this.cboProducto.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] {
             new DevExpress.XtraEditors.Controls.LookUpColumnInfo("COD_REF", "Código", 100, DevExpress.Utils.FormatType.None, "", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None, DevExpress.Utils.DefaultBoolean.Default),
-            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("DESCRIPCION", "Producto",300,DevExpress.Utils.FormatType.None, "", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None, DevExpress.Utils.DefaultBoolean.Default),
+            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("DESCRIPCION", "Producto", 300, DevExpress.Utils.FormatType.None, "", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None, DevExpress.Utils.DefaultBoolean.Default),
             new DevExpress.XtraEditors.Controls.LookUpColumnInfo("PRESENTACION", "Presentación", 150, DevExpress.Utils.FormatType.None, "", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None, DevExpress.Utils.DefaultBoolean.Default)});
             this.cboProducto.Properties.DisplayMember = "DESCRIPCION";
             this.cboProducto.Properties.NullText = "";
             this.cboProducto.Properties.ValueMember = "ID_PRODUCTO";
-            this.cboProducto.Size = new System.Drawing.Size(548, 20);
+            this.cboProducto.Size = new System.Drawing.Size(576, 20);
             this.cboProducto.StyleController = this.layoutControl1;
             this.cboProducto.TabIndex = 8;
             this.cboProducto.EditValueChanged += new System.EventHandler(this.cboProducto_EditValueChanged);
             // 
             // txtPresentacion
             // 
-            this.txtPresentacion.Location = new System.Drawing.Point(151, 147);
+            this.txtPresentacion.Location = new System.Drawing.Point(123, 147);
             this.txtPresentacion.Name = "txtPresentacion";
             this.txtPresentacion.Properties.MaxLength = 50;
-            this.txtPresentacion.Size = new System.Drawing.Size(548, 20);
+            this.txtPresentacion.Size = new System.Drawing.Size(576, 20);
             this.txtPresentacion.StyleController = this.layoutControl1;
             this.txtPresentacion.TabIndex = 9;
             // 
@@ -351,7 +357,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             0,
             0,
             0});
-            this.txtPrecio.Location = new System.Drawing.Point(151, 171);
+            this.txtPrecio.Location = new System.Drawing.Point(123, 171);
             this.txtPrecio.Name = "txtPrecio";
             this.txtPrecio.Properties.DisplayFormat.FormatString = "n2";
             this.txtPrecio.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
@@ -363,7 +369,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             0,
             0,
             0});
-            this.txtPrecio.Size = new System.Drawing.Size(548, 20);
+            this.txtPrecio.Size = new System.Drawing.Size(576, 20);
             this.txtPrecio.StyleController = this.layoutControl1;
             this.txtPrecio.TabIndex = 10;
             // 
@@ -374,7 +380,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             0,
             0,
             0});
-            this.txtVariacionAvg.Location = new System.Drawing.Point(151, 195);
+            this.txtVariacionAvg.Location = new System.Drawing.Point(123, 195);
             this.txtVariacionAvg.Name = "txtVariacionAvg";
             this.txtVariacionAvg.Properties.DisplayFormat.FormatString = "n4";
             this.txtVariacionAvg.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
@@ -391,7 +397,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             0,
             0,
             -2147483648});
-            this.txtVariacionAvg.Size = new System.Drawing.Size(548, 20);
+            this.txtVariacionAvg.Size = new System.Drawing.Size(576, 20);
             this.txtVariacionAvg.StyleController = this.layoutControl1;
             this.txtVariacionAvg.TabIndex = 11;
             // 
@@ -402,7 +408,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             0,
             0,
             0});
-            this.txtToneladas.Location = new System.Drawing.Point(151, 219);
+            this.txtToneladas.Location = new System.Drawing.Point(123, 219);
             this.txtToneladas.Name = "txtToneladas";
             this.txtToneladas.Properties.DisplayFormat.FormatString = "n2";
             this.txtToneladas.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
@@ -414,21 +420,21 @@ namespace SistemaContable.UI.Forms.Exportacion
             0,
             0,
             0});
-            this.txtToneladas.Size = new System.Drawing.Size(548, 20);
+            this.txtToneladas.Size = new System.Drawing.Size(138, 20);
             this.txtToneladas.StyleController = this.layoutControl1;
             this.txtToneladas.TabIndex = 12;
             // 
             // deFechaFijarVolumen
             // 
             this.deFechaFijarVolumen.EditValue = null;
-            this.deFechaFijarVolumen.Location = new System.Drawing.Point(151, 243);
+            this.deFechaFijarVolumen.Location = new System.Drawing.Point(494, 51);
             this.deFechaFijarVolumen.Name = "deFechaFijarVolumen";
             this.deFechaFijarVolumen.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
             this.deFechaFijarVolumen.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.deFechaFijarVolumen.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.deFechaFijarVolumen.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.deFechaFijarVolumen.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.deFechaFijarVolumen.Size = new System.Drawing.Size(548, 20);
+            this.deFechaFijarVolumen.Size = new System.Drawing.Size(205, 20);
             this.deFechaFijarVolumen.StyleController = this.layoutControl1;
             this.deFechaFijarVolumen.TabIndex = 13;
             // 
@@ -439,7 +445,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             0,
             0,
             0});
-            this.txtToneladasMin.Location = new System.Drawing.Point(151, 267);
+            this.txtToneladasMin.Location = new System.Drawing.Point(322, 219);
             this.txtToneladasMin.Name = "txtToneladasMin";
             this.txtToneladasMin.Properties.DisplayFormat.FormatString = "n2";
             this.txtToneladasMin.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
@@ -451,7 +457,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             0,
             0,
             0});
-            this.txtToneladasMin.Size = new System.Drawing.Size(548, 20);
+            this.txtToneladasMin.Size = new System.Drawing.Size(143, 20);
             this.txtToneladasMin.StyleController = this.layoutControl1;
             this.txtToneladasMin.TabIndex = 14;
             // 
@@ -462,7 +468,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             0,
             0,
             0});
-            this.txtToneladasMax.Location = new System.Drawing.Point(151, 291);
+            this.txtToneladasMax.Location = new System.Drawing.Point(529, 219);
             this.txtToneladasMax.Name = "txtToneladasMax";
             this.txtToneladasMax.Properties.DisplayFormat.FormatString = "n2";
             this.txtToneladasMax.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
@@ -474,31 +480,33 @@ namespace SistemaContable.UI.Forms.Exportacion
             0,
             0,
             0});
-            this.txtToneladasMax.Size = new System.Drawing.Size(548, 20);
+            this.txtToneladasMax.Size = new System.Drawing.Size(170, 20);
             this.txtToneladasMax.StyleController = this.layoutControl1;
             this.txtToneladasMax.TabIndex = 15;
             // 
             // cboAplicaNominacion
             // 
-            this.cboAplicaNominacion.Location = new System.Drawing.Point(151, 315);
+            this.cboAplicaNominacion.Location = new System.Drawing.Point(123, 243);
             this.cboAplicaNominacion.Name = "cboAplicaNominacion";
             this.cboAplicaNominacion.Properties.Items.AddRange(new object[] {
             "Sí",
             "No"});
             this.cboAplicaNominacion.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboAplicaNominacion.Size = new System.Drawing.Size(548, 20);
+            this.cboAplicaNominacion.Size = new System.Drawing.Size(226, 20);
             this.cboAplicaNominacion.StyleController = this.layoutControl1;
             this.cboAplicaNominacion.TabIndex = 16;
             // 
             // cboEstado
             // 
-            this.cboEstado.Location = new System.Drawing.Point(151, 339);
+            this.cboEstado.Location = new System.Drawing.Point(401, 243);
             this.cboEstado.Name = "cboEstado";
             this.cboEstado.Properties.Items.AddRange(new object[] {
             "Activo",
+            "Proceso",
+            "Finalizado",
             "Inactivo"});
             this.cboEstado.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboEstado.Size = new System.Drawing.Size(548, 20);
+            this.cboEstado.Size = new System.Drawing.Size(298, 20);
             this.cboEstado.StyleController = this.layoutControl1;
             this.cboEstado.TabIndex = 17;
             // 
@@ -506,9 +514,9 @@ namespace SistemaContable.UI.Forms.Exportacion
             // 
             this.pnlPdf.Controls.Add(this.btnSubirPdf);
             this.pnlPdf.Controls.Add(this.beArchivoPdf);
-            this.pnlPdf.Location = new System.Drawing.Point(151, 363);
+            this.pnlPdf.Location = new System.Drawing.Point(123, 267);
             this.pnlPdf.Name = "pnlPdf";
-            this.pnlPdf.Size = new System.Drawing.Size(548, 194);
+            this.pnlPdf.Size = new System.Drawing.Size(576, 95);
             this.pnlPdf.TabIndex = 18;
             // 
             // btnSubirPdf
@@ -516,23 +524,38 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.btnSubirPdf.Appearance.Font = new System.Drawing.Font("Tahoma", 10F);
             this.btnSubirPdf.Appearance.Options.UseFont = true;
             this.btnSubirPdf.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnSubirPdf.Enabled = false;
-            this.btnSubirPdf.Location = new System.Drawing.Point(2, 22);
+            this.btnSubirPdf.Location = new System.Drawing.Point(2, 39);
             this.btnSubirPdf.Name = "btnSubirPdf";
-            this.btnSubirPdf.Size = new System.Drawing.Size(544, 30);
+            this.btnSubirPdf.Size = new System.Drawing.Size(572, 40);
             this.btnSubirPdf.TabIndex = 1;
             this.btnSubirPdf.Text = "Subir PDF";
+            this.btnSubirPdf.Click += new System.EventHandler(this.btnSubirPdf_Click);
             // 
             // beArchivoPdf
             // 
             this.beArchivoPdf.Dock = System.Windows.Forms.DockStyle.Top;
             this.beArchivoPdf.Location = new System.Drawing.Point(2, 2);
             this.beArchivoPdf.Name = "beArchivoPdf";
+            this.beArchivoPdf.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.beArchivoPdf.Properties.Appearance.ForeColor = System.Drawing.Color.Red;
+            this.beArchivoPdf.Properties.Appearance.Options.UseFont = true;
+            this.beArchivoPdf.Properties.Appearance.Options.UseForeColor = true;
+            this.beArchivoPdf.Properties.AppearanceDisabled.ForeColor = System.Drawing.Color.Red;
+            this.beArchivoPdf.Properties.AppearanceDisabled.Options.UseForeColor = true;
+            this.beArchivoPdf.Properties.AppearanceFocused.ForeColor = System.Drawing.Color.Red;
+            this.beArchivoPdf.Properties.AppearanceFocused.Options.UseForeColor = true;
+            this.beArchivoPdf.Properties.AppearanceReadOnly.ForeColor = System.Drawing.Color.Red;
+            this.beArchivoPdf.Properties.AppearanceReadOnly.Options.UseForeColor = true;
+            this.beArchivoPdf.Properties.AutoHeight = false;
+            editorButtonImageOptions1.Image = ((System.Drawing.Image)(resources.GetObject("editorButtonImageOptions1.Image")));
             this.beArchivoPdf.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Seleccionar archivo...", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Ellipsis, "Buscar...", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Seleccionar archivo PDF...", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.beArchivoPdf.Properties.NullText = "Haga clic en \"...\" para seleccionar un PDF";
+            this.beArchivoPdf.Properties.NullValuePrompt = "Haga clic en \"...\" para seleccionar un PDF";
             this.beArchivoPdf.Properties.ReadOnly = true;
-            this.beArchivoPdf.Size = new System.Drawing.Size(544, 20);
+            this.beArchivoPdf.Size = new System.Drawing.Size(572, 37);
             this.beArchivoPdf.TabIndex = 0;
+            this.beArchivoPdf.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.beArchivoPdf_ButtonClick);
             // 
             // layoutControlGroup1
             // 
@@ -540,6 +563,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liMercado,
             this.liCliente,
             this.liFechaContrato,
+            this.liFechaFijarVolumen,
             this.liNumeroContrato,
             this.liZafra,
             this.liProducto,
@@ -547,7 +571,6 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liPrecio,
             this.liVariacionAvg,
             this.liToneladas,
-            this.liFechaFijarVolumen,
             this.liToneladasMin,
             this.liToneladasMax,
             this.liAplicaNominacion,
@@ -555,7 +578,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liPdf});
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(702, 560);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(702, 365);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // liMercado
@@ -567,7 +590,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liMercado.Name = "liMercado";
             this.liMercado.Size = new System.Drawing.Size(700, 24);
             this.liMercado.Text = "Mercado:*";
-            this.liMercado.TextSize = new System.Drawing.Size(136, 16);
+            this.liMercado.TextSize = new System.Drawing.Size(108, 16);
             // 
             // liCliente
             // 
@@ -578,7 +601,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liCliente.Name = "liCliente";
             this.liCliente.Size = new System.Drawing.Size(700, 24);
             this.liCliente.Text = "Cliente:*";
-            this.liCliente.TextSize = new System.Drawing.Size(136, 16);
+            this.liCliente.TextSize = new System.Drawing.Size(108, 16);
             // 
             // liFechaContrato
             // 
@@ -587,9 +610,22 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liFechaContrato.Control = this.deFechaContrato;
             this.liFechaContrato.Location = new System.Drawing.Point(0, 48);
             this.liFechaContrato.Name = "liFechaContrato";
-            this.liFechaContrato.Size = new System.Drawing.Size(700, 24);
+            this.liFechaContrato.Size = new System.Drawing.Size(350, 24);
             this.liFechaContrato.Text = "Fecha contrato:*";
-            this.liFechaContrato.TextSize = new System.Drawing.Size(136, 16);
+            this.liFechaContrato.TextSize = new System.Drawing.Size(108, 16);
+            // 
+            // liFechaFijarVolumen
+            // 
+            this.liFechaFijarVolumen.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.liFechaFijarVolumen.AppearanceItemCaption.Options.UseFont = true;
+            this.liFechaFijarVolumen.Control = this.deFechaFijarVolumen;
+            this.liFechaFijarVolumen.Location = new System.Drawing.Point(350, 48);
+            this.liFechaFijarVolumen.Name = "liFechaFijarVolumen";
+            this.liFechaFijarVolumen.Size = new System.Drawing.Size(350, 24);
+            this.liFechaFijarVolumen.Text = "Fecha de fijar volumen:";
+            this.liFechaFijarVolumen.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
+            this.liFechaFijarVolumen.TextSize = new System.Drawing.Size(136, 16);
+            this.liFechaFijarVolumen.TextToControlDistance = 5;
             // 
             // liNumeroContrato
             // 
@@ -600,7 +636,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liNumeroContrato.Name = "liNumeroContrato";
             this.liNumeroContrato.Size = new System.Drawing.Size(700, 24);
             this.liNumeroContrato.Text = "N° Contrato:*";
-            this.liNumeroContrato.TextSize = new System.Drawing.Size(136, 16);
+            this.liNumeroContrato.TextSize = new System.Drawing.Size(108, 16);
             // 
             // liZafra
             // 
@@ -611,7 +647,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liZafra.Name = "liZafra";
             this.liZafra.Size = new System.Drawing.Size(700, 24);
             this.liZafra.Text = "Zafra:*";
-            this.liZafra.TextSize = new System.Drawing.Size(136, 16);
+            this.liZafra.TextSize = new System.Drawing.Size(108, 16);
             // 
             // liProducto
             // 
@@ -622,7 +658,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liProducto.Name = "liProducto";
             this.liProducto.Size = new System.Drawing.Size(700, 24);
             this.liProducto.Text = "Producto:*";
-            this.liProducto.TextSize = new System.Drawing.Size(136, 16);
+            this.liProducto.TextSize = new System.Drawing.Size(108, 16);
             // 
             // liPresentacion
             // 
@@ -633,7 +669,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liPresentacion.Name = "liPresentacion";
             this.liPresentacion.Size = new System.Drawing.Size(700, 24);
             this.liPresentacion.Text = "Presentación:";
-            this.liPresentacion.TextSize = new System.Drawing.Size(136, 16);
+            this.liPresentacion.TextSize = new System.Drawing.Size(108, 16);
             // 
             // liPrecio
             // 
@@ -644,7 +680,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liPrecio.Name = "liPrecio";
             this.liPrecio.Size = new System.Drawing.Size(700, 24);
             this.liPrecio.Text = "Precio($):";
-            this.liPrecio.TextSize = new System.Drawing.Size(136, 16);
+            this.liPrecio.TextSize = new System.Drawing.Size(108, 16);
             // 
             // liVariacionAvg
             // 
@@ -655,7 +691,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liVariacionAvg.Name = "liVariacionAvg";
             this.liVariacionAvg.Size = new System.Drawing.Size(700, 24);
             this.liVariacionAvg.Text = "Variacion AVG($):";
-            this.liVariacionAvg.TextSize = new System.Drawing.Size(136, 16);
+            this.liVariacionAvg.TextSize = new System.Drawing.Size(108, 16);
             // 
             // liToneladas
             // 
@@ -664,75 +700,73 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.liToneladas.Control = this.txtToneladas;
             this.liToneladas.Location = new System.Drawing.Point(0, 216);
             this.liToneladas.Name = "liToneladas";
-            this.liToneladas.Size = new System.Drawing.Size(700, 24);
+            this.liToneladas.Size = new System.Drawing.Size(262, 24);
             this.liToneladas.Text = "Toneladas:*";
-            this.liToneladas.TextSize = new System.Drawing.Size(136, 16);
-            // 
-            // liFechaFijarVolumen
-            // 
-            this.liFechaFijarVolumen.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.liFechaFijarVolumen.AppearanceItemCaption.Options.UseFont = true;
-            this.liFechaFijarVolumen.Control = this.deFechaFijarVolumen;
-            this.liFechaFijarVolumen.Location = new System.Drawing.Point(0, 240);
-            this.liFechaFijarVolumen.Name = "liFechaFijarVolumen";
-            this.liFechaFijarVolumen.Size = new System.Drawing.Size(700, 24);
-            this.liFechaFijarVolumen.Text = "Fecha de fijar volumen:";
-            this.liFechaFijarVolumen.TextSize = new System.Drawing.Size(136, 16);
+            this.liToneladas.TextSize = new System.Drawing.Size(108, 16);
             // 
             // liToneladasMin
             // 
             this.liToneladasMin.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 10F);
             this.liToneladasMin.AppearanceItemCaption.Options.UseFont = true;
             this.liToneladasMin.Control = this.txtToneladasMin;
-            this.liToneladasMin.Location = new System.Drawing.Point(0, 264);
+            this.liToneladasMin.CustomizationFormText = "Minimas:";
+            this.liToneladasMin.Location = new System.Drawing.Point(262, 216);
             this.liToneladasMin.Name = "liToneladasMin";
-            this.liToneladasMin.Size = new System.Drawing.Size(700, 24);
-            this.liToneladasMin.Text = "Min. Toneladas:";
-            this.liToneladasMin.TextSize = new System.Drawing.Size(136, 16);
+            this.liToneladasMin.Size = new System.Drawing.Size(204, 24);
+            this.liToneladasMin.Text = "Minimas:";
+            this.liToneladasMin.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
+            this.liToneladasMin.TextLocation = DevExpress.Utils.Locations.Left;
+            this.liToneladasMin.TextSize = new System.Drawing.Size(52, 16);
+            this.liToneladasMin.TextToControlDistance = 5;
             // 
             // liToneladasMax
             // 
             this.liToneladasMax.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 10F);
             this.liToneladasMax.AppearanceItemCaption.Options.UseFont = true;
             this.liToneladasMax.Control = this.txtToneladasMax;
-            this.liToneladasMax.Location = new System.Drawing.Point(0, 288);
+            this.liToneladasMax.Location = new System.Drawing.Point(466, 216);
             this.liToneladasMax.Name = "liToneladasMax";
-            this.liToneladasMax.Size = new System.Drawing.Size(700, 24);
-            this.liToneladasMax.Text = "Max. Toneladas:";
-            this.liToneladasMax.TextSize = new System.Drawing.Size(136, 16);
+            this.liToneladasMax.Size = new System.Drawing.Size(234, 24);
+            this.liToneladasMax.Text = "Maximas:";
+            this.liToneladasMax.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
+            this.liToneladasMax.TextSize = new System.Drawing.Size(55, 16);
+            this.liToneladasMax.TextToControlDistance = 5;
             // 
             // liAplicaNominacion
             // 
             this.liAplicaNominacion.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 10F);
             this.liAplicaNominacion.AppearanceItemCaption.Options.UseFont = true;
             this.liAplicaNominacion.Control = this.cboAplicaNominacion;
-            this.liAplicaNominacion.Location = new System.Drawing.Point(0, 312);
+            this.liAplicaNominacion.Location = new System.Drawing.Point(0, 240);
             this.liAplicaNominacion.Name = "liAplicaNominacion";
-            this.liAplicaNominacion.Size = new System.Drawing.Size(700, 24);
+            this.liAplicaNominacion.Size = new System.Drawing.Size(350, 24);
             this.liAplicaNominacion.Text = "Aplica nominación:";
-            this.liAplicaNominacion.TextSize = new System.Drawing.Size(136, 16);
+            this.liAplicaNominacion.TextSize = new System.Drawing.Size(108, 16);
             // 
             // liEstado
             // 
             this.liEstado.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 10F);
             this.liEstado.AppearanceItemCaption.Options.UseFont = true;
             this.liEstado.Control = this.cboEstado;
-            this.liEstado.Location = new System.Drawing.Point(0, 336);
+            this.liEstado.Location = new System.Drawing.Point(350, 240);
             this.liEstado.Name = "liEstado";
-            this.liEstado.Size = new System.Drawing.Size(700, 24);
+            this.liEstado.Size = new System.Drawing.Size(350, 24);
             this.liEstado.Text = "Estado:";
-            this.liEstado.TextSize = new System.Drawing.Size(136, 16);
+            this.liEstado.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
+            this.liEstado.TextSize = new System.Drawing.Size(43, 16);
+            this.liEstado.TextToControlDistance = 5;
             // 
             // liPdf
             // 
             this.liPdf.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 10F);
             this.liPdf.AppearanceItemCaption.Options.UseFont = true;
+            this.liPdf.BestFitWeight = 20;
             this.liPdf.Control = this.pnlPdf;
-            this.liPdf.Location = new System.Drawing.Point(0, 360);
+            this.liPdf.Location = new System.Drawing.Point(0, 264);
             this.liPdf.Name = "liPdf";
-            this.liPdf.Size = new System.Drawing.Size(700, 198);
+            this.liPdf.Size = new System.Drawing.Size(700, 99);
             this.liPdf.Text = "PDF (opcional):";
-            this.liPdf.TextSize = new System.Drawing.Size(136, 16);
+            this.liPdf.TextSize = new System.Drawing.Size(108, 16);
             // 
             // pnlSeparador
             // 
@@ -759,18 +793,67 @@ namespace SistemaContable.UI.Forms.Exportacion
             // 
             this.pnlBotonesAccion.Appearance.BackColor = System.Drawing.Color.White;
             this.pnlBotonesAccion.Appearance.Options.UseBackColor = true;
+            this.pnlBotonesAccion.Controls.Add(this.btnNuevo);
+            this.pnlBotonesAccion.Controls.Add(this.btnFinalizar);
+            this.pnlBotonesAccion.Controls.Add(this.btnEliminar);
+            this.pnlBotonesAccion.Controls.Add(this.btnGuardar);
             this.pnlBotonesAccion.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlBotonesAccion.Location = new System.Drawing.Point(0, 663);
+            this.pnlBotonesAccion.Location = new System.Drawing.Point(0, 480);
             this.pnlBotonesAccion.Name = "pnlBotonesAccion";
             this.pnlBotonesAccion.Padding = new System.Windows.Forms.Padding(20, 12, 20, 12);
-            this.pnlBotonesAccion.Size = new System.Drawing.Size(746, 68);
+            this.pnlBotonesAccion.Size = new System.Drawing.Size(746, 57);
             this.pnlBotonesAccion.TabIndex = 2;
+            // 
+            // btnNuevo
+            // 
+            this.btnNuevo.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.nuevo32x32;
+            this.btnNuevo.Location = new System.Drawing.Point(147, 6);
+            this.btnNuevo.Name = "btnNuevo";
+            this.btnNuevo.Size = new System.Drawing.Size(117, 44);
+            this.btnNuevo.TabIndex = 161;
+            this.btnNuevo.Text = "Nuevo";
+            this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
+            // 
+            // btnFinalizar
+            // 
+            this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFinalizar.Appearance.Options.UseFont = true;
+            this.btnFinalizar.Appearance.Options.UseTextOptions = true;
+            this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
+            this.btnFinalizar.Location = new System.Drawing.Point(516, 6);
+            this.btnFinalizar.Name = "btnFinalizar";
+            this.btnFinalizar.Size = new System.Drawing.Size(117, 44);
+            this.btnFinalizar.TabIndex = 160;
+            this.btnFinalizar.TabStop = false;
+            this.btnFinalizar.Text = "Finalizar";
+            this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminar32x32;
+            this.btnEliminar.Location = new System.Drawing.Point(393, 7);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(117, 44);
+            this.btnEliminar.TabIndex = 4;
+            this.btnEliminar.Text = "Eliminar";
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            // 
+            // btnGuardar
+            // 
+            this.btnGuardar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.guardar2_32x32;
+            this.btnGuardar.Location = new System.Drawing.Point(270, 7);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(117, 44);
+            this.btnGuardar.TabIndex = 2;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // frmContratoDetalle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(746, 731);
+            this.ClientSize = new System.Drawing.Size(746, 537);
             this.Controls.Add(this.pnlContenido);
             this.Controls.Add(this.pnlBotonesAccion);
             this.Controls.Add(this.pnlTitulo);
@@ -813,6 +896,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             ((System.ComponentModel.ISupportInitialize)(this.liMercado)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.liCliente)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.liFechaContrato)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.liFechaFijarVolumen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.liNumeroContrato)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.liZafra)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.liProducto)).EndInit();
@@ -820,7 +904,6 @@ namespace SistemaContable.UI.Forms.Exportacion
             ((System.ComponentModel.ISupportInitialize)(this.liPrecio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.liVariacionAvg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.liToneladas)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.liFechaFijarVolumen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.liToneladasMin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.liToneladasMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.liAplicaNominacion)).EndInit();
@@ -828,10 +911,16 @@ namespace SistemaContable.UI.Forms.Exportacion
             ((System.ComponentModel.ISupportInitialize)(this.liPdf)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlSeparador)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlBotonesAccion)).EndInit();
+            this.pnlBotonesAccion.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private DevExpress.XtraEditors.SimpleButton btnGuardar;
+        private DevExpress.XtraEditors.SimpleButton btnEliminar;
+        private DevExpress.XtraEditors.SimpleButton btnFinalizar;
+        private DevExpress.XtraEditors.SimpleButton btnNuevo;
     }
 }

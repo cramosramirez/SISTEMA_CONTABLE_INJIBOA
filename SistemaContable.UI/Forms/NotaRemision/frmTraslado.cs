@@ -49,12 +49,20 @@ namespace SistemaContable.UI.Forms.NotaRemision
                  true);
             this.UpdateStyles();
         }
-
+        private void ConfigurarToolTips()
+        {
+            TooltipHelper.Configurar(
+                            (txtPROVEEDOR, "Ingrese * y presione Enter para mostrar todos los proveedores."),
+                            (txtPROV_TRANSP, "Ingrese * y presione Enter para mostrar todos los proveedores de transporte."),
+                            (txtMotorista, "Ingrese * y presione Enter para mostrar todos los motoristas.")
+                                 );
+        }
         private void frmTraslado_Load(object sender, EventArgs e)
         {
             FormHelper.Inicializar(this);
             CargarTipoDte();
             CargarTansposte();
+            ConfigurarToolTips();
             mskFECHA_EMISION.Text = DateTime.Now.ToString("dd/MM/yyyy");
 
 

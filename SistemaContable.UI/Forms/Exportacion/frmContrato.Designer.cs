@@ -51,11 +51,26 @@ namespace SistemaContable.UI.Forms.Exportacion
 
         private void InitializeComponent()
         {
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions5 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions6 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions7 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions8 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
             this.pnlBotones = new DevExpress.XtraEditors.GroupControl();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.btnNuevo = new DevExpress.XtraEditors.SimpleButton();
@@ -185,23 +200,26 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.gridView1.OptionsBehavior.Editable = false;
             this.gridView1.OptionsView.ShowGroupPanel = false;
             this.gridView1.RowHeight = 32;
+            this.gridView1.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridView1_RowCellClick);
+            this.gridView1.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridView1_RowCellStyle);
             // 
             // colEditar
             // 
+            this.colEditar.Caption = "Editar";
             this.colEditar.ColumnEdit = this.riEditar;
-            this.colEditar.FieldName = "IDCONTEXP";
             this.colEditar.Name = "colEditar";
             this.colEditar.OptionsColumn.AllowSize = false;
             this.colEditar.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.colEditar.Visible = true;
             this.colEditar.VisibleIndex = 0;
-            this.colEditar.Width = 40;
+            this.colEditar.Width = 46;
             // 
             // riEditar
             // 
             this.riEditar.AutoHeight = false;
+            editorButtonImageOptions5.ImageUri.Uri = "Edit";
             this.riEditar.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions5, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riEditar.Name = "riEditar";
             this.riEditar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -209,19 +227,19 @@ namespace SistemaContable.UI.Forms.Exportacion
             // 
             this.colFechaEmbarque.Caption = "Fecha Embarque";
             this.colFechaEmbarque.ColumnEdit = this.riFechaEmbarque;
-            this.colFechaEmbarque.FieldName = "IDCONTEXP";
             this.colFechaEmbarque.Name = "colFechaEmbarque";
             this.colFechaEmbarque.OptionsColumn.AllowSize = false;
             this.colFechaEmbarque.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.colFechaEmbarque.Visible = true;
             this.colFechaEmbarque.VisibleIndex = 1;
-            this.colFechaEmbarque.Width = 90;
+            this.colFechaEmbarque.Width = 89;
             // 
             // riFechaEmbarque
             // 
             this.riFechaEmbarque.AutoHeight = false;
+            editorButtonImageOptions6.ImageUri.Uri = "spreadsheet/longdate";
             this.riFechaEmbarque.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions6, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riFechaEmbarque.Name = "riFechaEmbarque";
             this.riFechaEmbarque.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -229,19 +247,19 @@ namespace SistemaContable.UI.Forms.Exportacion
             // 
             this.colAddendum.Caption = "Addendum";
             this.colAddendum.ColumnEdit = this.riAddendum;
-            this.colAddendum.FieldName = "IDCONTEXP";
             this.colAddendum.Name = "colAddendum";
             this.colAddendum.OptionsColumn.AllowSize = false;
             this.colAddendum.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.colAddendum.Visible = true;
             this.colAddendum.VisibleIndex = 2;
-            this.colAddendum.Width = 80;
+            this.colAddendum.Width = 63;
             // 
             // riAddendum
             // 
             this.riAddendum.AutoHeight = false;
+            editorButtonImageOptions7.ImageUri.Uri = "richedit/addparagraphtotableofcontents";
             this.riAddendum.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions7, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riAddendum.Name = "riAddendum";
             this.riAddendum.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -254,7 +272,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.colIdContrato.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.colIdContrato.Visible = true;
             this.colIdContrato.VisibleIndex = 3;
-            this.colIdContrato.Width = 50;
+            this.colIdContrato.Width = 40;
             // 
             // colZafra
             // 
@@ -263,7 +281,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.colZafra.Name = "colZafra";
             this.colZafra.Visible = true;
             this.colZafra.VisibleIndex = 4;
-            this.colZafra.Width = 90;
+            this.colZafra.Width = 77;
             // 
             // colMercado
             // 
@@ -272,7 +290,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.colMercado.Name = "colMercado";
             this.colMercado.Visible = true;
             this.colMercado.VisibleIndex = 5;
-            this.colMercado.Width = 90;
+            this.colMercado.Width = 77;
             // 
             // colCliente
             // 
@@ -281,7 +299,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.colCliente.Name = "colCliente";
             this.colCliente.Visible = true;
             this.colCliente.VisibleIndex = 6;
-            this.colCliente.Width = 220;
+            this.colCliente.Width = 189;
             // 
             // colContrato
             // 
@@ -290,7 +308,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.colContrato.Name = "colContrato";
             this.colContrato.Visible = true;
             this.colContrato.VisibleIndex = 7;
-            this.colContrato.Width = 140;
+            this.colContrato.Width = 119;
             // 
             // colProducto
             // 
@@ -299,7 +317,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.colProducto.Name = "colProducto";
             this.colProducto.Visible = true;
             this.colProducto.VisibleIndex = 8;
-            this.colProducto.Width = 130;
+            this.colProducto.Width = 110;
             // 
             // colToneladas
             // 
@@ -310,7 +328,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.colToneladas.Name = "colToneladas";
             this.colToneladas.Visible = true;
             this.colToneladas.VisibleIndex = 9;
-            this.colToneladas.Width = 100;
+            this.colToneladas.Width = 86;
             // 
             // colFecha
             // 
@@ -321,7 +339,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.colFecha.Name = "colFecha";
             this.colFecha.Visible = true;
             this.colFecha.VisibleIndex = 10;
-            this.colFecha.Width = 90;
+            this.colFecha.Width = 77;
             // 
             // colPDF
             // 
@@ -333,13 +351,13 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.colPDF.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.colPDF.Visible = true;
             this.colPDF.VisibleIndex = 11;
-            this.colPDF.Width = 90;
+            this.colPDF.Width = 77;
             // 
             // riPDF
             // 
             this.riPDF.AutoHeight = false;
             this.riPDF.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Ver PDF", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Ver PDF", -1, true, true, false, editorButtonImageOptions8, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riPDF.Name = "riPDF";
             this.riPDF.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -351,7 +369,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.colEstado.OptionsColumn.AllowSize = false;
             this.colEstado.Visible = true;
             this.colEstado.VisibleIndex = 12;
-            this.colEstado.Width = 80;
+            this.colEstado.Width = 102;
             // 
             // searchControl1
             // 
@@ -374,6 +392,7 @@ namespace SistemaContable.UI.Forms.Exportacion
             this.Controls.Add(this.grpListaContratos);
             this.Controls.Add(this.pnlBotones);
             this.Name = "frmContrato";
+            this.Tag = "Consulta";
             this.Text = "Mantenimiento de Contratos";
             ((System.ComponentModel.ISupportInitialize)(this.pnlBotones)).EndInit();
             this.pnlBotones.ResumeLayout(false);
