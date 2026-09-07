@@ -36,6 +36,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.dteFECHA_LIQUIDACION = new DevExpress.XtraEditors.DateEdit();
             this.label1 = new System.Windows.Forms.Label();
             this.panelResumen = new System.Windows.Forms.Panel();
+            this.linkImportarDIZUCAR = new System.Windows.Forms.LinkLabel();
             this.linkGenerarTodos = new System.Windows.Forms.LinkLabel();
             this.linkExpandirContraer = new System.Windows.Forms.LinkLabel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -58,7 +59,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.tabNavigationPage2 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gridGASTOS = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.linkImportarDIZUCAR = new System.Windows.Forms.LinkLabel();
             this.panelFiltros.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties)).BeginInit();
@@ -169,6 +169,18 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panelResumen.Size = new System.Drawing.Size(1539, 99);
             this.panelResumen.TabIndex = 1;
             // 
+            // linkImportarDIZUCAR
+            // 
+            this.linkImportarDIZUCAR.AutoSize = true;
+            this.linkImportarDIZUCAR.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkImportarDIZUCAR.Location = new System.Drawing.Point(1187, 52);
+            this.linkImportarDIZUCAR.Name = "linkImportarDIZUCAR";
+            this.linkImportarDIZUCAR.Size = new System.Drawing.Size(203, 21);
+            this.linkImportarDIZUCAR.TabIndex = 6;
+            this.linkImportarDIZUCAR.TabStop = true;
+            this.linkImportarDIZUCAR.Text = "Importar datos de DIZUCAR";
+            this.linkImportarDIZUCAR.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkImportarDIZUCAR_LinkClicked);
+            // 
             // linkGenerarTodos
             // 
             this.linkGenerarTodos.AutoSize = true;
@@ -209,7 +221,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.lblVENTAS_MENOS_GASTOS.Name = "lblVENTAS_MENOS_GASTOS";
             this.lblVENTAS_MENOS_GASTOS.Size = new System.Drawing.Size(217, 23);
             this.lblVENTAS_MENOS_GASTOS.TabIndex = 1;
-            this.lblVENTAS_MENOS_GASTOS.Text = "$ 8,735.36";
+            this.lblVENTAS_MENOS_GASTOS.Text = "$ 0.00";
             // 
             // label11
             // 
@@ -238,7 +250,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.lblTOTAL_GASTOS.Name = "lblTOTAL_GASTOS";
             this.lblTOTAL_GASTOS.Size = new System.Drawing.Size(217, 23);
             this.lblTOTAL_GASTOS.TabIndex = 1;
-            this.lblTOTAL_GASTOS.Text = "$ 999,127,563.00";
+            this.lblTOTAL_GASTOS.Text = "$ 0.00";
             // 
             // label9
             // 
@@ -267,7 +279,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.lblTOTAL_CREDITO.Name = "lblTOTAL_CREDITO";
             this.lblTOTAL_CREDITO.Size = new System.Drawing.Size(217, 23);
             this.lblTOTAL_CREDITO.TabIndex = 1;
-            this.lblTOTAL_CREDITO.Text = "$ 999,127,563.00";
+            this.lblTOTAL_CREDITO.Text = "$ 0.00";
             // 
             // label7
             // 
@@ -296,7 +308,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.lblTOTAL_VENTAS.Name = "lblTOTAL_VENTAS";
             this.lblTOTAL_VENTAS.Size = new System.Drawing.Size(217, 23);
             this.lblTOTAL_VENTAS.TabIndex = 1;
-            this.lblTOTAL_VENTAS.Text = "$ 999,127,563.00";
+            this.lblTOTAL_VENTAS.Text = "$ 0.00";
             // 
             // label4
             // 
@@ -389,18 +401,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             // 
             this.gridGASTOS.GridControl = this.gridControl2;
             this.gridGASTOS.Name = "gridGASTOS";
-            // 
-            // linkImportarDIZUCAR
-            // 
-            this.linkImportarDIZUCAR.AutoSize = true;
-            this.linkImportarDIZUCAR.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkImportarDIZUCAR.Location = new System.Drawing.Point(1187, 52);
-            this.linkImportarDIZUCAR.Name = "linkImportarDIZUCAR";
-            this.linkImportarDIZUCAR.Size = new System.Drawing.Size(203, 21);
-            this.linkImportarDIZUCAR.TabIndex = 6;
-            this.linkImportarDIZUCAR.TabStop = true;
-            this.linkImportarDIZUCAR.Text = "Importar datos de DIZUCAR";
-            this.linkImportarDIZUCAR.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkImportarDIZUCAR_LinkClicked);
             // 
             // frmLiquidacionDIZUCAR
             // 

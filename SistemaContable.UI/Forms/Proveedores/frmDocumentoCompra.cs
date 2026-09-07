@@ -927,7 +927,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                     USUARIO = Configuracion.UsuarioActual,                    
                     ID_TIPO_RENTA = ObtenerIdCombo(cbxTIPO_RENTA),
                     APLICABLE_RENTA = ObtenerDecimal(txtAPLICABLE_RENTA),
-                    UID_ENLACE_CHEQUE = EsContado ? UidEnlaceCheque : string.Empty
+                    ES_CONTADO = EsContado,
+                    UID_ENLACE_CHEQUE = UidEnlaceCheque
                 };
 
                 DataTable dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA", parametros);

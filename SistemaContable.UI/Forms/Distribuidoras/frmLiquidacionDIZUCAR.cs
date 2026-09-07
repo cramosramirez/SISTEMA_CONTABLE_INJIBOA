@@ -259,6 +259,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             if (dtEmpresa.Rows.Count == 0)
             {
                 // Sin empresas con datos para esta fecha -> KPIs en cero
+                cbxEMPRESA.Text = "";
                 ReiniciarKPIs();
                 return;            }
 

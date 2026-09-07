@@ -424,6 +424,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtCOLONIA.Clear();
                 txtCOMPLEMENTO.Clear();
                 txtOTROS_DATOS.Clear();
+                txtPROFESION.Clear(); 
 
                 txtCODIPROVEEDOR.Clear();
                 txtCODTRANSPORT.Clear();
@@ -680,6 +681,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtCORREO_CC.Text = SafeStr(r["CORREO_CC"]);
                 txtCELULAR.Text = SafeStr(r["CELULAR"]);
                 txtTELEFONO.Text = SafeStr(r["TELEFONO"]);
+                txtPROFESION.Text = SafeStr(r["PROFESION"]);
 
                 // País y ubicación
                 cbxPAIS.SelectedValue = r["ID_PAIS"] ?? DBNull.Value;
@@ -1091,6 +1093,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     USUARIO_CREA = Configuracion.UsuarioActual,
                     USUARIO_ACT = Configuracion.UsuarioActual,
                     OTROS_DATOS = NullIfEmpty(txtOTROS_DATOS.Text),
+                    PROFESION = NullIfEmpty(txtPROFESION.Text),
                     ROL = "PRO"
                 };
 
