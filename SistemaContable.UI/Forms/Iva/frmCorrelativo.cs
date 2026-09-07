@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClosedXML.Excel;
+using Dapper;
 using DevExpress.XtraEditors;
 using SistemaContable.DAL;
 using SistemaContable.UI.Helpers;
@@ -21,6 +22,7 @@ namespace SistemaContable.UI.Forms.Iva
 {
     public partial class frmCorrelativo : Form
     {
+        private readonly DALBase _dal = new DALBase();
         public FormBorderEffect FormBorderEffect { get; }
         public object IconOptions { get; }
 
@@ -73,9 +75,52 @@ namespace SistemaContable.UI.Forms.Iva
             ActivarSeleccionUnica(groupControl2);
 
         }
-       
-    
-        private void bt_DescargaXls_Click(object sender, EventArgs e)
+
+        private bool Update_Correlativo(string procedimiento, string anio, string mes)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+
+                parametros.Add("@anio", anio);
+                parametros.Add("@mes", mes);
+
+                parametros.Add("@Resultado",
+                    dbType: DbType.Int32,
+                    direction: ParameterDirection.Output);
+
+                parametros.Add("@Mensaje",
+                    dbType: DbType.String,
+                    size: 500,
+                    direction: ParameterDirection.Output);
+
+                _dal.EjecutarConSalida(procedimiento, parametros);
+
+                int? resultado = parametros.Get<int?>("@Resultado");
+                string mensaje = parametros.Get<string>("@Mensaje");
+
+                if (resultado == 1)
+                {
+                    Alertas.Exito(mensaje);
+                    return true;
+                }
+
+                Alertas.Advertencia(mensaje);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message;
+
+                if (mensaje.Contains("]:"))
+                    mensaje = mensaje.Substring(mensaje.IndexOf("]:") + 2).Trim();
+
+                Alertas.Error(mensaje);
+                return false;
+            }
+        }
+
+        private void bt_Procesar_Click(object sender, EventArgs e)
         {
             try
             {
@@ -119,8 +164,8 @@ namespace SistemaContable.UI.Forms.Iva
                     lblEstado.Text = "Procesando... 65%";
                     Application.DoEvents();
 
-                    
-                        progressBar1.Value = 100; // Excel generado
+                    Update_Correlativo("[EIVA].[CRE_CORRELATIVO_COMPRAS]", anio,mes);
+                    progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     
                 }
@@ -132,8 +177,8 @@ namespace SistemaContable.UI.Forms.Iva
                     lblEstado.Visible = true;
                     lblEstado.Text = "Procesando... 65%";
                     Application.DoEvents();
-                    
-                        progressBar1.Value = 100; // Excel generado
+                    Update_Correlativo("[EIVA].[CRE_CORRELATIVO_CCF]", anio, mes);
+                    progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     
                 }
@@ -145,8 +190,8 @@ namespace SistemaContable.UI.Forms.Iva
                     lblEstado.Visible = true;
                     lblEstado.Text = "Procesando... 65%";
                     Application.DoEvents();
-                   
-                        progressBar1.Value = 100; // Excel generado
+                    Update_Correlativo("[EIVA].[CRE_CORRELATIVO_FA]", anio, mes);
+                    progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     
                 }
