@@ -245,24 +245,52 @@ namespace SistemaContable.UI.Forms
                     return;
                 }
 
-                using (Form frm = Activator.CreateInstance(tipo) as Form)
+                // ===== Verificar si ya hay una instancia abierta del mismo tipo =====
+                Form existente = Application.OpenForms
+                    .OfType<Form>()
+                    .FirstOrDefault(f => f.GetType() == tipo);
+
+                if (existente != null)
                 {
-                    if (frm == null) return;
+                    // Si está minimizado, restaurar
+                    if (existente.WindowState == FormWindowState.Minimized)
+                        existente.WindowState = FormWindowState.Normal;
 
-                    if (frm.Tag != null && frm.Tag.ToString().ToUpper() == "CONSULTA")
+                    // Si es formulario de consulta, restaurar posición y tamaño originales
+                    bool esConsultaExistente = existente.Tag != null &&
+                                               existente.Tag.ToString().ToUpper() == "CONSULTA";
 
+                    if (esConsultaExistente)
+                        AjustarFormularioConsulta(existente);
+
+                    existente.BringToFront();
+                    existente.Activate();
+                    return;
+                }
+
+                // ===== Crear nueva instancia =====
+                Form frm = Activator.CreateInstance(tipo) as Form;
+                if (frm == null) return;
+
+                bool esConsulta = frm.Tag != null &&
+                                  frm.Tag.ToString().ToUpper() == "CONSULTA";
+
+                if (esConsulta)
+                {
+                    AjustarFormularioConsulta(frm);
+
+                    // Se dispose automáticamente al cerrarse
+                    frm.FormClosed += (s, e) => frm.Dispose();
+
+                    frm.Show(this);
+                }
+                else
+                {
+                    frm.StartPosition = FormStartPosition.CenterParent;
+                    using (frm)
                     {
-                        Form formulario = (Form)frm;
-
-                        formulario.Width = this.ClientRectangle.Width;
-                        formulario.Height = this.ClientRectangle.Height - this.Ribbon.Height - this.StatusBar.Height;
-                        formulario.Top = this.Ribbon.Height;
-                        formulario.Left = 0;
-                        formulario.StartPosition = FormStartPosition.Manual;
+                        frm.ShowDialog(this);
                     }
-                    else
-                        frm.StartPosition = FormStartPosition.CenterParent;
-                    frm.ShowDialog(this);
                 }
             }
             catch (Exception ex)
@@ -270,6 +298,15 @@ namespace SistemaContable.UI.Forms
                 XtraMessageBox.Show($"Error al abrir el formulario '{nombreFormulario}':\n{ex.Message}",
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void AjustarFormularioConsulta(Form frm)
+        {
+            frm.StartPosition = FormStartPosition.Manual;
+            frm.Width = this.ClientRectangle.Width;
+            frm.Height = this.ClientRectangle.Height - this.Ribbon.Height - this.StatusBar.Height;
+            frm.Top = this.Ribbon.Height;
+            frm.Left = 0;
         }
 
         private void ribbon_ItemClick(object sender, ItemClickEventArgs e)

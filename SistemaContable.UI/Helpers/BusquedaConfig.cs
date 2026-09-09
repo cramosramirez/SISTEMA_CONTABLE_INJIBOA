@@ -38,6 +38,8 @@ namespace SistemaContable.UI.Helpers
         /// </summary>
         public object ParametrosExtra { get; set; }
 
+        public Func<object> ObtenerParametrosExtra { get; set; }
+
         public BusquedaConfig()
         {
             Columnas = new Dictionary<string, string>();

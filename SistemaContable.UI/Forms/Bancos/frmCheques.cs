@@ -16,9 +16,13 @@ namespace SistemaContable.UI.Forms.Bancos
     {
         private enum EstadoFormulario
         {
-            Nuevo,
-            Guardado,
-            Impreso
+            Inicializar,
+            Agregar,
+            Modificar,
+            Ignorar,
+            Guardar,
+            Impreso,
+            Buscar
         }
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtPartida;  // DataTable que alimenta el grid
@@ -28,6 +32,8 @@ namespace SistemaContable.UI.Forms.Bancos
         private string _uidEnlaceCheque = string.Empty;
         private string _ultimoDetalleAutoGenerado = string.Empty;
         private bool _flujoEsQuedan = false;
+        private EstadoFormulario _estadoActual = EstadoFormulario.Inicializar;
+        private bool _modoBusqueda = false;
 
         public frmCheques()
         {            
@@ -36,8 +42,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private void frmCheques_Load(object sender, EventArgs e)
         {
-            FormHelper.Inicializar(this);
-            mskFECHA_CHEQUE.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            FormHelper.Inicializar(this);            
 
             if (!VerificarCCFsHuerfanos())
             {
@@ -71,41 +76,24 @@ namespace SistemaContable.UI.Forms.Bancos
             );
 
             FormHelper.RegistrarBusqueda(
-                txtNUM_CUENTA,
-                new BusquedaConfig
-                {
-                    StoredProcedure = "SP_CUENTA_BANCARIA",
-                    ParametrosExtra = new { ACTIVA = true},
-                    Columnas = new Dictionary<string, string>
-                    {
+                 txtNUM_CUENTA,
+                 new BusquedaConfig
+                 {
+                     StoredProcedure = "SP_CUENTA_BANCARIA",
+                     ParametrosExtra = new { ACTIVA = true },
+                     Columnas = new Dictionary<string, string>
+                     {
                         { "NUM_CUENTA", "CUENTA" },
                         { "NOMBRE",     "NOMBRE" }
-                    },
-                    Anchos = new Dictionary<string, int>
-                    {
-                        { "NUM_CUENTA",  110 },
-                        { "NOMBRE",  400 }
-                    }
-                },
-                fila =>
-                {
-                    txtNUM_CUENTA.Tag = fila["ID_CTA_BANCO"].ToString();
-                    txtNUM_CUENTA.Text = fila["NUM_CUENTA"].ToString();
-                    txtNOMBRE.Text = fila["NOMBRE"].ToString();
-                    // Incrementar el correlativo en 1 para mostrar el siguiente número
-                    int correlativo = 0;
-                    if (fila["CORRELATIVO_CHEQUE"] != DBNull.Value)
-                        int.TryParse(fila["CORRELATIVO_CHEQUE"].ToString(), out correlativo);
-                    txtNUMERO_CHEQUE.Text = (correlativo + 1).ToString();
-                    txtMONEDA.Text = "DOLARES";
-
-                    // Al seleccionar cuenta bancaria agregar
-                    // su cuenta contable como primera fila del grid
-                    string ctaContable = fila["CTACONTABLE"].ToString();
-                    if (!string.IsNullOrWhiteSpace(ctaContable))
-                        AgregarFilaPartida(ctaContable);
-                }                
-            );
+                     },
+                     Anchos = new Dictionary<string, int>
+                     {
+                        { "NUM_CUENTA", 110 },
+                        { "NOMBRE",     400 }
+                     }
+                 },
+                 fila => CargarCuentaBanco(fila)
+             );
 
             FormHelper.RegistrarBusqueda(
                 txtPROVEEDOR,
@@ -129,15 +117,196 @@ namespace SistemaContable.UI.Forms.Bancos
                 },
                 fila => AsignarProveedor(fila)
             );
-            ConfigurarCRUD(EstadoFormulario.Nuevo);
-            ConfigurarMenuDocumentos();
-            ConfigurarOperacion();
+
+            FormHelper.RegistrarBusqueda(
+                txtNUMERO_CHEQUE,
+                new BusquedaConfig
+                {
+                    StoredProcedure = "SP_CHEQUE",
+                    Accion = "BUSCAR",
+                    Columnas = new Dictionary<string, string>
+                    {
+                        { "NUM_CHEQUE",    "N° CHEQUE" },
+                        { "FECHA_CHEQUE",  "FECHA" },
+                        { "NOMBRE_CHEQUE", "PROVEEDOR" },
+                        { "MONTO", "MONTO" }
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
+                        { "NUM_CHEQUE",     90 },
+                        { "FECHA_CHEQUE",  100 },
+                        { "NOMBRE_CHEQUE", 350 },
+                        { "MONTO", 100 }
+                    },
+                    // Los parámetros ID_CTA_BANCO y TIPO_PARTIDA se pasan dinámicamente
+                    // en tiempo de ejecución. Usamos un delegate para armarlos al momento.
+                    ObtenerParametrosExtra = () => new
+                    {
+                        ID_CTA_BANCO = Convert.ToInt32(txtNUM_CUENTA.Tag ?? 0),
+                        TIPO_PARTIDA = txtOPERACION.Text.Trim()
+                    }
+                },
+                fila =>
+                {
+                    // Validar que se haya elegido una cuenta antes de buscar
+                    if (txtNUM_CUENTA.Tag == null || Convert.ToInt32(txtNUM_CUENTA.Tag) == 0)
+                    {
+                        XtraMessageBox.Show(
+                            "Debe seleccionar primero la cuenta bancaria.",
+                            "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    int idCheque = Convert.ToInt32(fila["ID_CHEQUE"]);
+                    CargarCheque(idCheque);
+                    FormHelper.EnfocarConDelay(btnModificar);
+                }
+            );
+
+            ConfigurarCRUD(EstadoFormulario.Inicializar);
+            ConfigurarMenuDocumentos();            
+        }
+
+        // ============================================================
+        // CargarCuentaBanco        
+        // Comportamiento:
+        //   * Siempre asigna cuenta, nombre, cuenta contable en la partida.
+        //   * En modo Agregar:  también asigna NUM_CHEQUE y NUMERO_PARTIDA sugeridos.
+        //   * En modo Buscar:   NO asigna NUM_CHEQUE (el usuario lo va a buscar).
+        // ============================================================
+        private void CargarCuentaBanco(DataRow fila)
+        {
+            // ---- Datos básicos de la cuenta (siempre) ----
+            txtNUM_CUENTA.Tag = fila["ID_CTA_BANCO"].ToString();
+            txtNUM_CUENTA.Text = fila["NUM_CUENTA"].ToString();
+            txtNOMBRE.Text = fila["NOMBRE"].ToString();
+            txtMONEDA.Text = "DOLARES";
+                       
+            // ---- Diferencias según el modo ----
+            if (_modoBusqueda)
+            {
+                // Modo búsqueda: NO sugerir NUM_CHEQUE ni NUMERO_PARTIDA
+                // El usuario los ingresará (o usará *+Enter) para buscar
+                txtNUMERO_CHEQUE.Text = string.Empty;
+                txtNUMERO_PARTIDA.Text = string.Empty;
+
+                // Esperar a que el SendKeys("{TAB}") de FormHelper termine
+                // antes de forzar el foco al campo de búsqueda de cheque
+                FormHelper.EnfocarConDelay(txtNUMERO_CHEQUE);
+            }
+            else
+            {
+                // ---- Cuenta contable como primera fila del grid (siempre) ----
+                string ctaContable = fila["CTACONTABLE"].ToString();
+                if (!string.IsNullOrWhiteSpace(ctaContable))
+                    AgregarFilaPartida(ctaContable);
+
+                // Modo alta: sugerir el siguiente número de cheque
+                int correlativo = 0;
+                if (fila["CORRELATIVO_CHEQUE"] != DBNull.Value)
+                    int.TryParse(fila["CORRELATIVO_CHEQUE"].ToString(), out correlativo);
+                txtNUMERO_CHEQUE.Text = (correlativo + 1).ToString();
+
+                // Sugerir siguiente número de partida (sin consumirlo aún)
+                var infoPartida = NumeradorPartidaHelper.Consultar("CH");
+                txtNUMERO_PARTIDA.Text = infoPartida.NumSiguienteFormateado;
+            }
+        }
+
+        private void CargarCheque(int idCheque)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                // OBTENER devuelve 3 result sets: encabezado, partida, CCFs
+                DataSet ds = _dal.EjecutarMultiple("SP_CHEQUE", new
+                {
+                    ACCION = "OBTENER",
+                    ID_CHEQUE = idCheque
+                });
+
+                if (ds.Tables.Count < 3 || ds.Tables[0].Rows.Count == 0)
+                {
+                    XtraMessageBox.Show(
+                        $"No se encontró el cheque con ID {idCheque}.",
+                        "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // ---------- Result set 1: ENCABEZADO ----------
+                DataRow r = ds.Tables[0].Rows[0];
+
+                _idCheque = Convert.ToInt32(r["ID_CHEQUE"]);
+                _uidEnlaceCheque = FormHelper.ObtenerUUID();   // regenerar UID por si edita
+                _flujoEsQuedan = r["CODIGO_ENTIDAD"] != DBNull.Value
+                                    && !string.IsNullOrWhiteSpace(r["CODIGO_ENTIDAD"].ToString());
+
+                txtOPERACION.Text = SafeStr(r["TIPO_PARTIDA"]);
+                txtNUM_CUENTA.Tag = SafeStr(r["ID_CTA_BANCO"]);
+                txtNUM_CUENTA.Text = SafeStr(r["NUM_CUENTA"]);
+                txtNOMBRE.Text = SafeStr(r["NOMBRE_CUENTA"]);
+                txtMONEDA.Text = "DOLARES";
+
+                txtNUMERO_CHEQUE.Text = SafeStr(r["NUM_CHEQUE"]);
+                txtNUMERO_PARTIDA.Text = SafeStr(r["NID_PARTIDA"]);   // formateado
+
+                DateTime fechaCheque = Convert.ToDateTime(r["FECHA_CHEQUE"]);
+                mskFECHA_CHEQUE.Text = fechaCheque.ToString("dd/MM/yyyy");
+
+                txtNOMBRE_CHEQUE.Text = SafeStr(r["NOMBRE_CHEQUE"]);
+                txtCONCEPTO.Text = SafeStr(r["CONCEPTO"]);
+                txtPROVEEDOR.Text = SafeStr(r["CODIGO_ENTIDAD"]);
+
+                decimal monto = r["MONTO"] == DBNull.Value ? 0m : Convert.ToDecimal(r["MONTO"]);
+                txtCANTIDAD.Text = monto.ToString("N2");
+
+                // ---------- Result set 2: PARTIDA CONTABLE ----------
+                _dtPartida.Clear();
+                foreach (DataRow rp in ds.Tables[1].Rows)
+                {
+                    var fila = _dtPartida.NewRow();
+                    fila["ORDEN"] = rp["ORDEN"] == DBNull.Value ? 0 : Convert.ToInt32(rp["ORDEN"]);
+                    fila["CTACONTABLE"] = SafeStr(rp["CTACONTABLE"]);
+                    fila["DETALLE"] = SafeStr(rp["DETALLE"]);
+                    fila["CARGO"] = rp["CARGO"] == DBNull.Value ? 0m : Convert.ToDecimal(rp["CARGO"]);
+                    fila["ABONO"] = rp["ABONO"] == DBNull.Value ? 0m : Convert.ToDecimal(rp["ABONO"]);
+                    _dtPartida.Rows.Add(fila);
+                }
+
+                ActualizarCuadre();
+
+                // ---------- Result set 3: CCFs VINCULADOS ----------
+                if (_documentosPago == null)
+                {
+                    _documentosPago = ds.Tables[2].Copy();
+                }
+                else
+                {
+                    _documentosPago.Clear();
+                    foreach (DataRow rc in ds.Tables[2].Rows)
+                        _documentosPago.ImportRow(rc);
+                }
+
+                // ---------- Estado final ----------
+                ConfigurarCRUD(EstadoFormulario.Guardar);
+                btnImprimir.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    "Error al cargar el cheque:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private void ConfigurarOperacion()
         {          
-            txtOPERACION.Text = "CH";
-            txtOPERACION.Tag = "1";
+            txtOPERACION.Text = "CH";            
             txtOPERACION.ReadOnly = true;
             this.BeginInvoke(new Action(() => txtNUM_CUENTA.Focus()));
         }
@@ -264,58 +433,197 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private void ConfigurarCRUD(EstadoFormulario estado)
         {
-
+            _estadoActual = estado;
             switch (estado)
-            {
-                case EstadoFormulario.Nuevo:
+            {                
+                case EstadoFormulario.Inicializar:
+                    _modoBusqueda = false;
+                    HabilitarBotones(
+                        agregar: true,
+                        buscar: true,
+                        modificar: false,
+                        guardar: false,
+                        ignorar: false,
+                        eliminar: false,
+                        imprimir: false,
+                        anterior: false,
+                        siguiente: false,
+                        finalizar: true,
+                        borrarFila: false,
+                        anular: false
+                    );
+                    HabilitarControlesEncabezado(false);
+                    HabilitarControlesPartida(false);
+                    break;
+
+                case EstadoFormulario.Agregar:
+                    _modoBusqueda = false;
+                    HabilitarBotones(
+                        agregar: false,
+                        buscar: false,
+                        modificar: false,
+                        guardar: true,
+                        ignorar: true,
+                        eliminar: false,
+                        imprimir: false,
+                        anterior: false,
+                        siguiente: false,
+                        finalizar: false,
+                        borrarFila: true,
+                        anular: false
+                    );
+                    HabilitarControlesEncabezado(true);
+                    HabilitarControlesPartida(true);
+                    break;
+
+                case EstadoFormulario.Buscar:
+                    _modoBusqueda = true;
+                    HabilitarBotones(
+                        agregar: false,
+                        buscar: false,
+                        modificar: false,
+                        guardar: false,
+                        ignorar: true,
+                        eliminar: false,
+                        imprimir: false,
+                        anterior: false,
+                        siguiente: false,
+                        finalizar: false,
+                        borrarFila: false,
+                        anular: false
+                    );
+                    HabilitarControlesEncabezado(false);
+                    HabilitarControlesPartida(false);
+                    // Solo cuenta bancaria y número de cheque para búsqueda
                     txtOPERACION.Enabled = true;
                     txtNUM_CUENTA.Enabled = true;
-                    mskFECHA_CHEQUE.Enabled = true;
-                    txtPROVEEDOR.Enabled = true;
-                    txtNOMBRE.Enabled = true;
-                    txtNUMERO_CHEQUE.Enabled = true; 
-                    txtCANTIDAD.Enabled = true;
-                    txtNOMBRE_CHEQUE.Enabled = true;
-                    txtNUMERO_PARTIDA.Enabled = true;
-                    txtCONCEPTO.Enabled = true;
-                    gridControl1.Enabled = true;
-
-                    btnImprimir.Enabled = false;
-                    btnGuardar.Enabled = true;
-                    btnDocumentos.Enabled = true;
-                    btnAgregar.Enabled = false;
-                    btnBorrarFila.Enabled = true;
-                    btnEliminar.Enabled = false; 
+                    txtNUMERO_CHEQUE.ReadOnly = false;
+                    txtNUMERO_CHEQUE.Enabled = true;
                     break;
-                case EstadoFormulario.Guardado:
-                    txtOPERACION.Enabled = false;
+
+                case EstadoFormulario.Modificar:
+                    _modoBusqueda = false;
+                    HabilitarBotones(
+                        agregar: false,
+                        buscar: false,
+                        modificar: false,
+                        guardar: true,
+                        ignorar: true,
+                        eliminar: false,
+                        imprimir: false,
+                        anterior: false,
+                        siguiente: false,
+                        finalizar: true,
+                        borrarFila: true,
+                        anular: false
+                    );
+
+                    HabilitarControlesEncabezado(true);
+                    HabilitarControlesPartida(true);
+                    // Bloquear campos que rompen coherencia
                     txtNUM_CUENTA.Enabled = false;
-                    mskFECHA_CHEQUE.Enabled = false;
-                    txtPROVEEDOR.Enabled = false;
-                    txtNOMBRE.Enabled = false;
+                    txtOPERACION.Enabled = false;   // tipo de partida
                     txtNUMERO_CHEQUE.Enabled = false;
-                    txtCANTIDAD.Enabled = false;
-                    txtNOMBRE_CHEQUE.Enabled = false;
                     txtNUMERO_PARTIDA.Enabled = false;
-                    txtCONCEPTO.Enabled = false;
-                    gridControl1.Enabled = false;  
+                    mskFECHA_CHEQUE.Enabled = false;
+                    break;
 
-                    btnImprimir.Enabled = true;
-                    btnGuardar.Enabled = false;
-                    btnDocumentos.Enabled = false;
-                    btnAgregar.Enabled = true;
-                    btnBorrarFila.Enabled = false;
-                    btnEliminar.Enabled = true;
+                case EstadoFormulario.Ignorar:
+                    _modoBusqueda = false;
+                    HabilitarBotones(
+                        agregar: true,
+                        buscar: true,
+                        modificar: false,
+                        guardar: false,
+                        ignorar: false,
+                        eliminar: false,
+                        imprimir: false,
+                        anterior: false,
+                        siguiente: false,
+                        finalizar: true,
+                        borrarFila: true,
+                        anular: false
+                    );
+                    HabilitarControlesEncabezado(true);
+                    HabilitarControlesPartida(true);
                     break;
-                case EstadoFormulario.Impreso:
-                    btnImprimir.Enabled = true;
-                    btnGuardar.Enabled = false;
-                    btnDocumentos.Enabled = false;
-                    btnAgregar.Enabled = true;
-                    btnBorrarFila.Enabled = false;
-                    btnEliminar.Enabled = false;
-                    break;
+
+                case EstadoFormulario.Guardar:
+                    _modoBusqueda = false;
+
+                    HabilitarBotones(
+                        agregar: true,
+                        buscar: true,
+                        modificar: true,
+                        guardar: false,
+                        ignorar: false,
+                        eliminar: true,
+                        imprimir: true,
+                        anterior: true,
+                        siguiente: true,
+                        finalizar: true,
+                        borrarFila: false,
+                        anular: false
+                    );                    
+                    HabilitarControlesEncabezado(false);
+                    HabilitarControlesPartida(false);
+                    break;                   
             }
+        }
+
+        private void HabilitarBotones(
+            bool agregar,
+            bool buscar,
+            bool modificar,
+            bool guardar,
+            bool ignorar,
+            bool eliminar,
+            bool imprimir,
+            bool anterior,
+            bool siguiente,
+            bool finalizar,
+            bool borrarFila,
+            bool anular)
+        {
+            btnAgregar.Enabled = agregar;
+            btnBuscar.Enabled = buscar;
+            btnModificar.Enabled = modificar;
+            btnGuardar.Enabled = guardar;
+            btnIngnorar.Enabled = ignorar;
+            btnEliminar.Enabled = eliminar;
+            btnImprimir.Enabled = imprimir;
+            btnAnterior.Enabled = anterior;
+            btnSiguiente.Enabled = siguiente;
+            btnFinalizar.Enabled = finalizar;
+            btnBorrarFila.Enabled = borrarFila;            
+            btnAnular.Enabled = anular;
+        }
+
+
+        // ============================================================
+        // Habilita/deshabilita los controles del encabezado del cheque
+        // ============================================================
+        private void HabilitarControlesEncabezado(bool habilitar)
+        {
+            txtOPERACION.Enabled = habilitar;   // tipo de partida
+            txtNUM_CUENTA.Enabled = habilitar;
+            mskFECHA_CHEQUE.Enabled = habilitar;
+            txtPROVEEDOR.Enabled = habilitar;
+            txtNOMBRE.Enabled = habilitar;
+            txtNUMERO_CHEQUE.Enabled = habilitar;
+            txtCANTIDAD.Enabled = habilitar;
+            txtNOMBRE_CHEQUE.Enabled = habilitar;
+            txtNUMERO_PARTIDA.Enabled = habilitar;
+            txtMONEDA.Enabled = habilitar;
+            txtCONCEPTO.Enabled = habilitar;
+        }
+
+        // ============================================================
+        // Habilita/deshabilita la grilla de partida contable
+        // ============================================================
+        private void HabilitarControlesPartida(bool habilitar)
+        {
+            gridControl1.Enabled = habilitar;
         }
 
         /// <summary>
@@ -783,10 +1091,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 return;
             }
             lblESTADO_CUENTA.Text = texto;
-            lblESTADO_CUENTA.ForeColor = esValida ? Color.Black : Color.DarkRed;
-            lblESTADO_CUENTA.Font = new Font(
-                lblESTADO_CUENTA.Font,
-                esValida ? FontStyle.Regular : FontStyle.Bold);
+            lblESTADO_CUENTA.ForeColor = esValida ? Color.Black : Color.DarkRed;      
             pnESTADO_CUENTA.Visible = true;
         }
 
@@ -852,7 +1157,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private bool ValidarCampos()
         {
-            if (string.IsNullOrWhiteSpace(txtOPERACION.Text) || string.IsNullOrWhiteSpace(SafeStr(txtOPERACION.Tag)))
+            if (string.IsNullOrWhiteSpace(txtOPERACION.Text))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
                     "Seleccione una operación.",
@@ -1123,6 +1428,9 @@ namespace SistemaContable.UI.Forms.Bancos
             LimpiarFilasVaciasGrid();
             if (!ValidarCampos()) return;
 
+            // Elegir la acción del SP según el estado actual
+            bool esModificacion = (_estadoActual == EstadoFormulario.Modificar);
+
             try
             {
                 Cursor = Cursors.WaitCursor;
@@ -1137,30 +1445,29 @@ namespace SistemaContable.UI.Forms.Bancos
 
 
                 // Construir TVP para pago de CCFs de Quedan (puede venir vacío)
-                DataTable dtPagoQuedan = ConstruirTvpPagoCcfQuedan();
+                DataTable dtPagoQuedan = esModificacion
+                    ? new DataTable()   // vacío, no se toca en modificación
+                    : ConstruirTvpPagoCcfQuedan();
 
                 // Parámetros del cheque
                 var parametros = new
                 {
-                    ACCION = "GUARDAR",
-                    ID_CHEQUE = 0,
+                    ACCION = esModificacion ? "MODIFICAR" : "GUARDAR",
+                    ID_CHEQUE = esModificacion ? _idCheque : 0,
                     ID_CTA_BANCO = Convert.ToInt32(txtNUM_CUENTA.Tag ?? 0),
                     NUM_CHEQUE = string.IsNullOrWhiteSpace(txtNUMERO_CHEQUE.Text)
                                       ? (int?)null
                                       : (int?)Convert.ToInt32(txtNUMERO_CHEQUE.Text),
                     FECHA_CHEQUE = FormHelper.ObtenerFecha(mskFECHA_CHEQUE),
                     MONTO = ObtenerDecimal(txtCANTIDAD),
-                    NOMBRE_CHEQUE = NullIfEmpty(txtNOMBRE_CHEQUE.Text),
-                    NUM_PARTIDA = string.IsNullOrWhiteSpace(txtNUMERO_PARTIDA.Text)
-                                      ? (int?)null
-                                      : (int?)Convert.ToInt32(txtNUMERO_PARTIDA.Text),
+                    NOMBRE_CHEQUE = NullIfEmpty(txtNOMBRE_CHEQUE.Text),                  
                     CONCEPTO = NullIfEmpty(txtCONCEPTO.Text),
                     ID_ENTIDAD = (int?)null,
                     CODIGO_ENTIDAD = NullIfEmpty(txtPROVEEDOR.Text),
                     UID_ENLACE_CHEQUE = _uidEnlaceCheque,
                     USUARIO = Configuracion.UsuarioActual,
                     IMPRESO = 0,
-                    ID_TIPO_PARTIDA = Convert.ToInt32(SafeStr(txtOPERACION.Tag))
+                    TIPO_PARTIDA = NullIfEmpty(txtOPERACION.Text)
                 };
 
                 // Llamada al SP con dos TVPs
@@ -1175,12 +1482,17 @@ namespace SistemaContable.UI.Forms.Bancos
                     throw new Exception("El SP no devolvió el ID generado.");
 
                 _idCheque = idCheque;
-                ConfigurarCRUD(EstadoFormulario.Guardado);
+                ConfigurarCRUD(EstadoFormulario.Guardar);
+
+                // Mensaje de éxito según el modo
+                string mensaje = esModificacion
+                    ? $"Cheque <b>N° {txtNUMERO_CHEQUE.Text.Trim()}</b> modificado correctamente."
+                    : $"Cheque <b>N° {txtNUMERO_CHEQUE.Text.Trim()}</b> guardado correctamente.";
 
                 var args = new XtraMessageBoxArgs
                 {
-                    Caption = "Guardado",
-                    Text = $"Cheque <b>N° {txtNUMERO_CHEQUE.Text.Trim()}</b> guardado correctamente.",
+                    Caption = esModificacion ? "Modificado" : "Guardado",
+                    Text = mensaje,
                     Buttons = new[] { DialogResult.OK },
                     Icon = SystemIcons.Information,
                     AllowHtmlText = DefaultBoolean.True
@@ -1248,6 +1560,69 @@ namespace SistemaContable.UI.Forms.Bancos
         {
             if (string.IsNullOrWhiteSpace(tb.Text)) return 0;
             return decimal.TryParse(tb.Text, out decimal v) ? v : 0;
+        }
+
+        // ============================================================
+        // NavegarCheque
+        // Llama a SP_CHEQUE con la acción ANTERIOR o SIGUIENTE y,
+        // si obtiene un ID válido, carga ese cheque.
+        //
+        // Si el SP no devuelve nada, muestra un mensaje al usuario.
+        // ============================================================
+        private void NavegarCheque(string accion)
+        {
+            if (_idCheque == 0)
+            {
+                XtraMessageBox.Show(
+                    "Debe cargar primero un cheque.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (txtNUM_CUENTA.Tag == null || Convert.ToInt32(txtNUM_CUENTA.Tag) == 0)
+            {
+                XtraMessageBox.Show(
+                    "No hay cuenta bancaria seleccionada.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                DataTable dt = _dal.EjecutarConsulta("SP_CHEQUE", new
+                {
+                    ACCION = accion,
+                    ID_CHEQUE = _idCheque,
+                    ID_CTA_BANCO = Convert.ToInt32(txtNUM_CUENTA.Tag),
+                    TIPO_PARTIDA = txtOPERACION.Text.Trim()
+                });
+
+                if (dt.Rows.Count == 0 || dt.Rows[0]["ID_CHEQUE"] == DBNull.Value)
+                {
+                    string mensaje = accion == "ANTERIOR"
+                        ? "No hay más cheques hacia atrás."
+                        : "No hay más cheques hacia adelante.";
+
+                    XtraMessageBox.Show(mensaje, "Navegación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                int idChequeDestino = Convert.ToInt32(dt.Rows[0]["ID_CHEQUE"]);
+                CargarCheque(idChequeDestino);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    $"Error al navegar: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private void btnBorrarFila_Click(object sender, EventArgs e)
@@ -1369,11 +1744,16 @@ namespace SistemaContable.UI.Forms.Bancos
                 if (seImprimio)
                 {
                     MarcarChequeComoImpreso(_idCheque);
-                    ConfigurarCRUD(EstadoFormulario.Impreso);
+                    // Si la impresión fué correcta habilitar la opción de anulación del cheque
+                    btnAnular.Enabled = true; 
 
                     // Mostrar en pantalla el anexo del cheque después de imprimir
-                    var reporteAnexo = new rptChequeAnexo { IdCheque = _idCheque };
-                    reporteAnexo.MostrarPreview();
+                    if (_flujoEsQuedan && (XtraMessageBox.Show("¿Desea emitir detalle de facturas canceladas?",
+                        "Validación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes))
+                    {
+                        var reporteAnexo = new rptChequeAnexo { IdCheque = _idCheque };
+                        reporteAnexo.MostrarPreview();
+                    }                   
                 }
             }
             catch (Exception ex)
@@ -1421,10 +1801,7 @@ namespace SistemaContable.UI.Forms.Bancos
             }
 
             var resp = XtraMessageBox.Show(
-                $"¿Está seguro que desea eliminar el cheque N° {txtNUMERO_CHEQUE.Text.Trim()}?\n\n" +
-                "Esta operación no se puede deshacer.\n" +
-                "Los documentos al contado quedarán pendientes para un nuevo cheque.\n" +
-                "Los documentos de Quedan quedarán pendientes de pago nuevamente.",
+                $"¿Está seguro que desea eliminar el cheque N° {txtNUMERO_CHEQUE.Text.Trim()}?",
                 "Confirmar eliminación",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -1458,7 +1835,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 XtraMessageBox.Show(mensaje, "Eliminado",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                btnAgregar_Click(sender, e);
+                btnIngnorar_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -1474,6 +1851,7 @@ namespace SistemaContable.UI.Forms.Bancos
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             _idCheque = 0;
+            _modoBusqueda = false;
             _ultimoDetalleAutoGenerado = string.Empty;
             _dtPartida.Clear();
             _documentosPago?.Clear(); 
@@ -1484,7 +1862,7 @@ namespace SistemaContable.UI.Forms.Bancos
             mskFECHA_CHEQUE.Text = DateTime.Today.ToString("dd/MM/yyyy");
             ConfigurarOperacion();
             ActualizarCuadre();
-            ConfigurarCRUD(EstadoFormulario.Nuevo);
+            ConfigurarCRUD(EstadoFormulario.Agregar);
 
             // Abrir automáticamente la búsqueda de Tipo de Operación
             this.BeginInvoke(new Action(() =>
@@ -1532,6 +1910,73 @@ namespace SistemaContable.UI.Forms.Bancos
                 partes.Add("CCF");
 
             return partes.Count == 0 ? string.Empty : "PAGO DE " + string.Join(" Y ", partes);
+        }
+
+        private void btnIngnorar_Click(object sender, EventArgs e)
+        {
+            _idCheque = 0;
+            _ultimoDetalleAutoGenerado = string.Empty;
+            _dtPartida.Clear();
+            _documentosPago?.Clear();
+            _flujoEsQuedan = false;
+            txtNUM_CUENTA.Tag = null;
+            FormHelper.LimpiarControles(this);                                    
+            ActualizarCuadre();
+            ConfigurarCRUD(EstadoFormulario.Inicializar);            
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            _idCheque = 0;
+            _modoBusqueda = true;                        // ← activar modo búsqueda
+            _ultimoDetalleAutoGenerado = string.Empty;
+            _dtPartida.Clear();
+            _documentosPago?.Clear();
+            _flujoEsQuedan = false;
+            txtNUM_CUENTA.Tag = null;
+            FormHelper.LimpiarControles(this);
+            AgregarFilaVacia();            
+            ConfigurarOperacion();
+            ActualizarCuadre();
+            ConfigurarCRUD(EstadoFormulario.Buscar);
+            this.BeginInvoke(new Action(() =>
+            {
+                txtNUM_CUENTA.Focus();
+            }));
+        }
+
+        private void btnAnular_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            if (_idCheque == 0)
+            {
+                XtraMessageBox.Show(
+                    "Debe cargar un cheque para modificarlo.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            ConfigurarCRUD(EstadoFormulario.Modificar);
+
+            this.BeginInvoke(new Action(() =>
+            {
+                txtNOMBRE_CHEQUE.Focus();
+                txtNOMBRE_CHEQUE.SelectAll();
+            }));
+        }
+
+        private void btnAnterior_Click(object sender, EventArgs e)
+        {
+            NavegarCheque("ANTERIOR");
+        }
+
+        private void btnSiguiente_Click(object sender, EventArgs e)
+        {
+            NavegarCheque("SIGUIENTE");
         }
     }
 }

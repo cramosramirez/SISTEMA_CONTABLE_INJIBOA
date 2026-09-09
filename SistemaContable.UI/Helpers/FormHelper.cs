@@ -12,6 +12,34 @@ namespace SistemaContable.UI.Helpers
     public static class FormHelper
     {
 
+        /// <summary>
+        /// Da foco a un control después de un pequeño delay (default 50ms).
+        /// Útil cuando otro proceso (como SendKeys.Send("{TAB}") de RegistrarBusqueda)
+        /// pisa el foco al terminar. El delay garantiza que nuestro foco sea el último.
+        /// </summary>
+        /// <param name="control">Control al que se le dará foco</param>
+        /// <param name="delayMs">Milisegundos de espera antes de enfocar (default 50)</param>
+        public static void EnfocarConDelay(Control control, int delayMs = 50)
+        {
+            if (control == null) return;
+
+            var timer = new System.Windows.Forms.Timer { Interval = delayMs };
+            timer.Tick += (s, e) =>
+            {
+                timer.Stop();
+                timer.Dispose();
+                try
+                {
+                    control.Focus();
+                }
+                catch
+                {
+                    // silenciar por si el control fue disposed entre el timer y el tick
+                }
+            };
+            timer.Start();
+        }
+
         private static readonly System.Text.RegularExpressions.Regex _regexCorreo =
             new System.Text.RegularExpressions.Regex(
                @"^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$",
@@ -163,6 +191,12 @@ namespace SistemaContable.UI.Helpers
             if (!_lookups.ContainsKey(campo)) return;
 
             var config = _lookups[campo];
+
+            // ✅ NUEVO: si hay delegate para parámetros dinámicos, evaluarlo AHORA
+            if (config.ObtenerParametrosExtra != null)
+            {
+                config.ParametrosExtra = config.ObtenerParametrosExtra();
+            }
 
             using (var frm = new frmBusquedaGenerica(config))
             {

@@ -52,8 +52,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label8 = new System.Windows.Forms.Label();
             this.cbxCENTRO_COSTO = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.cbxZAFRA = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.cbxSUCURSAL = new System.Windows.Forms.ComboBox();
             this.label20 = new System.Windows.Forms.Label();
             this.dteFECHA = new DevExpress.XtraEditors.DateEdit();
@@ -71,6 +69,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridDETALLE_PROD = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.chkPERCEPCION = new System.Windows.Forms.CheckBox();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.cbxGENTRAS = new System.Windows.Forms.ComboBox();
@@ -96,7 +95,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label23 = new System.Windows.Forms.Label();
             this.txtGRAVADA = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
-            this.chkPERCEPCION = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA.Properties)).BeginInit();
@@ -129,8 +127,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.cbxCENTRO_COSTO);
             this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.cbxZAFRA);
-            this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.cbxSUCURSAL);
             this.panel1.Controls.Add(this.label20);
             this.panel1.Controls.Add(this.dteFECHA);
@@ -367,26 +363,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label6.Text = "Centro de Costo";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // cbxZAFRA
-            // 
-            this.cbxZAFRA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxZAFRA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxZAFRA.FormattingEnabled = true;
-            this.cbxZAFRA.Location = new System.Drawing.Point(937, 162);
-            this.cbxZAFRA.Name = "cbxZAFRA";
-            this.cbxZAFRA.Size = new System.Drawing.Size(218, 25);
-            this.cbxZAFRA.TabIndex = 16;
-            // 
-            // label5
-            // 
-            this.label5.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(859, 164);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(72, 25);
-            this.label5.TabIndex = 72;
-            this.label5.Text = "Zafra";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // cbxSUCURSAL
             // 
             this.cbxSUCURSAL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -589,6 +565,16 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1323, 241);
             this.panel3.TabIndex = 2;
+            // 
+            // chkPERCEPCION
+            // 
+            this.chkPERCEPCION.AutoSize = true;
+            this.chkPERCEPCION.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkPERCEPCION.Location = new System.Drawing.Point(986, 178);
+            this.chkPERCEPCION.Name = "chkPERCEPCION";
+            this.chkPERCEPCION.Size = new System.Drawing.Size(14, 13);
+            this.chkPERCEPCION.TabIndex = 100;
+            this.chkPERCEPCION.UseVisualStyleBackColor = true;
             // 
             // btnFinalizar
             // 
@@ -846,16 +832,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label22.Text = "Gravada";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // chkPERCEPCION
-            // 
-            this.chkPERCEPCION.AutoSize = true;
-            this.chkPERCEPCION.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chkPERCEPCION.Location = new System.Drawing.Point(986, 178);
-            this.chkPERCEPCION.Name = "chkPERCEPCION";
-            this.chkPERCEPCION.Size = new System.Drawing.Size(14, 13);
-            this.chkPERCEPCION.TabIndex = 100;
-            this.chkPERCEPCION.UseVisualStyleBackColor = true;
-            // 
             // frmDocumento_CLQ
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -899,8 +875,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ComboBox cbxCENTRO_COSTO;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox cbxZAFRA;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cbxSUCURSAL;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox txtDIRECCION;

@@ -222,7 +222,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1282, 697);
+            this.groupBox1.Size = new System.Drawing.Size(1296, 697);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
@@ -233,7 +233,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnConsultaCheque.ImageOptions.Image = global::SistemaContable.UI.RecursosAdicionales01.buscar_01_16x16;
             this.btnConsultaCheque.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnConsultaCheque.ImageOptions.ImageToTextIndent = 0;
-            this.btnConsultaCheque.Location = new System.Drawing.Point(1111, 537);
+            this.btnConsultaCheque.Location = new System.Drawing.Point(1111, 402);
             this.btnConsultaCheque.Name = "btnConsultaCheque";
             this.btnConsultaCheque.Size = new System.Drawing.Size(30, 25);
             this.btnConsultaCheque.TabIndex = 114;
@@ -250,7 +250,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(1143, 633);
+            this.btnFinalizar.Location = new System.Drawing.Point(1158, 633);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
             this.btnFinalizar.TabIndex = 47;
@@ -266,7 +266,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnProvision.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnProvision.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnProvision.ImageOptions.Image")));
             this.btnProvision.ImageOptions.ImageToTextIndent = 10;
-            this.btnProvision.Location = new System.Drawing.Point(1143, 575);
+            this.btnProvision.Location = new System.Drawing.Point(1158, 575);
             this.btnProvision.Name = "btnProvision";
             this.btnProvision.Size = new System.Drawing.Size(119, 47);
             this.btnProvision.TabIndex = 46;
@@ -292,7 +292,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnCorreo.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnCorreo.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnCorreo.ImageOptions.Image")));
             this.btnCorreo.ImageOptions.ImageToTextIndent = 10;
-            this.btnCorreo.Location = new System.Drawing.Point(1143, 405);
+            this.btnCorreo.Location = new System.Drawing.Point(1158, 405);
             this.btnCorreo.Name = "btnCorreo";
             this.btnCorreo.Size = new System.Drawing.Size(119, 47);
             this.btnCorreo.TabIndex = 44;
@@ -316,7 +316,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnImprimirRetencion.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnImprimirRetencion.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimirRetencion.ImageOptions.Image")));
             this.btnImprimirRetencion.ImageOptions.ImageToTextIndent = 10;
-            this.btnImprimirRetencion.Location = new System.Drawing.Point(1143, 347);
+            this.btnImprimirRetencion.Location = new System.Drawing.Point(1158, 347);
             this.btnImprimirRetencion.Name = "btnImprimirRetencion";
             this.btnImprimirRetencion.Size = new System.Drawing.Size(119, 47);
             this.btnImprimirRetencion.TabIndex = 43;
@@ -360,7 +360,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnImprimirQuedan.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnImprimirQuedan.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimirQuedan.ImageOptions.Image")));
             this.btnImprimirQuedan.ImageOptions.ImageToTextIndent = 10;
-            this.btnImprimirQuedan.Location = new System.Drawing.Point(1143, 290);
+            this.btnImprimirQuedan.Location = new System.Drawing.Point(1158, 290);
             this.btnImprimirQuedan.Name = "btnImprimirQuedan";
             this.btnImprimirQuedan.Size = new System.Drawing.Size(119, 47);
             this.btnImprimirQuedan.TabIndex = 42;
@@ -384,7 +384,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnValidar.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnValidar.ImageOptions.Image")));
             this.btnValidar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnValidar.ImageOptions.ImageToTextIndent = 10;
-            this.btnValidar.Location = new System.Drawing.Point(1143, 463);
+            this.btnValidar.Location = new System.Drawing.Point(1158, 463);
             this.btnValidar.Name = "btnValidar";
             this.btnValidar.Size = new System.Drawing.Size(119, 47);
             this.btnValidar.TabIndex = 45;
@@ -420,7 +420,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnAdicionar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnAdicionar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
             this.btnAdicionar.ImageOptions.ImageToTextIndent = 10;
-            this.btnAdicionar.Location = new System.Drawing.Point(1140, 233);
+            this.btnAdicionar.Location = new System.Drawing.Point(1155, 233);
             this.btnAdicionar.Name = "btnAdicionar";
             this.btnAdicionar.Size = new System.Drawing.Size(119, 47);
             this.btnAdicionar.TabIndex = 41;
@@ -434,7 +434,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnGuardar.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardar.ImageOptions.Image")));
             this.btnGuardar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnGuardar.ImageOptions.ImageToTextIndent = 10;
-            this.btnGuardar.Location = new System.Drawing.Point(1140, 175);
+            this.btnGuardar.Location = new System.Drawing.Point(1155, 175);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(119, 47);
             this.btnGuardar.TabIndex = 40;
@@ -622,6 +622,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtABONO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtABONO.Location = new System.Drawing.Point(947, 416);
             this.txtABONO.Name = "txtABONO";
+            this.txtABONO.ReadOnly = true;
             this.txtABONO.Size = new System.Drawing.Size(163, 24);
             this.txtABONO.TabIndex = 33;
             this.txtABONO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -641,6 +642,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCARGO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCARGO.Location = new System.Drawing.Point(947, 386);
             this.txtCARGO.Name = "txtCARGO";
+            this.txtCARGO.ReadOnly = true;
             this.txtCARGO.Size = new System.Drawing.Size(163, 24);
             this.txtCARGO.TabIndex = 32;
             this.txtCARGO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1183,7 +1185,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1282, 697);
+            this.ClientSize = new System.Drawing.Size(1296, 697);
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

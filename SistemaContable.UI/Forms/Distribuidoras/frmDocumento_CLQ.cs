@@ -144,8 +144,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             CargarCombo("DISTRIB.SP_CLQ_ENCA", "BUSCAR_CONDICION_PAGO", "ID_COND_PAGO", "NOMBRE_COND_PAGO", cbxCONDICION_PAGO);
             CargarCombo("DISTRIB.SP_CLQ_ENCA", "BUSCAR_TVTA", "ID_TVTA", "TVTA", cbxTIPO_VENTA, "VENTA GRAVADA");
             CargarCombo("DISTRIB.SP_CLQ_ENCA", "BUSCAR_LDESPACHO", "ID_LDESPACHO", "LDESPACHO", cbxLUGAR_DESPACHO, "INGENIO JIBOA");
-            CargarCombo("DISTRIB.SP_CLQ_ENCA", "BUSCAR_GVTA", "ID_GVTA", "GVTA", cbxGENTRAS, "VENTA DISTRIBUIDOR");
-            CargarCombo("DISTRIB.SP_CLQ_ENCA", "BUSCAR_ZAFRA", "ID_ZAFRA", "NOMBRE_ZAFRA", cbxZAFRA);
+            CargarCombo("DISTRIB.SP_CLQ_ENCA", "BUSCAR_GVTA", "ID_GVTA", "GVTA", cbxGENTRAS, "VENTA DISTRIBUIDOR");            
         }
 
         private void CargarCombo(string sp, string accion, string valueMember,
@@ -726,8 +725,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                 cbxCENTRO_COSTO.SelectedValue = ToInt(r["ID_CENTRO"]);   // ahora sí encuentra coincidencia
                 cbxTIPO_VENTA.SelectedValue = ToInt(r["ID_TVTA"]);
                 cbxLUGAR_DESPACHO.SelectedValue = ToInt(r["ID_LDESPACHO"]);
-                cbxGENTRAS.SelectedValue = ToInt(r["ID_GVTA"]);
-                cbxZAFRA.SelectedValue = ToInt(r["ID_ZAFRA"]);
+                cbxGENTRAS.SelectedValue = ToInt(r["ID_GVTA"]);                
 
                 AsignarDecimal(txtGRAVADA, ToDecimal(r["GRAVADO"]));
                 AsignarDecimal(txtEXENTA, ToDecimal(r["EXENTO"]));
@@ -857,8 +855,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     FECHA = dteFECHA.DateTime,
                     ID_ENTIDAD = _idEntidad,
                     CODIGO_ENTIDAD = _codigoEntidad,
-                    ID_COND_PAGO = ObtenerIdCombo(cbxCONDICION_PAGO),
-                    ID_ZAFRA = ObtenerIdCombo(cbxZAFRA),
+                    ID_COND_PAGO = ObtenerIdCombo(cbxCONDICION_PAGO),                    
                     ID_SUCURSAL = ObtenerIdCombo(cbxSUCURSAL),
                     ID_CENTRO = ObtenerIdCombo(cbxCENTRO_COSTO),
                     GRAVADO = ObtenerDecimal(txtGRAVADA),
