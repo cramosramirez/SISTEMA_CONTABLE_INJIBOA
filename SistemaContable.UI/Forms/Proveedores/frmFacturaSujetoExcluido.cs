@@ -234,21 +234,14 @@ namespace SistemaContable.UI.Forms.Proveedores
             cbx.ValueMember = idField;
             cbx.DisplayMember = "NOMBRE";
         }
-
-        private bool TieneSeleccion(ComboBox cbx)
-        {
-            if (cbx.SelectedValue == null) return false;
-            if (cbx.SelectedValue == DBNull.Value) return false;
-            if (cbx.SelectedValue is DataRowView) return false;
-            return true;
-        }
+               
 
         private void cbxTIPO_OPERACION_SelectionChangeCommitted(object sender, EventArgs e)
         {
             LimpiarCombo(cbxCLASIFICACION, "ID_CLASIFICA");
             LimpiarCombo(cbxSECTOR, "ID_SECTOR");
             LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
-            if (!TieneSeleccion(cbxTIPO_OPERACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) return;
             CargarClasificacion(Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue));
         }
 
@@ -256,7 +249,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             LimpiarCombo(cbxSECTOR, "ID_SECTOR");
             LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
-            if (!TieneSeleccion(cbxCLASIFICACION) || !TieneSeleccion(cbxTIPO_OPERACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxCLASIFICACION) || !ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) return;
             CargarSector(Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue),
                          Convert.ToInt32(cbxCLASIFICACION.SelectedValue));
         }
@@ -264,7 +257,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void cbxSECTOR_SelectionChangeCommitted(object sender, EventArgs e)
         {
             LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
-            if (!TieneSeleccion(cbxSECTOR) || !TieneSeleccion(cbxCLASIFICACION) || !TieneSeleccion(cbxTIPO_OPERACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxSECTOR) || !ComboHelper.TieneSeleccion(cbxCLASIFICACION) || !ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) return;
             CargarTipoCosto(Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue),
                             Convert.ToInt32(cbxCLASIFICACION.SelectedValue),
                             Convert.ToInt32(cbxSECTOR.SelectedValue));
@@ -505,7 +498,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 return false;
             }
 
-            if (!TieneSeleccion(cbxSUCURSAL))
+            if (!ComboHelper.TieneSeleccion(cbxSUCURSAL))
             {
                 XtraMessageBox.Show("Debe seleccionar la sucursal.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -522,11 +515,11 @@ namespace SistemaContable.UI.Forms.Proveedores
                 return false;
             }
 
-            if (!TieneSeleccion(cbxTIPO_SERVICIO)) { AvisoValidacion(cbxTIPO_SERVICIO, "tipo de servicio"); return false; }
-            if (!TieneSeleccion(cbxTIPO_OPERACION)) { AvisoValidacion(cbxTIPO_OPERACION, "tipo de operación"); return false; }
-            if (!TieneSeleccion(cbxCLASIFICACION)) { AvisoValidacion(cbxCLASIFICACION, "clasificación"); return false; }
-            if (!TieneSeleccion(cbxSECTOR)) { AvisoValidacion(cbxSECTOR, "sector"); return false; }
-            if (!TieneSeleccion(cbxTIPO_COSTO)) { AvisoValidacion(cbxTIPO_COSTO, "tipo de costo"); return false; }
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_SERVICIO)) { AvisoValidacion(cbxTIPO_SERVICIO, "tipo de servicio"); return false; }
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) { AvisoValidacion(cbxTIPO_OPERACION, "tipo de operación"); return false; }
+            if (!ComboHelper.TieneSeleccion(cbxCLASIFICACION)) { AvisoValidacion(cbxCLASIFICACION, "clasificación"); return false; }
+            if (!ComboHelper.TieneSeleccion(cbxSECTOR)) { AvisoValidacion(cbxSECTOR, "sector"); return false; }
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_COSTO)) { AvisoValidacion(cbxTIPO_COSTO, "tipo de costo"); return false; }
 
             if (ObtenerDecimal(txtMONTO) <= 0)
             {

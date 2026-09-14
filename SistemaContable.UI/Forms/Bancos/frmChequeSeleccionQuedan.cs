@@ -245,6 +245,10 @@ namespace SistemaContable.UI.Forms.Bancos
             Close();
         }
 
-       
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
     }
 }

@@ -944,6 +944,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxTIPO_DTE.Name = "cbxTIPO_DTE";
             this.cbxTIPO_DTE.Size = new System.Drawing.Size(385, 25);
             this.cbxTIPO_DTE.TabIndex = 10;
+            this.cbxTIPO_DTE.SelectedIndexChanged += new System.EventHandler(this.cbxTIPO_DTE_SelectedIndexChanged);
             // 
             // label19
             // 

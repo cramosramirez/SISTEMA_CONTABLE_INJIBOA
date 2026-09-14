@@ -227,17 +227,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+               
 
-        private bool TieneSeleccion(ComboBox cbx)
-        {
-            if (cbx.SelectedValue == null) return false;
-            if (cbx.SelectedValue == DBNull.Value) return false;
-            if (cbx.SelectedValue is DataRowView) return false;
-            if (cbx.SelectedValue is int i && i == -1) return false;
-            return true;
-        }
-
-        private int? ObtenerIdCombo(ComboBox cbx) => TieneSeleccion(cbx) ? Convert.ToInt32(cbx.SelectedValue) : (int?)null;
+        private int? ObtenerIdCombo(ComboBox cbx) => ComboHelper.TieneSeleccion(cbx) ? Convert.ToInt32(cbx.SelectedValue) : (int?)null;
 
         // ============================================================
         // Cliente
@@ -952,7 +944,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
         private bool ValidarCombo(ComboBox cbx, string nombreCampo)
         {
-            if (!TieneSeleccion(cbx))
+            if (!ComboHelper.TieneSeleccion(cbx))
             {
                 XtraMessageBox.Show($"Debe seleccionar {nombreCampo}.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);

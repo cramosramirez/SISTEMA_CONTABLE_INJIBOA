@@ -58,6 +58,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNOMBRE_PROVEEDOR = new System.Windows.Forms.TextBox();
             this.txtPROVEEDOR = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnCancelar = new DevExpress.XtraEditors.SimpleButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewPagar)).BeginInit();
@@ -67,6 +68,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnCancelar);
             this.panel1.Controls.Add(this.gridControl2);
             this.panel1.Controls.Add(this.txtValorAPagar);
             this.panel1.Controls.Add(this.label4);
@@ -451,11 +453,26 @@ namespace SistemaContable.UI.Forms.Bancos
             this.label1.TabIndex = 122;
             this.label1.Text = "Proveedor";
             // 
+            // btnCancelar
+            // 
+            this.btnCancelar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancelar.Appearance.Options.UseFont = true;
+            this.btnCancelar.Appearance.Options.UseTextOptions = true;
+            this.btnCancelar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnCancelar.ImageOptions.ImageToTextIndent = 10;
+            this.btnCancelar.Location = new System.Drawing.Point(1149, 571);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(116, 47);
+            this.btnCancelar.TabIndex = 135;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
             // frmChequeSeleccionQuedan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1277, 630);
+            this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -506,5 +523,6 @@ namespace SistemaContable.UI.Forms.Bancos
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
+        private DevExpress.XtraEditors.SimpleButton btnCancelar;
     }
 }

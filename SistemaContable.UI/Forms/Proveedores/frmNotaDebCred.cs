@@ -148,7 +148,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 ConfigurarCRUD(EstadoFormulario.Nuevo);
             }
             FormHelper.ResaltarCombosEnFoco(this);
-            mskFECHA_RECIBIDO_CCF.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");            
         }
 
         private void txtPROVEEDOR_Leave(object sender, EventArgs e)
@@ -294,9 +294,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtSELLO_RECIBIDO_CCF.Text = string.Empty;
             txtCOD_GENERACION_CCF.Text = string.Empty;
             txtNUM_CONTROL_CCF.Text = string.Empty;
-            mskFECHA_EMISION_CCF.Text = string.Empty;
-            mskFECHA_RECIBIDO_CCF.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            mskFECHA_EMISION_CCF.Text = string.Empty;           
             mskFECHA_VENCE_CCF.Text = string.Empty;
+            mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");
             txtORDEN.Text = string.Empty;
         }
 
@@ -667,13 +667,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             cbx.ValueMember = idField;
             cbx.DisplayMember = "NOMBRE";
         }
-        private bool TieneSeleccion(ComboBox cbx)
-        {
-            if (cbx.SelectedValue == null) return false;
-            if (cbx.SelectedValue == DBNull.Value) return false;
-            if (cbx.SelectedValue is DataRowView) return false;
-            return true;
-        }
+       
         void SeleccionarComboPorCodigo(ComboBox combo, string campoCodigo, string valor)
         {
             try
@@ -851,7 +845,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 return false;
             }
 
-            if (!TieneSeleccion(cbxTIPO_DTE))
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_DTE))
             {
                 XtraMessageBox.Show("Debe seleccionar el tipo de documento.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -989,6 +983,13 @@ namespace SistemaContable.UI.Forms.Proveedores
                 frm.IdCcfCompra = IdCcfCompra;
                 frm.ShowDialog(this);
             }
+        }
+
+        private void cbxTIPO_DTE_SelectedIndexChanged(object sender, EventArgs e)
+        {           
+            txtSELLO_RECIBIDO.Text = "";
+            txtCOD_GENERACION.Text = "";
+            txtNUM_CONTROL.Text = "";
         }
     }
 }

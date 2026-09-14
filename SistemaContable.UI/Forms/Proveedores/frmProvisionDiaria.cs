@@ -2,6 +2,7 @@
 using DevExpress.XtraGrid.Views.Grid;
 using SistemaContable.DAL;
 using SistemaContable.UI.Helpers;
+using SistemaContable.UI.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +16,7 @@ using System.Windows.Forms;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
-    public partial class frmProvisionDiaria : Form
+    public partial class frmProvisionDiaria : Form, IRefrescable
     {
         private readonly DALBase _dal = new DALBase();
         public frmProvisionDiaria()
@@ -43,7 +44,14 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void AsignarConcepto()
         {           
-            txtCONCEPTO_PARTIDA.Text = "PARTIDA DEL DIA " + dateEdit1.Text;           
+            txtCONCEPTO_PARTIDA.Text = "PARTIDA DEL DIA " + dateEdit1.Text;
+            AsignarNumeroPartida();
+        }
+
+        private void AsignarNumeroPartida()
+        {
+            var infoPartida = NumeradorPartidaHelper.Consultar("DI");
+            txtNUMERO_PARTIDA.Text = infoPartida.NumSiguienteFormateado;
         }
 
         private void CargarTiposProveedor()
@@ -100,6 +108,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void CargarGrids()
         {
+            btnGenerarPartida.Enabled = false; 
             string tipoProveedor = cbxTIPO_PROVEEDOR.SelectedValue?.ToString();
             if (string.IsNullOrEmpty(tipoProveedor)) return;
 
@@ -140,7 +149,12 @@ namespace SistemaContable.UI.Forms.Proveedores
                         CODIGO_HIBRONSA = Configuracion.CodigoHIBRONSA
                     });
 
-                gridControl2.DataSource = dtConProvision;                
+                gridControl2.DataSource = dtConProvision;      
+                
+                if (cbxTIPO_PROVEEDOR.SelectedIndex == 0 && dtSinProvision.Rows.Count == 0)
+                {
+                    btnGenerarPartida.Enabled = true;
+                }
             }
             catch (Exception ex)
             {
@@ -172,6 +186,11 @@ namespace SistemaContable.UI.Forms.Proveedores
                 SendKeys.Send("{TAB}");
             }
                
+        }
+
+        public void Refrescar()
+        {
+            CargarGrids();
         }
     }
 }

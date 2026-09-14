@@ -15,6 +15,7 @@ using DevExpress.XtraEditors;
 using SistemaContable.UI.Forms.Proveedores;
 using System.Reflection;
 using SistemaContable.UI.Forms.NotaRemision;
+using SistemaContable.UI.Interfaces;
 
 namespace SistemaContable.UI.Forms
 {
@@ -175,22 +176,6 @@ namespace SistemaContable.UI.Forms
             }
         }
 
-        //private void AsignarIcono(BarItem item, DataRow row)
-        //{
-        //    string imagenSvg = row["IMAGEN_SVG"]?.ToString();
-        //    if (string.IsNullOrEmpty(imagenSvg)) return;
-
-        //    object recurso = Properties.Resources.ResourceManager.GetObject(imagenSvg);
-
-        //    if (recurso is SvgImage svg)
-        //    {
-        //        item.ImageOptions.SvgImage = svg;
-        //    }
-        //    else if (recurso is Bitmap bmp)
-        //    {
-        //        item.ImageOptions.Image = bmp;
-        //    }
-        //}
 
         // Cache para mejorar rendimiento (opcional pero recomendado)
         private static readonly Dictionary<string, Type> _formCache = new Dictionary<string, Type>();
@@ -265,6 +250,22 @@ namespace SistemaContable.UI.Forms
 
                     existente.BringToFront();
                     existente.Activate();
+
+                    // ✅ Si el formulario implementa IRefrescable, refrescarlo
+                    if (existente is IRefrescable refrescable)
+                    {
+                        try
+                        {
+                            refrescable.Refrescar();
+                        }
+                        catch (Exception ex)
+                        {
+                            XtraMessageBox.Show(
+                                $"Error al refrescar el formulario: {ex.Message}",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+
                     return;
                 }
 
@@ -315,5 +316,29 @@ namespace SistemaContable.UI.Forms
             if (string.IsNullOrEmpty(formulario)) return;
             AbrirFormulario(formulario);
         }
+
+        // ============================================================
+        // Muestra un mensaje en el panel superior derecho del Ribbon
+        // Usado por formularios hijos (ej. frmCheques) para informar
+        // contexto (nombre de cuenta contable, validaciones, etc.)
+        // ============================================================
+        public void MostrarMensajeRibbon(string texto)
+        {
+            if (string.IsNullOrEmpty(texto))
+            {
+                OcultarMensajeRibbon();
+                return;
+            }
+
+            lblMensajeRibbon.Text = texto;            
+            pnlMensajeRibbon.Visible = true;
+        }
+
+        public void OcultarMensajeRibbon()
+        {
+            lblMensajeRibbon.Text = "";
+            pnlMensajeRibbon.Visible = false;
+        }
+
     }
 }

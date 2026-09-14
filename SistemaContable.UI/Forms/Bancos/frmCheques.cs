@@ -42,7 +42,9 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private void frmCheques_Load(object sender, EventArgs e)
         {
-            FormHelper.Inicializar(this);            
+            FormHelper.Inicializar(this);
+            btnIgnorar.CausesValidation = false;
+            btnGuardar.CausesValidation = false;  
 
             if (!VerificarCCFsHuerfanos())
             {
@@ -92,7 +94,11 @@ namespace SistemaContable.UI.Forms.Bancos
                         { "NOMBRE",     400 }
                      }
                  },
-                 fila => CargarCuentaBanco(fila)
+                 fila =>
+                 {
+                     decimal montoActual = ObtenerDecimal(txtCANTIDAD);
+                     CargarCuentaBanco(fila, montoActual);
+                 }
              );
 
             FormHelper.RegistrarBusqueda(
@@ -163,8 +169,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 }
             );
 
-            ConfigurarCRUD(EstadoFormulario.Inicializar);
-            ConfigurarMenuDocumentos();            
+            ConfigurarCRUD(EstadoFormulario.Inicializar);                  
         }
 
         // ============================================================
@@ -174,7 +179,7 @@ namespace SistemaContable.UI.Forms.Bancos
         //   * En modo Agregar:  también asigna NUM_CHEQUE y NUMERO_PARTIDA sugeridos.
         //   * En modo Buscar:   NO asigna NUM_CHEQUE (el usuario lo va a buscar).
         // ============================================================
-        private void CargarCuentaBanco(DataRow fila)
+        private void CargarCuentaBanco(DataRow fila, decimal abono = 0m)
         {
             // ---- Datos básicos de la cuenta (siempre) ----
             txtNUM_CUENTA.Tag = fila["ID_CTA_BANCO"].ToString();
@@ -200,6 +205,13 @@ namespace SistemaContable.UI.Forms.Bancos
                 string ctaContable = fila["CTACONTABLE"].ToString();
                 if (!string.IsNullOrWhiteSpace(ctaContable))
                     AgregarFilaPartida(ctaContable);
+
+                if (abono > 0 && _dtPartida.Rows.Count > 0)
+                {
+                    _dtPartida.Rows[0]["ABONO"] = abono;
+                    gridControl1.RefreshDataSource();
+                    ActualizarCuadre();
+                }
 
                 // Modo alta: sugerir el siguiente número de cheque
                 int correlativo = 0;
@@ -310,29 +322,11 @@ namespace SistemaContable.UI.Forms.Bancos
             txtOPERACION.ReadOnly = true;
             this.BeginInvoke(new Action(() => txtNUM_CUENTA.Focus()));
         }
-
-        private void ConfigurarMenuDocumentos()
-        {
-            // CCF al contado
-            var btnCCFContado = new DevExpress.XtraBars.BarButtonItem(barManager1, "Crédito Fiscal");            
-            btnCCFContado.ItemClick += btnCCFContado_ItemClick;                      
-
-            // Sujeto excluido
-            var btnSujetoExcluido = new DevExpress.XtraBars.BarButtonItem(barManager1, "Sujeto excluido");            
-            //btnSujetoExcluido.ItemClick += BtnSujetoExcluido_ItemClick;
-
-            // Agregar al PopupMenu
-            popupDocumentos.AddItem(btnCCFContado);            
-            popupDocumentos.AddItem(btnSujetoExcluido);                                                  
-
-            // Asignar el PopupMenu al botón
-            btnDocumentos.DropDownControl = popupDocumentos;
-        }
-
-
+        
         private bool _procesandoLeaveProveedor = false;
         private void txtPROVEEDOR_Leave(object sender, EventArgs e)
         {
+            if (FormHelper.EsEscapeDeFoco(this) || txtPROVEEDOR.ReadOnly) return;
             if (_procesandoLeaveProveedor) return;   // ← evita reentrancia
             _procesandoLeaveProveedor = true;
             try
@@ -380,6 +374,9 @@ namespace SistemaContable.UI.Forms.Bancos
                             {
                                 _documentosPago = frm.DocumentosAPagar;
                                 txtCANTIDAD.Text = frm.TotalAPagar.ToString("N2");
+                                txtCANTIDAD.ReadOnly = true;
+                                txtPROVEEDOR.ReadOnly = true;
+                                btnDocumentos.Enabled = false;
                                 _flujoEsQuedan = true;
                                 txtCONCEPTO.Text = ConstruirConceptoPago(_documentosPago);
                                 AplicarPartidaPago(frm.TotalAPagar, cuentaPorPagar);
@@ -426,8 +423,11 @@ namespace SistemaContable.UI.Forms.Bancos
         }
         private void LimpiarSeleccionPago()
         {
-            _documentosPago = null;
+            _documentosPago = null;            
             txtCANTIDAD.Text = "";
+            txtPROVEEDOR.Text = "";
+            txtNOMBRE_CHEQUE.Text = "";
+            btnDocumentos.Enabled = true; 
             _flujoEsQuedan = false;
         }
 
@@ -450,7 +450,8 @@ namespace SistemaContable.UI.Forms.Bancos
                         siguiente: false,
                         finalizar: true,
                         borrarFila: false,
-                        anular: false
+                        anular: false,
+                        documentos: false
                     );
                     HabilitarControlesEncabezado(false);
                     HabilitarControlesPartida(false);
@@ -470,7 +471,8 @@ namespace SistemaContable.UI.Forms.Bancos
                         siguiente: false,
                         finalizar: false,
                         borrarFila: true,
-                        anular: false
+                        anular: false,
+                        documentos: true
                     );
                     HabilitarControlesEncabezado(true);
                     HabilitarControlesPartida(true);
@@ -490,7 +492,8 @@ namespace SistemaContable.UI.Forms.Bancos
                         siguiente: false,
                         finalizar: false,
                         borrarFila: false,
-                        anular: false
+                        anular: false,
+                        documentos: false
                     );
                     HabilitarControlesEncabezado(false);
                     HabilitarControlesPartida(false);
@@ -515,7 +518,8 @@ namespace SistemaContable.UI.Forms.Bancos
                         siguiente: false,
                         finalizar: true,
                         borrarFila: true,
-                        anular: false
+                        anular: false,
+                        documentos: true
                     );
 
                     HabilitarControlesEncabezado(true);
@@ -542,7 +546,8 @@ namespace SistemaContable.UI.Forms.Bancos
                         siguiente: false,
                         finalizar: true,
                         borrarFila: true,
-                        anular: false
+                        anular: false,
+                        documentos: false
                     );
                     HabilitarControlesEncabezado(true);
                     HabilitarControlesPartida(true);
@@ -563,7 +568,8 @@ namespace SistemaContable.UI.Forms.Bancos
                         siguiente: true,
                         finalizar: true,
                         borrarFila: false,
-                        anular: false
+                        anular: false,
+                        documentos: false 
                     );                    
                     HabilitarControlesEncabezado(false);
                     HabilitarControlesPartida(false);
@@ -583,13 +589,14 @@ namespace SistemaContable.UI.Forms.Bancos
             bool siguiente,
             bool finalizar,
             bool borrarFila,
-            bool anular)
+            bool anular,
+            bool documentos)
         {
             btnAgregar.Enabled = agregar;
             btnBuscar.Enabled = buscar;
             btnModificar.Enabled = modificar;
             btnGuardar.Enabled = guardar;
-            btnIngnorar.Enabled = ignorar;
+            btnIgnorar.Enabled = ignorar;
             btnEliminar.Enabled = eliminar;
             btnImprimir.Enabled = imprimir;
             btnAnterior.Enabled = anterior;
@@ -597,6 +604,7 @@ namespace SistemaContable.UI.Forms.Bancos
             btnFinalizar.Enabled = finalizar;
             btnBorrarFila.Enabled = borrarFila;            
             btnAnular.Enabled = anular;
+            btnDocumentos.Enabled = documentos; 
         }
 
 
@@ -803,7 +811,8 @@ namespace SistemaContable.UI.Forms.Bancos
             view.Appearance.Row.Options.UseFont = true;
             view.Appearance.Row.Options.UseForeColor = true;            
             view.Appearance.HeaderPanel.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
-            view.Appearance.HeaderPanel.Options.UseFont = true;         
+            view.Appearance.HeaderPanel.Options.UseFont = true;
+            gridView1.FocusedRowChanged += GridView_FocusedRowChanged;
         }
 
         private void ConfigurarColumna(GridView view, string fieldName,
@@ -866,13 +875,12 @@ namespace SistemaContable.UI.Forms.Bancos
         {
             var (texto, esValida) = CuentaContableHint.Obtener(codigo);
 
-            if (string.IsNullOrWhiteSpace(texto))
-            {
-                lblESTADO_CUENTA.Text = "";
+            if (string.IsNullOrWhiteSpace(texto) || !gridControl1.Enabled)
+            {                
+                FormHelper.OcultarMensajeRibbon(this);
                 return;
             }
-            lblESTADO_CUENTA.Text = texto;
-            lblESTADO_CUENTA.ForeColor = esValida ? Color.DarkGreen : Color.DarkRed;
+            FormHelper.MostrarMensajeRibbon(this, texto);            
         }
 
         /// <summary>
@@ -1049,7 +1057,7 @@ namespace SistemaContable.UI.Forms.Bancos
             }
             else
             {
-                OcultarEstadoCuenta();
+                FormHelper.OcultarMensajeRibbon(this);
             }
 
             if (_columnaAnteriorGrid == "CTACONTABLE" &&
@@ -1081,24 +1089,25 @@ namespace SistemaContable.UI.Forms.Bancos
             _columnaAnteriorGrid = e.FocusedColumn?.FieldName ?? string.Empty;
         }
 
+        private void GridView_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
+        {
+            // Al cambiar de fila, resetear contexto de columna anterior
+            // y ocultar mensaje (el contexto ya no es válido)
+            _columnaAnteriorGrid = string.Empty;
+            FormHelper.OcultarMensajeRibbon(this);
+        }
+
         private void MostrarEstadoCuenta(string codigo)
         {
             var (texto, esValida) = CuentaContableHint.Obtener(codigo);
 
-            if (string.IsNullOrWhiteSpace(texto))
+            if (string.IsNullOrWhiteSpace(texto) || !gridControl1.Enabled)
             {
-                OcultarEstadoCuenta();
+                FormHelper.OcultarMensajeRibbon(this);
                 return;
             }
-            lblESTADO_CUENTA.Text = texto;
-            lblESTADO_CUENTA.ForeColor = esValida ? Color.Black : Color.DarkRed;      
-            pnESTADO_CUENTA.Visible = true;
-        }
-
-        private void OcultarEstadoCuenta()
-        {
-            pnESTADO_CUENTA.Visible = false;
-        }
+            FormHelper.MostrarMensajeRibbon(this, texto);            
+        }        
 
         private void AbrirBusquedaCuenta(GridView view)
         {
@@ -1323,6 +1332,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private void txtCANTIDAD_Leave(object sender, EventArgs e)
         {
+            if (FormHelper.EsEscapeDeFoco(this)) return;
             if (string.IsNullOrWhiteSpace(txtCANTIDAD.Text))
             {
                 txtCANTIDAD.Text = "0.00";
@@ -1373,6 +1383,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private void txtCONCEPTO_Leave(object sender, EventArgs e)
         {
+            if (FormHelper.EsEscapeDeFoco(this)) return;
             if (string.IsNullOrWhiteSpace(txtCONCEPTO.Text)) return;
             if (_dtPartida.Rows.Count == 0) return;
 
@@ -1835,7 +1846,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 XtraMessageBox.Show(mensaje, "Eliminado",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                btnIngnorar_Click(sender, e);
+                btnIgnorar_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -1912,7 +1923,7 @@ namespace SistemaContable.UI.Forms.Bancos
             return partes.Count == 0 ? string.Empty : "PAGO DE " + string.Join(" Y ", partes);
         }
 
-        private void btnIngnorar_Click(object sender, EventArgs e)
+        private void btnIgnorar_Click(object sender, EventArgs e)
         {
             _idCheque = 0;
             _ultimoDetalleAutoGenerado = string.Empty;
@@ -1920,6 +1931,8 @@ namespace SistemaContable.UI.Forms.Bancos
             _documentosPago?.Clear();
             _flujoEsQuedan = false;
             txtNUM_CUENTA.Tag = null;
+            txtPROVEEDOR.ReadOnly = false;
+            txtCANTIDAD.ReadOnly = false; 
             FormHelper.LimpiarControles(this);                                    
             ActualizarCuadre();
             ConfigurarCRUD(EstadoFormulario.Inicializar);            
@@ -1977,6 +1990,16 @@ namespace SistemaContable.UI.Forms.Bancos
         private void btnSiguiente_Click(object sender, EventArgs e)
         {
             NavegarCheque("SIGUIENTE");
+        }
+
+        private void frmCheques_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FormHelper.OcultarMensajeRibbon(this);
+        }
+
+        private void btnDocumentos_Click(object sender, EventArgs e)
+        {
+            AbrirContadoConUid();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SistemaContable.DAL;
+using SistemaContable.UI.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ using System.Windows.Forms;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
-    public partial class frmConsultaCompraDirecta : Form
+    public partial class frmConsultaCompraDirecta : Form, IRefrescable
     {
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDetalle;
@@ -86,8 +87,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 frm.IdCcfCompra = idCcfCompra;
                 frm.EsContado = true;
                 frm.ShowDialog(this);
-            }
-            CargarDatos();
+            }            
         }
 
         private void btnFinalizar_Click(object sender, EventArgs e)
@@ -104,6 +104,11 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void btnNuevoQuedan_Click(object sender, EventArgs e)
         {
             AbrirDocumento(0);
+        }
+
+        public void Refrescar()
+        {
+            CargarDatos(); 
         }
     }
 }

@@ -36,7 +36,10 @@ namespace SistemaContable.UI.Forms
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
+            this.pnlMensajeRibbon = new System.Windows.Forms.Panel();
+            this.lblMensajeRibbon = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ribbon)).BeginInit();
+            this.pnlMensajeRibbon.SuspendLayout();
             this.SuspendLayout();
             // 
             // ribbon
@@ -92,11 +95,36 @@ namespace SistemaContable.UI.Forms
             this.ribbonStatusBar.Ribbon = this.ribbon;
             this.ribbonStatusBar.Size = new System.Drawing.Size(1167, 29);
             // 
+            // pnlMensajeRibbon
+            // 
+            this.pnlMensajeRibbon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlMensajeRibbon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.pnlMensajeRibbon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlMensajeRibbon.Controls.Add(this.lblMensajeRibbon);
+            this.pnlMensajeRibbon.Location = new System.Drawing.Point(756, 193);
+            this.pnlMensajeRibbon.Name = "pnlMensajeRibbon";
+            this.pnlMensajeRibbon.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.pnlMensajeRibbon.Size = new System.Drawing.Size(411, 43);
+            this.pnlMensajeRibbon.TabIndex = 2;
+            this.pnlMensajeRibbon.Visible = false;
+            // 
+            // lblMensajeRibbon
+            // 
+            this.lblMensajeRibbon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblMensajeRibbon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMensajeRibbon.Font = new System.Drawing.Font("Arial", 8.139131F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMensajeRibbon.Location = new System.Drawing.Point(5, 5);
+            this.lblMensajeRibbon.Name = "lblMensajeRibbon";
+            this.lblMensajeRibbon.Size = new System.Drawing.Size(399, 31);
+            this.lblMensajeRibbon.TabIndex = 0;
+            this.lblMensajeRibbon.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // frmPrincipalRibbon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1167, 624);
+            this.Controls.Add(this.pnlMensajeRibbon);
             this.Controls.Add(this.ribbonStatusBar);
             this.Controls.Add(this.ribbon);
             this.Name = "frmPrincipalRibbon";
@@ -106,6 +134,7 @@ namespace SistemaContable.UI.Forms
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmPrincipalRibbon_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ribbon)).EndInit();
+            this.pnlMensajeRibbon.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -119,5 +148,7 @@ namespace SistemaContable.UI.Forms
         private DevExpress.XtraBars.Ribbon.RibbonStatusBar ribbonStatusBar;
         private DevExpress.XtraBars.BarStaticItem barStaticItem1;
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private System.Windows.Forms.Panel pnlMensajeRibbon;
+        private System.Windows.Forms.Label lblMensajeRibbon;
     }
 }

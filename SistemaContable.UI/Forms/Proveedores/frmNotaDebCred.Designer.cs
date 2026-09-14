@@ -505,6 +505,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtABONO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtABONO.Location = new System.Drawing.Point(937, 503);
             this.txtABONO.Name = "txtABONO";
+            this.txtABONO.ReadOnly = true;
             this.txtABONO.Size = new System.Drawing.Size(191, 24);
             this.txtABONO.TabIndex = 40;
             this.txtABONO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -524,6 +525,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCARGO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCARGO.Location = new System.Drawing.Point(937, 477);
             this.txtCARGO.Name = "txtCARGO";
+            this.txtCARGO.ReadOnly = true;
             this.txtCARGO.Size = new System.Drawing.Size(191, 24);
             this.txtCARGO.TabIndex = 39;
             this.txtCARGO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -815,6 +817,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxTIPO_DTE.Name = "cbxTIPO_DTE";
             this.cbxTIPO_DTE.Size = new System.Drawing.Size(330, 25);
             this.cbxTIPO_DTE.TabIndex = 20;
+            this.cbxTIPO_DTE.SelectedIndexChanged += new System.EventHandler(this.cbxTIPO_DTE_SelectedIndexChanged);
             // 
             // label7
             // 

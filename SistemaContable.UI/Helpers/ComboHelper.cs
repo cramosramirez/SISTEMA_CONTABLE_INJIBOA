@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,6 +50,27 @@ namespace SistemaContable.UI.Helpers
             }
 
             cbx.SelectedValue = valor;
+        }
+
+        /// <summary>
+        /// Indica si el combo tiene una selección válida.
+        /// Considera como "sin selección":
+        ///   * null / DBNull
+        ///   * SelectedValue = -1 (valor centinela para "-- Seleccione --")
+        ///   * SelectedValue es DataRowView (aún no bindeado)
+        /// </summary>
+        public static bool TieneSeleccion(ComboBox cbx)
+        {
+            if (cbx == null) return false;
+            if (cbx.SelectedValue == null) return false;
+            if (cbx.SelectedValue == DBNull.Value) return false;
+            if (cbx.SelectedValue is DataRowView) return false;
+
+            // Intentar convertir a int y verificar que no sea -1
+            if (int.TryParse(cbx.SelectedValue.ToString(), out int valor))
+                if (valor == -1) return false;
+
+            return true;
         }
     }
 }

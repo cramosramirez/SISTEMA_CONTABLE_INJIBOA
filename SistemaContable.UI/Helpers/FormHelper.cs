@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
+using SistemaContable.UI.Forms;
 using ComboBox = System.Windows.Forms.ComboBox;
 
 namespace SistemaContable.UI.Helpers
@@ -38,6 +40,25 @@ namespace SistemaContable.UI.Helpers
                 }
             };
             timer.Start();
+        }
+
+        /// <summary>
+        /// Retorna true si el próximo foco es un botón de escape
+        /// (Ignorar, Cancelar, Finalizar), en cuyo caso los eventos Leave
+        /// no deberían ejecutar su lógica normal.
+        /// </summary>
+        public static bool EsEscapeDeFoco(Form form)
+        {
+            if (form?.ActiveControl == null) return false;
+
+            string nombre = form.ActiveControl.Name;
+            return nombre == "btnIgnorar"                
+                || nombre == "btnCancelar"
+                || nombre == "btnFinalizar"
+                || nombre == "btnGuardar"
+                || nombre == "btnGrabar"
+                || nombre == "btnBorrar"
+                || nombre == "btnAnular";
         }
 
         private static readonly System.Text.RegularExpressions.Regex _regexCorreo =
@@ -424,20 +445,70 @@ namespace SistemaContable.UI.Helpers
         public static List<MesItem> ObtenerMeses()
         {
             return new List<MesItem>
-    {
-        new MesItem { Value = "01", Mes = "Enero" },
-        new MesItem { Value = "02", Mes = "Febrero" },
-        new MesItem { Value = "03", Mes = "Marzo" },
-        new MesItem { Value = "04", Mes = "Abril" },
-        new MesItem { Value = "05", Mes = "Mayo" },
-        new MesItem { Value = "06", Mes = "Junio" },
-        new MesItem { Value = "07", Mes = "Julio" },
-        new MesItem { Value = "08", Mes = "Agosto" },
-        new MesItem { Value = "09", Mes = "Septiembre" },
-        new MesItem { Value = "10", Mes = "Octubre" },
-        new MesItem { Value = "11", Mes = "Noviembre" },
-        new MesItem { Value = "12", Mes = "Diciembre" }
-    };
+            {
+                new MesItem { Value = "01", Mes = "Enero" },
+                new MesItem { Value = "02", Mes = "Febrero" },
+                new MesItem { Value = "03", Mes = "Marzo" },
+                new MesItem { Value = "04", Mes = "Abril" },
+                new MesItem { Value = "05", Mes = "Mayo" },
+                new MesItem { Value = "06", Mes = "Junio" },
+                new MesItem { Value = "07", Mes = "Julio" },
+                new MesItem { Value = "08", Mes = "Agosto" },
+                new MesItem { Value = "09", Mes = "Septiembre" },
+                new MesItem { Value = "10", Mes = "Octubre" },
+                new MesItem { Value = "11", Mes = "Noviembre" },
+                new MesItem { Value = "12", Mes = "Diciembre" }
+            };
+        }
+
+        // ============================================================
+        // Helpers para acceder al Ribbon padre
+        // ============================================================
+        public static void MostrarMensajeRibbon(Form formHijo, string texto)
+        {
+            if (formHijo == null) return;
+
+            var panel = ObtenerPanelMensajeRibbon(formHijo);
+            if (panel == null) return;
+
+            if (string.IsNullOrEmpty(texto))
+            {
+                panel.Visible = false;
+                return;
+            }
+            var label = panel.Controls
+                .OfType<Label>()
+                .FirstOrDefault(l => l.Name == "lblMensajeRibbon");
+            if (label == null) return;
+            label.Text = texto;           
+            panel.Visible = true;
+            panel.BringToFront();
+        }
+
+        /// <summary>
+        /// Oculta el panel de mensaje del Ribbon padre del form indicado.
+        /// </summary>
+        public static void OcultarMensajeRibbon(Form formHijo)
+        {
+            if (formHijo == null) return;
+            var panel = ObtenerPanelMensajeRibbon(formHijo);
+            if (panel != null)            {
+                panel.Visible = false;
+                var label = panel.Controls
+                    .OfType<Label>()
+                    .FirstOrDefault(l => l.Name == "lblMensajeRibbon");
+                if (label != null)
+                    label.Text = "";
+            }
+        }       
+        private static Control ObtenerPanelMensajeRibbon(Form formHijo)
+        {
+            var ribbon = formHijo.Owner;
+            if (ribbon == null) return null;
+
+            // Búsqueda nativa de WinForms (segundo parámetro = búsqueda recursiva)
+            var encontrados = ribbon.Controls.Find("pnlMensajeRibbon", true);
+            return encontrados.Length > 0 ? encontrados[0] : null;
         }
     }
 
@@ -451,4 +522,5 @@ namespace SistemaContable.UI.Helpers
         public string Libro { get; set; }
 
     }
+
 }

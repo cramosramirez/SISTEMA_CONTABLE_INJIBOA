@@ -64,7 +64,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             InicializarHelperMinisterioHacienda();
             CargarCombos();
             cbxSUCURSAL.SelectedValue = 1;            
-            mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy"); 
+            mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            RecalcularFechaVence();
             // Cargar de Combos Reuqeridos por MH
             CargarTipoServicio();   // Independiente 
             CargarTipoOperacion();  // Independiente (al cambiar dispara cascada)
@@ -426,20 +427,13 @@ namespace SistemaContable.UI.Forms.Proveedores
             cbx.DataSource = dt;
             cbx.ValueMember = idField;
             cbx.DisplayMember = "NOMBRE";
-        }
-        private bool TieneSeleccion(ComboBox cbx)
-        {
-            if (cbx.SelectedValue == null) return false;
-            if (cbx.SelectedValue == DBNull.Value) return false;
-            if (cbx.SelectedValue is DataRowView) return false;
-            return true;
         }       
         private void cbxCLASIFICACION_SelectedIndexChanged(object sender, EventArgs e)
         {
             LimpiarCombo(cbxSECTOR, "ID_SECTOR");
             LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
-            if (!TieneSeleccion(cbxCLASIFICACION)) return;
-            if (!TieneSeleccion(cbxTIPO_OPERACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxCLASIFICACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) return;
             int idTipoOpera = Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue);
             int idClasifica = Convert.ToInt32(cbxCLASIFICACION.SelectedValue);
             CargarSector(idTipoOpera, idClasifica);
@@ -545,7 +539,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             LimpiarCombo(cbxCLASIFICACION, "ID_CLASIFICA");
             LimpiarCombo(cbxSECTOR, "ID_SECTOR");
             LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
-            if (!TieneSeleccion(cbxTIPO_OPERACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) return;
             int idTipoOpera = Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue);
             CargarClasificacion(idTipoOpera);
         }
@@ -554,8 +548,8 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             LimpiarCombo(cbxSECTOR, "ID_SECTOR");
             LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
-            if (!TieneSeleccion(cbxCLASIFICACION)) return;
-            if (!TieneSeleccion(cbxTIPO_OPERACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxCLASIFICACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) return;
             int idTipoOpera = Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue);
             int idClasifica = Convert.ToInt32(cbxCLASIFICACION.SelectedValue);
             CargarSector(idTipoOpera, idClasifica);
@@ -564,9 +558,9 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void cbxSECTOR_SelectionChangeCommitted(object sender, EventArgs e)
         {
             LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
-            if (!TieneSeleccion(cbxSECTOR)) return;
-            if (!TieneSeleccion(cbxCLASIFICACION)) return;
-            if (!TieneSeleccion(cbxTIPO_OPERACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxSECTOR)) return;
+            if (!ComboHelper.TieneSeleccion(cbxCLASIFICACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) return;
             int idTipoOpera = Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue);
             int idClasifica = Convert.ToInt32(cbxCLASIFICACION.SelectedValue);
             int idSector = Convert.ToInt32(cbxSECTOR.SelectedValue);
@@ -726,11 +720,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void mskFECHA_RECIBIDO_Leave(object sender, EventArgs e)
         {
-            if (DateTime.TryParseExact(mskFECHA_RECIBIDO.Text, "dd/MM/yyyy",
-            CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fecha))
-            {
-                mskFECHA_VENCE.Text = fecha.AddDays(30).ToString("dd/MM/yyyy");
-            }
+            RecalcularFechaVence();
         }
 
         private void cbxTIPO_SERVICIO_SelectionChangeCommitted(object sender, EventArgs e)
@@ -818,7 +808,23 @@ namespace SistemaContable.UI.Forms.Proveedores
                 return false;
             }
 
-            if (!TieneSeleccion(cbxTIPO_DTE))
+            if(txtNRC.Text == "")
+            {
+                XtraMessageBox.Show("El proveedor debe tener NRC.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPROVEEDOR.Focus();
+                return false;
+            }
+
+            if (txtNIT.Text == "")
+            {
+                XtraMessageBox.Show("El proveedor debe tener NIT.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPROVEEDOR.Focus();
+                return false;
+            }
+
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_DTE))
             {
                 XtraMessageBox.Show("Debe seleccionar el tipo de documento.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -826,7 +832,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 return false;
             }
 
-            if (!TieneSeleccion(cbxSUCURSAL))
+            if (!ComboHelper.TieneSeleccion(cbxSUCURSAL))
             {
                 XtraMessageBox.Show("Debe seleccionar la sucursal.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -853,11 +859,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             }
 
             // Cascada de clasificación
-            if (!TieneSeleccion(cbxTIPO_SERVICIO)) { AvisoValidacion(cbxTIPO_SERVICIO, "tipo de servicio"); return false; }
-            if (!TieneSeleccion(cbxTIPO_OPERACION)) { AvisoValidacion(cbxTIPO_OPERACION, "tipo de operación"); return false; }
-            if (!TieneSeleccion(cbxCLASIFICACION)) { AvisoValidacion(cbxCLASIFICACION, "clasificación"); return false; }
-            if (!TieneSeleccion(cbxSECTOR)) { AvisoValidacion(cbxSECTOR, "sector"); return false; }
-            if (!TieneSeleccion(cbxTIPO_COSTO)) { AvisoValidacion(cbxTIPO_COSTO, "tipo de costo"); return false; }
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_SERVICIO)) { AvisoValidacion(cbxTIPO_SERVICIO, "tipo de servicio"); return false; }
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) { AvisoValidacion(cbxTIPO_OPERACION, "tipo de operación"); return false; }
+            if (!ComboHelper.TieneSeleccion(cbxCLASIFICACION)) { AvisoValidacion(cbxCLASIFICACION, "clasificación"); return false; }
+            if (!ComboHelper.TieneSeleccion(cbxSECTOR)) { AvisoValidacion(cbxSECTOR, "sector"); return false; }
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_COSTO)) { AvisoValidacion(cbxTIPO_COSTO, "tipo de costo"); return false; }
 
             if (ObtenerDecimal(txtTOTAL) <= 0)
             {
@@ -1000,7 +1006,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtSELLO_RECIBIDO.Text = "";
             mskFECHA_EMISION.Text = "";
             mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");
-            mskFECHA_VENCE.Text = "";
+            RecalcularFechaVence();
             txtORDEN.Text = "";
 
             cbxTIPO_SERVICIO.SelectedValue = -1;
@@ -1082,6 +1088,24 @@ namespace SistemaContable.UI.Forms.Proveedores
             if (!ValidarCampos()) return;
             GuardarDocumento();
             ConfigurarCRUD(EstadoFormulario.Guardado);
+        }
+                
+
+        private void RecalcularFechaVence()
+        {
+            if (!DateTime.TryParseExact(
+                    mskFECHA_RECIBIDO.Text.Trim(),
+                    "dd/MM/yyyy",
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.None,
+                    out DateTime fechaRecibido))
+            {
+                mskFECHA_VENCE.Text = "";   // ← el handler ya limpia solo
+                return;
+            }
+
+            int diasPlazo = 30;   // tu lógica
+            mskFECHA_VENCE.Text = fechaRecibido.AddDays(diasPlazo).ToString("dd/MM/yyyy");
         }
 
         private void InicializarHelperMinisterioHacienda()
@@ -1211,7 +1235,13 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             
         }
-       
+
+        private void cbxTIPO_DTE_SelectedIndexChanged(object sender, EventArgs e)
+        {            
+            txtSELLO_RECIBIDO.Text = "";
+            txtCOD_GENERACION.Text = "";
+            txtNUM_CONTROL.Text = "";
+        }
     }
 }
 
