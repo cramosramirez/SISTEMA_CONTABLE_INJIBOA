@@ -159,20 +159,42 @@ namespace SistemaContable.UI.Forms.Bancos
         {
             if (gridView1.FocusedRowHandle < 0) return;
 
-            var idCcfObj = gridView1.GetFocusedRowCellValue("ID_CCF_COMPRA");
-            if (idCcfObj == null || idCcfObj == DBNull.Value) return;
-            int idCcfCompra = Convert.ToInt32(idCcfObj);
+            string tipoDoc = gridView1.GetFocusedRowCellValue("TIPO_DOC")?.ToString();
+            var idDocObj = gridView1.GetFocusedRowCellValue("ID_DOCUMENTO");
+            if (string.IsNullOrEmpty(tipoDoc) || idDocObj == null || idDocObj == DBNull.Value)
+                return;
+
+            int idDocumento = Convert.ToInt32(idDocObj);
+
             try
             {
-                using (var frm = new frmDocumentoCompra())
+                if (tipoDoc != "FSE")
                 {
-                    frm.EsContado = true;
-                    frm.UidEnlaceCheque = UidEnlaceCheque;
-                    frm.IdCcfCompra = idCcfCompra;   // ← clave: abre en modo edición
-                    if (frm.ShowDialog(this) == DialogResult.OK)
+                    using (var frm = new frmDocumentoCompra())
                     {
-                        CargarDocumentos();   // refrescar grid por si se modificó
+                        frm.EsContado = true;
+                        frm.UidEnlaceCheque = UidEnlaceCheque;
+                        frm.IdCcfCompra = idDocumento;
+                        if (frm.ShowDialog(this) == DialogResult.OK)
+                            CargarDocumentos();
                     }
+                }
+                else if (tipoDoc == "FSE")
+                {
+                    using (var frm = new frmFacturaSujetoExcluido())
+                    {
+                        frm.EsContado = true;
+                        frm.UidEnlaceCheque = UidEnlaceCheque;
+                        frm.IdFse = idDocumento;
+                        if (frm.ShowDialog(this) == DialogResult.OK)
+                            CargarDocumentos();
+                    }
+                }
+                else
+                {
+                    XtraMessageBox.Show(
+                        $"Tipo de documento no reconocido: '{tipoDoc}'.",
+                        "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
@@ -191,7 +213,7 @@ namespace SistemaContable.UI.Forms.Bancos
             try
             {
                 Cursor = Cursors.WaitCursor;
-                _dtDocumentos = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",
+                _dtDocumentos = _dal.EjecutarConsulta("SP_CHEQUE_CONTADO",
                     new
                     {
                         ACCION = "LISTAR_POR_UID",
@@ -213,7 +235,7 @@ namespace SistemaContable.UI.Forms.Bancos
             }
         }
 
-        private void btnAdicionar_Click(object sender, EventArgs e)
+        private void btnAdicionarCCF_Click(object sender, EventArgs e)
         {
             try
             {
@@ -247,7 +269,7 @@ namespace SistemaContable.UI.Forms.Bancos
             {
                 Cursor = Cursors.WaitCursor;
 
-                TotalesAcumulados = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",
+                TotalesAcumulados = _dal.EjecutarConsulta("SP_CHEQUE_CONTADO",
                     new
                     {
                         ACCION = "OBTENER_TOTALES_POR_UID",
@@ -278,6 +300,31 @@ namespace SistemaContable.UI.Forms.Bancos
             finally
             {
                 Cursor = Cursors.Default;
+            }
+        }
+
+        private void btnAdicionarFSE_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var frm = new frmFacturaSujetoExcluido())
+                {
+                    // Propiedades nuevas que se implementarán en frmDocumentoCompra
+                    frm.EsContado = true;
+                    frm.UidEnlaceCheque = UidEnlaceCheque;
+
+                    if (frm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        // Refrescar el grid para que aparezca el CCF recién creado
+                        CargarDocumentos();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    "Error al abrir el formulario de factura sujeto excluido:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

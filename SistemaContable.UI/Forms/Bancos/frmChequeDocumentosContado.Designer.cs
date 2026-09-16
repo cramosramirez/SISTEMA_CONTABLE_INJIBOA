@@ -51,7 +51,8 @@ namespace SistemaContable.UI.Forms.Bancos
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.btnRetornar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnAdicionar = new DevExpress.XtraEditors.SimpleButton();
+            this.btnAdicionarCCF = new DevExpress.XtraEditors.SimpleButton();
+            this.btnAdicionarFSE = new DevExpress.XtraEditors.SimpleButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -306,9 +307,10 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnAdicionarFSE);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.btnRetornar);
-            this.panel2.Controls.Add(this.btnAdicionar);
+            this.panel2.Controls.Add(this.btnAdicionarCCF);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(0, 303);
             this.panel2.Name = "panel2";
@@ -334,27 +336,42 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnRetornar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnRetornar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.retornar32x32;
             this.btnRetornar.ImageOptions.ImageToTextIndent = 10;
-            this.btnRetornar.Location = new System.Drawing.Point(160, 42);
+            this.btnRetornar.Location = new System.Drawing.Point(609, 42);
             this.btnRetornar.Name = "btnRetornar";
             this.btnRetornar.Size = new System.Drawing.Size(117, 47);
             this.btnRetornar.TabIndex = 130;
             this.btnRetornar.Text = "Retornar";
             this.btnRetornar.Click += new System.EventHandler(this.btnRetornar_Click);
             // 
-            // btnAdicionar
+            // btnAdicionarCCF
             // 
-            this.btnAdicionar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAdicionar.Appearance.Options.UseFont = true;
-            this.btnAdicionar.Appearance.Options.UseTextOptions = true;
-            this.btnAdicionar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnAdicionar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
-            this.btnAdicionar.ImageOptions.ImageToTextIndent = 10;
-            this.btnAdicionar.Location = new System.Drawing.Point(17, 42);
-            this.btnAdicionar.Name = "btnAdicionar";
-            this.btnAdicionar.Size = new System.Drawing.Size(122, 47);
-            this.btnAdicionar.TabIndex = 6;
-            this.btnAdicionar.Text = "Adicionar documento";
-            this.btnAdicionar.Click += new System.EventHandler(this.btnAdicionar_Click);
+            this.btnAdicionarCCF.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdicionarCCF.Appearance.Options.UseFont = true;
+            this.btnAdicionarCCF.Appearance.Options.UseTextOptions = true;
+            this.btnAdicionarCCF.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnAdicionarCCF.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
+            this.btnAdicionarCCF.ImageOptions.ImageToTextIndent = 10;
+            this.btnAdicionarCCF.Location = new System.Drawing.Point(17, 42);
+            this.btnAdicionarCCF.Name = "btnAdicionarCCF";
+            this.btnAdicionarCCF.Size = new System.Drawing.Size(204, 47);
+            this.btnAdicionarCCF.TabIndex = 6;
+            this.btnAdicionarCCF.Text = "Adicionar comprobante de crédito fiscal";
+            this.btnAdicionarCCF.Click += new System.EventHandler(this.btnAdicionarCCF_Click);
+            // 
+            // btnAdicionarFSE
+            // 
+            this.btnAdicionarFSE.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdicionarFSE.Appearance.Options.UseFont = true;
+            this.btnAdicionarFSE.Appearance.Options.UseTextOptions = true;
+            this.btnAdicionarFSE.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnAdicionarFSE.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
+            this.btnAdicionarFSE.ImageOptions.ImageToTextIndent = 10;
+            this.btnAdicionarFSE.Location = new System.Drawing.Point(238, 42);
+            this.btnAdicionarFSE.Name = "btnAdicionarFSE";
+            this.btnAdicionarFSE.Size = new System.Drawing.Size(185, 47);
+            this.btnAdicionarFSE.TabIndex = 132;
+            this.btnAdicionarFSE.Text = "Adicionar factura sujeto excluido";
+            this.btnAdicionarFSE.Click += new System.EventHandler(this.btnAdicionarFSE_Click);
             // 
             // frmChequeDocumentosContado
             // 
@@ -386,7 +403,7 @@ namespace SistemaContable.UI.Forms.Bancos
         private System.Windows.Forms.Panel panel2;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
-        private DevExpress.XtraEditors.SimpleButton btnAdicionar;
+        private DevExpress.XtraEditors.SimpleButton btnAdicionarCCF;
         private DevExpress.XtraEditors.SimpleButton btnRetornar;
         private DevExpress.XtraGrid.Columns.GridColumn colCODIGO_ENTIDAD;
         private DevExpress.XtraGrid.Columns.GridColumn colPROVEEDOR;
@@ -405,5 +422,6 @@ namespace SistemaContable.UI.Forms.Bancos
         private DevExpress.XtraGrid.Columns.GridColumn colRETENCION_IVA;
         private DevExpress.XtraGrid.Columns.GridColumn colSALDO;
         private System.Windows.Forms.Label label1;
+        private DevExpress.XtraEditors.SimpleButton btnAdicionarFSE;
     }
 }
