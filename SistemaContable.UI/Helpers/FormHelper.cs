@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
 using SistemaContable.UI.Forms;
+using SistemaContable.UI.Interfaces;
 using ComboBox = System.Windows.Forms.ComboBox;
 
 namespace SistemaContable.UI.Helpers
@@ -468,22 +469,20 @@ namespace SistemaContable.UI.Helpers
         {
             if (formHijo == null) return;
 
-            var panel = ObtenerPanelMensajeRibbon(formHijo);
-            if (panel == null) return;
+            var contenedor = ObtenerContenedorRibbon(formHijo);
+            if (contenedor == null) return;
 
             if (string.IsNullOrEmpty(texto))
             {
-                panel.Visible = false;
+                contenedor.PanelMensaje.Visible = false;
                 return;
             }
-            var label = panel.Controls
-                .OfType<Label>()
-                .FirstOrDefault(l => l.Name == "lblMensajeRibbon");
-            if (label == null) return;
-            label.Text = texto;           
-            panel.Visible = true;
-            panel.BringToFront();
+
+            contenedor.LabelMensaje.Text = texto;
+            contenedor.PanelMensaje.Visible = true;
+            contenedor.PanelMensaje.BringToFront();
         }
+
 
         /// <summary>
         /// Oculta el panel de mensaje del Ribbon padre del form indicado.
@@ -491,25 +490,31 @@ namespace SistemaContable.UI.Helpers
         public static void OcultarMensajeRibbon(Form formHijo)
         {
             if (formHijo == null) return;
-            var panel = ObtenerPanelMensajeRibbon(formHijo);
-            if (panel != null)            {
-                panel.Visible = false;
-                var label = panel.Controls
-                    .OfType<Label>()
-                    .FirstOrDefault(l => l.Name == "lblMensajeRibbon");
-                if (label != null)
-                    label.Text = "";
-            }
-        }       
-        private static Control ObtenerPanelMensajeRibbon(Form formHijo)
-        {
-            var ribbon = formHijo.Owner;
-            if (ribbon == null) return null;
 
-            // Búsqueda nativa de WinForms (segundo parámetro = búsqueda recursiva)
-            var encontrados = ribbon.Controls.Find("pnlMensajeRibbon", true);
-            return encontrados.Length > 0 ? encontrados[0] : null;
+            var contenedor = ObtenerContenedorRibbon(formHijo);
+            if (contenedor == null) return;
+
+            contenedor.LabelMensaje.Text = "";
+            contenedor.PanelMensaje.Visible = false;
         }
+
+        private static IContenedorMensajeRibbon ObtenerContenedorRibbon(Form formHijo)
+        {
+            // Subir por la cadena de Owners
+            Form actual = formHijo;
+            while (actual != null)
+            {
+                if (actual is IContenedorMensajeRibbon contenedor)
+                    return contenedor;
+                actual = actual.Owner;
+            }
+
+            // Fallback: buscar en Application.OpenForms
+            return Application.OpenForms
+                .OfType<Form>()
+                .OfType<IContenedorMensajeRibbon>()
+                .FirstOrDefault();
+        }       
     }
 
     public class MesItem

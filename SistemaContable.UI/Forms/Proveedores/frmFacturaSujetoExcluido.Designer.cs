@@ -179,6 +179,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.chkArrendamiento.TabIndex = 198;
             this.chkArrendamiento.Text = "Arrendamiento agrícola";
             this.chkArrendamiento.UseVisualStyleBackColor = true;
+            this.chkArrendamiento.CheckedChanged += new System.EventHandler(this.chkArrendamiento_CheckedChanged);
             // 
             // label12
             // 
@@ -206,7 +207,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnImprimirFSE.Appearance.Options.UseFont = true;
             this.btnImprimirFSE.Appearance.Options.UseTextOptions = true;
             this.btnImprimirFSE.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnImprimirFSE.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimirRetencion.ImageOptions.Image")));
+            this.btnImprimirFSE.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimirFSE.ImageOptions.Image")));
             this.btnImprimirFSE.ImageOptions.ImageToTextIndent = 10;
             this.btnImprimirFSE.Location = new System.Drawing.Point(1126, 198);
             this.btnImprimirFSE.Name = "btnImprimirFSE";
@@ -266,6 +267,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.chkRENTA.TabIndex = 191;
             this.chkRENTA.Text = "Renta 10%";
             this.chkRENTA.UseVisualStyleBackColor = true;
+            this.chkRENTA.CheckedChanged += new System.EventHandler(this.chkRENTA_CheckedChanged);
             // 
             // chkIVA
             // 
@@ -388,6 +390,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtMONTO.Size = new System.Drawing.Size(155, 24);
             this.txtMONTO.TabIndex = 145;
             this.txtMONTO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtMONTO.TextChanged += new System.EventHandler(this.txtMONTO_TextChanged);
             // 
             // label22
             // 
@@ -851,6 +854,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmFacturaSujetoExcluido";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Factura Sujeto Excluido";
             this.Load += new System.EventHandler(this.frmFacturaSujetoExcluido_Load);
             this.panel1.ResumeLayout(false);

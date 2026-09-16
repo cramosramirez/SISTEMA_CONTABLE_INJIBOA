@@ -86,7 +86,10 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 frm.IdCcfCompra = idCcfCompra;
                 frm.EsContado = true;
-                frm.ShowDialog(this);
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    CargarDatos();
+                }
             }            
         }
 

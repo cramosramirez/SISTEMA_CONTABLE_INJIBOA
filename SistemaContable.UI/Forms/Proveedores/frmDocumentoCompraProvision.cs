@@ -56,6 +56,17 @@ namespace SistemaContable.UI.Forms.Proveedores
             _dtPartida.Columns.Add("CARGO", typeof(decimal));
             _dtPartida.Columns.Add("ABONO", typeof(decimal));
 
+            // ✅ Recalcular cuadre cuando cambien filas (manual o por código)
+            _dtPartida.RowChanged += (s, ev) => ActualizarCuadre();
+            _dtPartida.RowDeleted += (s, ev) => ActualizarCuadre();
+
+            // Actualiza el label de cuenta contable en cuanto cambia el valor de la columna
+            _dtPartida.ColumnChanged += (s, ev) =>
+            {
+                if (ev.Column.ColumnName == "CTACONTABLE")
+                    ActualizarEstadoCuenta(ev.Row["CTACONTABLE"]?.ToString());
+            };
+
             // Agregar fila vacía inicial
             AgregarFilaVacia();
 
@@ -70,8 +81,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             view.PopulateColumns();
 
             ConfigurarColumna(view, "ORDEN", "ORDEN", 0, false);
-            ConfigurarColumna(view, "CTACONTABLE", "CUENTA", 100);
-            ConfigurarColumna(view, "DETALLE", "DETALLE DE LA APLICACION", 400);
+            ConfigurarColumna(view, "CTACONTABLE", "CUENTA", 150);
+            ConfigurarColumna(view, "DETALLE", "DETALLE DE LA APLICACION", 350);
             ConfigurarColumna(view, "CARGO", "CARGO", 75);
             ConfigurarColumna(view, "ABONO", "ABONO", 75);
 
@@ -110,12 +121,6 @@ namespace SistemaContable.UI.Forms.Proveedores
                 }
             };
 
-            view.CellValueChanged += (s, ev) =>
-            {
-                if (ev.Column.FieldName == "CARGO" || ev.Column.FieldName == "ABONO")
-                    ActualizarCuadre();
-            };
-
             // Selección de fila completa
             view.OptionsSelection.EnableAppearanceFocusedCell = false;
             view.OptionsSelection.EnableAppearanceFocusedRow = true;
@@ -129,7 +134,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             view.Appearance.Row.Options.UseForeColor = true;
             view.Appearance.HeaderPanel.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
             view.Appearance.HeaderPanel.Options.UseFont = true;
-            ActualizarCuadre();
+            gridView1.FocusedRowChanged += GridView_FocusedRowChanged;
 
             this.BeginInvoke(new Action(() =>
             {
@@ -222,7 +227,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void GridView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter) return;
+            if (e.KeyCode != Keys.Enter && e.KeyCode != Keys.Tab) return;
 
             var view = sender as GridView;
             if (view == null) return;
@@ -236,7 +241,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 if (string.IsNullOrEmpty(texto))
                     texto = view.GetFocusedDisplayText()?.Trim();
 
-                if (texto == "*")
+                if (texto == "*" && e.KeyCode == Keys.Enter)
                 {
                     e.Handled = true;
                     AbrirBusquedaCuenta(view);
@@ -244,7 +249,28 @@ namespace SistemaContable.UI.Forms.Proveedores
                 }
             }
 
-            // Si está en CARGO presiona Enter → saltar directo a CTACONTABLE de la siguiente fila
+            // ✅ Caso especial: DETALLE de la fila 0 (cuenta del banco)
+            // → saltar directo a CTACONTABLE de la fila 1
+            if (colActual == "DETALLE" && view.FocusedRowHandle == 0)
+            {
+                e.Handled = true;
+                view.CloseEditor();
+                view.UpdateCurrentRow();
+
+                if (_dtPartida.Rows.Count < 2)
+                    AgregarFilaVacia();
+
+                _columnaAnteriorGrid = "CTACONTABLE";
+
+                view.FocusedRowHandle = 1;
+                view.FocusedColumn = view.Columns["CTACONTABLE"];
+                view.ShowEditor();
+                return;
+            }
+
+
+            // Si está en CARGO con valor > 0 → saltar a CTACONTABLE de la siguiente fila
+            // Si CARGO == 0 → comportamiento normal (pasa a ABONO)
             if (colActual == "CARGO")
             {
                 view.CloseEditor();
@@ -303,24 +329,26 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             if (string.IsNullOrWhiteSpace(texto))
             {
-                OcultarEstadoCuenta();
+                FormHelper.OcultarMensajeRibbon(this);
                 return;
             }
-            lblESTADO_CUENTA.Text = texto;
-            lblESTADO_CUENTA.ForeColor = esValida ? Color.Black : Color.DarkRed;
-            lblESTADO_CUENTA.Font = new Font(
-                lblESTADO_CUENTA.Font,
-                esValida ? FontStyle.Regular : FontStyle.Bold);
-            pnESTADO_CUENTA.Visible = true;
+            FormHelper.MostrarMensajeRibbon(this, texto);
         }
 
-        private void OcultarEstadoCuenta()
+        private void ActualizarEstadoCuenta(string codigo)
         {
-            pnESTADO_CUENTA.Visible = false;
+            var (texto, esValida) = CuentaContableHint.Obtener(codigo);
+
+            if (string.IsNullOrWhiteSpace(texto) || !gridControl1.Enabled)
+            {
+                FormHelper.OcultarMensajeRibbon(this);
+                return;
+            }
+            FormHelper.MostrarMensajeRibbon(this, texto);
         }
 
         private void GridView_FocusedColumnChanged(object sender,
-            DevExpress.XtraGrid.Views.Base.FocusedColumnChangedEventArgs e)
+             DevExpress.XtraGrid.Views.Base.FocusedColumnChangedEventArgs e)
         {
             var view = sender as GridView;
             if (view == null) return;
@@ -335,7 +363,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             }
             else
             {
-                OcultarEstadoCuenta();
+                FormHelper.OcultarMensajeRibbon(this);
             }
 
             if (_columnaAnteriorGrid == "CTACONTABLE" &&
@@ -362,16 +390,29 @@ namespace SistemaContable.UI.Forms.Proveedores
             _columnaAnteriorGrid = e.FocusedColumn?.FieldName ?? string.Empty;
         }
 
+        private void GridView_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
+        {
+            // Al cambiar de fila, resetear contexto de columna anterior
+            // y ocultar mensaje (el contexto ya no es válido)
+            _columnaAnteriorGrid = string.Empty;
+            FormHelper.OcultarMensajeRibbon(this);
+        }
+
         private void AbrirBusquedaCuenta(GridView view)
         {
             var config = new BusquedaConfig
             {
-                StoredProcedure = ObtenerProcedimiento("SP_CATALOGO_CUENTA"),
+                StoredProcedure = "SP_CATALOGO_CUENTA",
                 Columnas = new Dictionary<string, string>
-        {
-            { "CUENTA",        "CUENTA" },
-            { "NOMBRE_CUENTA", "NOMBRE" }
-        },
+                {
+                    { "CUENTA",        "CUENTA" },
+                    { "NOMBRE_CUENTA", "NOMBRE" }
+                },
+                Anchos = new Dictionary<string, int>
+                {
+                    { "CUENTA",  130 },
+                    { "NOMBRE_CUENTA",  400 }
+                },
                 ParametrosExtra = new { ES_DETALLE = true }
             };
 
@@ -753,6 +794,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 7) Refrescar totales y cuadre
             // ============================================================
             ActualizarCuadre();
+        }
+
+        private void frmDocumentoCompraProvision_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FormHelper.OcultarMensajeRibbon(this);
         }
     }
 }

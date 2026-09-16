@@ -33,6 +33,7 @@ namespace SistemaContable.UI.Forms
             this.ribbon = new DevExpress.XtraBars.Ribbon.RibbonControl();
             this.barStaticItem1 = new DevExpress.XtraBars.BarStaticItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            this.btnCerrarSesion = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
@@ -49,10 +50,12 @@ namespace SistemaContable.UI.Forms
             this.ribbon.ExpandCollapseItem,
             this.ribbon.SearchEditItem,
             this.barStaticItem1,
-            this.barButtonItem1});
+            this.barButtonItem1,
+            this.btnCerrarSesion});
             this.ribbon.Location = new System.Drawing.Point(0, 0);
-            this.ribbon.MaxItemId = 6;
+            this.ribbon.MaxItemId = 9;
             this.ribbon.Name = "ribbon";
+            this.ribbon.PageHeaderItemLinks.Add(this.btnCerrarSesion);
             this.ribbon.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.ribbonPage1});
             this.ribbon.Size = new System.Drawing.Size(1167, 188);
@@ -73,6 +76,19 @@ namespace SistemaContable.UI.Forms
             this.barButtonItem1.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.quedan48x48;
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            // 
+            // btnCerrarSesion
+            // 
+            this.btnCerrarSesion.Caption = "Cerrar sesión";
+            this.btnCerrarSesion.Id = 7;
+            this.btnCerrarSesion.ImageOptions.Image = global::SistemaContable.UI.RecursosAdicionales01.cerrar_sesion3_32x32;
+            this.btnCerrarSesion.ItemAppearance.Normal.BackColor = System.Drawing.Color.Transparent;
+            this.btnCerrarSesion.ItemAppearance.Normal.Options.UseBackColor = true;
+            this.btnCerrarSesion.ItemInMenuAppearance.Normal.BackColor = System.Drawing.Color.Transparent;
+            this.btnCerrarSesion.ItemInMenuAppearance.Normal.Options.UseBackColor = true;
+            this.btnCerrarSesion.Name = "btnCerrarSesion";
+            this.btnCerrarSesion.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.SmallWithText;
+            this.btnCerrarSesion.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnCerrarSesion_ItemClick);
             // 
             // ribbonPage1
             // 
@@ -101,10 +117,10 @@ namespace SistemaContable.UI.Forms
             this.pnlMensajeRibbon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.pnlMensajeRibbon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlMensajeRibbon.Controls.Add(this.lblMensajeRibbon);
-            this.pnlMensajeRibbon.Location = new System.Drawing.Point(756, 193);
+            this.pnlMensajeRibbon.Location = new System.Drawing.Point(792, 85);
             this.pnlMensajeRibbon.Name = "pnlMensajeRibbon";
-            this.pnlMensajeRibbon.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.pnlMensajeRibbon.Size = new System.Drawing.Size(411, 43);
+            this.pnlMensajeRibbon.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlMensajeRibbon.Size = new System.Drawing.Size(375, 43);
             this.pnlMensajeRibbon.TabIndex = 2;
             this.pnlMensajeRibbon.Visible = false;
             // 
@@ -115,7 +131,7 @@ namespace SistemaContable.UI.Forms
             this.lblMensajeRibbon.Font = new System.Drawing.Font("Arial", 8.139131F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMensajeRibbon.Location = new System.Drawing.Point(5, 5);
             this.lblMensajeRibbon.Name = "lblMensajeRibbon";
-            this.lblMensajeRibbon.Size = new System.Drawing.Size(399, 31);
+            this.lblMensajeRibbon.Size = new System.Drawing.Size(363, 31);
             this.lblMensajeRibbon.TabIndex = 0;
             this.lblMensajeRibbon.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -150,5 +166,6 @@ namespace SistemaContable.UI.Forms
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
         private System.Windows.Forms.Panel pnlMensajeRibbon;
         private System.Windows.Forms.Label lblMensajeRibbon;
+        private DevExpress.XtraBars.BarButtonItem btnCerrarSesion;
     }
 }

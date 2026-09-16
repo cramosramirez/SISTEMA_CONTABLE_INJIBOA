@@ -33,6 +33,10 @@ namespace SistemaContable.UI.Forms.Proveedores
         public bool EsContado { get; set; } = false;
         public string UidEnlaceCheque { get; set; } = string.Empty;
 
+        private bool _procesandoCheckRenta = false;
+
+        private bool _guardado = false;
+
         #endregion
 
         public frmFacturaSujetoExcluido()
@@ -82,7 +86,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtPROVEEDOR.Leave += txtPROVEEDOR_Leave;
 
             chkIVA.CheckedChanged += (s, ev) => RecalcularTotales();
-            chkRENTA.CheckedChanged += (s, ev) => RecalcularTotales();
 
             txtMONTO.Enter += TxtDecimal_Enter;
             txtMONTO.KeyPress += TxtDecimal_KeyPress;
@@ -116,6 +119,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     btnGuardar.Enabled = true;
                     btnValidar.Enabled = true;
                     btnImprimirFSE.Enabled = true;
+                    _guardado = true;
                     break;
             }
         }
@@ -383,7 +387,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             decimal iva = chkIVA.Checked ? Calculo.Redondear(monto * 0.13m, 2) : 0;
             decimal ivar = iva; // mismo valor, se resta en SALDO
-            decimal renta = chkRENTA.Checked ? Calculo.Redondear(monto * 0.10m, 2) : 0;
+            decimal renta = ObtenerDecimal(txtRENTA);
 
             decimal total = monto + iva;
             decimal saldo = total - renta - ivar;
@@ -661,7 +665,8 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
-            if (EsContado) DialogResult = DialogResult.OK;
+            if (EsContado || _guardado) 
+                DialogResult = DialogResult.OK;
             Close();
         }       
 
@@ -691,5 +696,65 @@ namespace SistemaContable.UI.Forms.Proveedores
                 Cursor = Cursors.Default;
             }
         }
+
+        private void chkRENTA_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_procesandoCheckRenta) return;
+
+            _procesandoCheckRenta = true;
+            try
+            {
+                // Si se marca este, desmarcar el otro (mutuamente excluyentes)
+                if (chkRENTA.Checked && chkArrendamiento.Checked)
+                    chkArrendamiento.Checked = false;
+                RecalcularRenta();
+            }
+            finally
+            {
+                _procesandoCheckRenta = false;
+            }
+        }
+
+        private void chkArrendamiento_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_procesandoCheckRenta) return;
+
+            _procesandoCheckRenta = true;
+            try
+            {
+                // Si se marca este, desmarcar el otro (mutuamente excluyentes)
+                if (chkArrendamiento.Checked && chkRENTA.Checked)
+                    chkRENTA.Checked = false;
+
+                RecalcularRenta();
+            }
+            finally
+            {
+                _procesandoCheckRenta = false;
+            }
+        }
+
+        private void txtMONTO_TextChanged(object sender, EventArgs e)
+        {
+            // Solo recalcular si algún check está marcado
+            if (chkRENTA.Checked || chkArrendamiento.Checked)
+                RecalcularRenta();
+            else
+                RecalcularTotales();   // igual actualizar el total (monto puro)
+        }
+
+        // ============================================================
+        // Recalcula la renta (10% del monto) y el total
+        // Se llama cuando cambia algún check o el monto (con check activo)
+        // ============================================================
+        private void RecalcularRenta()
+        {
+            decimal monto = ObtenerDecimal(txtMONTO);
+            bool aplicaRenta = chkRENTA.Checked || chkArrendamiento.Checked;
+            decimal renta = aplicaRenta ? Calculo.Redondear(monto * 0.10m) : 0m;
+            txtRENTA.Text = renta.ToString("N2");
+            RecalcularTotales();
+        }        
+       
     }
 }

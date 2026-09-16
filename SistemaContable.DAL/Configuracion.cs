@@ -59,6 +59,8 @@ namespace SistemaContable.DAL
         /// <summary>Nombre completo del usuario</summary>
         public static string NombreUsuarioActual { get; set; }
 
+        public static bool CerrarSesionSolicitada { get; set; } = false;
+
         /// <summary>ID del rol asignado al usuario</summary>
         public static int IdRolActual { get; set; }
 

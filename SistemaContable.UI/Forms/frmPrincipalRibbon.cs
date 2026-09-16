@@ -19,30 +19,51 @@ using SistemaContable.UI.Interfaces;
 
 namespace SistemaContable.UI.Forms
 {
-    public partial class frmPrincipalRibbon : DevExpress.XtraBars.Ribbon.RibbonForm
+    public partial class frmPrincipalRibbon : DevExpress.XtraBars.Ribbon.RibbonForm, IContenedorMensajeRibbon
     {
+        public Panel PanelMensaje => pnlMensajeRibbon;
+        public Label LabelMensaje => lblMensajeRibbon;
         public frmPrincipalRibbon()
         {
             InitializeComponent();
         }
         private void frmPrincipalRibbon_Load(object sender, EventArgs e)
         {
+            if (!MostrarLoginYCargarSesion())
+                Application.Exit();
+        }
+
+
+        // ============================================================
+        // Muestra el login y, si es exitoso, carga la sesión del usuario.
+        // Retorna true si el usuario se autenticó, false si canceló.
+        // ============================================================
+        private bool MostrarLoginYCargarSesion()
+        {
             ribbon.Pages.Clear();
+
             using (var login = new frmLogin())
             {
-                if (login.ShowDialog() == DialogResult.OK)
-                {                                     
-                    CargarMenuPorRol(Configuracion.IdRolActual);
-                    ribbonStatusBar.ItemLinks.Add(barStaticItem1);
-                    barStaticItem1.Caption = $"Usuario: {Configuracion.UsuarioActual} " +
-                         $"| Nombre: {Configuracion.NombreUsuarioActual} " +
-                         $"| Rol: {Configuracion.NombreRolActual}";
-                    this.Show();
-                }
-                else
+                if (login.ShowDialog() != DialogResult.OK)
+                    return false;
+
+                // Sesión autenticada exitosamente
+                CargarMenuPorRol(Configuracion.IdRolActual);
+
+                // Solo agregar el item a la barra si aún no está
+                if (!ribbonStatusBar.ItemLinks.Cast<BarItemLink>()
+                        .Any(l => l.Item == barStaticItem1))
                 {
-                    Application.Exit();
+                    ribbonStatusBar.ItemLinks.Add(barStaticItem1);
                 }
+
+                barStaticItem1.Caption =
+                    $"Usuario: {Configuracion.UsuarioActual} " +
+                    $"| Nombre: {Configuracion.NombreUsuarioActual} " +
+                    $"| Rol: {Configuracion.NombreRolActual}";
+
+                this.Show();
+                return true;
             }
         }
 
@@ -179,6 +200,7 @@ namespace SistemaContable.UI.Forms
 
         // Cache para mejorar rendimiento (opcional pero recomendado)
         private static readonly Dictionary<string, Type> _formCache = new Dictionary<string, Type>();
+       
 
         // ==================== MÉTODO AUXILIAR ====================
         private Type ObtenerTipoFormulario(string nombreFormulario)
@@ -340,5 +362,70 @@ namespace SistemaContable.UI.Forms
             pnlMensajeRibbon.Visible = false;
         }
 
+        private void btnCerrarSesion_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var resp = XtraMessageBox.Show(
+                "¿Está seguro de cerrar la sesión?",
+                "Cerrar sesión",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (resp != DialogResult.Yes) return;
+
+            // 1) Log del evento (si tenés Logger configurado)
+            try
+            {
+                Logger.Info(
+                    $"Usuario {Configuracion.UsuarioActual} cerró sesión.",
+                    "SEGURIDAD");
+            }
+            catch { /* silenciar si falla el logger */ }
+
+            // 2) Cerrar todos los forms hijos abiertos
+            var formsAbiertos = Application.OpenForms
+                .OfType<Form>()
+                .Where(f => f != this)
+                .ToList();
+
+            foreach (var frm in formsAbiertos)
+            {
+                try { frm.Close(); }
+                catch { /* silenciar */ }
+            }
+
+            // 3) Limpiar estado de usuario
+            LimpiarSesion();
+
+            // 4) Ocultar el ribbon mientras se muestra el login
+            this.Hide();
+
+            // 5) Mostrar login otra vez
+            if (!MostrarLoginYCargarSesion())
+            {
+                // El usuario canceló el login → salir de la app
+                Application.Exit();
+            }
+        }
+
+        // ============================================================
+        // Limpia el estado de la sesión anterior
+        // ============================================================
+        private void LimpiarSesion()
+        {
+            // Resetear configuración global
+            Configuracion.UsuarioActual = null;
+            Configuracion.NombreUsuarioActual = null;
+            Configuracion.IdRolActual = 0;
+            Configuracion.NombreRolActual = null;
+            Configuracion.Id_Almacen = 0;
+            Configuracion.Id_Cajero = 0;
+            
+            // Limpiar mensaje del ribbon si estaba visible
+            if (pnlMensajeRibbon != null)
+                pnlMensajeRibbon.Visible = false;
+
+            // Limpiar caption de la barra de estado
+            barStaticItem1.Caption = "";
+        }
     }
 }

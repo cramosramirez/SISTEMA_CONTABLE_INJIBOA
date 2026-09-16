@@ -31,6 +31,8 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmProveedor));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtPROFESION = new System.Windows.Forms.TextBox();
+            this.label36 = new System.Windows.Forms.Label();
             this.txtNOMBRE_CUENTA_GASTO = new System.Windows.Forms.TextBox();
             this.txtNOMBRE_CUENTA_X_PAGAR = new System.Windows.Forms.TextBox();
             this.txtCUENTA_GASTO = new System.Windows.Forms.TextBox();
@@ -109,8 +111,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label1 = new System.Windows.Forms.Label();
             this.cbxORIGEN_ENTIDAD = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.txtPROFESION = new System.Windows.Forms.TextBox();
-            this.label36 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -202,6 +202,25 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1322, 654);
             this.panel1.TabIndex = 0;
+            // 
+            // txtPROFESION
+            // 
+            this.txtPROFESION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPROFESION.Location = new System.Drawing.Point(925, 395);
+            this.txtPROFESION.MaxLength = 300;
+            this.txtPROFESION.Name = "txtPROFESION";
+            this.txtPROFESION.Size = new System.Drawing.Size(254, 24);
+            this.txtPROFESION.TabIndex = 245;
+            // 
+            // label36
+            // 
+            this.label36.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label36.Location = new System.Drawing.Point(845, 394);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(72, 24);
+            this.label36.TabIndex = 246;
+            this.label36.Text = "Profesión:";
+            this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtNOMBRE_CUENTA_GASTO
             // 
@@ -442,7 +461,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnGuardar.Size = new System.Drawing.Size(119, 47);
             this.btnGuardar.TabIndex = 39;
             this.btnGuardar.TabStop = false;
-            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.Text = "Guardar";            
             // 
             // txtID_CARGADORA
             // 
@@ -947,25 +966,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label11.TabIndex = 163;
             this.label11.Text = "Origen";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtPROFESION
-            // 
-            this.txtPROFESION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPROFESION.Location = new System.Drawing.Point(925, 395);
-            this.txtPROFESION.MaxLength = 300;
-            this.txtPROFESION.Name = "txtPROFESION";
-            this.txtPROFESION.Size = new System.Drawing.Size(254, 24);
-            this.txtPROFESION.TabIndex = 245;
-            // 
-            // label36
-            // 
-            this.label36.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label36.Location = new System.Drawing.Point(845, 394);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(72, 24);
-            this.label36.TabIndex = 246;
-            this.label36.Text = "Profesión:";
-            this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // frmProveedor
             // 

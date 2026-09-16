@@ -145,10 +145,12 @@ namespace SistemaContable.UI.Forms.Proveedores
         {           
             using (var frm = new frmDocumentoCompra())
             {
-                frm.IdCcfCompra = idCcfCompra;                
-                frm.ShowDialog(this);
-            }
-            CargarDatos();                         
+                frm.IdCcfCompra = idCcfCompra;
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    CargarDatos();
+                }
+            }                                   
         }
         #endregion
           

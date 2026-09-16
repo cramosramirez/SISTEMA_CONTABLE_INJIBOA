@@ -129,10 +129,12 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             using (var frm = new frmProveedor())
             {
-                frm.IdEntidad = idEntidad;                
-                frm.ShowDialog(this);
-            }
-            CargarDatos();
+                frm.IdEntidad = idEntidad;
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    CargarDatos();
+                }
+            }            
         }
 
         private void btnNuevoQuedan_Click(object sender, EventArgs e)

@@ -41,13 +41,10 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblTOTAL_ABONO = new System.Windows.Forms.Label();
             this.lblTOTAL_CARGO = new System.Windows.Forms.Label();
             this.lblCUADRE = new System.Windows.Forms.Label();
-            this.pnESTADO_CUENTA = new System.Windows.Forms.Panel();
-            this.lblESTADO_CUENTA = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             this.panel2.SuspendLayout();
-            this.pnESTADO_CUENTA.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -77,7 +74,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.pnESTADO_CUENTA);
             this.panel2.Controls.Add(this.btnBorrarFila);
             this.panel2.Controls.Add(this.btnFinalizar);
             this.panel2.Controls.Add(this.btnGuardar);
@@ -174,27 +170,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblCUADRE.Text = "-";
             this.lblCUADRE.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // pnESTADO_CUENTA
-            // 
-            this.pnESTADO_CUENTA.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(254)))), ((int)(((byte)(231)))));
-            this.pnESTADO_CUENTA.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnESTADO_CUENTA.Controls.Add(this.lblESTADO_CUENTA);
-            this.pnESTADO_CUENTA.Location = new System.Drawing.Point(7, 8);
-            this.pnESTADO_CUENTA.Name = "pnESTADO_CUENTA";
-            this.pnESTADO_CUENTA.Size = new System.Drawing.Size(406, 33);
-            this.pnESTADO_CUENTA.TabIndex = 24;
-            this.pnESTADO_CUENTA.Visible = false;
-            // 
-            // lblESTADO_CUENTA
-            // 
-            this.lblESTADO_CUENTA.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblESTADO_CUENTA.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblESTADO_CUENTA.Location = new System.Drawing.Point(0, 0);
-            this.lblESTADO_CUENTA.Name = "lblESTADO_CUENTA";
-            this.lblESTADO_CUENTA.Size = new System.Drawing.Size(404, 31);
-            this.lblESTADO_CUENTA.TabIndex = 0;
-            this.lblESTADO_CUENTA.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // frmDocumentoCompraProvision
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -209,12 +184,12 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.Name = "frmDocumentoCompraProvision";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Provisión de documento";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmDocumentoCompraProvision_FormClosed);
             this.Load += new System.EventHandler(this.frmProvisionQuedan_Load);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             this.panel2.ResumeLayout(false);
-            this.pnESTADO_CUENTA.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -232,7 +207,5 @@ namespace SistemaContable.UI.Forms.Proveedores
         private DevExpress.XtraEditors.SimpleButton btnGuardar;
         private DevExpress.XtraEditors.SimpleButton btnFinalizar;
         private DevExpress.XtraEditors.SimpleButton btnBorrarFila;
-        private System.Windows.Forms.Panel pnESTADO_CUENTA;
-        private System.Windows.Forms.Label lblESTADO_CUENTA;
     }
 }

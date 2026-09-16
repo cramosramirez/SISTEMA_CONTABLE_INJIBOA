@@ -1240,6 +1240,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+       
     }
 }
 

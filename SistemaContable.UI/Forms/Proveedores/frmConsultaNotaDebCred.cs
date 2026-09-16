@@ -97,14 +97,13 @@ namespace SistemaContable.UI.Forms.Proveedores
             using (var frm = new frmNotaDebCred())
             {
                 frm.IdCcfCompra = idCcfCompra;
-                frm.ShowDialog(this);
-            }
-            CargarDatos();
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    CargarDatos();
+                }
+            }                        
         }
-
         #endregion
-
-
 
         private void riEditar_ButtonClick(object sender, ButtonPressedEventArgs e)
         {

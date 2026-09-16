@@ -41,6 +41,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private string _idTipoContribProveedor = "";
         private string _idTipoPersona = "";
         private bool _validarCompIVAR = false;
+        private bool _guardado = false; 
         
         public int IdCcfCompra { get; set; } = 0;
         public bool EsContado { get; set; } = false;
@@ -159,6 +160,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
                     btnCorreo.Enabled = false;
                     btnProvision.Enabled = !EsContado;
+                    _guardado = true;
                     break;
                 case EstadoFormulario.Validado:
                     txtPROVEEDOR.Enabled = false;
@@ -761,15 +763,12 @@ namespace SistemaContable.UI.Forms.Proveedores
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (resp != DialogResult.Yes)
-                {
+                {                   
                     return;
                 }
-            }
-            if (EsContado)
-            {
-                // En modo contado, retornar OK para que el padre refresque
+            }            
+            if (_guardado)
                 DialogResult = DialogResult.OK;
-            }
             Close();
         }
 

@@ -34,6 +34,8 @@ namespace SistemaContable.UI.Forms.Bancos
         private bool _flujoEsQuedan = false;
         private EstadoFormulario _estadoActual = EstadoFormulario.Inicializar;
         private bool _modoBusqueda = false;
+        // Flag para distinguir asignaciones programáticas vs digitación/selección del usuario
+        private bool _asignandoCuentaPorCodigo = false;
 
         public frmCheques()
         {            
@@ -45,12 +47,7 @@ namespace SistemaContable.UI.Forms.Bancos
             FormHelper.Inicializar(this);
             btnIgnorar.CausesValidation = false;
             btnGuardar.CausesValidation = false;  
-
-            if (!VerificarCCFsHuerfanos())
-            {
-                _uidEnlaceCheque = FormHelper.ObtenerUUID();  
-            }
-
+                       
             InicializarGridPartida();
 
             FormHelper.RegistrarBusqueda(
@@ -273,18 +270,26 @@ namespace SistemaContable.UI.Forms.Bancos
                 decimal monto = r["MONTO"] == DBNull.Value ? 0m : Convert.ToDecimal(r["MONTO"]);
                 txtCANTIDAD.Text = monto.ToString("N2");
 
-                // ---------- Result set 2: PARTIDA CONTABLE ----------
-                _dtPartida.Clear();
-                foreach (DataRow rp in ds.Tables[1].Rows)
+                _asignandoCuentaPorCodigo = true;
+                try
                 {
-                    var fila = _dtPartida.NewRow();
-                    fila["ORDEN"] = rp["ORDEN"] == DBNull.Value ? 0 : Convert.ToInt32(rp["ORDEN"]);
-                    fila["CTACONTABLE"] = SafeStr(rp["CTACONTABLE"]);
-                    fila["DETALLE"] = SafeStr(rp["DETALLE"]);
-                    fila["CARGO"] = rp["CARGO"] == DBNull.Value ? 0m : Convert.ToDecimal(rp["CARGO"]);
-                    fila["ABONO"] = rp["ABONO"] == DBNull.Value ? 0m : Convert.ToDecimal(rp["ABONO"]);
-                    _dtPartida.Rows.Add(fila);
+                    // ---------- Result set 2: PARTIDA CONTABLE ----------
+                    _dtPartida.Clear();
+                    foreach (DataRow rp in ds.Tables[1].Rows)
+                    {
+                        var fila = _dtPartida.NewRow();
+                        fila["ORDEN"] = rp["ORDEN"] == DBNull.Value ? 0 : Convert.ToInt32(rp["ORDEN"]);
+                        fila["CTACONTABLE"] = SafeStr(rp["CTACONTABLE"]);
+                        fila["DETALLE"] = SafeStr(rp["DETALLE"]);
+                        fila["CARGO"] = rp["CARGO"] == DBNull.Value ? 0m : Convert.ToDecimal(rp["CARGO"]);
+                        fila["ABONO"] = rp["ABONO"] == DBNull.Value ? 0m : Convert.ToDecimal(rp["ABONO"]);
+                        _dtPartida.Rows.Add(fila);
+                    }
                 }
+                finally
+                {
+                    _asignandoCuentaPorCodigo = false;
+                }                
 
                 ActualizarCuadre();
 
@@ -640,11 +645,11 @@ namespace SistemaContable.UI.Forms.Bancos
         /// el formulario frmChequeDocumentosContado.
         /// Retorna true si retomó, false en caso contrario.
         /// </summary>
-        private bool VerificarCCFsHuerfanos()
+        private bool VerificarDocumentosHuerfanos()
         {
             try
             {
-                var dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA", new
+                var dt = _dal.EjecutarConsulta("SP_CHEQUE_CONTADO", new
                 {
                     ACCION = "LISTAR_UIDS_HUERFANOS",
                     USUARIO = Configuracion.UsuarioActual
@@ -674,7 +679,7 @@ namespace SistemaContable.UI.Forms.Bancos
             catch (Exception ex)
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Error al verificar CCFs pendientes:\n\n" + ex.Message,
+                    "Error al verificar documentos pendientes:\n\n" + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -742,7 +747,11 @@ namespace SistemaContable.UI.Forms.Bancos
             _dtPartida.ColumnChanged += (s, ev) =>
             {
                 if (ev.Column.ColumnName == "CTACONTABLE")
-                    ActualizarEstadoCuenta(ev.Row["CTACONTABLE"]?.ToString());
+                {
+                    // Solo mostrar el mensaje si viene de digitación/selección del usuario
+                    if (!_asignandoCuentaPorCodigo)
+                        ActualizarEstadoCuenta(ev.Row["CTACONTABLE"]?.ToString());
+                }
             };
 
             // Agregar fila vacía inicial
@@ -840,35 +849,43 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private void AgregarFilaPartida(string ctaContable)
         {
-            // Limpiar filas vacías antes de agregar
-            for (int i = _dtPartida.Rows.Count - 1; i >= 0; i--)
+            _asignandoCuentaPorCodigo = true;
+            try
             {
-                var r = _dtPartida.Rows[i];
-                if (string.IsNullOrWhiteSpace(r["CTACONTABLE"].ToString()) &&
-                    Convert.ToDecimal(r["CARGO"]) == 0 &&
-                    Convert.ToDecimal(r["ABONO"]) == 0)
-                    _dtPartida.Rows.RemoveAt(i);
-            }
+                // Limpiar filas vacías antes de agregar
+                for (int i = _dtPartida.Rows.Count - 1; i >= 0; i--)
+                {
+                    var r = _dtPartida.Rows[i];
+                    if (string.IsNullOrWhiteSpace(r["CTACONTABLE"].ToString()) &&
+                        Convert.ToDecimal(r["CARGO"]) == 0 &&
+                        Convert.ToDecimal(r["ABONO"]) == 0)
+                        _dtPartida.Rows.RemoveAt(i);
+                }
 
-            // Agregar fila con la cuenta contable
-            if (_dtPartida.Rows.Count == 0)
-            {
-                var fila = _dtPartida.NewRow();
-                fila["ORDEN"] = 0;
-                fila["CTACONTABLE"] = ctaContable;
-                fila["DETALLE"] = string.Empty;
-                fila["CARGO"] = 0m;
-                fila["ABONO"] = 0m;
-                _dtPartida.Rows.Add(fila);
-            }
-            else
-            {
-                var fila = _dtPartida.Rows[0];
-                fila["CTACONTABLE"] = ctaContable;                
-            }          
+                // Agregar fila con la cuenta contable
+                if (_dtPartida.Rows.Count == 0)
+                {
+                    var fila = _dtPartida.NewRow();
+                    fila["ORDEN"] = 0;
+                    fila["CTACONTABLE"] = ctaContable;
+                    fila["DETALLE"] = string.Empty;
+                    fila["CARGO"] = 0m;
+                    fila["ABONO"] = 0m;
+                    _dtPartida.Rows.Add(fila);
+                }
+                else
+                {
+                    var fila = _dtPartida.Rows[0];
+                    fila["CTACONTABLE"] = ctaContable;
+                }
 
-            // Agregar fila vacía para siguiente ingreso
-            AgregarFilaVacia();            
+                // Agregar fila vacía para siguiente ingreso
+                AgregarFilaVacia();
+            }
+            finally
+            {
+                _asignandoCuentaPorCodigo = false;
+            }                
         }
 
         private void ActualizarEstadoCuenta(string codigo)
@@ -890,63 +907,71 @@ namespace SistemaContable.UI.Forms.Bancos
         private void AplicarPartidaPago(decimal totalPago, string cuentaPorPagar)
         {
             if (_dtPartida.Rows.Count == 0) return;
-
-            string detalle = $"CH # {txtNUMERO_CHEQUE.Text.Trim()} {txtNOMBRE_CHEQUE.Text.Trim()}";
-
-            // ============================================================
-            // Fila 1: cuenta del banco -> ABONO + DETALLE
-            // ============================================================
-            _dtPartida.Rows[0]["DETALLE"] = detalle;
-            _dtPartida.Rows[0]["CARGO"] = 0m;
-            _dtPartida.Rows[0]["ABONO"] = totalPago;
-
-            // ============================================================
-            // Fila 2: cuenta por pagar del proveedor -> CARGO + DETALLE
-            // Si ya existe (segunda llamada) se sobrescribe; si no, se crea.
-            // ============================================================
-            if (_dtPartida.Rows.Count >= 2)
+            _asignandoCuentaPorCodigo = true;
+            try
             {
-                _dtPartida.Rows[1]["CTACONTABLE"] = cuentaPorPagar;
-                _dtPartida.Rows[1]["DETALLE"] = "";
-                _dtPartida.Rows[1]["CARGO"] = totalPago;
-                _dtPartida.Rows[1]["ABONO"] = 0m;
-            }
-            else
-            {
-                var fila = _dtPartida.NewRow();
-                fila["ORDEN"] = 0;
-                fila["CTACONTABLE"] = cuentaPorPagar;
-                fila["DETALLE"] = detalle;
-                fila["CARGO"] = totalPago;
-                fila["ABONO"] = 0m;
-                _dtPartida.Rows.Add(fila);
-            }
+                string detalle = $"CH # {txtNUMERO_CHEQUE.Text.Trim()} {txtNOMBRE_CHEQUE.Text.Trim()}";
 
-            // Eliminar filas vacías sobrantes después de la fila 2
-            for (int i = _dtPartida.Rows.Count - 1; i >= 2; i--)
-            {
-                var r = _dtPartida.Rows[i];
-                if (string.IsNullOrWhiteSpace(r["CTACONTABLE"].ToString()) &&
-                    Convert.ToDecimal(r["CARGO"]) == 0 &&
-                    Convert.ToDecimal(r["ABONO"]) == 0)
+                // ============================================================
+                // Fila 1: cuenta del banco -> ABONO + DETALLE
+                // ============================================================
+                _dtPartida.Rows[0]["DETALLE"] = detalle;
+                _dtPartida.Rows[0]["CARGO"] = 0m;
+                _dtPartida.Rows[0]["ABONO"] = totalPago;
+
+                // ============================================================
+                // Fila 2: cuenta por pagar del proveedor -> CARGO + DETALLE
+                // Si ya existe (segunda llamada) se sobrescribe; si no, se crea.
+                // ============================================================
+                if (_dtPartida.Rows.Count >= 2)
                 {
-                    _dtPartida.Rows.RemoveAt(i);
+                    _dtPartida.Rows[1]["CTACONTABLE"] = cuentaPorPagar;
+                    _dtPartida.Rows[1]["DETALLE"] = "";
+                    _dtPartida.Rows[1]["CARGO"] = totalPago;
+                    _dtPartida.Rows[1]["ABONO"] = 0m;
+                }
+                else
+                {
+                    var fila = _dtPartida.NewRow();
+                    fila["ORDEN"] = 0;
+                    fila["CTACONTABLE"] = cuentaPorPagar;
+                    fila["DETALLE"] = detalle;
+                    fila["CARGO"] = totalPago;
+                    fila["ABONO"] = 0m;
+                    _dtPartida.Rows.Add(fila);
+                }
+
+                // Eliminar filas vacías sobrantes después de la fila 2
+                for (int i = _dtPartida.Rows.Count - 1; i >= 2; i--)
+                {
+                    var r = _dtPartida.Rows[i];
+                    if (string.IsNullOrWhiteSpace(r["CTACONTABLE"].ToString()) &&
+                        Convert.ToDecimal(r["CARGO"]) == 0 &&
+                        Convert.ToDecimal(r["ABONO"]) == 0)
+                    {
+                        _dtPartida.Rows.RemoveAt(i);
+                    }
+                }
+
+                // Asegurar fila vacía al final para captura adicional
+                DataRow ultima = _dtPartida.Rows[_dtPartida.Rows.Count - 1];
+                if (!string.IsNullOrWhiteSpace(ultima["CTACONTABLE"].ToString()) ||
+                    Convert.ToDecimal(ultima["CARGO"]) != 0 ||
+                    Convert.ToDecimal(ultima["ABONO"]) != 0)
+                {
+                    AgregarFilaVacia();
                 }
             }
-
-            // Asegurar fila vacía al final para captura adicional
-            DataRow ultima = _dtPartida.Rows[_dtPartida.Rows.Count - 1];
-            if (!string.IsNullOrWhiteSpace(ultima["CTACONTABLE"].ToString()) ||
-                Convert.ToDecimal(ultima["CARGO"]) != 0 ||
-                Convert.ToDecimal(ultima["ABONO"]) != 0)
+            finally
             {
-                AgregarFilaVacia();
-            }            
+                _asignandoCuentaPorCodigo = false;
+            }
+            
         }
 
         private void GridView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter) return;
+            if (e.KeyCode != Keys.Enter && e.KeyCode != Keys.Tab) return;
 
             var view = sender as GridView;
             if (view == null) return;
@@ -960,7 +985,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 if (string.IsNullOrEmpty(texto))
                     texto = view.GetFocusedDisplayText()?.Trim();
 
-                if (texto == "*")
+                if (texto == "*" && e.KeyCode == Keys.Enter)
                 {
                     e.Handled = true;
                     AbrirBusquedaCuenta(view);
@@ -1042,7 +1067,7 @@ namespace SistemaContable.UI.Forms.Bancos
         }
 
         private void GridView_FocusedColumnChanged(object sender,
-            DevExpress.XtraGrid.Views.Base.FocusedColumnChangedEventArgs e)
+             DevExpress.XtraGrid.Views.Base.FocusedColumnChangedEventArgs e)
         {
             var view = sender as GridView;
             if (view == null) return;
@@ -1067,16 +1092,11 @@ namespace SistemaContable.UI.Forms.Bancos
                 if (string.IsNullOrWhiteSpace(cta)) return;
 
                 string detalleActual = view.GetFocusedRowCellValue("DETALLE")?.ToString();
-                if (!_flujoEsQuedan && !string.IsNullOrWhiteSpace(detalleActual)) return;
+                if (!string.IsNullOrWhiteSpace(detalleActual)) return;
 
-                string nuevoDetalle = _flujoEsQuedan
-                   ? $"CH # {txtNUMERO_CHEQUE.Text.Trim()} {txtCONCEPTO.Text.Trim()}"
-                   : $"CH # {txtNUMERO_CHEQUE.Text.Trim()} {txtNOMBRE_CHEQUE.Text.Trim()}";
-                bool esAutoGenerado = string.IsNullOrWhiteSpace(detalleActual)
-                           || detalleActual == _ultimoDetalleAutoGenerado;
-                if (!esAutoGenerado) return;
-                view.SetFocusedRowCellValue("DETALLE", nuevoDetalle);
-                _ultimoDetalleAutoGenerado = nuevoDetalle;
+                string detalle = "";
+
+                view.SetFocusedRowCellValue("DETALLE", detalle);
                 view.ShowEditor();
 
                 // Diferir el SelectAll hasta que el editor esté completamente activo
@@ -1271,15 +1291,7 @@ namespace SistemaContable.UI.Forms.Bancos
             }
 
             return true;
-        }
-
-        private decimal CalcularTotalCargo()
-        {
-            decimal total = 0;
-            foreach (DataRow fila in _dtPartida.Rows)
-                total += Convert.ToDecimal(fila["CARGO"]);
-            return total;
-        }
+        }       
 
         private void ActualizarCuadre()
         {
@@ -1874,6 +1886,11 @@ namespace SistemaContable.UI.Forms.Bancos
             ConfigurarOperacion();
             ActualizarCuadre();
             ConfigurarCRUD(EstadoFormulario.Agregar);
+            if (!VerificarDocumentosHuerfanos())
+            {
+                _uidEnlaceCheque = FormHelper.ObtenerUUID();
+                return;
+            }
 
             // Abrir automáticamente la búsqueda de Tipo de Operación
             this.BeginInvoke(new Action(() =>

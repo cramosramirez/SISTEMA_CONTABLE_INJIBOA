@@ -35,6 +35,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private string _idTipoPersona = "";
         private bool _validarCompIVAR = false;
         public int IdCcfCompra { get; set; } = 0;
+        private bool _guardado = false;
         private readonly ParametrosCcfBusqueda _parametrosCcf = new ParametrosCcfBusqueda();
 
 
@@ -534,6 +535,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
                     btnCorreo.Enabled = false;
                     btnProvision.Enabled = true;
+                    _guardado = true;
                     break;
                 case EstadoFormulario.Validado:                    
                     btnGuardar.Enabled = true;
@@ -819,7 +821,9 @@ namespace SistemaContable.UI.Forms.Proveedores
                       
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (_guardado)
+                DialogResult = DialogResult.OK;
+            Close();
         }
         //Liberara recursos del Helper de Hacienda
         protected override void OnFormClosed(FormClosedEventArgs e)
@@ -938,8 +942,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 // El SP devuelve siempre los tres campos:
                 DataRow row = dt.Rows[0];
                 IdCcfCompra = Convert.ToInt32(row["ID_GENERADO"]);                
-                _validarCompIVAR = ObtenerDecimal(txtIVAR) > 0 ? true : false;                
-                ConfigurarCRUD(EstadoFormulario.Guardado);
+                _validarCompIVAR = ObtenerDecimal(txtIVAR) > 0 ? true : false;                                
                 XtraMessageBox.Show("Documento guardado correctamente.",
                     "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
