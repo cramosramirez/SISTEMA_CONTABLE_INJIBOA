@@ -363,6 +363,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap EliminarFila24x24 {
+            get {
+                object obj = ResourceManager.GetObject("EliminarFila24x24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap eliminarFila32x32 {
             get {
                 object obj = ResourceManager.GetObject("eliminarFila32x32", resourceCulture);
@@ -653,9 +663,29 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap NuevaFila32x32 {
+            get {
+                object obj = ResourceManager.GetObject("NuevaFila32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap nuevo32x32 {
             get {
                 object obj = ResourceManager.GetObject("nuevo32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap OpcionRol_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("OpcionRol_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

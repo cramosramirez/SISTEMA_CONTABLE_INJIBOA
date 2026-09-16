@@ -17,6 +17,11 @@ namespace SistemaContable.UI.Forms.Clientes
         private DataTable _dtRoles;
         private DataTable _dtAllMunicipios;
         private bool _cargando = false;
+        private int _topOriginalDatosCliente;
+        private int _topOriginalTiposCliente;
+        private int _altoOriginalDatosPersonales;
+        private int _altoOriginalFormulario;
+        private int _desplazamientoCodigosCliente;
         // IDs seleccionados por búsqueda de actividad económica
         private int _idActividad1 = 0;
         private int _idActividad2 = 0;
@@ -28,12 +33,23 @@ namespace SistemaContable.UI.Forms.Clientes
         public frmCliente()
         {
             InitializeComponent();
+            _topOriginalDatosCliente = gclClientes.Top;
+            _topOriginalTiposCliente = grpRoles.Top;
+            _altoOriginalDatosPersonales = groupControl1.Height;
+            _altoOriginalFormulario = ClientSize.Height;
+            int topSiguienteControl = groupControl1.Controls.Cast<Control>()
+                .Where(control => control != tabCodigosRelacionados
+                    && control.Top >= tabCodigosRelacionados.Bottom)
+                .Min(control => control.Top);
+            _desplazamientoCodigosCliente =
+                topSiguienteControl - tabCodigosRelacionados.Top;
             this.StartPosition = FormStartPosition.CenterScreen;
         }
         #region === CARGA INICIAL ===
         private void frmEntidad_Load(object sender, EventArgs e)
         {
             FormHelper.Inicializar(this);
+            AplicarPermisosRolCliente();
             CargarTipoPersona();
             CargarTipoContribuyente();
             CargarTipoDocIdentidad();
@@ -41,7 +57,6 @@ namespace SistemaContable.UI.Forms.Clientes
             CargarDepartamentos();
             ConfigurarToolTips();
             RegistrarBusquedaActividades();
-            RegistrarBusquedaTipoPrecio();
             RegistrarBusquedaCuenta();
             RegistrarBusquedaProveedorIntegracion();
             RegistrarBusquedaTransportistaIntegracion();
@@ -62,6 +77,98 @@ namespace SistemaContable.UI.Forms.Clientes
             }
         }
         #endregion
+
+        #region === PERMISOS DEL ROL ===
+        private void AplicarPermisosRolCliente()
+        {
+            // El rol Administrador no está sujeto a este filtro.
+            if (string.Equals(Configuracion.NombreRolActual, "Administrador",
+                StringComparison.OrdinalIgnoreCase))
+            {
+                AjustarDistribucionFormulario(
+                    mostrarCodigosCliente: true,
+                    mostrarDatosCliente: true,
+                    mostrarTiposCliente: true);
+                return;
+            }
+
+            DataTable dt = _dal.EjecutarConsulta("[ESEGURIDAD].[SP_ROL_PERMISOS]", new
+            {
+                ACCION = "OBTENER",
+                ID_ROL = Configuracion.IdRolActual
+            });
+
+            DataRow permiso = dt.Rows.Count > 0 ? dt.Rows[0] : null;
+            bool mostrarDatosCliente = TienePermiso(
+                permiso, "PERMISO_EDICION_CTAS_CONTABLES");
+            bool mostrarTiposCliente = TienePermiso(
+                permiso, "PERMISO_EDICION_TIPO_CLIENTE");
+            bool mostrarCodigosCliente = TienePermiso(
+                permiso, "PERMISO_EDICION_COD_CLIENTE_PROV_SIGESTA");
+
+            AjustarDistribucionFormulario(
+                mostrarCodigosCliente,
+                mostrarDatosCliente,
+                mostrarTiposCliente);
+        }
+
+        private static bool TienePermiso(DataRow permiso, string nombreColumna)
+        {
+            return permiso != null
+                && permiso.Table.Columns.Contains(nombreColumna)
+                && permiso[nombreColumna] != DBNull.Value
+                && Convert.ToBoolean(permiso[nombreColumna]);
+        }
+
+        private void AjustarDistribucionFormulario(
+            bool mostrarCodigosCliente,
+            bool mostrarDatosCliente,
+            bool mostrarTiposCliente)
+        {
+            int espacioDatosCliente = _topOriginalTiposCliente - _topOriginalDatosCliente;
+            int espacioTiposCliente = _altoOriginalFormulario - _topOriginalTiposCliente;
+            int desplazamientoSuperior = mostrarCodigosCliente
+                ? 0
+                : _desplazamientoCodigosCliente;
+
+            tabCodigosRelacionados.Visible = mostrarCodigosCliente;
+            if (!mostrarCodigosCliente)
+            {
+                foreach (Control control in groupControl1.Controls.Cast<Control>()
+                    .Where(control => control != tabCodigosRelacionados
+                        && control.Top >= tabCodigosRelacionados.Bottom))
+                {
+                    control.Top -= _desplazamientoCodigosCliente;
+                }
+            }
+
+            groupControl1.Height = _altoOriginalDatosPersonales - desplazamientoSuperior;
+            int topDatosCliente = _topOriginalDatosCliente - desplazamientoSuperior;
+            int topTiposCliente = _topOriginalTiposCliente - desplazamientoSuperior;
+
+            gclClientes.Visible = mostrarDatosCliente;
+            gclClientes.Top = topDatosCliente;
+            grpRoles.Visible = mostrarTiposCliente;
+            grpRoles.Top = mostrarDatosCliente
+                ? topTiposCliente
+                : topDatosCliente;
+
+            int altoFormulario = _altoOriginalFormulario - desplazamientoSuperior;
+            if (!mostrarDatosCliente)
+                altoFormulario -= espacioDatosCliente;
+            if (!mostrarTiposCliente)
+                altoFormulario -= espacioTiposCliente;
+
+            ClientSize = new Size(
+                ClientSize.Width,
+                altoFormulario);
+
+            // El formulario se centra nuevamente porque su tamaño puede cambiar
+            // después de aplicar los permisos del rol durante el evento Load.
+            CenterToScreen();
+        }
+        #endregion
+
         #region === COMBOS ===
         private static void AgregarFilaVacia(DataTable dt, string displayMember = null)
         {
@@ -103,6 +210,9 @@ namespace SistemaContable.UI.Forms.Clientes
             DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_TIPO_CONTRIBUYENTE]",
                 new { ACCION = "LISTAR" });
             AgregarFilaVacia(dt, "NOMBRE");
+            // ID 0 corresponde a "NO CONTRIBUYENTE" en el catálogo real.
+            // La fila visual "-- Seleccionar --" debe usar NULL para no duplicarlo.
+            dt.Rows[0]["ID_TIPO_CONTRIB"] = DBNull.Value;
             cbxTIPO_CONTRIB.DataSource = dt;
             cbxTIPO_CONTRIB.ValueMember = "ID_TIPO_CONTRIB";
             cbxTIPO_CONTRIB.DisplayMember = "NOMBRE";
@@ -185,7 +295,7 @@ namespace SistemaContable.UI.Forms.Clientes
         /// <summary>
         /// ToolTips de búsqueda genérica ("*" + Enter), igual que en NotaRemision\frmDespacho.cs,
         /// para todos los campos de código que usan FormHelper.RegistrarBusqueda en este formulario:
-        /// Actividad Económica 1/2/3, Tipo de Precio, Cuenta x Cobrar y las integraciones
+        /// Actividad Económica 1/2/3, Cuenta x Cobrar y las integraciones
         /// (Productor, Transportista, Cargadora, Roza, Querqueo) - 2026-08-25.
         /// </summary>
         private void ConfigurarToolTips()
@@ -194,7 +304,6 @@ namespace SistemaContable.UI.Forms.Clientes
                             (txtCODI_ACTIVIDAD1, "Ingrese * y presione Enter para mostrar todas las actividades económicas."),
                             (txtCODI_ACTIVIDAD2, "Ingrese * y presione Enter para mostrar todas las actividades económicas."),
                             (txtCODI_ACTIVIDAD3, "Ingrese * y presione Enter para mostrar todas las actividades económicas."),
-                            (txtID_TIPO_PRECIO, "Ingrese * y presione Enter para mostrar todos los tipos de precio."),
                             (txtCUENTA_X_COBRAR, "Ingrese * y presione Enter para mostrar todas las cuentas contables."),
                             (txtCODIPROVEEDOR, "Ingrese * y presione Enter para mostrar todos los productores."),
                             (txtCODTRANSPORT, "Ingrese * y presione Enter para mostrar todos los transportistas."),
@@ -355,42 +464,21 @@ namespace SistemaContable.UI.Forms.Clientes
             }
         }
         /// <summary>
-        /// Registra la búsqueda genérica con "*" para el Tipo de Precio del cliente
-        /// (mismo catálogo [EINVENTARIO].[TIPO_PRECIO] usado en frmProducto).
+        /// Fija DETALLE como Tipo de Precio para todos los clientes.
+        /// El valor se obtiene por descripción para no depender de un ID de catálogo fijo.
         /// </summary>
-        private void RegistrarBusquedaTipoPrecio()
+        private void SeleccionarTipoPrecioDetalle()
         {
-            var config = new BusquedaConfig
-            {
-                StoredProcedure = "[EINVENTARIO].[SP_TIPO_PRECIO]",
-                Accion = "BUSCAR",
-                Columnas = new System.Collections.Generic.Dictionary<string, string>
-                {
-                    { "DESCRIPCION", "TIPO DE PRECIO" }
-                },
-                Anchos = new System.Collections.Generic.Dictionary<string, int>
-                {
-                    { "DESCRIPCION", 300 }
-                }
-            };
-            FormHelper.RegistrarBusqueda(txtID_TIPO_PRECIO, config, fila =>
-            {
-                _idTipoPrecioSeleccionado = Convert.ToInt32(fila["ID_TIPO_PRECIO"]);
-                txtID_TIPO_PRECIO.Text = fila["DESCRIPCION"].ToString();
-            });
-        }
-        private string ObtenerDescripcionTipoPrecio(int? idTipoPrecio)
-        {
-            if (idTipoPrecio == null || idTipoPrecio <= 0) return "";
-            try
-            {
-                DataTable dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_TIPO_PRECIO]",
-                    new { ACCION = "OBTENER", ID_TIPO_PRECIO = idTipoPrecio });
-                if (dt != null && dt.Rows.Count > 0)
-                    return dt.Rows[0]["DESCRIPCION"]?.ToString() ?? "";
-            }
-            catch { }
-            return "";
+            DataTable dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_TIPO_PRECIO]",
+                new { ACCION = "BUSCAR", FILTRO = "DETALLE" });
+            DataRow filaDetalle = dt?.AsEnumerable().FirstOrDefault(fila =>
+                string.Equals(fila["DESCRIPCION"]?.ToString()?.Trim(), "DETALLE",
+                    StringComparison.OrdinalIgnoreCase));
+            if (filaDetalle == null)
+                throw new InvalidOperationException("No se encontró el Tipo de Precio DETALLE.");
+
+            _idTipoPrecioSeleccionado = Convert.ToInt32(filaDetalle["ID_TIPO_PRECIO"]);
+            txtID_TIPO_PRECIO.Text = "DETALLE";
         }
         /// <summary>
         /// Registra la búsqueda genérica con "*" para la Cuenta x Cobrar, igual que
@@ -1157,6 +1245,7 @@ namespace SistemaContable.UI.Forms.Clientes
         }
         private void CargarEntidadClienteExistente(int idEntidad)
         {
+            SeleccionarTipoPrecioDetalle();
             DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD_CLIENTE]",
                 new { ACCION = "CONSULTAR", ID_ENTIDAD = idEntidad });
             if (dt == null || dt.Rows.Count == 0) return;
@@ -1164,8 +1253,11 @@ namespace SistemaContable.UI.Forms.Clientes
             txtDIAS_PLAZO.Text = r["DIAS_PLAZO"] == DBNull.Value ? "" : r["DIAS_PLAZO"].ToString();
             txtCUENTA_X_COBRAR.Text = r["CUENTA_X_COBRAR"] == DBNull.Value ? "" : r["CUENTA_X_COBRAR"].ToString();
             txtNOMBRE_CUENTA_X_COBRAR.Text = ObtenerNombreCuenta(txtCUENTA_X_COBRAR.Text);
-            _idTipoPrecioSeleccionado = r["ID_TIPO_PRECIO"] == DBNull.Value ? (int?)null : Convert.ToInt32(r["ID_TIPO_PRECIO"]);
-            txtID_TIPO_PRECIO.Text = ObtenerDescripcionTipoPrecio(_idTipoPrecioSeleccionado);
+            txtCUENTA_AJENA.Text = AsString(r["CUENTA_AJENA"]);
+            txtLIMITE_CREDITO.Text = r["LIMITE_CREDITO"] == DBNull.Value
+                ? ""
+                : Convert.ToDecimal(r["LIMITE_CREDITO"]).ToString("N2");
+            txtOBSERVACIONES.Text = AsString(r["OBSERVACIONES"]);
         }
         private void CargarRolesExistentes(int idEntidad)
         {
@@ -1235,8 +1327,8 @@ namespace SistemaContable.UI.Forms.Clientes
             try
             {
                 Cursor = Cursors.WaitCursor;
-                DataTable dtEntidad = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD]",
-                    new { ACCION = "CONSULTAR", ID_ENTIDAD = idEntidad });
+                DataTable dtEntidad = _dal.EjecutarConsulta("[EDTE].[SP_ENTIDAD]",
+                    new { ACCION = "OBTENER", ID_ENTIDAD = idEntidad });
                 if (dtEntidad == null || dtEntidad.Rows.Count == 0)
                 {
                     XtraMessageBox.Show("No se encontró la entidad solicitada.",
@@ -1269,7 +1361,8 @@ namespace SistemaContable.UI.Forms.Clientes
                 CargarCodigosIntegracion(idEntidad);
                 // Combos
                 SetComboById(cbxTIPO_ENTIDAD, AsInt(r["ID_TIPO_ENTIDAD"]));
-                SetComboById(cbxTIPO_CONTRIB, AsInt(r["ID_TIPO_CONTRIB"]));
+                SetComboById(cbxTIPO_CONTRIB, AsInt(r["ID_TIPO_CONTRIB"], aceptarCero: true),
+                    aceptarCero: true);
                 SetComboById(cbxTIPO_DOC_IDEN, AsInt(r["ID_TIPO_DOC_INDEN"]));
                 SetComboById(cbxPAIS, AsInt(r["ID_PAIS"]));
                 _idActividad1 = AsInt(r["ID_ACTIVIDAD_1"]) ?? 0;
@@ -1320,7 +1413,7 @@ namespace SistemaContable.UI.Forms.Clientes
             try
             {
                 Cursor = Cursors.WaitCursor;
-                var dtResult = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD]", new
+                var dtResult = _dal.EjecutarConsulta("[EDTE].[SP_ENTIDAD]", new
                 {
                     ACCION = "GUARDAR",
                     ID_ENTIDAD = IdEntidad,
@@ -1328,7 +1421,7 @@ namespace SistemaContable.UI.Forms.Clientes
                     NOMBRE = txtNOMBRE.Text.Trim(),
                     NOMBRE_COMERCIAL = NullIfEmpty(txtNOMBRE_COMERCIAL.Text),
                     ID_TIPO_ENTIDAD = ObtenerIdCombo(cbxTIPO_ENTIDAD),
-                    ID_TIPO_CONTRIB = ObtenerIdCombo(cbxTIPO_CONTRIB),
+                    ID_TIPO_CONTRIB = ObtenerIdCombo(cbxTIPO_CONTRIB, aceptarCero: true),
                     ID_TIPO_DOC_INDEN = ObtenerIdCombo(cbxTIPO_DOC_IDEN),
                     NRC = NullIfEmpty(txtNRC.Text),
                     PROFESION = NullIfEmpty(txtPROFESION.Text),
@@ -1352,7 +1445,9 @@ namespace SistemaContable.UI.Forms.Clientes
                     CODTRANSPORT = ParseIntNull(txtCODTRANSPORT.Text),
                     ID_CARGADORA = ParseIntNull(txtID_CARGADORA.Text),
                     ACTIVIDAD_EXT = NullIfEmpty(txtACTIVIDAD_EXT.Text),
-                    USER = Configuracion.UsuarioActual
+                    ROL = "CLI",
+                    USUARIO_CREA = Configuracion.UsuarioActual,
+                    USUARIO_ACT = Configuracion.UsuarioActual
                 });
                 if (dtResult == null || dtResult.Rows.Count == 0)
                 {
@@ -1450,6 +1545,7 @@ namespace SistemaContable.UI.Forms.Clientes
         }
         private void GuardarEntidadCliente()
         {
+            SeleccionarTipoPrecioDetalle();
             _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD_CLIENTE]", new
             {
                 ACCION = "GUARDAR",
@@ -1457,6 +1553,9 @@ namespace SistemaContable.UI.Forms.Clientes
                 DIAS_PLAZO = ParseInt(txtDIAS_PLAZO.Text),
                 CUENTA_X_COBRAR = NullIfEmpty(txtCUENTA_X_COBRAR.Text),
                 ID_TIPO_PRECIO = _idTipoPrecioSeleccionado,
+                CUENTA_AJENA = NullIfEmpty(txtCUENTA_AJENA.Text),
+                LIMITE_CREDITO = ParseDecimalNull(txtLIMITE_CREDITO.Text),
+                OBSERVACIONES = NullIfEmpty(txtOBSERVACIONES.Text),
                 USER = Configuracion.UsuarioActual
             });
         }
@@ -1501,9 +1600,9 @@ namespace SistemaContable.UI.Forms.Clientes
                     // La entidad ya no tiene ningún rol activo (ni Proveedor, ni Cliente):
                     // se elimina por completo. Si aún queda otro rol (p.ej. PRO), se conserva
                     // la entidad y solo se dio de baja el rol de Cliente.
-                    _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD]", new
+                    _dal.EjecutarSinRetorno("[EDTE].[SP_ENTIDAD]", new
                     {
-                        ACCION = "ELIMINAR",
+                        ACCION = "ELIMINAR_FISICO",
                         ID_ENTIDAD = IdEntidad
                     });
                 }
@@ -1629,7 +1728,8 @@ namespace SistemaContable.UI.Forms.Clientes
                 txtNOMBRE, cbxTIPO_CONTRIB, txtDUI, txtNIT, txtNRC,
                 cbxTIPO_DOC_IDEN, txtDOCUMENTO, cbxPAIS, txtNOMBRE_COMERCIAL,
                 txtTELEFONO, txtCELULAR, txtCORREO, txtCOMPLEMENTO,
-                cbxDEPTO, cbxMUNI, cbxDIST, txtCODI_ACTIVIDAD1
+                cbxDEPTO, cbxMUNI, cbxDIST, txtCODI_ACTIVIDAD1,
+                txtLIMITE_CREDITO
             };
             foreach (Control c in controlesValidables)
                 errorProvider1.SetError(c, "");
@@ -1645,6 +1745,12 @@ namespace SistemaContable.UI.Forms.Clientes
 
             if (string.IsNullOrWhiteSpace(txtNOMBRE.Text))
                 MarcarError(txtNOMBRE, "El nombre de la entidad es obligatorio.");
+
+            decimal? limiteCredito = ParseDecimalNull(txtLIMITE_CREDITO.Text);
+            if (!string.IsNullOrWhiteSpace(txtLIMITE_CREDITO.Text) && limiteCredito == null)
+                MarcarError(txtLIMITE_CREDITO, "Ingrese un límite de crédito válido, con un máximo de 2 decimales.");
+            else if (limiteCredito < 0 || limiteCredito > 999999999999999999.99m)
+                MarcarError(txtLIMITE_CREDITO, "El límite de crédito debe estar entre 0.00 y 999999999999999999.99.");
 
             // Validación por Tipo Persona
             string tipoPersona = cbxTIPO_ENTIDAD.Text.Trim().ToUpper();
@@ -1794,8 +1900,10 @@ namespace SistemaContable.UI.Forms.Clientes
             txtDIAS_PLAZO.Text = "";
             txtCUENTA_X_COBRAR.Text = "";
             txtNOMBRE_CUENTA_X_COBRAR.Text = "";
-            _idTipoPrecioSeleccionado = null;
-            txtID_TIPO_PRECIO.Text = "";
+            SeleccionarTipoPrecioDetalle();
+            txtCUENTA_AJENA.Text = "";
+            txtLIMITE_CREDITO.Text = "";
+            txtOBSERVACIONES.Text = "";
             txtCOMPLEMENTO.Text = "";
             txtCODIPROVEEDOR.Text = "";
             txtNOMBRE_PROVEEDOR_INTEGRACION.Text = "";
@@ -1871,7 +1979,7 @@ namespace SistemaContable.UI.Forms.Clientes
             }
             try
             {
-                DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD]", new
+                DataTable dt = _dal.EjecutarConsulta("[EDTE].[SP_ENTIDAD]", new
                 {
                     ACCION = "BUSCAR",
                     FILTRO = codigo
@@ -1994,23 +2102,31 @@ namespace SistemaContable.UI.Forms.Clientes
         }
         #endregion
         #region === HELPERS ===
-        private static void SetComboById(System.Windows.Forms.ComboBox cbx, int? value)
+        private static void SetComboById(System.Windows.Forms.ComboBox cbx, int? value,
+            bool aceptarCero = false)
         {
-            if (value != null && value != 0)
+            if (value != null && (aceptarCero || value != 0))
                 cbx.SelectedValue = value;
             else
                 cbx.SelectedIndex = 0;
         }
         private static string AsString(object val)
             => val == null || val == DBNull.Value ? "" : val.ToString();
-        private static int? AsInt(object val)
+        private static int? AsInt(object val, bool aceptarCero = false)
         {
             if (val == null || val == DBNull.Value) return null;
             int i = Convert.ToInt32(val);
-            return i == 0 ? (int?)null : i;
+            return i == 0 && !aceptarCero ? (int?)null : i;
         }
         private static decimal ParseDecimal(string texto)
             => decimal.TryParse(texto.Replace(",", ""), out decimal d) ? d : 0m;
+        private static decimal? ParseDecimalNull(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto)) return null;
+            return decimal.TryParse(texto.Replace(",", ""), out decimal d)
+                ? d
+                : (decimal?)null;
+        }
         private static int? ParseInt(string texto)
         {
             if (string.IsNullOrWhiteSpace(texto)) return null;
@@ -2029,12 +2145,13 @@ namespace SistemaContable.UI.Forms.Clientes
             string val = cbx.SelectedValue.ToString();
             return string.IsNullOrWhiteSpace(val) ? null : val;
         }
-        private static int? ObtenerIdCombo(System.Windows.Forms.ComboBox cbx)
+        private static int? ObtenerIdCombo(System.Windows.Forms.ComboBox cbx,
+            bool aceptarCero = false)
         {
             if (cbx.SelectedValue == null || cbx.SelectedValue == DBNull.Value) return null;
             if (cbx.SelectedValue is DataRowView) return null;
             int val = Convert.ToInt32(cbx.SelectedValue);
-            return val == 0 ? (int?)null : val;
+            return val == 0 && !aceptarCero ? (int?)null : val;
         }
         private void MostrarValidacion(string mensaje)
         {

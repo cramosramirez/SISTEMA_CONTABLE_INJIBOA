@@ -116,11 +116,17 @@
             this.txtNOMBRE_CUENTA_X_COBRAR = new System.Windows.Forms.TextBox();
             this.lblID_TIPO_PRECIO = new System.Windows.Forms.Label();
             this.txtID_TIPO_PRECIO = new System.Windows.Forms.TextBox();
+            this.lblCUENTA_AJENA = new System.Windows.Forms.Label();
+            this.txtCUENTA_AJENA = new System.Windows.Forms.TextBox();
+            this.lblLIMITE_CREDITO = new System.Windows.Forms.Label();
+            this.txtLIMITE_CREDITO = new System.Windows.Forms.TextBox();
+            this.lblOBSERVACIONES = new System.Windows.Forms.Label();
+            this.txtOBSERVACIONES = new System.Windows.Forms.TextBox();
             this.grpRoles = new System.Windows.Forms.GroupBox();
             this.btnAgregarRol = new DevExpress.XtraEditors.SimpleButton();
             this.gridRoles = new DevExpress.XtraGrid.GridControl();
             this.gvRoles = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
+            this.gclClientes = new DevExpress.XtraEditors.GroupControl();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
@@ -134,8 +140,8 @@
             this.grpRoles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridRoles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvRoles)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
-            this.groupControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gclClientes)).BeginInit();
+            this.gclClientes.SuspendLayout();
             this.SuspendLayout();
             // 
             // errorProvider1
@@ -218,7 +224,9 @@
             this.groupControl1.Controls.Add(this.lblNOMBRE_COMERCIAL);
             this.groupControl1.Controls.Add(this.txtNOMBRE_COMERCIAL);
             this.groupControl1.Controls.Add(this.lblTIPO_ENTIDAD);
+            this.groupControl1.Controls.Add(this.lblID_TIPO_PRECIO);
             this.groupControl1.Controls.Add(this.cbxTIPO_ENTIDAD);
+            this.groupControl1.Controls.Add(this.txtID_TIPO_PRECIO);
             this.groupControl1.Controls.Add(this.lblTIPO_CONTRIB);
             this.groupControl1.Controls.Add(this.cbxTIPO_CONTRIB);
             this.groupControl1.Controls.Add(this.lblTIPO_DOC_IDEN);
@@ -344,6 +352,7 @@
             // 
             // txtCODIPROVEEDOR
             // 
+            this.txtCODIPROVEEDOR.Enabled = false;
             this.txtCODIPROVEEDOR.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtCODIPROVEEDOR.Location = new System.Drawing.Point(69, 8);
             this.txtCODIPROVEEDOR.MaxLength = 50;
@@ -364,6 +373,7 @@
             // txtNOMBRE_PROVEEDOR_INTEGRACION
             // 
             this.txtNOMBRE_PROVEEDOR_INTEGRACION.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNOMBRE_PROVEEDOR_INTEGRACION.Enabled = false;
             this.txtNOMBRE_PROVEEDOR_INTEGRACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtNOMBRE_PROVEEDOR_INTEGRACION.Location = new System.Drawing.Point(383, 8);
             this.txtNOMBRE_PROVEEDOR_INTEGRACION.Name = "txtNOMBRE_PROVEEDOR_INTEGRACION";
@@ -384,6 +394,7 @@
             // txtNIT_PROVEEDOR_INTEGRACION
             // 
             this.txtNIT_PROVEEDOR_INTEGRACION.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNIT_PROVEEDOR_INTEGRACION.Enabled = false;
             this.txtNIT_PROVEEDOR_INTEGRACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtNIT_PROVEEDOR_INTEGRACION.Location = new System.Drawing.Point(830, 8);
             this.txtNIT_PROVEEDOR_INTEGRACION.Name = "txtNIT_PROVEEDOR_INTEGRACION";
@@ -415,6 +426,7 @@
             // 
             // txtCODTRANSPORT
             // 
+            this.txtCODTRANSPORT.Enabled = false;
             this.txtCODTRANSPORT.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtCODTRANSPORT.Location = new System.Drawing.Point(69, 8);
             this.txtCODTRANSPORT.Name = "txtCODTRANSPORT";
@@ -434,6 +446,7 @@
             // txtNOMBRE_TRANSPORTISTA_INTEGRACION
             // 
             this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.Enabled = false;
             this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.Location = new System.Drawing.Point(383, 8);
             this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.Name = "txtNOMBRE_TRANSPORTISTA_INTEGRACION";
@@ -454,6 +467,7 @@
             // txtNIT_TRANSPORTISTA_INTEGRACION
             // 
             this.txtNIT_TRANSPORTISTA_INTEGRACION.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNIT_TRANSPORTISTA_INTEGRACION.Enabled = false;
             this.txtNIT_TRANSPORTISTA_INTEGRACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtNIT_TRANSPORTISTA_INTEGRACION.Location = new System.Drawing.Point(830, 8);
             this.txtNIT_TRANSPORTISTA_INTEGRACION.Name = "txtNIT_TRANSPORTISTA_INTEGRACION";
@@ -485,6 +499,7 @@
             // 
             // txtID_CARGADORA
             // 
+            this.txtID_CARGADORA.Enabled = false;
             this.txtID_CARGADORA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtID_CARGADORA.Location = new System.Drawing.Point(69, 8);
             this.txtID_CARGADORA.Name = "txtID_CARGADORA";
@@ -504,6 +519,7 @@
             // txtNOMBRE_CARGADORA_INTEGRACION
             // 
             this.txtNOMBRE_CARGADORA_INTEGRACION.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNOMBRE_CARGADORA_INTEGRACION.Enabled = false;
             this.txtNOMBRE_CARGADORA_INTEGRACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtNOMBRE_CARGADORA_INTEGRACION.Location = new System.Drawing.Point(383, 8);
             this.txtNOMBRE_CARGADORA_INTEGRACION.Name = "txtNOMBRE_CARGADORA_INTEGRACION";
@@ -524,6 +540,7 @@
             // txtNIT_CARGADORA_INTEGRACION
             // 
             this.txtNIT_CARGADORA_INTEGRACION.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNIT_CARGADORA_INTEGRACION.Enabled = false;
             this.txtNIT_CARGADORA_INTEGRACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtNIT_CARGADORA_INTEGRACION.Location = new System.Drawing.Point(830, 8);
             this.txtNIT_CARGADORA_INTEGRACION.Name = "txtNIT_CARGADORA_INTEGRACION";
@@ -555,6 +572,7 @@
             // 
             // txtID_PROVEEDOR_ROZA
             // 
+            this.txtID_PROVEEDOR_ROZA.Enabled = false;
             this.txtID_PROVEEDOR_ROZA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtID_PROVEEDOR_ROZA.Location = new System.Drawing.Point(69, 8);
             this.txtID_PROVEEDOR_ROZA.MaxLength = 50;
@@ -575,6 +593,7 @@
             // txtNOMBRE_ROZA_INTEGRACION
             // 
             this.txtNOMBRE_ROZA_INTEGRACION.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNOMBRE_ROZA_INTEGRACION.Enabled = false;
             this.txtNOMBRE_ROZA_INTEGRACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtNOMBRE_ROZA_INTEGRACION.Location = new System.Drawing.Point(383, 8);
             this.txtNOMBRE_ROZA_INTEGRACION.Name = "txtNOMBRE_ROZA_INTEGRACION";
@@ -595,6 +614,7 @@
             // txtNIT_ROZA_INTEGRACION
             // 
             this.txtNIT_ROZA_INTEGRACION.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNIT_ROZA_INTEGRACION.Enabled = false;
             this.txtNIT_ROZA_INTEGRACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtNIT_ROZA_INTEGRACION.Location = new System.Drawing.Point(830, 8);
             this.txtNIT_ROZA_INTEGRACION.Name = "txtNIT_ROZA_INTEGRACION";
@@ -626,6 +646,7 @@
             // 
             // txtID_PROVEE_QQ
             // 
+            this.txtID_PROVEE_QQ.Enabled = false;
             this.txtID_PROVEE_QQ.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtID_PROVEE_QQ.Location = new System.Drawing.Point(69, 8);
             this.txtID_PROVEE_QQ.MaxLength = 50;
@@ -646,6 +667,7 @@
             // txtNOMBRE_QUERQUEO_INTEGRACION
             // 
             this.txtNOMBRE_QUERQUEO_INTEGRACION.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNOMBRE_QUERQUEO_INTEGRACION.Enabled = false;
             this.txtNOMBRE_QUERQUEO_INTEGRACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtNOMBRE_QUERQUEO_INTEGRACION.Location = new System.Drawing.Point(383, 8);
             this.txtNOMBRE_QUERQUEO_INTEGRACION.Name = "txtNOMBRE_QUERQUEO_INTEGRACION";
@@ -666,6 +688,7 @@
             // txtNIT_QUERQUEO_INTEGRACION
             // 
             this.txtNIT_QUERQUEO_INTEGRACION.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNIT_QUERQUEO_INTEGRACION.Enabled = false;
             this.txtNIT_QUERQUEO_INTEGRACION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.txtNIT_QUERQUEO_INTEGRACION.Location = new System.Drawing.Point(830, 8);
             this.txtNIT_QUERQUEO_INTEGRACION.Name = "txtNIT_QUERQUEO_INTEGRACION";
@@ -1043,7 +1066,7 @@
             this.lblPROFESION.Font = new System.Drawing.Font("Tahoma", 8.765218F);
             this.lblPROFESION.Location = new System.Drawing.Point(57, 350);
             this.lblPROFESION.Name = "lblPROFESION";
-            this.lblPROFESION.Size = new System.Drawing.Size(53, 14);
+            this.lblPROFESION.Size = new System.Drawing.Size(57, 14);
             this.lblPROFESION.TabIndex = 27;
             this.lblPROFESION.Text = "Profesión";
             // 
@@ -1177,7 +1200,7 @@
             // txtDIAS_PLAZO
             // 
             this.txtDIAS_PLAZO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtDIAS_PLAZO.Location = new System.Drawing.Point(120, 26);
+            this.txtDIAS_PLAZO.Location = new System.Drawing.Point(116, 26);
             this.txtDIAS_PLAZO.Name = "txtDIAS_PLAZO";
             this.txtDIAS_PLAZO.Size = new System.Drawing.Size(90, 22);
             this.txtDIAS_PLAZO.TabIndex = 16;
@@ -1209,7 +1232,7 @@
             this.txtNOMBRE_CUENTA_X_COBRAR.Location = new System.Drawing.Point(395, 26);
             this.txtNOMBRE_CUENTA_X_COBRAR.Name = "txtNOMBRE_CUENTA_X_COBRAR";
             this.txtNOMBRE_CUENTA_X_COBRAR.ReadOnly = true;
-            this.txtNOMBRE_CUENTA_X_COBRAR.Size = new System.Drawing.Size(230, 22);
+            this.txtNOMBRE_CUENTA_X_COBRAR.Size = new System.Drawing.Size(164, 22);
             this.txtNOMBRE_CUENTA_X_COBRAR.TabIndex = 117;
             this.txtNOMBRE_CUENTA_X_COBRAR.TabStop = false;
             // 
@@ -1217,28 +1240,88 @@
             // 
             this.lblID_TIPO_PRECIO.AutoSize = true;
             this.lblID_TIPO_PRECIO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.lblID_TIPO_PRECIO.Location = new System.Drawing.Point(640, 29);
+            this.lblID_TIPO_PRECIO.Location = new System.Drawing.Point(626, 489);
             this.lblID_TIPO_PRECIO.Name = "lblID_TIPO_PRECIO";
             this.lblID_TIPO_PRECIO.Size = new System.Drawing.Size(68, 14);
             this.lblID_TIPO_PRECIO.TabIndex = 33;
             this.lblID_TIPO_PRECIO.Text = "Tipo Precio";
+            this.lblID_TIPO_PRECIO.Visible = false;
             // 
             // txtID_TIPO_PRECIO
             // 
             this.txtID_TIPO_PRECIO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
-            this.txtID_TIPO_PRECIO.Location = new System.Drawing.Point(710, 26);
+            this.txtID_TIPO_PRECIO.Location = new System.Drawing.Point(698, 486);
             this.txtID_TIPO_PRECIO.Name = "txtID_TIPO_PRECIO";
-            this.txtID_TIPO_PRECIO.Size = new System.Drawing.Size(300, 22);
+            this.txtID_TIPO_PRECIO.Size = new System.Drawing.Size(212, 22);
             this.txtID_TIPO_PRECIO.TabIndex = 18;
+            this.txtID_TIPO_PRECIO.Visible = false;
+            // 
+            // lblCUENTA_AJENA
+            // 
+            this.lblCUENTA_AJENA.AutoSize = true;
+            this.lblCUENTA_AJENA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.lblCUENTA_AJENA.Location = new System.Drawing.Point(600, 32);
+            this.lblCUENTA_AJENA.Name = "lblCUENTA_AJENA";
+            this.lblCUENTA_AJENA.Size = new System.Drawing.Size(81, 14);
+            this.lblCUENTA_AJENA.TabIndex = 34;
+            this.lblCUENTA_AJENA.Text = "Cuenta Ajena";
+            // 
+            // txtCUENTA_AJENA
+            // 
+            this.txtCUENTA_AJENA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtCUENTA_AJENA.Location = new System.Drawing.Point(698, 29);
+            this.txtCUENTA_AJENA.MaxLength = 100;
+            this.txtCUENTA_AJENA.Name = "txtCUENTA_AJENA";
+            this.txtCUENTA_AJENA.Size = new System.Drawing.Size(250, 22);
+            this.txtCUENTA_AJENA.TabIndex = 19;
+            // 
+            // lblLIMITE_CREDITO
+            // 
+            this.lblLIMITE_CREDITO.AutoSize = true;
+            this.lblLIMITE_CREDITO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.lblLIMITE_CREDITO.Location = new System.Drawing.Point(26, 57);
+            this.lblLIMITE_CREDITO.Name = "lblLIMITE_CREDITO";
+            this.lblLIMITE_CREDITO.Size = new System.Drawing.Size(82, 14);
+            this.lblLIMITE_CREDITO.TabIndex = 35;
+            this.lblLIMITE_CREDITO.Text = "Límite Crédito";
+            // 
+            // txtLIMITE_CREDITO
+            // 
+            this.txtLIMITE_CREDITO.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtLIMITE_CREDITO.Location = new System.Drawing.Point(116, 54);
+            this.txtLIMITE_CREDITO.MaxLength = 21;
+            this.txtLIMITE_CREDITO.Name = "txtLIMITE_CREDITO";
+            this.txtLIMITE_CREDITO.Size = new System.Drawing.Size(120, 22);
+            this.txtLIMITE_CREDITO.TabIndex = 20;
+            this.txtLIMITE_CREDITO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // lblOBSERVACIONES
+            // 
+            this.lblOBSERVACIONES.AutoSize = true;
+            this.lblOBSERVACIONES.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.lblOBSERVACIONES.Location = new System.Drawing.Point(258, 60);
+            this.lblOBSERVACIONES.Name = "lblOBSERVACIONES";
+            this.lblOBSERVACIONES.Size = new System.Drawing.Size(85, 14);
+            this.lblOBSERVACIONES.TabIndex = 36;
+            this.lblOBSERVACIONES.Text = "Observaciones";
+            // 
+            // txtOBSERVACIONES
+            // 
+            this.txtOBSERVACIONES.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtOBSERVACIONES.Location = new System.Drawing.Point(345, 57);
+            this.txtOBSERVACIONES.MaxLength = 100;
+            this.txtOBSERVACIONES.Name = "txtOBSERVACIONES";
+            this.txtOBSERVACIONES.Size = new System.Drawing.Size(741, 22);
+            this.txtOBSERVACIONES.TabIndex = 21;
             // 
             // grpRoles
             // 
             this.grpRoles.Controls.Add(this.btnAgregarRol);
             this.grpRoles.Controls.Add(this.gridRoles);
             this.grpRoles.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.grpRoles.Location = new System.Drawing.Point(10, 583);
+            this.grpRoles.Location = new System.Drawing.Point(10, 618);
             this.grpRoles.Name = "grpRoles";
-            this.grpRoles.Size = new System.Drawing.Size(1114, 212);
+            this.grpRoles.Size = new System.Drawing.Size(1114, 159);
             this.grpRoles.TabIndex = 5;
             this.grpRoles.TabStop = false;
             this.grpRoles.Text = "Tipo de Cliente";
@@ -1263,7 +1346,7 @@
             this.gridRoles.Location = new System.Drawing.Point(6, 61);
             this.gridRoles.MainView = this.gvRoles;
             this.gridRoles.Name = "gridRoles";
-            this.gridRoles.Size = new System.Drawing.Size(1102, 138);
+            this.gridRoles.Size = new System.Drawing.Size(1102, 92);
             this.gridRoles.TabIndex = 1;
             this.gridRoles.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvRoles});
@@ -1275,27 +1358,31 @@
             this.gvRoles.OptionsView.ShowGroupPanel = false;
             this.gvRoles.OptionsView.ShowIndicator = false;
             // 
-            // groupControl2
+            // gclClientes
             // 
-            this.groupControl2.Controls.Add(this.txtDIAS_PLAZO);
-            this.groupControl2.Controls.Add(this.txtCUENTA_X_COBRAR);
-            this.groupControl2.Controls.Add(this.txtNOMBRE_CUENTA_X_COBRAR);
-            this.groupControl2.Controls.Add(this.lblCUENTA_X_PAGAR);
-            this.groupControl2.Controls.Add(this.lblDIAS_PLAZO);
-            this.groupControl2.Controls.Add(this.lblID_TIPO_PRECIO);
-            this.groupControl2.Controls.Add(this.txtID_TIPO_PRECIO);
-            this.groupControl2.Location = new System.Drawing.Point(10, 522);
-            this.groupControl2.Name = "groupControl2";
-            this.groupControl2.Size = new System.Drawing.Size(1114, 55);
-            this.groupControl2.TabIndex = 6;
-            this.groupControl2.Text = "Datos de Cliente";
+            this.gclClientes.Controls.Add(this.txtOBSERVACIONES);
+            this.gclClientes.Controls.Add(this.lblOBSERVACIONES);
+            this.gclClientes.Controls.Add(this.txtLIMITE_CREDITO);
+            this.gclClientes.Controls.Add(this.lblLIMITE_CREDITO);
+            this.gclClientes.Controls.Add(this.txtCUENTA_AJENA);
+            this.gclClientes.Controls.Add(this.lblCUENTA_AJENA);
+            this.gclClientes.Controls.Add(this.txtDIAS_PLAZO);
+            this.gclClientes.Controls.Add(this.txtCUENTA_X_COBRAR);
+            this.gclClientes.Controls.Add(this.txtNOMBRE_CUENTA_X_COBRAR);
+            this.gclClientes.Controls.Add(this.lblCUENTA_X_PAGAR);
+            this.gclClientes.Controls.Add(this.lblDIAS_PLAZO);
+            this.gclClientes.Location = new System.Drawing.Point(10, 522);
+            this.gclClientes.Name = "gclClientes";
+            this.gclClientes.Size = new System.Drawing.Size(1114, 87);
+            this.gclClientes.TabIndex = 6;
+            this.gclClientes.Text = "Datos de Cliente";
             // 
             // frmCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1259, 807);
-            this.Controls.Add(this.groupControl2);
+            this.ClientSize = new System.Drawing.Size(1259, 778);
+            this.Controls.Add(this.gclClientes);
             this.Controls.Add(this.groupControl1);
             this.Controls.Add(this.grpRoles);
             this.Controls.Add(this.btnNuevo);
@@ -1324,9 +1411,9 @@
             this.grpRoles.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridRoles)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvRoles)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
-            this.groupControl2.ResumeLayout(false);
-            this.groupControl2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gclClientes)).EndInit();
+            this.gclClientes.ResumeLayout(false);
+            this.gclClientes.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1407,6 +1494,12 @@
         private System.Windows.Forms.TextBox txtNOMBRE_CUENTA_X_COBRAR;
         private System.Windows.Forms.Label lblID_TIPO_PRECIO;
         private System.Windows.Forms.TextBox txtID_TIPO_PRECIO;
+        private System.Windows.Forms.Label lblCUENTA_AJENA;
+        private System.Windows.Forms.TextBox txtCUENTA_AJENA;
+        private System.Windows.Forms.Label lblLIMITE_CREDITO;
+        private System.Windows.Forms.TextBox txtLIMITE_CREDITO;
+        private System.Windows.Forms.Label lblOBSERVACIONES;
+        private System.Windows.Forms.TextBox txtOBSERVACIONES;
         // Row 6
         private System.Windows.Forms.Label lblCOMPLEMENTO;
         private System.Windows.Forms.TextBox txtCOMPLEMENTO;
@@ -1447,7 +1540,7 @@
         private DevExpress.XtraEditors.SimpleButton btnAgregarRol;
         private DevExpress.XtraGrid.GridControl gridRoles;
         private DevExpress.XtraGrid.Views.Grid.GridView gvRoles;
-        private DevExpress.XtraEditors.GroupControl groupControl2;
+        private DevExpress.XtraEditors.GroupControl gclClientes;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtACTIVIDAD_EXT;
         private System.Windows.Forms.ErrorProvider errorProvider1;

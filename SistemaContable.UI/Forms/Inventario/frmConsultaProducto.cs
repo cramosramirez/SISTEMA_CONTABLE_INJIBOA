@@ -2,7 +2,6 @@
 using System;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Base;
@@ -12,7 +11,6 @@ namespace SistemaContable.UI.Forms.Inventario
     {
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtProductos;
-        private DataTable _dtUnidadMedida;
         public frmConsultaProducto()
         {
             InitializeComponent();
@@ -121,39 +119,34 @@ namespace SistemaContable.UI.Forms.Inventario
         #region === CARGA DE DATOS ===
         private void CargarDatos()
         {
-            _dtProductos = _dal.EjecutarConsulta("[EINVENTARIO].[SP_PRODUCTO]", new
+            // Aplica la misma regla de visibilidad por Rol de Producto usada en
+            // frmCreditoFiscal y frmFactura. Si el rol no tiene asociaciones,
+            // el procedimiento conserva el comportamiento de mostrar todo.
+            _dtProductos = _dal.EjecutarConsulta("[EINVENTARIO].[SP_BUSCAR_PRODUCTO_CCF]", new
             {
-                ACCION = "LISTAR"
+                ACCION = "BUSCAR",
+                ID_ROL_USUARIO = Configuracion.IdRolActual
             });
-            // El SP devuelve el código de UNIMEDIDA (mismo patrón que Tributo en frmProducto);
-            // se resuelve aquí a texto contra el catálogo para mostrarlo en la lista.
-            _dtUnidadMedida = _dal.EjecutarConsulta("[EMH].[SP_UNIDAD_MEDIDA]", new
-            {
-                ACCION = "LISTAR"
-            });
-            AgregarColumnaUnidadMedidaTexto();
+
+            PrepararColumnasVisuales();
             gridControl1.DataSource = _dtProductos;
         }
-        private void AgregarColumnaUnidadMedidaTexto()
+
+        private void PrepararColumnasVisuales()
         {
             if (!_dtProductos.Columns.Contains("UNIMEDIDA_TEXTO"))
                 _dtProductos.Columns.Add("UNIMEDIDA_TEXTO", typeof(string));
+
+            // El procedimiento filtrado devuelve únicamente productos activos,
+            // pero la columna se conserva para no alterar el diseño del grid.
+            if (!_dtProductos.Columns.Contains("ESTADO"))
+                _dtProductos.Columns.Add("ESTADO", typeof(string));
+
             foreach (DataRow fila in _dtProductos.Rows)
             {
-                object valorCodigo = fila["UNIMEDIDA"];
-                fila["UNIMEDIDA_TEXTO"] = ObtenerDescripcionCatalogo(_dtUnidadMedida, "CODIGO", valorCodigo, "VALORES");
+                fila["UNIMEDIDA_TEXTO"] = fila["UNIMEDIDA"]?.ToString() ?? "";
+                fila["ESTADO"] = "ACT";
             }
-        }
-        /// <summary>
-        /// Busca en un catálogo ya cargado en memoria el texto a mostrar para un
-        /// código dado (mismo patrón que frmProducto.ObtenerDescripcionCatalogo).
-        /// </summary>
-        private static string ObtenerDescripcionCatalogo(DataTable dt, string campoClave, object valorClave, string campoDescripcion)
-        {
-            if (dt == null || valorClave == null || valorClave == DBNull.Value) return "";
-            var fila = dt.AsEnumerable().FirstOrDefault(r =>
-                r[campoClave]?.ToString() == valorClave.ToString());
-            return fila == null ? "" : fila[campoDescripcion].ToString();
         }
         #endregion
         #region === HELPERS ===
