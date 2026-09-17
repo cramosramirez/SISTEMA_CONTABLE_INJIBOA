@@ -35,12 +35,15 @@ namespace SistemaContable.UI.Forms.Seguridad
             this.grpPermisos = new DevExpress.XtraEditors.GroupControl();
             this.chkPermisoCtasContables = new DevExpress.XtraEditors.CheckEdit();
             this.chkPermisoTipoCliente = new DevExpress.XtraEditors.CheckEdit();
+            this.chkPermisoCodClienteProveedorSigesta = new DevExpress.XtraEditors.CheckEdit();
             this.chkPermisoRolProducto = new DevExpress.XtraEditors.CheckEdit();
             this.chkPermisoAsocioProducto = new DevExpress.XtraEditors.CheckEdit();
-            this.chkPermisoCodClienteProveedorSigesta = new DevExpress.XtraEditors.CheckEdit();
             this.chkPermisoCodProductoSigesta = new DevExpress.XtraEditors.CheckEdit();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
-            this.groupControl3 = new DevExpress.XtraEditors.GroupControl();
+            this.grpPermisosProveedor = new DevExpress.XtraEditors.GroupControl();
+            this.chkPermisoCtasContablesProveedor = new DevExpress.XtraEditors.CheckEdit();
+            this.chkPermisoTipoProveedor = new DevExpress.XtraEditors.CheckEdit();
+            this.chkPermisoCodProveedorSigesta = new DevExpress.XtraEditors.CheckEdit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabAsociaciones)).BeginInit();
@@ -58,13 +61,17 @@ namespace SistemaContable.UI.Forms.Seguridad
             this.grpPermisos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCtasContables.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPermisoTipoCliente.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCodClienteProveedorSigesta.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPermisoRolProducto.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPermisoAsocioProducto.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCodClienteProveedorSigesta.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCodProductoSigesta.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grpPermisosProveedor)).BeginInit();
+            this.grpPermisosProveedor.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCtasContablesProveedor.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPermisoTipoProveedor.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCodProveedorSigesta.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // btnNuevo
@@ -224,7 +231,7 @@ namespace SistemaContable.UI.Forms.Seguridad
             this.tabRolProducto.Controls.Add(this.btnAgregarRolProducto);
             this.tabRolProducto.Controls.Add(this.gridRolProducto);
             this.tabRolProducto.Name = "tabRolProducto";
-            this.tabRolProducto.Size = new System.Drawing.Size(452, 195);
+            this.tabRolProducto.Size = new System.Drawing.Size(482, 195);
             this.tabRolProducto.Text = "Rol de Producto";
             // 
             // btnAgregarRolProducto
@@ -265,7 +272,7 @@ namespace SistemaContable.UI.Forms.Seguridad
             this.tabCentroCosto.Controls.Add(this.btnAgregarCentroCosto);
             this.tabCentroCosto.Controls.Add(this.gridCentroCosto);
             this.tabCentroCosto.Name = "tabCentroCosto";
-            this.tabCentroCosto.Size = new System.Drawing.Size(452, 195);
+            this.tabCentroCosto.Size = new System.Drawing.Size(482, 195);
             this.tabCentroCosto.Text = "Centro de Costo";
             // 
             // btnAgregarCentroCosto
@@ -331,6 +338,15 @@ namespace SistemaContable.UI.Forms.Seguridad
             this.chkPermisoTipoCliente.Size = new System.Drawing.Size(210, 20);
             this.chkPermisoTipoCliente.TabIndex = 1;
             // 
+            // chkPermisoCodClienteProveedorSigesta
+            // 
+            this.chkPermisoCodClienteProveedorSigesta.Location = new System.Drawing.Point(15, 83);
+            this.chkPermisoCodClienteProveedorSigesta.Margin = new System.Windows.Forms.Padding(2);
+            this.chkPermisoCodClienteProveedorSigesta.Name = "chkPermisoCodClienteProveedorSigesta";
+            this.chkPermisoCodClienteProveedorSigesta.Properties.Caption = "Edición Códigos Cliente Sigesta";
+            this.chkPermisoCodClienteProveedorSigesta.Size = new System.Drawing.Size(233, 20);
+            this.chkPermisoCodClienteProveedorSigesta.TabIndex = 4;
+            // 
             // chkPermisoRolProducto
             // 
             this.chkPermisoRolProducto.Location = new System.Drawing.Point(15, 55);
@@ -348,15 +364,6 @@ namespace SistemaContable.UI.Forms.Seguridad
             this.chkPermisoAsocioProducto.Properties.Caption = "Edición Asocio de Productos";
             this.chkPermisoAsocioProducto.Size = new System.Drawing.Size(210, 20);
             this.chkPermisoAsocioProducto.TabIndex = 3;
-            // 
-            // chkPermisoCodClienteProveedorSigesta
-            // 
-            this.chkPermisoCodClienteProveedorSigesta.Location = new System.Drawing.Point(15, 83);
-            this.chkPermisoCodClienteProveedorSigesta.Margin = new System.Windows.Forms.Padding(2);
-            this.chkPermisoCodClienteProveedorSigesta.Name = "chkPermisoCodClienteProveedorSigesta";
-            this.chkPermisoCodClienteProveedorSigesta.Properties.Caption = "Edición Códigos Cliente/Proveedor Sigesta";
-            this.chkPermisoCodClienteProveedorSigesta.Size = new System.Drawing.Size(233, 20);
-            this.chkPermisoCodClienteProveedorSigesta.TabIndex = 4;
             // 
             // chkPermisoCodProductoSigesta
             // 
@@ -379,21 +386,51 @@ namespace SistemaContable.UI.Forms.Seguridad
             this.groupControl2.TabIndex = 16;
             this.groupControl2.Text = "Permisos Productos";
             // 
-            // groupControl3
+            // grpPermisosProveedor
             // 
-            this.groupControl3.Location = new System.Drawing.Point(6, 546);
-            this.groupControl3.Margin = new System.Windows.Forms.Padding(2);
-            this.groupControl3.Name = "groupControl3";
-            this.groupControl3.Size = new System.Drawing.Size(484, 61);
-            this.groupControl3.TabIndex = 17;
-            this.groupControl3.Text = "Permisos Proveedor";
+            this.grpPermisosProveedor.Controls.Add(this.chkPermisoCtasContablesProveedor);
+            this.grpPermisosProveedor.Controls.Add(this.chkPermisoTipoProveedor);
+            this.grpPermisosProveedor.Controls.Add(this.chkPermisoCodProveedorSigesta);
+            this.grpPermisosProveedor.Location = new System.Drawing.Point(6, 546);
+            this.grpPermisosProveedor.Margin = new System.Windows.Forms.Padding(2);
+            this.grpPermisosProveedor.Name = "grpPermisosProveedor";
+            this.grpPermisosProveedor.Size = new System.Drawing.Size(484, 115);
+            this.grpPermisosProveedor.TabIndex = 17;
+            this.grpPermisosProveedor.Text = "Permisos Proveedor";
+            // 
+            // chkPermisoCtasContablesProveedor
+            // 
+            this.chkPermisoCtasContablesProveedor.Location = new System.Drawing.Point(17, 25);
+            this.chkPermisoCtasContablesProveedor.Margin = new System.Windows.Forms.Padding(2);
+            this.chkPermisoCtasContablesProveedor.Name = "chkPermisoCtasContablesProveedor";
+            this.chkPermisoCtasContablesProveedor.Properties.Caption = "Edición Cuentas Contables de Proveedor";
+            this.chkPermisoCtasContablesProveedor.Size = new System.Drawing.Size(280, 20);
+            this.chkPermisoCtasContablesProveedor.TabIndex = 0;
+            // 
+            // chkPermisoTipoProveedor
+            // 
+            this.chkPermisoTipoProveedor.Location = new System.Drawing.Point(17, 53);
+            this.chkPermisoTipoProveedor.Margin = new System.Windows.Forms.Padding(2);
+            this.chkPermisoTipoProveedor.Name = "chkPermisoTipoProveedor";
+            this.chkPermisoTipoProveedor.Properties.Caption = "Edición de Tipos de Proveedor";
+            this.chkPermisoTipoProveedor.Size = new System.Drawing.Size(240, 20);
+            this.chkPermisoTipoProveedor.TabIndex = 1;
+            // 
+            // chkPermisoCodProveedorSigesta
+            // 
+            this.chkPermisoCodProveedorSigesta.Location = new System.Drawing.Point(17, 78);
+            this.chkPermisoCodProveedorSigesta.Margin = new System.Windows.Forms.Padding(2);
+            this.chkPermisoCodProveedorSigesta.Name = "chkPermisoCodProveedorSigesta";
+            this.chkPermisoCodProveedorSigesta.Properties.Caption = "Edición Códigos de Proveedor SIGESTA";
+            this.chkPermisoCodProveedorSigesta.Size = new System.Drawing.Size(280, 20);
+            this.chkPermisoCodProveedorSigesta.TabIndex = 2;
             // 
             // frmRol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(603, 611);
-            this.Controls.Add(this.groupControl3);
+            this.ClientSize = new System.Drawing.Size(603, 703);
+            this.Controls.Add(this.grpPermisosProveedor);
             this.Controls.Add(this.groupControl2);
             this.Controls.Add(this.grpPermisos);
             this.Controls.Add(this.xtraTabAsociaciones);
@@ -428,13 +465,17 @@ namespace SistemaContable.UI.Forms.Seguridad
             this.grpPermisos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCtasContables.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPermisoTipoCliente.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCodClienteProveedorSigesta.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPermisoRolProducto.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPermisoAsocioProducto.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCodClienteProveedorSigesta.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCodProductoSigesta.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
             this.groupControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grpPermisosProveedor)).EndInit();
+            this.grpPermisosProveedor.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCtasContablesProveedor.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPermisoTipoProveedor.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPermisoCodProveedorSigesta.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -467,6 +508,9 @@ namespace SistemaContable.UI.Forms.Seguridad
         private DevExpress.XtraEditors.CheckEdit chkPermisoCodClienteProveedorSigesta;
         private DevExpress.XtraEditors.CheckEdit chkPermisoCodProductoSigesta;
         private DevExpress.XtraEditors.GroupControl groupControl2;
-        private DevExpress.XtraEditors.GroupControl groupControl3;
+        private DevExpress.XtraEditors.GroupControl grpPermisosProveedor;
+        private DevExpress.XtraEditors.CheckEdit chkPermisoCtasContablesProveedor;
+        private DevExpress.XtraEditors.CheckEdit chkPermisoTipoProveedor;
+        private DevExpress.XtraEditors.CheckEdit chkPermisoCodProveedorSigesta;
     }
 }

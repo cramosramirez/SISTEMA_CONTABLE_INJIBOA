@@ -18,7 +18,7 @@ using System.Windows.Forms;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
-    public partial class frmProveedor : Form
+    public partial class frmProveedorNuevo : Form
     {
         private readonly DALBase _dal = new DALBase();
         private bool _cargandoFormulario = true;
@@ -41,7 +41,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private const int DESPLAZAMIENTO_COMPACTO_CODIGOS = 70;
         public int IdEntidad { get; set; } = 0;
 
-        public frmProveedor()
+        public frmProveedorNuevo()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
@@ -54,7 +54,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             CenterToScreen();
         }
 
-        private void frmProveedor_Load(object sender, EventArgs e)
+        private void frmProveedorNuevo_Load(object sender, EventArgs e)
         {
             FormHelper.Inicializar(this);
             _cargandoFormulario = true;

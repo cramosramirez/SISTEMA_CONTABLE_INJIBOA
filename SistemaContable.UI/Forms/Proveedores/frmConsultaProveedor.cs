@@ -81,11 +81,10 @@ namespace SistemaContable.UI.Forms.Proveedores
             gridControl1.BeginUpdate();
             try
             {
-                _dtDetalle = _dal.EjecutarConsulta("SP_ENTIDAD",
+                _dtDetalle = _dal.EjecutarConsulta("[EDTE].[SP_LISTAR_PROVEEDORES_POR_ROL]",
                     new
                     {
-                        ACCION = "CONSULTA_TODOS_PROVEEDORES",
-                        ROL = "PRO"
+                        ID_ROL_USUARIO = Configuracion.IdRolActual
                     });
 
                 gridControl1.DataSource = _dtDetalle;

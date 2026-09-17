@@ -26,6 +26,7 @@ namespace SistemaContable.UI.Forms.Seguridad
         public frmRol()
         {
             InitializeComponent();
+            InicializarPestanaTipoProveedor();
             this.StartPosition = FormStartPosition.CenterScreen;
         }
 
@@ -73,6 +74,7 @@ namespace SistemaContable.UI.Forms.Seguridad
                 IdRol = Convert.ToInt32(r["ID_ROL"]);
                 txtNOMBRE_ROL.Text = r["NOMBRE_ROL"] == DBNull.Value ? "" : r["NOMBRE_ROL"].ToString();
                 CargarTipoClienteExistentes(IdRol);
+                CargarTipoProveedorExistentes(IdRol);
                 CargarCentroCostoExistentes(IdRol);
                 CargarRolProductoExistentes(IdRol);
                 CargarPermisos(IdRol);
@@ -802,15 +804,28 @@ namespace SistemaContable.UI.Forms.Seguridad
                 chkPermisoAsocioProducto.Checked = false;
                 chkPermisoCodClienteProveedorSigesta.Checked = false;
                 chkPermisoCodProductoSigesta.Checked = false;
+                chkPermisoCtasContablesProveedor.Checked = false;
+                chkPermisoTipoProveedor.Checked = false;
+                chkPermisoCodProveedorSigesta.Checked = false;
                 return;
             }
             DataRow r = dt.Rows[0];
-            chkPermisoCtasContables.Checked = r["PERMISO_EDICION_CTAS_CONTABLES"] != DBNull.Value && Convert.ToBoolean(r["PERMISO_EDICION_CTAS_CONTABLES"]);
-            chkPermisoTipoCliente.Checked = r["PERMISO_EDICION_TIPO_CLIENTE"] != DBNull.Value && Convert.ToBoolean(r["PERMISO_EDICION_TIPO_CLIENTE"]);
-            chkPermisoRolProducto.Checked = r["PERMISO_EDICION_ROL_PRODUCTO"] != DBNull.Value && Convert.ToBoolean(r["PERMISO_EDICION_ROL_PRODUCTO"]);
-            chkPermisoAsocioProducto.Checked = r["PERMISO_EDICION_ASOCIO_PRODUCTO"] != DBNull.Value && Convert.ToBoolean(r["PERMISO_EDICION_ASOCIO_PRODUCTO"]);
-            chkPermisoCodClienteProveedorSigesta.Checked = r["PERMISO_EDICION_COD_CLIENTE_PROV_SIGESTA"] != DBNull.Value && Convert.ToBoolean(r["PERMISO_EDICION_COD_CLIENTE_PROV_SIGESTA"]);
-            chkPermisoCodProductoSigesta.Checked = r["PERMISO_EDICION_COD_PRODUCTO_SIGESTA"] != DBNull.Value && Convert.ToBoolean(r["PERMISO_EDICION_COD_PRODUCTO_SIGESTA"]);
+            chkPermisoCtasContables.Checked = LeerPermiso(r, "PERMISO_EDICION_CTAS_CONTABLES");
+            chkPermisoTipoCliente.Checked = LeerPermiso(r, "PERMISO_EDICION_TIPO_CLIENTE");
+            chkPermisoRolProducto.Checked = LeerPermiso(r, "PERMISO_EDICION_ROL_PRODUCTO");
+            chkPermisoAsocioProducto.Checked = LeerPermiso(r, "PERMISO_EDICION_ASOCIO_PRODUCTO");
+            chkPermisoCodClienteProveedorSigesta.Checked = LeerPermiso(r, "PERMISO_EDICION_COD_CLIENTE_PROV_SIGESTA");
+            chkPermisoCodProductoSigesta.Checked = LeerPermiso(r, "PERMISO_EDICION_COD_PRODUCTO_SIGESTA");
+            chkPermisoCtasContablesProveedor.Checked = LeerPermiso(r, "PERMISO_EDICION_CTAS_PROVEEDOR");
+            chkPermisoTipoProveedor.Checked = LeerPermiso(r, "PERMISO_EDICION_TIPO_PROVEEDOR");
+            chkPermisoCodProveedorSigesta.Checked = LeerPermiso(r, "PERMISO_EDICION_COD_PROVEEDOR_SIGESTA");
+        }
+
+        private static bool LeerPermiso(DataRow fila, string columna)
+        {
+            return fila?.Table?.Columns.Contains(columna) == true
+                && fila[columna] != DBNull.Value
+                && Convert.ToBoolean(fila[columna]);
         }
 
         private void GuardarPermisos()
@@ -825,6 +840,9 @@ namespace SistemaContable.UI.Forms.Seguridad
                 PERMISO_EDICION_ASOCIO_PRODUCTO = chkPermisoAsocioProducto.Checked,
                 PERMISO_EDICION_COD_CLIENTE_PROV_SIGESTA = chkPermisoCodClienteProveedorSigesta.Checked,
                 PERMISO_EDICION_COD_PRODUCTO_SIGESTA = chkPermisoCodProductoSigesta.Checked,
+                PERMISO_EDICION_CTAS_PROVEEDOR = chkPermisoCtasContablesProveedor.Checked,
+                PERMISO_EDICION_TIPO_PROVEEDOR = chkPermisoTipoProveedor.Checked,
+                PERMISO_EDICION_COD_PROVEEDOR_SIGESTA = chkPermisoCodProveedorSigesta.Checked,
                 USUARIO = Configuracion.UsuarioActual
             });
         }
@@ -853,6 +871,7 @@ namespace SistemaContable.UI.Forms.Seguridad
                 }
                 IdRol = Convert.ToInt32(dtResult.Rows[0]["ID_GENERADO"]);
                 GuardarTipoCliente();
+                GuardarTipoProveedor();
                 GuardarCentroCosto();
                 GuardarRolProducto();
                 GuardarPermisos();
@@ -923,6 +942,7 @@ namespace SistemaContable.UI.Forms.Seguridad
             IdRol = 0;
             txtNOMBRE_ROL.Text = "";
             _dtTipoCliente?.Clear();
+            _dtTipoProveedor?.Clear();
             _dtCentroCosto?.Clear();
             _dtRolProducto?.Clear();
             chkPermisoCtasContables.Checked = false;
@@ -931,6 +951,9 @@ namespace SistemaContable.UI.Forms.Seguridad
             chkPermisoAsocioProducto.Checked = false;
             chkPermisoCodClienteProveedorSigesta.Checked = false;
             chkPermisoCodProductoSigesta.Checked = false;
+            chkPermisoCtasContablesProveedor.Checked = false;
+            chkPermisoTipoProveedor.Checked = false;
+            chkPermisoCodProveedorSigesta.Checked = false;
         }
         #endregion
 
@@ -939,6 +962,7 @@ namespace SistemaContable.UI.Forms.Seguridad
         {
             btnEliminar.Enabled = !esNuevo && IdRol > 0;
             btnAgregarTipoCliente.Enabled = !esNuevo && IdRol > 0;
+            btnAgregarTipoProveedor.Enabled = !esNuevo && IdRol > 0;
             btnAgregarCentroCosto.Enabled = !esNuevo && IdRol > 0;
             btnAgregarRolProducto.Enabled = !esNuevo && IdRol > 0;
         }

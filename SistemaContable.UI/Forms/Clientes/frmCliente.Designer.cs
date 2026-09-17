@@ -118,6 +118,7 @@
             this.txtID_TIPO_PRECIO = new System.Windows.Forms.TextBox();
             this.lblCUENTA_AJENA = new System.Windows.Forms.Label();
             this.txtCUENTA_AJENA = new System.Windows.Forms.TextBox();
+            this.txtNOMBRE_CUENTA_AJENA = new System.Windows.Forms.TextBox();
             this.lblLIMITE_CREDITO = new System.Windows.Forms.Label();
             this.txtLIMITE_CREDITO = new System.Windows.Forms.TextBox();
             this.lblOBSERVACIONES = new System.Windows.Forms.Label();
@@ -1272,8 +1273,19 @@
             this.txtCUENTA_AJENA.Location = new System.Drawing.Point(698, 29);
             this.txtCUENTA_AJENA.MaxLength = 100;
             this.txtCUENTA_AJENA.Name = "txtCUENTA_AJENA";
-            this.txtCUENTA_AJENA.Size = new System.Drawing.Size(250, 22);
+            this.txtCUENTA_AJENA.Size = new System.Drawing.Size(90, 22);
             this.txtCUENTA_AJENA.TabIndex = 19;
+            // 
+            // txtNOMBRE_CUENTA_AJENA
+            // 
+            this.txtNOMBRE_CUENTA_AJENA.BackColor = System.Drawing.SystemColors.Control;
+            this.txtNOMBRE_CUENTA_AJENA.Font = new System.Drawing.Font("Tahoma", 8.765218F);
+            this.txtNOMBRE_CUENTA_AJENA.Location = new System.Drawing.Point(793, 29);
+            this.txtNOMBRE_CUENTA_AJENA.Name = "txtNOMBRE_CUENTA_AJENA";
+            this.txtNOMBRE_CUENTA_AJENA.ReadOnly = true;
+            this.txtNOMBRE_CUENTA_AJENA.Size = new System.Drawing.Size(155, 22);
+            this.txtNOMBRE_CUENTA_AJENA.TabIndex = 118;
+            this.txtNOMBRE_CUENTA_AJENA.TabStop = false;
             // 
             // lblLIMITE_CREDITO
             // 
@@ -1364,6 +1376,7 @@
             this.gclClientes.Controls.Add(this.lblOBSERVACIONES);
             this.gclClientes.Controls.Add(this.txtLIMITE_CREDITO);
             this.gclClientes.Controls.Add(this.lblLIMITE_CREDITO);
+            this.gclClientes.Controls.Add(this.txtNOMBRE_CUENTA_AJENA);
             this.gclClientes.Controls.Add(this.txtCUENTA_AJENA);
             this.gclClientes.Controls.Add(this.lblCUENTA_AJENA);
             this.gclClientes.Controls.Add(this.txtDIAS_PLAZO);
@@ -1496,6 +1509,7 @@
         private System.Windows.Forms.TextBox txtID_TIPO_PRECIO;
         private System.Windows.Forms.Label lblCUENTA_AJENA;
         private System.Windows.Forms.TextBox txtCUENTA_AJENA;
+        private System.Windows.Forms.TextBox txtNOMBRE_CUENTA_AJENA;
         private System.Windows.Forms.Label lblLIMITE_CREDITO;
         private System.Windows.Forms.TextBox txtLIMITE_CREDITO;
         private System.Windows.Forms.Label lblOBSERVACIONES;
