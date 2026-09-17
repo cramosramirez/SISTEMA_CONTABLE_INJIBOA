@@ -1,13 +1,13 @@
-﻿using SistemaContable.DAL;
+﻿using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.Repository;
+using SistemaContable.DAL;
 using SistemaContable.UI.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SistemaContable.UI.Forms.Proveedores
@@ -19,6 +19,11 @@ namespace SistemaContable.UI.Forms.Proveedores
         public frmConsultaCompraDirecta()
         {
             InitializeComponent();
+            riVerRVacio = new RepositoryItemButtonEdit();
+            riVerRVacio.Buttons.Clear(); // sin botón visible
+            riVerRVacio.TextEditStyle = TextEditStyles.DisableTextEditor;
+            riVerRVacio.ReadOnly = true;
+            gridControl1.RepositoryItems.Add(riVerRVacio);
         }
 
         private void frmConsultaCompraDirecta_Load(object sender, EventArgs e)
@@ -64,7 +69,21 @@ namespace SistemaContable.UI.Forms.Proveedores
             nav.Buttons.Edit.Visible = false;
             nav.Buttons.EndEdit.Visible = false;
             nav.Buttons.CancelEdit.Visible = false;
+
+            gvDetalle.CustomRowCellEdit += GvDetalle_CustomRowCellEdit;
         }
+
+        private void GvDetalle_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
+        {
+            if (e.Column == colVER_R)
+            {
+                object val = gvDetalle.GetRowCellValue(e.RowHandle, "ID_COMPROBANTE_RET");
+                bool tieneRetencion = val != null && val != DBNull.Value;
+
+                e.RepositoryItem = tieneRetencion ? riVerR : riVerRVacio;
+            }
+        }
+
         private void CargarDatos()
         {
             _dtDetalle = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",

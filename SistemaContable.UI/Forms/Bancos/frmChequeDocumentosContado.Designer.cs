@@ -49,10 +49,10 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colRETENCION_IVA = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colSALDO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnAdicionarFSE = new DevExpress.XtraEditors.SimpleButton();
             this.label1 = new System.Windows.Forms.Label();
             this.btnRetornar = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdicionarCCF = new DevExpress.XtraEditors.SimpleButton();
-            this.btnAdicionarFSE = new DevExpress.XtraEditors.SimpleButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -281,7 +281,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             this.colRETENCION_IVA.AppearanceHeader.Options.UseTextOptions = true;
             this.colRETENCION_IVA.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.colRETENCION_IVA.Caption = "Retención 1%";
+            this.colRETENCION_IVA.Caption = "Retención IVA";
             this.colRETENCION_IVA.DisplayFormat.FormatString = "N2";
             this.colRETENCION_IVA.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.colRETENCION_IVA.FieldName = "IVAR";
@@ -316,6 +316,21 @@ namespace SistemaContable.UI.Forms.Bancos
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1216, 104);
             this.panel2.TabIndex = 1;
+            // 
+            // btnAdicionarFSE
+            // 
+            this.btnAdicionarFSE.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdicionarFSE.Appearance.Options.UseFont = true;
+            this.btnAdicionarFSE.Appearance.Options.UseTextOptions = true;
+            this.btnAdicionarFSE.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnAdicionarFSE.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
+            this.btnAdicionarFSE.ImageOptions.ImageToTextIndent = 10;
+            this.btnAdicionarFSE.Location = new System.Drawing.Point(238, 42);
+            this.btnAdicionarFSE.Name = "btnAdicionarFSE";
+            this.btnAdicionarFSE.Size = new System.Drawing.Size(185, 47);
+            this.btnAdicionarFSE.TabIndex = 132;
+            this.btnAdicionarFSE.Text = "Adicionar factura sujeto excluido";
+            this.btnAdicionarFSE.Click += new System.EventHandler(this.btnAdicionarFSE_Click);
             // 
             // label1
             // 
@@ -357,21 +372,6 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAdicionarCCF.TabIndex = 6;
             this.btnAdicionarCCF.Text = "Adicionar comprobante de crédito fiscal";
             this.btnAdicionarCCF.Click += new System.EventHandler(this.btnAdicionarCCF_Click);
-            // 
-            // btnAdicionarFSE
-            // 
-            this.btnAdicionarFSE.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAdicionarFSE.Appearance.Options.UseFont = true;
-            this.btnAdicionarFSE.Appearance.Options.UseTextOptions = true;
-            this.btnAdicionarFSE.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnAdicionarFSE.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
-            this.btnAdicionarFSE.ImageOptions.ImageToTextIndent = 10;
-            this.btnAdicionarFSE.Location = new System.Drawing.Point(238, 42);
-            this.btnAdicionarFSE.Name = "btnAdicionarFSE";
-            this.btnAdicionarFSE.Size = new System.Drawing.Size(185, 47);
-            this.btnAdicionarFSE.TabIndex = 132;
-            this.btnAdicionarFSE.Text = "Adicionar factura sujeto excluido";
-            this.btnAdicionarFSE.Click += new System.EventHandler(this.btnAdicionarFSE_Click);
             // 
             // frmChequeDocumentosContado
             // 

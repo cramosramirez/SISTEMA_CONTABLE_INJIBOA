@@ -34,6 +34,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.riEditar = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
@@ -50,11 +55,16 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colSALDO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colFECHA_EMISION = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colFECHA_RECIBIDO = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colVER_R = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.riVerR = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.riVerRVacio = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             ((System.ComponentModel.ISupportInitialize)(this.riEditar)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDetalle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.riVerR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.riVerRVacio)).BeginInit();
             this.SuspendLayout();
             // 
             // riEditar
@@ -150,7 +160,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gridControl1.MainView = this.gvDetalle;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.riEditar});
+            this.riEditar,
+            this.riVerR,
+            this.riVerRVacio});
             this.gridControl1.Size = new System.Drawing.Size(1302, 462);
             this.gridControl1.TabIndex = 1;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -161,6 +173,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gvDetalle.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.colID_CCF_COMPRA,
             this.colEDITAR,
+            this.colVER_R,
             this.colNOMBRE_ENTIDAD,
             this.colTIPO_DTE,
             this.colCOD_GENERACION,
@@ -186,7 +199,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.colEDITAR.ColumnEdit = this.riEditar;
             this.colEDITAR.ImageOptions.Alignment = System.Drawing.StringAlignment.Center;
-            this.colEDITAR.MinWidth = 21;
+            this.colEDITAR.MaxWidth = 40;
+            this.colEDITAR.MinWidth = 40;
             this.colEDITAR.Name = "colEDITAR";
             this.colEDITAR.OptionsColumn.AllowSize = false;
             this.colEDITAR.OptionsColumn.FixedWidth = true;
@@ -194,7 +208,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colEDITAR.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colEDITAR.Visible = true;
             this.colEDITAR.VisibleIndex = 0;
-            this.colEDITAR.Width = 31;
+            this.colEDITAR.Width = 40;
             // 
             // colNOMBRE_ENTIDAD
             // 
@@ -205,7 +219,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colNOMBRE_ENTIDAD.OptionsColumn.AllowEdit = false;
             this.colNOMBRE_ENTIDAD.OptionsColumn.FixedWidth = true;
             this.colNOMBRE_ENTIDAD.Visible = true;
-            this.colNOMBRE_ENTIDAD.VisibleIndex = 1;
+            this.colNOMBRE_ENTIDAD.VisibleIndex = 2;
             this.colNOMBRE_ENTIDAD.Width = 289;
             // 
             // colTIPO_DTE
@@ -219,7 +233,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colTIPO_DTE.OptionsColumn.AllowEdit = false;
             this.colTIPO_DTE.OptionsColumn.FixedWidth = true;
             this.colTIPO_DTE.Visible = true;
-            this.colTIPO_DTE.VisibleIndex = 2;
+            this.colTIPO_DTE.VisibleIndex = 3;
             this.colTIPO_DTE.Width = 80;
             // 
             // colCOD_GENERACION
@@ -231,7 +245,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colCOD_GENERACION.OptionsColumn.AllowEdit = false;
             this.colCOD_GENERACION.OptionsColumn.FixedWidth = true;
             this.colCOD_GENERACION.Visible = true;
-            this.colCOD_GENERACION.VisibleIndex = 3;
+            this.colCOD_GENERACION.VisibleIndex = 4;
             this.colCOD_GENERACION.Width = 276;
             // 
             // colSALDO
@@ -248,7 +262,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colSALDO.OptionsColumn.AllowEdit = false;
             this.colSALDO.OptionsColumn.FixedWidth = true;
             this.colSALDO.Visible = true;
-            this.colSALDO.VisibleIndex = 4;
+            this.colSALDO.VisibleIndex = 5;
             this.colSALDO.Width = 105;
             // 
             // colFECHA_EMISION
@@ -266,7 +280,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colFECHA_EMISION.OptionsColumn.AllowEdit = false;
             this.colFECHA_EMISION.OptionsColumn.FixedWidth = true;
             this.colFECHA_EMISION.Visible = true;
-            this.colFECHA_EMISION.VisibleIndex = 5;
+            this.colFECHA_EMISION.VisibleIndex = 6;
             this.colFECHA_EMISION.Width = 87;
             // 
             // colFECHA_RECIBIDO
@@ -283,8 +297,42 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colFECHA_RECIBIDO.OptionsColumn.FixedWidth = true;
             this.colFECHA_RECIBIDO.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colFECHA_RECIBIDO.Visible = true;
-            this.colFECHA_RECIBIDO.VisibleIndex = 6;
+            this.colFECHA_RECIBIDO.VisibleIndex = 7;
             this.colFECHA_RECIBIDO.Width = 87;
+            // 
+            // colVER_R
+            // 
+            this.colVER_R.ColumnEdit = this.riVerR;
+            this.colVER_R.ImageOptions.Alignment = System.Drawing.StringAlignment.Center;
+            this.colVER_R.MaxWidth = 40;
+            this.colVER_R.MinWidth = 40;
+            this.colVER_R.Name = "colVER_R";
+            this.colVER_R.OptionsColumn.AllowSize = false;
+            this.colVER_R.OptionsColumn.FixedWidth = true;
+            this.colVER_R.OptionsColumn.ShowCaption = false;
+            this.colVER_R.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+            this.colVER_R.Visible = true;
+            this.colVER_R.VisibleIndex = 1;
+            this.colVER_R.Width = 40;
+            // 
+            // riVerR
+            // 
+            this.riVerR.AllowFocused = false;
+            this.riVerR.AutoHeight = false;
+            editorButtonImageOptions2.Image = global::SistemaContable.UI.RecursosAdicionales01.retencion20x20;
+            this.riVerR.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.riVerR.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
+            this.riVerR.Name = "riVerR";
+            this.riVerR.ReadOnly = true;
+            this.riVerR.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            // 
+            // riVerRVacio
+            // 
+            this.riVerRVacio.AutoHeight = false;
+            this.riVerRVacio.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.riVerRVacio.Name = "riVerRVacio";
             // 
             // frmConsultaCompraDirecta
             // 
@@ -306,6 +354,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDetalle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.riVerR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.riVerRVacio)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -328,5 +378,8 @@ namespace SistemaContable.UI.Forms.Proveedores
         private DevExpress.XtraGrid.Columns.GridColumn colFECHA_EMISION;
         private DevExpress.XtraGrid.Columns.GridColumn colFECHA_RECIBIDO;
         private System.Windows.Forms.Label label1;
+        private DevExpress.XtraGrid.Columns.GridColumn colVER_R;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit riVerR;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit riVerRVacio;
     }
 }

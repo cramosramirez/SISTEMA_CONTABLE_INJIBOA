@@ -42,10 +42,10 @@ namespace SistemaContable.UI.Helpers
             Action<string> actualizarFechaEmision,
             Action<string> actualizarGravada,
             Action<string> actualizarExenta,
-            Action<string> actualizarFOVIAL,
-            Action<string> actualizarCOTRANS,
-            Action<string> actualizarIVAR,
-            Action<string, string> actualizarComboTipoDte,            
+            Action<string> actualizarFOVIAL = null,      
+            Action<string> actualizarCOTRANS = null,     
+            Action<string> actualizarIVAR = null,
+            Action<string, string> actualizarComboTipoDte = null,            
             Action<string> actualizarObservacion = null,
             Action onConsultaExitosa = null,
             params string[] tiposDtePermitidos) // Parámetro params para los tipos DTE
@@ -239,7 +239,7 @@ namespace SistemaContable.UI.Helpers
                     totalNoGravada += resumen.Value<decimal?>("totalExenta") ?? 0;
                     _actualizarExenta(totalNoGravada > 0 ? totalNoGravada.ToString("#,###,##0.00") : string.Empty);
 
-                    _actualizarIVAR(resumen.Value<decimal?>("ivaRete1") is decimal ivaRete1 && ivaRete1 != 0
+                    _actualizarIVAR?.Invoke(resumen.Value<decimal?>("ivaRete1") is decimal ivaRete1 && ivaRete1 != 0
                         ? ivaRete1.ToString("#,###,##0.00")
                         : string.Empty);
 
@@ -250,11 +250,11 @@ namespace SistemaContable.UI.Helpers
                         {
                             if (tributos[i]["codigo"].ToString().Equals("C8"))  // CONTRANS
                             {
-                                _actualizarCOTRANS(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);                               
+                                _actualizarCOTRANS?.Invoke(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);                               
                             }
                             else if (tributos[i]["codigo"].ToString().Equals("D1"))  // FOVIAL
                             {
-                                _actualizarFOVIAL(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);                                
+                                _actualizarFOVIAL?.Invoke(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);                                
                             }
                         }
                     }                    

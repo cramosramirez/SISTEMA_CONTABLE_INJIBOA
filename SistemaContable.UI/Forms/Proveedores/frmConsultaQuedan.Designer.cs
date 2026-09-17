@@ -205,7 +205,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colNUM_QUEDAN.SortMode = DevExpress.XtraGrid.ColumnSortMode.Value;
             this.colNUM_QUEDAN.Visible = true;
             this.colNUM_QUEDAN.VisibleIndex = 0;
-            this.colNUM_QUEDAN.Width = 192;
+            this.colNUM_QUEDAN.Width = 183;
             // 
             // colID_CCF_COMPRA
             // 
@@ -220,8 +220,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.colEDITAR.ColumnEdit = this.riEditar;
             this.colEDITAR.ImageOptions.Alignment = System.Drawing.StringAlignment.Center;
-            this.colEDITAR.MaxWidth = 30;
-            this.colEDITAR.MinWidth = 30;
+            this.colEDITAR.MaxWidth = 40;
+            this.colEDITAR.MinWidth = 40;
             this.colEDITAR.Name = "colEDITAR";
             this.colEDITAR.OptionsColumn.AllowSize = false;
             this.colEDITAR.OptionsColumn.FixedWidth = true;
@@ -229,7 +229,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colEDITAR.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colEDITAR.Visible = true;
             this.colEDITAR.VisibleIndex = 1;
-            this.colEDITAR.Width = 30;
+            this.colEDITAR.Width = 40;
             // 
             // riEditar
             // 
@@ -249,15 +249,16 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.colVER_Q.Caption = "Ver Q";
             this.colVER_Q.ColumnEdit = this.riVerQ;
-            this.colVER_Q.MaxWidth = 30;
-            this.colVER_Q.MinWidth = 30;
+            this.colVER_Q.MaxWidth = 40;
+            this.colVER_Q.MinWidth = 40;
             this.colVER_Q.Name = "colVER_Q";
             this.colVER_Q.OptionsColumn.AllowSize = false;
             this.colVER_Q.OptionsColumn.FixedWidth = true;
             this.colVER_Q.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+            this.colVER_Q.ToolTip = "Ver Quedan";
             this.colVER_Q.Visible = true;
             this.colVER_Q.VisibleIndex = 2;
-            this.colVER_Q.Width = 30;
+            this.colVER_Q.Width = 40;
             // 
             // riVerQ
             // 
@@ -275,15 +276,16 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.colVER_R.Caption = "Ver R";
             this.colVER_R.ColumnEdit = this.riVerR;
-            this.colVER_R.MaxWidth = 30;
-            this.colVER_R.MinWidth = 30;
+            this.colVER_R.MaxWidth = 40;
+            this.colVER_R.MinWidth = 40;
             this.colVER_R.Name = "colVER_R";
             this.colVER_R.OptionsColumn.AllowSize = false;
             this.colVER_R.OptionsColumn.FixedWidth = true;
             this.colVER_R.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+            this.colVER_R.ToolTip = "Ver Retención";
             this.colVER_R.Visible = true;
             this.colVER_R.VisibleIndex = 3;
-            this.colVER_R.Width = 30;
+            this.colVER_R.Width = 40;
             // 
             // riVerR
             // 

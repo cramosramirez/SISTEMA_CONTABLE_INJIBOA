@@ -1,28 +1,32 @@
-﻿using SistemaContable.DAL;
-using SistemaContable.UI.Forms.Proveedores;
+﻿using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.Repository;
+using SistemaContable.DAL;
 using SistemaContable.UI.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SistemaContable.UI.Forms.Distribuidoras
 {
-    public partial class frmConsultaDocumento_CLQ : Form, IRefrescable
+    public partial class frmConsultaDocumento_Gasto : Form, IRefrescable
     {
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDetalle;
-        public frmConsultaDocumento_CLQ()
+        public frmConsultaDocumento_Gasto()
         {
             InitializeComponent();
+            riVerRVacio = new RepositoryItemButtonEdit();
+            riVerRVacio.Buttons.Clear(); // sin botón visible
+            riVerRVacio.TextEditStyle = TextEditStyles.DisableTextEditor;
+            riVerRVacio.ReadOnly = true;
+            gridControl1.RepositoryItems.Add(riVerRVacio);
         }
 
-        private void frmConsultaDocumento_CLQ_Load(object sender, EventArgs e)
+        private void frmConsultaDocumento_Gasto_Load(object sender, EventArgs e)
         {
             ConfigurarGrid();
             CargarDatos();
@@ -65,31 +69,47 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             nav.Buttons.Edit.Visible = false;
             nav.Buttons.EndEdit.Visible = false;
             nav.Buttons.CancelEdit.Visible = false;
+
+            gvDetalle.CustomRowCellEdit += GvDetalle_CustomRowCellEdit;
         }
+
+        private void GvDetalle_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
+        {
+            if (e.Column == colVER_R)
+            {
+                object val = gvDetalle.GetRowCellValue(e.RowHandle, "ID_COMPROBANTE_RET_GASTO");
+                bool tieneRetencion = val != null && val != DBNull.Value;
+
+                e.RepositoryItem = tieneRetencion ? riVerR : riVerRVacio;
+            }
+        }
+
         private void CargarDatos()
         {
-            _dtDetalle = _dal.EjecutarConsulta("DISTRIB.SP_CLQ_ENCA",
-                new { ACCION = "LISTAR_DOCUMENTOS" });
+            _dtDetalle = _dal.EjecutarConsulta("DISTRIB.SP_CREDITO_FISCAL_GASTO",
+                new { ACCION = "LISTAR_COMPRA_X_CAJA_CHICA" });
             gridControl1.DataSource = _dtDetalle;
         }
 
         private int? ObtenerIdFilaActiva()
         {
             if (gvDetalle.FocusedRowHandle < 0) return null;
-            object val = gvDetalle.GetRowCellValue(gvDetalle.FocusedRowHandle, "ID_CLQ_ENCA");
+            object val = gvDetalle.GetRowCellValue(gvDetalle.FocusedRowHandle, "ID_CCF_GASTO");
             if (val == null || val == DBNull.Value) return null;
             return Convert.ToInt32(val);
         }
 
-        private void AbrirDocumento(int IdClqEnca)
+        private void AbrirDocumento(int idCcfGasto)
         {
-            using (var frm = new frmDocumento_CLQ())
+            using (var frm = new frmDocumento_Gasto())
             {
-                frm.IdClqEnca = IdClqEnca;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.ShowDialog(this);
+                frm.IdCcfGasto = idCcfGasto;
+                frm.EsContado = true;
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    CargarDatos();
+                }
             }
-            CargarDatos();
         }
 
         private void btnFinalizar_Click(object sender, EventArgs e)
@@ -103,14 +123,15 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             if (id.HasValue) AbrirDocumento(id.Value);
         }
 
-        private void btnNuevoCLQ_Click(object sender, EventArgs e)
-        {
-            AbrirDocumento(0);
-        }
-
+      
         public void Refrescar()
         {
             CargarDatos();
+        }
+
+        private void btnNuevoGasto_Click(object sender, EventArgs e)
+        {
+            AbrirDocumento(0);
         }
     }
 }

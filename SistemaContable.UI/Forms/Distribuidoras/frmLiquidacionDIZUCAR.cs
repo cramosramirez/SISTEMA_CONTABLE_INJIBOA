@@ -312,7 +312,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     totalVentas += total;
 
                     string condicion = ventaRow["condicion_de_pago"]?.ToString() ?? "";
-                    if (condicion.ToUpper().Contains("CREDITO"))
+                    if (!condicion.ToUpper().Contains("CONTADO"))
                         totalCredito += total;
                 }
             }
@@ -337,7 +337,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         {
             ConfigurarEstiloBase(gridCLQ);
             gridCLQ.OptionsView.ShowIndicator = false;
-            gridCLQ.OptionsFind.AlwaysVisible = true;
+            //gridCLQ.OptionsFind.AlwaysVisible = true;
             gridCLQ.Appearance.Row.Font = new Font(gridCLQ.Appearance.Row.Font, FontStyle.Bold);
             gridCLQ.Appearance.Row.Options.UseFont = true;
 
@@ -545,7 +545,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
             string condicion = view.GetRowCellValue(e.RowHandle, "condicion_de_pago")?.ToString() ?? "";
 
-            if (condicion.ToUpper().Contains("CREDITO"))
+            if (!condicion.ToUpper().Contains("CONTADO"))
             {
                 e.Appearance.BackColor = Color.FromArgb(253, 226, 226);   // rojo pálido
                 e.Appearance.Options.UseBackColor = true;
