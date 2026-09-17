@@ -19,6 +19,8 @@ namespace SistemaContable.UI.Forms.Proveedores
         private readonly string _esquemaProcedimientos;
         private DataTable _dtPartida;  // DataTable que alimenta el grid
         private string _columnaAnteriorGrid = string.Empty;
+        // Flag para distinguir asignaciones programáticas vs digitación/selección del usuario
+        private bool _asignandoCuentaPorCodigo = false;
 
         public frmDocumentoCompraProvision()
             : this(null)
@@ -64,7 +66,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             _dtPartida.ColumnChanged += (s, ev) =>
             {
                 if (ev.Column.ColumnName == "CTACONTABLE")
-                    ActualizarEstadoCuenta(ev.Row["CTACONTABLE"]?.ToString());
+                {
+                    // Solo mostrar el mensaje si viene de digitación/selección del usuario
+                    if (!_asignandoCuentaPorCodigo)
+                        ActualizarEstadoCuenta(ev.Row["CTACONTABLE"]?.ToString());
+                }                    
             };
 
             // Agregar fila vacía inicial
@@ -460,19 +466,28 @@ namespace SistemaContable.UI.Forms.Proveedores
                         ID_CCF_COMPRA = IdCcfCompra
                     });
 
-                _dtPartida.Rows.Clear();
+                _asignandoCuentaPorCodigo = true;
 
-                foreach (DataRow r in dt.Rows)
+                try
                 {
-                    DataRow fila = _dtPartida.NewRow();
-                    fila["ORDEN"] = r["ORDEN"] == DBNull.Value ? 0 : Convert.ToInt32(r["ORDEN"]);
-                    fila["CTACONTABLE"] = r["CTACONTABLE"] == DBNull.Value ? "" : r["CTACONTABLE"];
-                    fila["DETALLE"] = r["DETALLE"] == DBNull.Value ? "" : r["DETALLE"];
-                    fila["CARGO"] = r["CARGO"] == DBNull.Value ? 0m : Convert.ToDecimal(r["CARGO"]);
-                    fila["ABONO"] = r["ABONO"] == DBNull.Value ? 0m : Convert.ToDecimal(r["ABONO"]);
-                    _dtPartida.Rows.Add(fila);
-                }                
-                AgregarFilaVacia();
+                    _dtPartida.Rows.Clear();
+
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        DataRow fila = _dtPartida.NewRow();
+                        fila["ORDEN"] = r["ORDEN"] == DBNull.Value ? 0 : Convert.ToInt32(r["ORDEN"]);
+                        fila["CTACONTABLE"] = r["CTACONTABLE"] == DBNull.Value ? "" : r["CTACONTABLE"];
+                        fila["DETALLE"] = r["DETALLE"] == DBNull.Value ? "" : r["DETALLE"];
+                        fila["CARGO"] = r["CARGO"] == DBNull.Value ? 0m : Convert.ToDecimal(r["CARGO"]);
+                        fila["ABONO"] = r["ABONO"] == DBNull.Value ? 0m : Convert.ToDecimal(r["ABONO"]);
+                        _dtPartida.Rows.Add(fila);
+                    }
+                    AgregarFilaVacia();
+                }
+                finally
+                {
+                    _asignandoCuentaPorCodigo = false;
+                }               
                 ActualizarCuadre();
             }
             catch (Exception ex)

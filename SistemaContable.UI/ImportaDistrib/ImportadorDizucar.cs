@@ -18,7 +18,7 @@ namespace SistemaContable.UI.ImportaDistrib
         // ============================================================
         // 1) Token del día (base de datos ERPMH, servidor distinto)
         // ============================================================
-       *
+       
         public string ObtenerTokenDelDia()
         {
             using (var cn = new SqlConnection(CadenaConexionDistrib))
