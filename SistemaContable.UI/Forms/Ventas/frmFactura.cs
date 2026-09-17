@@ -476,8 +476,13 @@ namespace SistemaContable.UI.Forms.Ventas
         }
         private void CargarCentroCosto()
         {
-            DataTable dt = _dal.EjecutarConsulta("[EDTE].[SP_CENTROCOSTO]",
-                new { ACCION = "OBTENER", ID_CENTRO = -1 });
+            // (2026-09-16) Filtrado por rol, igual que en frmCreditoFiscal: si el rol
+            // del usuario tiene centros de costo asignados en ESEGURIDAD.ROL_CENTROCOSTO
+            // (frmRol), solo se muestran esos; si no tiene ninguno asignado, se
+            // muestran todos por defecto. Se usa el SP independiente
+            // [EDTE].[SP_BUSCAR_CENTROCOSTO] (no [EDTE].[SP_CENTROCOSTO]).
+            DataTable dt = _dal.EjecutarConsulta("[EDTE].[SP_BUSCAR_CENTROCOSTO]",
+                new { ACCION = "LISTAR_POR_ROL", ID_ROL_USUARIO = Configuracion.IdRolActual });
             cbxCENTRO_COSTO.DataSource = dt;
             cbxCENTRO_COSTO.ValueMember = "ID_CENTRO";
             cbxCENTRO_COSTO.DisplayMember = "NOMBRE";
@@ -570,7 +575,7 @@ namespace SistemaContable.UI.Forms.Ventas
             var repoEliminar = new RepositoryItemButtonEdit();
             repoEliminar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             repoEliminar.Buttons[0].Kind = DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph;
-            repoEliminar.Buttons[0].ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminarFila32x32;
+            repoEliminar.Buttons[0].ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.EliminarFila24x24;
             repoEliminar.Buttons[0].Caption = "";
             repoEliminar.Buttons[0].ToolTip = "Eliminar fila";
             repoEliminar.ButtonClick += (s, ev) => EliminarFilaDetalle();
@@ -603,7 +608,18 @@ namespace SistemaContable.UI.Forms.Ventas
             view.Appearance.HeaderPanel.Options.UseFont = true;
             view.CustomColumnDisplayText += (s, ev) =>
             {
-                if (ev.Column.FieldName == "CANTIDAD" || ev.Column.FieldName == "PORC_DESC" ||
+                // (2026-09-16) CANTIDAD se muestra a 4 decimales, igual que en
+                // frmCreditoFiscal. El dato sigue guardándose igual (decimal, sin
+                // redondear) — este cambio es solo del texto que se pinta en la celda.
+                if (ev.Column.FieldName == "CANTIDAD")
+                {
+                    if (ev.Value == null || ev.Value == DBNull.Value) { ev.DisplayText = "0.0000"; return; }
+                    ev.DisplayText = decimal.TryParse(ev.Value.ToString(), out decimal cantidad)
+                        ? cantidad.ToString("N4")
+                        : "0.0000";
+                    return;
+                }
+                if (ev.Column.FieldName == "PORC_DESC" ||
                     ev.Column.FieldName == "PRECIO" || ev.Column.FieldName == "DESCUENTO" ||
                     ev.Column.FieldName == "NOSUJETA" || ev.Column.FieldName == "EXENTO" ||
                     ev.Column.FieldName == "GRAVADO" || ev.Column.FieldName == "TOTAL")
@@ -865,8 +881,9 @@ namespace SistemaContable.UI.Forms.Ventas
                 if (string.IsNullOrWhiteSpace(cod)) return;
                 string descActual = view.GetFocusedRowCellValue("DESCRIPCION")?.ToString();
                 if (!string.IsNullOrWhiteSpace(descActual)) return;
-                var dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_PRODUCTO]",
-                    new { ACCION = "BUSCAR", FILTRO = cod });
+                // (2026-09-16) Filtrado por Rol de Producto, igual que en frmCreditoFiscal.
+                var dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_BUSCAR_PRODUCTO_CCF]",
+                    new { ACCION = "BUSCAR", FILTRO = cod, ID_ROL_USUARIO = Configuracion.IdRolActual });
                 var encontrado = dt.AsEnumerable()
                     .FirstOrDefault(r => r["COD_REF"].ToString().Trim()
                         .Equals(cod, StringComparison.OrdinalIgnoreCase));
@@ -880,9 +897,17 @@ namespace SistemaContable.UI.Forms.Ventas
         #region BÚSQUEDA DE PRODUCTO
         private void AbrirBusquedaProducto(GridView view)
         {
+            // (2026-09-16) Filtrado por rol, igual que en frmCreditoFiscal: si el rol
+            // del usuario tiene Roles de Producto asignados en ESEGURIDAD.ROL_ROL_PROD
+            // (frmRol), solo se muestran los productos que tengan asignado alguno de
+            // esos roles (pestaña "Roles del Producto" de frmProducto); si no tiene
+            // ninguno asignado, se muestran todos por defecto. Se usa el SP
+            // independiente [EINVENTARIO].[SP_BUSCAR_PRODUCTO_CCF] (compartido con
+            // frmCreditoFiscal; no [EINVENTARIO].[SP_PRODUCTO], que siguen usando
+            // frmProducto, frmDocumentoCompra, etc. sin este filtro).
             var config = new BusquedaConfig
             {
-                StoredProcedure = "[EINVENTARIO].[SP_PRODUCTO]",
+                StoredProcedure = "[EINVENTARIO].[SP_BUSCAR_PRODUCTO_CCF]",
                 Accion = "BUSCAR",
                 Columnas = new Dictionary<string, string>
                 {
@@ -897,6 +922,10 @@ namespace SistemaContable.UI.Forms.Ventas
                     { "DESCRIPCION", 400 },
                     { "UNIMEDIDA",   80  },
                     { "PRECIO",      100 }
+                },
+                ParametrosExtra = new
+                {
+                    ID_ROL_USUARIO = Configuracion.IdRolActual
                 }
             };
             using (var frm = new frmBusquedaGenerica(config))

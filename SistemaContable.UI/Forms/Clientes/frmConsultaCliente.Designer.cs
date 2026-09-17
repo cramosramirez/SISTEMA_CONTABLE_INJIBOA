@@ -27,12 +27,12 @@
             this.riEditar = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.colCODIGO_ENTIDAD = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colNOMBRE = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colNOMBRE_COMERCIAL = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colTIPO_PERSONA = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colNRC = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colDUI = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colNIT = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colCORREO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colTELEFONO = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCORREO = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colTIPO_CONTRIBUYENTE = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvEntidades)).BeginInit();
@@ -105,12 +105,12 @@
             this.colEDITAR,
             this.colCODIGO_ENTIDAD,
             this.colNOMBRE,
-            this.colNOMBRE_COMERCIAL,
-            this.colTIPO_PERSONA,
             this.colNRC,
+            this.colDUI,
             this.colNIT,
+            this.colTELEFONO,
             this.colCORREO,
-            this.colTELEFONO});
+            this.colTIPO_CONTRIBUYENTE});
             this.gvEntidades.DetailHeight = 431;
             this.gvEntidades.GridControl = this.gridControl1;
             this.gvEntidades.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
@@ -127,25 +127,30 @@
             // 
             // colEDITAR
             // 
-            this.colEDITAR.Caption = " ";
             this.colEDITAR.ColumnEdit = this.riEditar;
-            this.colEDITAR.MinWidth = 24;
+            this.colEDITAR.ImageOptions.Alignment = System.Drawing.StringAlignment.Center;
+            this.colEDITAR.MaxWidth = 30;
+            this.colEDITAR.MinWidth = 30;
             this.colEDITAR.Name = "colEDITAR";
             this.colEDITAR.OptionsColumn.AllowSize = false;
+            this.colEDITAR.OptionsColumn.FixedWidth = true;
             this.colEDITAR.OptionsColumn.ShowCaption = false;
             this.colEDITAR.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colEDITAR.Visible = true;
             this.colEDITAR.VisibleIndex = 0;
-            this.colEDITAR.Width = 55;
+            this.colEDITAR.Width = 30;
             // 
             // riEditar
             // 
+            this.riEditar.AllowFocused = false;
             this.riEditar.AutoHeight = false;
-            editorButtonImageOptions1.Image = global::SistemaContable.UI.Properties.Resources.editar3_32x32;
+            editorButtonImageOptions1.Image = global::SistemaContable.UI.RecursosAdicionales01.editar2_20x20;
             this.riEditar.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riEditar.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
             this.riEditar.Name = "riEditar";
+            this.riEditar.ReadOnly = true;
+            this.riEditar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.riEditar.UseReadOnlyAppearance = false;
             this.riEditar.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.riEditar_ButtonClick);
             // 
@@ -158,40 +163,20 @@
             this.colCODIGO_ENTIDAD.OptionsColumn.AllowEdit = false;
             this.colCODIGO_ENTIDAD.Visible = true;
             this.colCODIGO_ENTIDAD.VisibleIndex = 1;
-            this.colCODIGO_ENTIDAD.Width = 147;
+            this.colCODIGO_ENTIDAD.Width = 111;
             // 
             // colNOMBRE
             // 
             this.colNOMBRE.Caption = "Nombre";
             this.colNOMBRE.FieldName = "NOMBRE";
-            this.colNOMBRE.MinWidth = 24;
+            this.colNOMBRE.MaxWidth = 500;
+            this.colNOMBRE.MinWidth = 21;
             this.colNOMBRE.Name = "colNOMBRE";
             this.colNOMBRE.OptionsColumn.AllowEdit = false;
+            this.colNOMBRE.SortMode = DevExpress.XtraGrid.ColumnSortMode.Value;
             this.colNOMBRE.Visible = true;
             this.colNOMBRE.VisibleIndex = 2;
-            this.colNOMBRE.Width = 400;
-            // 
-            // colNOMBRE_COMERCIAL
-            // 
-            this.colNOMBRE_COMERCIAL.Caption = "Nombre Comercial";
-            this.colNOMBRE_COMERCIAL.FieldName = "NOMBRE_COMERCIAL";
-            this.colNOMBRE_COMERCIAL.MinWidth = 24;
-            this.colNOMBRE_COMERCIAL.Name = "colNOMBRE_COMERCIAL";
-            this.colNOMBRE_COMERCIAL.OptionsColumn.AllowEdit = false;
-            this.colNOMBRE_COMERCIAL.Visible = true;
-            this.colNOMBRE_COMERCIAL.VisibleIndex = 3;
-            this.colNOMBRE_COMERCIAL.Width = 267;
-            // 
-            // colTIPO_PERSONA
-            // 
-            this.colTIPO_PERSONA.Caption = "Tipo Persona";
-            this.colTIPO_PERSONA.FieldName = "NOMBRE_TIPO_PERSONA";
-            this.colTIPO_PERSONA.MinWidth = 24;
-            this.colTIPO_PERSONA.Name = "colTIPO_PERSONA";
-            this.colTIPO_PERSONA.OptionsColumn.AllowEdit = false;
-            this.colTIPO_PERSONA.Visible = true;
-            this.colTIPO_PERSONA.VisibleIndex = 4;
-            this.colTIPO_PERSONA.Width = 160;
+            this.colNOMBRE.Width = 248;
             // 
             // colNRC
             // 
@@ -199,45 +184,69 @@
             this.colNRC.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colNRC.Caption = "NRC";
             this.colNRC.FieldName = "NRC";
-            this.colNRC.MinWidth = 24;
+            this.colNRC.MinWidth = 100;
             this.colNRC.Name = "colNRC";
             this.colNRC.OptionsColumn.AllowEdit = false;
             this.colNRC.Visible = true;
-            this.colNRC.VisibleIndex = 5;
-            this.colNRC.Width = 120;
+            this.colNRC.VisibleIndex = 3;
+            this.colNRC.Width = 123;
+            //
+            // colDUI
+            //
+            this.colDUI.Caption = "DUI";
+            this.colDUI.FieldName = "DUI";
+            this.colDUI.MinWidth = 21;
+            this.colDUI.Name = "colDUI";
+            this.colDUI.OptionsColumn.AllowEdit = false;
+            this.colDUI.Visible = true;
+            this.colDUI.VisibleIndex = 4;
+            this.colDUI.Width = 120;
             // 
             // colNIT
             // 
             this.colNIT.Caption = "NIT";
             this.colNIT.FieldName = "NIT";
-            this.colNIT.MinWidth = 24;
+            this.colNIT.MinWidth = 21;
             this.colNIT.Name = "colNIT";
             this.colNIT.OptionsColumn.AllowEdit = false;
             this.colNIT.Visible = true;
-            this.colNIT.VisibleIndex = 6;
-            this.colNIT.Width = 147;
+            this.colNIT.VisibleIndex = 5;
+            this.colNIT.Width = 130;
+            //
+            // colTELEFONO
+            //
+            this.colTELEFONO.AppearanceCell.Options.UseTextOptions = true;
+            this.colTELEFONO.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.colTELEFONO.Caption = "Teléfono";
+            this.colTELEFONO.FieldName = "TELEFONO";
+            this.colTELEFONO.MinWidth = 21;
+            this.colTELEFONO.Name = "colTELEFONO";
+            this.colTELEFONO.OptionsColumn.AllowEdit = false;
+            this.colTELEFONO.Visible = true;
+            this.colTELEFONO.VisibleIndex = 6;
+            this.colTELEFONO.Width = 107;
             // 
             // colCORREO
             // 
             this.colCORREO.Caption = "Correo";
             this.colCORREO.FieldName = "CORREO";
-            this.colCORREO.MinWidth = 24;
+            this.colCORREO.MinWidth = 21;
             this.colCORREO.Name = "colCORREO";
             this.colCORREO.OptionsColumn.AllowEdit = false;
             this.colCORREO.Visible = true;
             this.colCORREO.VisibleIndex = 7;
-            this.colCORREO.Width = 267;
+            this.colCORREO.Width = 107;
             // 
-            // colTELEFONO
+            // colTIPO_CONTRIBUYENTE
             // 
-            this.colTELEFONO.Caption = "Teléfono";
-            this.colTELEFONO.FieldName = "TELEFONO";
-            this.colTELEFONO.MinWidth = 24;
-            this.colTELEFONO.Name = "colTELEFONO";
-            this.colTELEFONO.OptionsColumn.AllowEdit = false;
-            this.colTELEFONO.Visible = true;
-            this.colTELEFONO.VisibleIndex = 8;
-            this.colTELEFONO.Width = 133;
+            this.colTIPO_CONTRIBUYENTE.Caption = "Tipo contribuyente";
+            this.colTIPO_CONTRIBUYENTE.FieldName = "NOMBRE_TIPO_CONTRIB";
+            this.colTIPO_CONTRIBUYENTE.MinWidth = 24;
+            this.colTIPO_CONTRIBUYENTE.Name = "colTIPO_CONTRIBUYENTE";
+            this.colTIPO_CONTRIBUYENTE.OptionsColumn.AllowEdit = false;
+            this.colTIPO_CONTRIBUYENTE.Visible = true;
+            this.colTIPO_CONTRIBUYENTE.VisibleIndex = 8;
+            this.colTIPO_CONTRIBUYENTE.Width = 120;
             // 
             // frmConsultaCliente
             // 
@@ -270,12 +279,12 @@
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit riEditar;
         private DevExpress.XtraGrid.Columns.GridColumn colCODIGO_ENTIDAD;
         private DevExpress.XtraGrid.Columns.GridColumn colNOMBRE;
-        private DevExpress.XtraGrid.Columns.GridColumn colNOMBRE_COMERCIAL;
-        private DevExpress.XtraGrid.Columns.GridColumn colTIPO_PERSONA;
         private DevExpress.XtraGrid.Columns.GridColumn colNRC;
+        private DevExpress.XtraGrid.Columns.GridColumn colDUI;
         private DevExpress.XtraGrid.Columns.GridColumn colNIT;
-        private DevExpress.XtraGrid.Columns.GridColumn colCORREO;
         private DevExpress.XtraGrid.Columns.GridColumn colTELEFONO;
+        private DevExpress.XtraGrid.Columns.GridColumn colCORREO;
+        private DevExpress.XtraGrid.Columns.GridColumn colTIPO_CONTRIBUYENTE;
         private void btnSalir_Click(object sender, System.EventArgs e) => this.Close();
     }
 }

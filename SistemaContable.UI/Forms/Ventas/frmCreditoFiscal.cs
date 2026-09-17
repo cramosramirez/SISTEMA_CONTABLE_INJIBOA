@@ -36,6 +36,9 @@ namespace SistemaContable.UI.Forms.Ventas
         // Se guarda directo en CREDITOFISCAL_ENC.ID_CUENTA_FINAN para que
         // [ESOLICITUD].[SP_CREDITO_ENCA] (GUARDAR_DESDE_CCF) lo lea sin hacer joins.
         private int? _idCuentaFinanSolicitud = null;
+        // Botón "Agregar fila" superpuesto sobre la esquina superior izquierda (columna
+        // indicadora) del grid de detalle. Ver ConfigurarBotonAgregarFila().
+        private PictureBox _picAgregarFila;
         #endregion
         public int IdCCFEnc { get; set; } = 0;
         public int AnioDte { get; set; } = 0;
@@ -98,7 +101,7 @@ namespace SistemaContable.UI.Forms.Ventas
                 txtCLIENTE,
                 new BusquedaConfig
                 {
-                    StoredProcedure = "[EDTE].[SP_ENTIDAD]",
+                    StoredProcedure = "[EDTE].[SP_BUSCAR_CLIENTE_CCF]",
                     Accion = "BUSCAR_CONTRIBUYENTES",      // CCF: solo contribuyentes
                     Columnas = new Dictionary<string, string>
                     {
@@ -114,7 +117,11 @@ namespace SistemaContable.UI.Forms.Ventas
                         { "NIT",            150 },
                         { "NRC",            150 }
                     },
-                    ParametrosExtra = new { ROL = "CLI" }
+                    ParametrosExtra = new
+                    {
+                        ROL = "CLI",
+                        ID_ROL_USUARIO = Configuracion.IdRolActual
+                    }
                 },
                 fila => AsignarCliente(fila)
             );
@@ -504,8 +511,13 @@ namespace SistemaContable.UI.Forms.Ventas
         }
         private void CargarCentroCosto()
         {
-            DataTable dt = _dal.EjecutarConsulta("[EDTE].[SP_CENTROCOSTO]",
-                new { ACCION = "OBTENER", ID_CENTRO = -1 });
+            // (2026-09-16) Filtrado por rol: si el rol del usuario tiene centros de
+            // costo asignados en ESEGURIDAD.ROL_CENTROCOSTO (frmRol), solo se muestran
+            // esos; si no tiene ninguno asignado, se muestran todos por defecto.
+            // Se usa el SP independiente [EDTE].[SP_BUSCAR_CENTROCOSTO] (no
+            // [EDTE].[SP_CENTROCOSTO], que sigue usando frmFactura.cs sin filtrar).
+            DataTable dt = _dal.EjecutarConsulta("[EDTE].[SP_BUSCAR_CENTROCOSTO]",
+                new { ACCION = "LISTAR_POR_ROL", ID_ROL_USUARIO = Configuracion.IdRolActual });
             cbxCENTRO_COSTO.DataSource = dt;
             cbxCENTRO_COSTO.ValueMember = "ID_CENTRO";
             cbxCENTRO_COSTO.DisplayMember = "NOMBRE";
@@ -590,7 +602,7 @@ namespace SistemaContable.UI.Forms.Ventas
             var repoEliminar = new RepositoryItemButtonEdit();
             repoEliminar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             repoEliminar.Buttons[0].Kind = DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph;
-            repoEliminar.Buttons[0].ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminarFila32x32;
+            repoEliminar.Buttons[0].ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.EliminarFila24x24;
             repoEliminar.Buttons[0].Caption = "";
             repoEliminar.Buttons[0].ToolTip = "Eliminar fila";
             repoEliminar.ButtonClick += (s, ev) => EliminarFilaDetalle();
@@ -637,7 +649,16 @@ namespace SistemaContable.UI.Forms.Ventas
                     return;
                 }
 
-                if (ev.Column.FieldName == "CANTIDAD" || ev.Column.FieldName == "PORC_DESC" ||
+                if (ev.Column.FieldName == "CANTIDAD")
+                {
+                    if (ev.Value == null || ev.Value == DBNull.Value) { ev.DisplayText = "0.0000"; return; }
+                    ev.DisplayText = decimal.TryParse(ev.Value.ToString(), out decimal cantidad)
+                        ? cantidad.ToString("N4")
+                        : "0.0000";
+                    return;
+                }
+
+                if (ev.Column.FieldName == "PORC_DESC" ||
                     ev.Column.FieldName == "DESCUENTO" ||
                     ev.Column.FieldName == "EXENTO" || ev.Column.FieldName == "GRAVADO" ||
                     ev.Column.FieldName == "TOTAL")
@@ -658,6 +679,35 @@ namespace SistemaContable.UI.Forms.Ventas
             view.KeyDown += GridView_KeyDown;
             view.FocusedColumnChanged += GridView_FocusedColumnChanged;
             ActualizarTotales();
+            ConfigurarBotonAgregarFila(view);
+        }
+        // Ícono "Agregar fila" (NuevaFila32x32), pegado justo ARRIBA del grid, alineado
+        // con el inicio de la columna Código. Al hacer clic ejecuta AgregarFilaVacia(),
+        // igual que Tab/Enter en la última fila.
+        // (2026-09-16) Se intentó primero superponerlo dentro de la esquina del grid
+        // (encima de la columna indicadora), pero no se veía: DevExpress GridControl repinta
+        // su propio rectángulo y tapa controles normales de WinForms colocados encima de él.
+        // Por eso se movió fuera del rectángulo del grid, donde no compite con su repintado.
+        private const int AltoBotonAgregarFila = 20;
+        private const int SeparacionBotonAgregarFila = 2;
+        private void ConfigurarBotonAgregarFila(GridView view)
+        {
+            if (_picAgregarFila != null) return;
+            _picAgregarFila = new PictureBox
+            {
+                Image = global::SistemaContable.UI.Properties.Resources.NuevaFila32x32,
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Cursor = Cursors.Hand,
+                Size = new Size(AltoBotonAgregarFila, AltoBotonAgregarFila)
+            };
+            var toolTip = new ToolTip();
+            toolTip.SetToolTip(_picAgregarFila, "Agregar fila");
+            _picAgregarFila.Click += (s, e) => AgregarFilaVacia();
+            gridControl1.Parent.Controls.Add(_picAgregarFila);
+            _picAgregarFila.Location = new Point(
+                gridControl1.Left,
+                gridControl1.Top - AltoBotonAgregarFila - SeparacionBotonAgregarFila);
+            _picAgregarFila.BringToFront();
         }
         private void ConfigurarColumnaCheckBox(GridView view, string field, string caption, int width)
         {
@@ -792,9 +842,21 @@ namespace SistemaContable.UI.Forms.Ventas
         #region NAVEGACIÓN DEL GRID
         private void GridView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter) return;
+            if (e.KeyCode != Keys.Enter && e.KeyCode != Keys.Down) return;
             var view = sender as GridView;
             if (view == null) return;
+            if (e.KeyCode == Keys.Down)
+            {
+                // Flecha abajo parado en la última fila: agrega una fila vacía (lo mismo
+                // que hace el botón "Agregar fila") y no marca e.Handled, para que la
+                // navegación normal de flecha abajo baje a la fila recién creada.
+                if (view.FocusedRowHandle == _dtDetalle.Rows.Count - 1)
+                {
+                    view.CloseEditor();
+                    AgregarFilaVacia();
+                }
+                return;
+            }
             string colActual = view.FocusedColumn?.FieldName;
             if (colActual == "COD_REF")
             {
@@ -861,9 +923,16 @@ namespace SistemaContable.UI.Forms.Ventas
         #region BÚSQUEDA DE PRODUCTO
         private void AbrirBusquedaProducto(GridView view)
         {
+            // (2026-09-16) Filtrado por rol: si el rol del usuario tiene Roles de
+            // Producto asignados en ESEGURIDAD.ROL_ROL_PROD (frmRol), solo se
+            // muestran los productos que tengan asignado alguno de esos roles
+            // (pestaña "Roles del Producto" de frmProducto); si no tiene ninguno
+            // asignado, se muestran todos por defecto. Se usa el SP independiente
+            // [EINVENTARIO].[SP_BUSCAR_PRODUCTO_CCF] (no [EINVENTARIO].[SP_PRODUCTO],
+            // que siguen usando frmProducto, frmDocumentoCompra, etc. sin este filtro).
             var config = new BusquedaConfig
             {
-                StoredProcedure = "[EINVENTARIO].[SP_PRODUCTO]",
+                StoredProcedure = "[EINVENTARIO].[SP_BUSCAR_PRODUCTO_CCF]",
                 Accion = "BUSCAR",
                 Columnas = new Dictionary<string, string>
                 {
@@ -878,6 +947,10 @@ namespace SistemaContable.UI.Forms.Ventas
                     { "DESCRIPCION", 400 },
                     { "UNIMEDIDA",   80  },
                     { "PRECIO",      100 }
+                },
+                ParametrosExtra = new
+                {
+                    ID_ROL_USUARIO = Configuracion.IdRolActual
                 }
             };
             using (var frm = new frmBusquedaGenerica(config))
@@ -920,8 +993,8 @@ namespace SistemaContable.UI.Forms.Ventas
         {
             try
             {
-                DataTable dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_PRODUCTO]",
-                    new { ACCION = "BUSCAR", FILTRO = codigo });
+                DataTable dt = _dal.EjecutarConsulta("[EINVENTARIO].[SP_BUSCAR_PRODUCTO_CCF]",
+                    new { ACCION = "BUSCAR", FILTRO = codigo, ID_ROL_USUARIO = Configuracion.IdRolActual });
 
                 DataRow encontrado = dt?.AsEnumerable().FirstOrDefault(r =>
                     string.Equals(r["COD_REF"]?.ToString()?.Trim(), codigo,
