@@ -66,6 +66,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             CargarCombos();
             cbxSUCURSAL.SelectedValue = 1;            
             mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            txtUNICO.Text = "0"; 
             RecalcularFechaVence();
             // Cargar de Combos Reuqeridos por MH
             CargarTipoServicio();   // Independiente 
@@ -226,6 +227,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtNUM_CONTROL.Text = AsString(r["NUM_CONTROL"]);
                 txtCOD_GENERACION.Text = AsString(r["COD_GENERACION"]);
                 txtSELLO_RECIBIDO.Text = AsString(r["SELLO_RECIBIDO"]);
+                txtUNICO.Text = AsString(r["UNICO"]);
+                chkLicencia.Checked = r["ES_LICENCIA"] != DBNull.Value && Convert.ToBoolean(r["ES_LICENCIA"]);
                 mskFECHA_EMISION.Text = AsFecha(r["FECHA_EMISION"]);
                 mskFECHA_RECIBIDO.Text = AsFecha(r["FECHA_RECIBIDO"]);
                 mskFECHA_VENCE.Text = AsFecha(r["FECHA_VENCE"]);
@@ -727,14 +730,23 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void cbxTIPO_SERVICIO_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (!(cbxTIPO_SERVICIO.SelectedItem is DataRowView fila)) return;
-            object valorRenta = fila["ID_TIPO_RENTA"];
-            if (valorRenta == DBNull.Value || _idTipoPersona.Equals("2"))
-                cbxTIPO_RENTA.SelectedIndex = 0;
+            if (chkLicencia.Checked) 
+            {
+                if (_idTipoPersona == "1")
+                    cbxTIPO_RENTA.SelectedValue = 2;
+                else
+                    cbxTIPO_RENTA.SelectedValue = 1;
+            }
             else
-                cbxTIPO_RENTA.SelectedValue = Convert.ToInt32(valorRenta);
-            txtBaseRenta_Leave(sender, e);
-            //RecalcularTotales();   // refleja el cambio de renta sugerida
+            {
+                if (!(cbxTIPO_SERVICIO.SelectedItem is DataRowView fila)) return;
+                object valorRenta = fila["ID_TIPO_RENTA"];
+                if (valorRenta == DBNull.Value || _idTipoPersona == "2")
+                    cbxTIPO_RENTA.SelectedIndex = 0;
+                else
+                    cbxTIPO_RENTA.SelectedValue = Convert.ToInt32(valorRenta);
+            }
+            txtBaseRenta_Leave(sender, e);            
         }
 
         private void cbxTIPO_RENTA_SelectionChangeCommitted(object sender, EventArgs e)
@@ -903,6 +915,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                     NUM_CONTROL = NullIfEmpty(txtNUM_CONTROL.Text),
                     COD_GENERACION = NullIfEmpty(txtCOD_GENERACION.Text),
                     SELLO_RECIBIDO = NullIfEmpty(txtSELLO_RECIBIDO.Text),
+                    UNICO = NullIfEmpty(txtUNICO.Text),
+                    ES_LICENCIA = chkLicencia.Checked,  
                     FECHA_EMISION = ParsearFecha(mskFECHA_EMISION.Text),
                     TIPO_MONEDA = "USD",
                     ID_ENTIDAD = _idEntidad,
@@ -1236,10 +1250,28 @@ namespace SistemaContable.UI.Forms.Proveedores
         }
 
         private void cbxTIPO_DTE_SelectedIndexChanged(object sender, EventArgs e)
-        {            
+        {
+            int? tipoDoc = ObtenerIdCombo(cbxTIPO_DTE);
             txtSELLO_RECIBIDO.Text = "";
             txtCOD_GENERACION.Text = "";
             txtNUM_CONTROL.Text = "";
+            if (tipoDoc != null )
+            {
+                if (tipoDoc == 2)
+                {
+                    txtUNICO.Text = "0";
+                    txtUNICO.ReadOnly = true; 
+                }
+                else
+                {
+                    txtUNICO.ReadOnly = false;
+                }
+            }            
+        }
+
+        private void chkLicencia_CheckedChanged(object sender, EventArgs e)
+        {
+            cbxTIPO_SERVICIO_SelectionChangeCommitted(sender, e);
         }
     }
 }
