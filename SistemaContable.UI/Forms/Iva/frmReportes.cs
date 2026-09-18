@@ -23,12 +23,12 @@ namespace SistemaContable.UI.Forms.Iva
         private void InicializarDatos()
         {
             txt_Anio.Text = DateTime.Now.Year.ToString();
-            int mesAnterior = DateTime.Now.Month - 1;
+            int mesAnterior = DateTime.Now.Month; //- 1;
             // Manejar el caso de enero (mes 1), para que reste y quede diciembre (12)
-            if (mesAnterior == 0)
-            {
-                mesAnterior = 12;
-            }
+            //if (mesAnterior == 0)
+            //{
+            //    mesAnterior = 12;
+            //}
             cb_Mes.SelectedValue = mesAnterior.ToString("00");
             ck_DtExportacion.Checked = false;
         }
@@ -48,12 +48,11 @@ namespace SistemaContable.UI.Forms.Iva
         private void lstReportes_SelectedIndexChanged(object sender, EventArgs e)
         {
             string reporte = lstReportes.SelectedItem?.ToString();
-            /*
-             Libro de Ventas a Consumidor Final
-Libro de Ventas a Contribuyentes
-Libro de Ventas de Liquidaciones
-Libro de Compras
-             */
+            if (reporte == "Libro de Ventas a Consumidor Final")
+            {
+                ck_DtExportacion.Visible = true;
+            }
+            else { ck_DtExportacion.Visible = false; }
 
         }
 

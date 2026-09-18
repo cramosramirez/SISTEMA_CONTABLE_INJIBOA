@@ -117,32 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="contract_48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\contract_48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="bt_CosultarSAIP.ImageOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAAAG3RFWHRUaXRsZQBNYXJxdWVl
+        Wm9vbS5wbmc7Wm9vbTu+6EqzAAADNUlEQVQ4T3WTeVDMYRjHv8p9/WnGlT8ZR8ZgK5vYUS1dNibjVpus
+        DkeNLsfWbu3sNpWohslSzFgaDWmtDW10TkjGEROJP5DIUdvYMJmveVfDMDwzz8xvnnnfz/d5vs/vxbKQ
+        OP7MWOYdb4QsJIay4GjKgqKZc6wOS4O2c0mgij4BKhqO1sBw5AZI/krnhdzjDcg11iPHWA8AQwC4Ahg2
+        mEMBuHgvj6SuwAbtoavizO8QCtlFtb8u7jOc98/Mv2rVF1Z36gpsnZq8Smui5oxc6heeKs58/84/AVnO
+        tmrEp6vmoEVTUFLPR0+7aO/7wl57Px+2dTKn6AYT0s5oBjsSQr9D6q8USJdEjUmeX1zHnr5+ll55ymh9
+        LWMMtTx7rZ3vexw0FFYObI7OlQuhS1EeMEd5oFwpAbyWbRGAofuzzE33H3fSdLmNSYdvs/L2RypPvmF4
+        XjNNVe1saumgcndRE4ARwjxr3BJYYnwAiWyjAAxP0VX09tj7uS3jOmtbHbz7YoA7KhyMt9gZW9DAru4+
+        rlPl2wGMZqsOlpjFMKu8gaTMcjHJiHj1Ofv7T5+5LbOGkac/cMdFBxOrHEyp6mXckUa+emunYlPWZwBj
+        eDcNFSpvXIiSAvOkYc4OVHtKbjU0P+fJy20MP9zCBEsvU2x2bi++x+JrT2itfkD56gO3AIzizVRc2CpF
+        WYQUmOu1WgBcQzdpg5IzywaevfxEo+Wxs22hbLzSxtaOd1TuLGSCIrAEwDixibKIRSjd7AXMkSg4W6Kg
+        u8fKPSEb9HrlLiPNtvt82P6WD5508by1hWsic1haqGZzloLZgbPUwgexOdNGDyBMmY9VEYeED2K/IxfL
+        d4b4hqqr/FaldfuGqrtlwcnVKn+/03XpgWRjPJu0K6jzna4VXggIgtdnI2CtHh2vhcFOiPh1RwEYO5hC
+        bXyyp5vWliwjbVtZv1dGQ4B7ujD/54P4K5wPpVUH3kkDb6aIkotQjJs7McMc68mv5WE8Ebagz+nHvwAi
+        TBsWQu8zDRlSN6R7uomSgIyNnDFBnec/81t2gPspZ3f/A5xaOx/pnlOxXzIFqfMnI2neJFEWkJFipMHR
+        XH8Ait6pXxhrxakAAAAASUVORK5CYII=
+</value>
   </data>
-  <data name="DeleteList2_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DeleteList2_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ListCuenta1_48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ListCuenta1_48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ListCuenta48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ListCuenta48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="PartidaCont1_48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\PartidaCont1_48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="PartidaCont48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\PartidaCont48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Reiniciar48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Reiniciar48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Tranferencia1_48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Tranferencia1_48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Tranferencia48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Tranferencia48x48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
+  <metadata name="behaviorManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>
