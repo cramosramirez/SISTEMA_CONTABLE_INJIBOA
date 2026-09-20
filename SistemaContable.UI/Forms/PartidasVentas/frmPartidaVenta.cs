@@ -1,7 +1,11 @@
-﻿using SistemaContable.DAL;
+﻿using Dapper;
+using SistemaContable.DAL;
+using SistemaContable.RP.Partidas;
 using SistemaContable.UI.Helpers;
 using System;
 using System.Data;
+using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace SistemaContable.UI.Forms.PartidasVentas
 {
@@ -12,6 +16,8 @@ namespace SistemaContable.UI.Forms.PartidasVentas
         {
             InitializeComponent();
             CargarCentrosCosto();
+            btnImprimir.Enabled = false;
+            btnProcesar.Enabled = true;
         }
 
         /// <summary>
@@ -29,7 +35,7 @@ namespace SistemaContable.UI.Forms.PartidasVentas
                 );
             cbTipoPartida.DataSource = dt;
             cbTipoPartida.ValueMember = "ID_TPPARVENTA";
-            cbTipoPartida.DisplayMember = "NOMNRE";
+            cbTipoPartida.DisplayMember = "NOMBRE";
             cbTipoPartida.SelectedIndex = -1;
         }
 
@@ -38,27 +44,98 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             txtNumero.Text = string.Empty;
             txtConcepto.Text = string.Empty;
             deFecha.EditValue = null;
+            btnImprimir.Enabled = false;
+            btnProcesar.Enabled = true;
             cbTipoPartida.SelectedIndex = -1;
             txtNumero.Focus();
         }
+        private bool Procesar_Partidad(string procedimiento, string centroCosto)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
 
+                parametros.Add("@ID_TPPARVENTA", Convert.ToInt32(cbTipoPartida.SelectedValue));
+                parametros.Add("@TIPO_PARTIDA", txtPartida.Text);
+                parametros.Add("@FECHA_PARTIDA", Convert.ToDateTime(deFecha.Text));
+                parametros.Add("@NUM_PARTIDA", Convert.ToInt32(txtNumero.Text));
+                parametros.Add("@CONCEPTO", txtConcepto.Text);
+                parametros.Add("@USUARIO", Configuracion.UsuarioActual);
+                parametros.Add("@ID_ESTADO", Convert.ToInt32(1));
+
+                parametros.Add("@Resultado",
+                    dbType: DbType.Int32,
+                    direction: ParameterDirection.Output);
+
+                parametros.Add("@Mensaje",
+                    dbType: DbType.String,
+                    size: 500,
+                    direction: ParameterDirection.Output);
+
+                parametros.Add("@NID_",
+                   dbType: DbType.String,
+                   size: 50,
+                   direction: ParameterDirection.Output);
+
+                _dal.EjecutarConSalida(procedimiento, parametros);
+
+                int? resultado = parametros.Get<int?>("@Resultado");
+                string mensaje = parametros.Get<string>("@Mensaje");
+                txtNID_PARTIDA.Text = parametros.Get<string>("@NID_");
+                if (resultado == 1)
+                {
+                    Alertas.Exito(mensaje+ centroCosto);
+                    btnImprimir.Enabled = true;
+                    btnProcesar.Enabled = false;
+                    return true;
+                }
+
+                Alertas.Advertencia(mensaje);
+                btnImprimir.Enabled = false;
+                btnProcesar.Enabled = true;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message;
+
+                if (mensaje.Contains("]:"))
+                    mensaje = mensaje.Substring(mensaje.IndexOf("]:") + 2).Trim();
+
+                Alertas.Error(mensaje);
+                return false;
+            }
+        }
         private void btnProcesar_Click(object sender, EventArgs e)
         {
             if (!ValidarCriterios())
                 return;
 
             string centroCostoId = Convert.ToString(cbTipoPartida.SelectedValue);
-           string centroCostoNombre = cbTipoPartida.SelectedText;
+           string centroCostoNombre = cbTipoPartida.Text;
 
-            // TODO: invocar la lógica de generación de la partida usando
-            // txtPartida.Text, deFecha.DateTime, txtNumero.Text,
-            // txtConcepto.Text y centroCostoId.
+            switch (cbTipoPartida.SelectedValue.ToString())
+            {
+                case "1":
+                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_MELAZA", centroCostoNombre);
+                    break;
+                case "2":
+                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_DISTRIBUIDORA", centroCostoNombre);
+                    break;
+                case "3":
+                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_OTROSPRODUCTOS", centroCostoNombre);
+                    break;
+                case "4":
+                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_CORTECANIA", centroCostoNombre);
+                    break;
+                case "5":
+                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_ELECTRICIDA", centroCostoNombre);
+                    break;
+                case "6":
+                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_EXPORTACION", centroCostoNombre);
+                    break;
+            }
 
-            DevExpress.XtraEditors.XtraMessageBox.Show(
-                $"Partida generada para el centro de costo: {centroCostoNombre}",
-                "Proceso completado",
-                System.Windows.Forms.MessageBoxButtons.OK,
-                System.Windows.Forms.MessageBoxIcon.Information);
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
@@ -95,7 +172,7 @@ namespace SistemaContable.UI.Forms.PartidasVentas
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(cbTipoPartida.SelectedText))
+            if (string.IsNullOrWhiteSpace(cbTipoPartida.Text))
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show("Debe seleccionar el centro de costo.");
                 cbTipoPartida.Focus();
@@ -151,5 +228,41 @@ namespace SistemaContable.UI.Forms.PartidasVentas
         {
             ActualizarConcepto();
         }
+
+        private void btnImprimir_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtNID_PARTIDA.Text) || txtNID_PARTIDA.Text.Trim() == "-1")
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "No se ha procesado la partida.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                var reporte = new RptPartida_Movimiento
+                {
+                    _NID_PARTIDA = txtNID_PARTIDA.Text.Trim(),
+                    _Titulo = "DETALLE DE PARTIDA CONTABLE"
+                };
+
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                Alertas.Error(ex.Message);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
     }
 }

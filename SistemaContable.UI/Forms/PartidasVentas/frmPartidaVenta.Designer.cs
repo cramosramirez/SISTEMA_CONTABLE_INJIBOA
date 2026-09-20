@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPartidaVenta));
             this.barraBotones = new DevExpress.XtraEditors.PanelControl();
             this.btnNuevo = new DevExpress.XtraEditors.SimpleButton();
             this.btnProcesar = new DevExpress.XtraEditors.SimpleButton();
@@ -44,6 +45,8 @@
             this.lblConcepto = new DevExpress.XtraEditors.LabelControl();
             this.txtConcepto = new DevExpress.XtraEditors.TextEdit();
             this.lblCentroCosto = new DevExpress.XtraEditors.LabelControl();
+            this.txtNID_PARTIDA = new DevExpress.XtraEditors.TextEdit();
+            this.btnImprimir = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.barraBotones)).BeginInit();
             this.barraBotones.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grpCriterios)).BeginInit();
@@ -53,10 +56,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.deFecha.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNumero.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtConcepto.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNID_PARTIDA.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // barraBotones
             // 
+            this.barraBotones.Controls.Add(this.btnImprimir);
             this.barraBotones.Controls.Add(this.btnNuevo);
             this.barraBotones.Controls.Add(this.btnProcesar);
             this.barraBotones.Controls.Add(this.btnSalir);
@@ -89,7 +94,7 @@
             // btnSalir
             // 
             this.btnSalir.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnSalir.Location = new System.Drawing.Point(210, 8);
+            this.btnSalir.Location = new System.Drawing.Point(335, 9);
             this.btnSalir.Name = "btnSalir";
             this.btnSalir.Size = new System.Drawing.Size(94, 41);
             this.btnSalir.TabIndex = 2;
@@ -110,6 +115,7 @@
             // 
             // grpCriterios
             // 
+            this.grpCriterios.Controls.Add(this.txtNID_PARTIDA);
             this.grpCriterios.Controls.Add(this.cbTipoPartida);
             this.grpCriterios.Controls.Add(this.lblPartida);
             this.grpCriterios.Controls.Add(this.txtPartida);
@@ -203,11 +209,34 @@
             // 
             // lblCentroCosto
             // 
-            this.lblCentroCosto.Location = new System.Drawing.Point(17, 45);
+            this.lblCentroCosto.Location = new System.Drawing.Point(39, 43);
             this.lblCentroCosto.Name = "lblCentroCosto";
-            this.lblCentroCosto.Size = new System.Drawing.Size(89, 13);
+            this.lblCentroCosto.Size = new System.Drawing.Size(67, 13);
             this.lblCentroCosto.TabIndex = 8;
-            this.lblCentroCosto.Text = "Centro de Costo:*";
+            this.lblCentroCosto.Text = "Tipo Partida:*";
+            // 
+            // txtNID_PARTIDA
+            // 
+            this.txtNID_PARTIDA.Location = new System.Drawing.Point(670, 71);
+            this.txtNID_PARTIDA.Name = "txtNID_PARTIDA";
+            this.txtNID_PARTIDA.Size = new System.Drawing.Size(198, 20);
+            this.txtNID_PARTIDA.TabIndex = 191;
+            this.txtNID_PARTIDA.Visible = false;
+            // 
+            // btnImprimir
+            // 
+            this.btnImprimir.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnImprimir.Appearance.Options.UseFont = true;
+            this.btnImprimir.Appearance.Options.UseTextOptions = true;
+            this.btnImprimir.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnImprimir.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimir.ImageOptions.Image")));
+            this.btnImprimir.ImageOptions.ImageToTextIndent = 10;
+            this.btnImprimir.Location = new System.Drawing.Point(210, 8);
+            this.btnImprimir.Name = "btnImprimir";
+            this.btnImprimir.Size = new System.Drawing.Size(119, 41);
+            this.btnImprimir.TabIndex = 11;
+            this.btnImprimir.Text = "Imprimir";
+            this.btnImprimir.Click += new System.EventHandler(this.btnImprimir_Click);
             // 
             // frmPartidaVenta
             // 
@@ -229,6 +258,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.deFecha.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNumero.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtConcepto.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNID_PARTIDA.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -260,5 +290,7 @@
         // NUEVO: combo de Centro de Costo
         private DevExpress.XtraEditors.LabelControl lblCentroCosto;
         private System.Windows.Forms.ComboBox cbTipoPartida;
+        private DevExpress.XtraEditors.TextEdit txtNID_PARTIDA;
+        private DevExpress.XtraEditors.SimpleButton btnImprimir;
     }
 }
