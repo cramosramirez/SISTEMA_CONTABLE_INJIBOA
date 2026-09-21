@@ -185,6 +185,12 @@
     <Compile Include="Iva\Rpt_LbVentasLq.Designer.cs">
       <DependentUpon>Rpt_LbVentasLq.cs</DependentUpon>
     </Compile>
+    <Compile Include="Partidas\RptPartida_Movimiento.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Partidas\RptPartida_Movimiento.Designer.cs">
+      <DependentUpon>RptPartida_Movimiento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bancos\Proveedores\rptCheque.cs">
       <SubType>Component</SubType>
@@ -283,6 +289,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Iva\Rpt_LbVentasLq.resx">
       <DependentUpon>Rpt_LbVentasLq.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Partidas\RptPartida_Movimiento.resx">
+      <DependentUpon>RptPartida_Movimiento.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Bancos\Proveedores\rptCheque.resx">

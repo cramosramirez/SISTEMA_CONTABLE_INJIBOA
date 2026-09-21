@@ -63,6 +63,7 @@ namespace SistemaContable.UI.Forms.Clientes
             RegistrarBusquedaCargadoraIntegracion();
             RegistrarBusquedaRozaIntegracion();
             RegistrarBusquedaQuerqueoIntegracion();
+            RegistrarValidacionesImportacionProveedor();
             CargarOrigen();
             InicializarGridRoles();
             if (IdEntidad == 0)
@@ -305,6 +306,7 @@ namespace SistemaContable.UI.Forms.Clientes
                             (txtCODI_ACTIVIDAD2, "Ingrese * y presione Enter para mostrar todas las actividades económicas."),
                             (txtCODI_ACTIVIDAD3, "Ingrese * y presione Enter para mostrar todas las actividades económicas."),
                             (txtCUENTA_X_COBRAR, "Ingrese * y presione Enter para mostrar todas las cuentas contables."),
+                            (txtCUENTA_AJENA, "Ingrese * y presione Enter para mostrar todas las cuentas contables."),
                             (txtCODIPROVEEDOR, "Ingrese * y presione Enter para mostrar todos los productores."),
                             (txtCODTRANSPORT, "Ingrese * y presione Enter para mostrar todos los transportistas."),
                             (txtID_CARGADORA, "Ingrese * y presione Enter para mostrar todas las cargadoras."),
@@ -508,6 +510,13 @@ namespace SistemaContable.UI.Forms.Clientes
                 txtNOMBRE_CUENTA_X_COBRAR.Text = fila["NOMBRE_CUENTA"].ToString();
             });
             txtCUENTA_X_COBRAR.Leave += (s, e) => BuscarCuentaContablePorCodigo(txtCUENTA_X_COBRAR, txtNOMBRE_CUENTA_X_COBRAR);
+
+            FormHelper.RegistrarBusqueda(txtCUENTA_AJENA, config, fila =>
+            {
+                txtCUENTA_AJENA.Text = fila["CUENTA"].ToString();
+                txtNOMBRE_CUENTA_AJENA.Text = fila["NOMBRE_CUENTA"].ToString();
+            });
+            txtCUENTA_AJENA.Leave += (s, e) => BuscarCuentaContablePorCodigo(txtCUENTA_AJENA, txtNOMBRE_CUENTA_AJENA);
         }
 
         /// <summary>
@@ -1254,6 +1263,7 @@ namespace SistemaContable.UI.Forms.Clientes
             txtCUENTA_X_COBRAR.Text = r["CUENTA_X_COBRAR"] == DBNull.Value ? "" : r["CUENTA_X_COBRAR"].ToString();
             txtNOMBRE_CUENTA_X_COBRAR.Text = ObtenerNombreCuenta(txtCUENTA_X_COBRAR.Text);
             txtCUENTA_AJENA.Text = AsString(r["CUENTA_AJENA"]);
+            txtNOMBRE_CUENTA_AJENA.Text = ObtenerNombreCuenta(txtCUENTA_AJENA.Text);
             txtLIMITE_CREDITO.Text = r["LIMITE_CREDITO"] == DBNull.Value
                 ? ""
                 : Convert.ToDecimal(r["LIMITE_CREDITO"]).ToString("N2");
@@ -1790,14 +1800,13 @@ namespace SistemaContable.UI.Forms.Clientes
                 string pais = cbxPAIS.Text.Trim().ToUpper();
                 if (pais != "EL SALVADOR")
                     MarcarError(cbxPAIS, "Si el Origen es LOCAL, el País debe ser EL SALVADOR.");
-                if (string.IsNullOrWhiteSpace(txtNOMBRE_COMERCIAL.Text))
-                    MarcarError(txtNOMBRE_COMERCIAL, "El Nombre Comercial es obligatorio para origen LOCAL.");
                 if (string.IsNullOrWhiteSpace(txtNIT.Text))
                     MarcarError(txtNIT, "El NIT es obligatorio para origen LOCAL.");
-                if (string.IsNullOrWhiteSpace(txtTELEFONO.Text))
-                    MarcarError(txtTELEFONO, "El Teléfono es obligatorio para origen LOCAL.");
-                if (string.IsNullOrWhiteSpace(txtCELULAR.Text))
-                    MarcarError(txtCELULAR, "El Celular es obligatorio para origen LOCAL.");
+                if (string.IsNullOrWhiteSpace(txtTELEFONO.Text) && string.IsNullOrWhiteSpace(txtCELULAR.Text))
+                {
+                    MarcarError(txtTELEFONO, "Debe ingresar al menos un Teléfono o Celular.");
+                    MarcarError(txtCELULAR, "Debe ingresar al menos un Teléfono o Celular.");
+                }
                 if (string.IsNullOrWhiteSpace(txtCORREO.Text))
                     MarcarError(txtCORREO, "El Correo es obligatorio para origen LOCAL.");
                 if (string.IsNullOrWhiteSpace(txtCOMPLEMENTO.Text))
@@ -1808,7 +1817,8 @@ namespace SistemaContable.UI.Forms.Clientes
                     MarcarError(cbxMUNI, "El Municipio es obligatorio para origen LOCAL.");
                 if (ObtenerCodigoCombo(cbxDIST) == null)
                     MarcarError(cbxDIST, "El Distrito es obligatorio para origen LOCAL.");
-                if (_idActividad1 == 0)
+                bool actividadRequerida = !(tipoPersona == "NATURAL" && esNoContrib);
+                if (actividadRequerida && _idActividad1 == 0)
                     MarcarError(txtCODI_ACTIVIDAD1, "La Actividad 1 es obligatoria para origen LOCAL.");
             }
 
@@ -1902,6 +1912,7 @@ namespace SistemaContable.UI.Forms.Clientes
             txtNOMBRE_CUENTA_X_COBRAR.Text = "";
             SeleccionarTipoPrecioDetalle();
             txtCUENTA_AJENA.Text = "";
+            txtNOMBRE_CUENTA_AJENA.Text = "";
             txtLIMITE_CREDITO.Text = "";
             txtOBSERVACIONES.Text = "";
             txtCOMPLEMENTO.Text = "";
@@ -1958,6 +1969,25 @@ namespace SistemaContable.UI.Forms.Clientes
         {
             ValidarCodigoExistencia();
         }
+
+        private void RegistrarValidacionesImportacionProveedor()
+        {
+            txtDUI.Leave += (s, e) => IntentarImportarProveedor(txtDUI, "DUI");
+            txtNIT.Leave += (s, e) => IntentarImportarProveedor(txtNIT, "NIT");
+            txtNRC.Leave += (s, e) => IntentarImportarProveedor(txtNRC, "NRC");
+            txtDUI.KeyDown += (s, e) => ValidarImportacionProveedorConEnter(e, txtDUI, "DUI");
+            txtNIT.KeyDown += (s, e) => ValidarImportacionProveedorConEnter(e, txtNIT, "NIT");
+            txtNRC.KeyDown += (s, e) => ValidarImportacionProveedorConEnter(e, txtNRC, "NRC");
+        }
+
+        private void ValidarImportacionProveedorConEnter(KeyEventArgs e, TextBox campo, string nombreCampo)
+        {
+            if (e.KeyCode != Keys.Enter) return;
+
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+            IntentarImportarProveedor(campo, nombreCampo);
+        }
         private void btnAgregarRol_Click(object sender, EventArgs e)
         {
             AgregarRol();
@@ -2001,17 +2031,25 @@ namespace SistemaContable.UI.Forms.Clientes
                 bool existeOtraEntidad = idEncontrado > 0 && idEncontrado != IdEntidad;
                 if (existeOtraEntidad && IdEntidad == 0 && TieneRol(idEncontrado, "PRO"))
                 {
-                    // El código ya existe como Proveedor: se carga esa misma entidad
-                    // para completarla/guardarla también como Cliente (ROL = 'CLI').
-                    CargarEntidadExistente(idEncontrado);
-                    lblValidacionCodigo.Text = "✔";
-                    lblValidacionCodigo.ForeColor = Color.Blue;
-                    lblValidacionCodigo.Tag = "EXISTE_PROVEEDOR";
-                    btnGuardar.Enabled = true;
-                    XtraMessageBox.Show(
-                        "Este código ya existe como Proveedor. Se cargaron sus datos; " +
-                        "al guardar se registrará también como Cliente.",
-                        "Entidad existente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult respuesta = XtraMessageBox.Show(
+                        "Se encontró el cliente como proveedor, ¿desea importar la información?",
+                        "Importar información", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (respuesta == DialogResult.Yes)
+                    {
+                        CargarEntidadExistente(idEncontrado);
+                        lblValidacionCodigo.Text = "✔";
+                        lblValidacionCodigo.ForeColor = Color.Blue;
+                        lblValidacionCodigo.Tag = "EXISTE_PROVEEDOR";
+                        btnGuardar.Enabled = true;
+                    }
+                    else
+                    {
+                        lblValidacionCodigo.Text = "✘";
+                        lblValidacionCodigo.ForeColor = Color.Red;
+                        lblValidacionCodigo.Tag = "DUPLICADO";
+                        btnGuardar.Enabled = false;
+                    }
                 }
                 else if (existeOtraEntidad)
                 {
@@ -2032,6 +2070,67 @@ namespace SistemaContable.UI.Forms.Clientes
             {
                 lblValidacionCodigo.Text = "";
             }
+        }
+
+        private bool IntentarImportarProveedor(TextBox campo, string nombreCampo)
+        {
+            if (IdEntidad > 0) return false;
+
+            string valor = campo.Text.Trim();
+            if (string.IsNullOrWhiteSpace(valor)) return false;
+
+            int idProveedor = BuscarEntidadPorCampoConRol(nombreCampo, valor, "PRO");
+            if (idProveedor <= 0) return false;
+
+            DialogResult respuesta = XtraMessageBox.Show(
+                "Se encontró el cliente como proveedor, ¿desea importar la información?",
+                "Importar información", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (respuesta != DialogResult.Yes) return false;
+
+            CargarEntidadExistente(idProveedor);
+            lblValidacionCodigo.Text = "✔";
+            lblValidacionCodigo.ForeColor = Color.Blue;
+            lblValidacionCodigo.Tag = "EXISTE_PROVEEDOR";
+            btnGuardar.Enabled = true;
+            return true;
+        }
+
+        private int BuscarEntidadPorCampoConRol(string nombreCampo, string valor, string rol)
+        {
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta("[EDTE].[SP_ENTIDAD]", new
+                {
+                    ACCION = "BUSCAR",
+                    FILTRO = valor,
+                    ROL = rol
+                });
+
+                if (dt == null || !dt.Columns.Contains(nombreCampo)) return 0;
+
+                string buscado = NormalizarIdentificador(valor, nombreCampo);
+                foreach (DataRow fila in dt.Rows)
+                {
+                    string encontrado = NormalizarIdentificador(AsString(fila[nombreCampo]), nombreCampo);
+                    if (!string.Equals(encontrado, buscado, StringComparison.OrdinalIgnoreCase)) continue;
+
+                    return Convert.ToInt32(fila["ID_ENTIDAD"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error buscando entidad para importar: {ex.Message}");
+            }
+            return 0;
+        }
+
+        private static string NormalizarIdentificador(string valor, string nombreCampo)
+        {
+            string texto = (valor ?? "").Trim();
+            return nombreCampo == "CODIGO_ENTIDAD"
+                ? texto
+                : new string(texto.Where(char.IsLetterOrDigit).ToArray());
         }
         /// <summary>
         /// Verifica si una entidad ya tiene un rol específico registrado en

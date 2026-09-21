@@ -169,7 +169,7 @@ namespace SistemaContable.UI.Forms.Iva
             this.btnExcel.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnExcel.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.excel_48x48;
             this.btnExcel.ImageOptions.ImageToTextIndent = 10;
-            this.btnExcel.Location = new System.Drawing.Point(184, 137);
+            this.btnExcel.Location = new System.Drawing.Point(336, 137);
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(150, 47);
             this.btnExcel.TabIndex = 12;
@@ -184,7 +184,7 @@ namespace SistemaContable.UI.Forms.Iva
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(340, 137);
+            this.btnFinalizar.Location = new System.Drawing.Point(184, 137);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
             this.btnFinalizar.TabIndex = 11;
