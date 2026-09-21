@@ -481,8 +481,23 @@ namespace SistemaContable.UI.Forms.Proveedores
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void AsignarProveedor(DataRow fila)
+        private bool AsignarProveedor(DataRow fila)
         {
+            // Validar CUENTA_X_PAGAR si no es contado
+            if (!EsContado)
+            {
+                string ctaXPagar = fila["CUENTA_X_PAGAR"]?.ToString();
+                if (string.IsNullOrWhiteSpace(ctaXPagar))
+                {
+                    string nombreProv = fila["NOMBRE"]?.ToString();
+                    XtraMessageBox.Show(
+                        $"El proveedor '{nombreProv}' no tiene asignada la cuenta por pagar.",
+                        "Proveedor no válido",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return false;
+                }
+            }
             _idEntidad = Convert.ToInt32(fila["ID_ENTIDAD"]);
             _codigoEntidad = fila["CODIGO_ENTIDAD"].ToString();
             txtPROVEEDOR.Text = fila["CODIGO_ENTIDAD"].ToString();
@@ -497,6 +512,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             _idTipoContribProveedor = fila["ID_TIPO_CONTRIB"].ToString();
             _idTipoPersona = fila["ID_TIPO_ENTIDAD"].ToString();
             RecalcularTotales();
+
+            return true;
         }
         private void LimpiarProveedor()
         {

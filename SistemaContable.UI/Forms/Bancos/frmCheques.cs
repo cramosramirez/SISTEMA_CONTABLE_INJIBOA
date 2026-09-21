@@ -267,6 +267,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 txtNOMBRE_CHEQUE.Text = SafeStr(r["NOMBRE_CHEQUE"]);
                 txtCONCEPTO.Text = SafeStr(r["CONCEPTO"]);
                 txtPROVEEDOR.Text = SafeStr(r["CODIGO_ENTIDAD"]);
+                chkImpreso.Checked = r["IMPRESO"] != DBNull.Value && Convert.ToBoolean(r["IMPRESO"]); ; 
 
                 decimal monto = r["MONTO"] == DBNull.Value ? 0m : Convert.ToDecimal(r["MONTO"]);
                 txtCANTIDAD.Text = monto.ToString("N2");
@@ -1094,11 +1095,17 @@ namespace SistemaContable.UI.Forms.Bancos
                 if (string.IsNullOrWhiteSpace(cta)) return;
 
                 string detalleActual = view.GetFocusedRowCellValue("DETALLE")?.ToString();
-                if (!string.IsNullOrWhiteSpace(detalleActual)) return;
+                if (string.IsNullOrWhiteSpace(detalleActual))
+                {
+                    string detalle = $"CH # {txtNUMERO_CHEQUE.Text.Trim()} " +
+                                $"{txtNOMBRE_CHEQUE.Text.Trim()}";
 
-                string detalle = "";
-
-                view.SetFocusedRowCellValue("DETALLE", detalle);
+                    view.SetFocusedRowCellValue("DETALLE", detalle);
+                }
+                else
+                {
+                    view.SetFocusedRowCellValue("DETALLE", detalleActual);
+                }                 
                 view.ShowEditor();
 
                 // Diferir el SelectAll hasta que el editor esté completamente activo
@@ -1766,8 +1773,8 @@ namespace SistemaContable.UI.Forms.Bancos
                 var reporte = new rptCheque { IdCheque = _idCheque };
                 bool seImprimio = reporte.ImprimirConDialogo();
 
-                if (seImprimio)
-                {
+               // if (seImprimio)
+               //{
                     MarcarChequeComoImpreso(_idCheque);
                     // Si la impresión fué correcta habilitar la opción de anulación del cheque
                     btnAnular.Enabled = true; 
@@ -1779,7 +1786,7 @@ namespace SistemaContable.UI.Forms.Bancos
                         var reporteAnexo = new rptChequeAnexo { IdCheque = _idCheque };
                         reporteAnexo.MostrarPreview();
                     }                   
-                }
+                //}
             }
             catch (Exception ex)
             {
@@ -1806,6 +1813,7 @@ namespace SistemaContable.UI.Forms.Bancos
                     ID_CHEQUE = idCheque,
                     USUARIO = Configuracion.UsuarioActual
                 });
+                chkImpreso.Checked = true; 
             }
             catch (Exception ex)
             {
