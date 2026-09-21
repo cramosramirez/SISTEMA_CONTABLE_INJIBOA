@@ -27,6 +27,9 @@ namespace SistemaContable.UI.Forms.Ventas
         // de [EDTE].[SP_ENTIDAD] ya devuelve la columna CODIPROVEEDOR; si no la trae, hay que
         // agregarla a ese SP (Roberto: confirmar).
         private string _codiProveedorCliente = string.Empty;
+        private string _codigoTransportistaCliente = string.Empty;
+        private string _codigoFrenteRozaCliente = string.Empty;
+        private string _codigoFrenteQuerqueoCliente = string.Empty;
         // ID_SOLICITUD de la solicitud agrícola seleccionada (se guarda en SP_CREDITOFISCAL_ENC).
         // Ya no hay combo visible para esto: solo se muestran textboxes (txtNUM_SOLICITUD,
         // txtNOMBRE_CUENTA, txtREFERENCIA) con el historial de lo importado desde SIGESTA.
@@ -36,6 +39,11 @@ namespace SistemaContable.UI.Forms.Ventas
         // Se guarda directo en CREDITOFISCAL_ENC.ID_CUENTA_FINAN para que
         // [ESOLICITUD].[SP_CREDITO_ENCA] (GUARDAR_DESDE_CCF) lo lea sin hacer joins.
         private int? _idCuentaFinanSolicitud = null;
+        private string _tipoSolicitudSeleccionada = string.Empty;
+        private int? _idTipoSolicitudSeleccionada = null;
+        private string _codigoSolicitudSeleccionada = string.Empty;
+        private string _nombreProveedorSolicitud = string.Empty;
+        private string _nombreZafraSolicitud = string.Empty;
         // Botón "Agregar fila" superpuesto sobre la esquina superior izquierda (columna
         // indicadora) del grid de detalle. Ver ConfigurarBotonAgregarFila().
         private PictureBox _picAgregarFila;
@@ -273,8 +281,7 @@ namespace SistemaContable.UI.Forms.Ventas
                 // Restaurar la solicitud agrícola asociada: el CODIPROVEEDOR del cliente (viene
                 // del JOIN a ENTIDAD en SP_CREDITOFISCAL_ENC/OBTENER) y el ID_SOLICITUD guardado
                 // se conservan internamente; no hay combo visible para esto (solo textboxes).
-                _codiProveedorCliente = r.Table.Columns.Contains("CODIPROVEEDOR") && r["CODIPROVEEDOR"] != DBNull.Value
-                                            ? r["CODIPROVEEDOR"].ToString().Trim() : string.Empty;
+                CargarCodigosSolicitudCliente(null);
                 ActualizarEstadoBotonSolicitudAgricola();
                 _idSolicitudSeleccionada = r.Table.Columns.Contains("ID_SOLICITUD") && r["ID_SOLICITUD"] != DBNull.Value
                                             ? Convert.ToInt32(r["ID_SOLICITUD"]) : (int?)null;
@@ -284,12 +291,18 @@ namespace SistemaContable.UI.Forms.Ventas
                     ? r["NUM_SOLICITUD"].ToString() : "";
                 txtNOMBRE_CUENTA.Text = r.Table.Columns.Contains("NOMBRE_CUENTA") && r["NOMBRE_CUENTA"] != DBNull.Value
                     ? r["NOMBRE_CUENTA"].ToString() : "";
-                txtREFERENCIA.Text = r.Table.Columns.Contains("UID_SOLIC_AGRICOLA") && r["UID_SOLIC_AGRICOLA"] != DBNull.Value
-                    ? r["UID_SOLIC_AGRICOLA"].ToString() : "";
+                txtREFERENCIA.Text = r.Table.Columns.Contains("UID_SOLICITUD") && r["UID_SOLICITUD"] != DBNull.Value
+                    ? r["UID_SOLICITUD"].ToString() : "";
                 // (2026-08-26) Restaurar ID_CUENTA_FINAN al reabrir, igual que NOMBRE_CUENTA/
                 // UID_SOLIC_AGRICOLA, para que un re-guardado no lo pierda.
                 _idCuentaFinanSolicitud = r.Table.Columns.Contains("ID_CUENTA_FINAN") && r["ID_CUENTA_FINAN"] != DBNull.Value
                     ? (int?)Convert.ToInt32(r["ID_CUENTA_FINAN"]) : null;
+                _tipoSolicitudSeleccionada = ValorCodigo(r, "TIPO_SOLICITUD");
+                _idTipoSolicitudSeleccionada = r.Table.Columns.Contains("ID_TIPO_SOLICITUD") && r["ID_TIPO_SOLICITUD"] != DBNull.Value
+                    ? (int?)Convert.ToInt32(r["ID_TIPO_SOLICITUD"]) : null;
+                _codigoSolicitudSeleccionada = ValorCodigo(r, "CODIGO");
+                _nombreProveedorSolicitud = ValorCodigo(r, "NOMBRE_PROVEEDOR");
+                _nombreZafraSolicitud = ValorCodigo(r, "NOMBRE_ZAFRA");
                 CargarCCFDetalleExistente(idCCFEnc);
                 AplicarEstadoCobroPorCondicion();
             }
@@ -334,10 +347,10 @@ namespace SistemaContable.UI.Forms.Ventas
                     // para que un re-guardado no la pierda.
                     f["ID_SOLICITUD"] = row.Table.Columns.Contains("ID_SOLICITUD")
                                                 ? row["ID_SOLICITUD"] : (object)DBNull.Value;
-                    f["ID_SOLIC_AGRI_PROD"] = row.Table.Columns.Contains("ID_SOLIC_AGRI_PROD")
-                                                ? row["ID_SOLIC_AGRI_PROD"] : (object)DBNull.Value;
-                    f["UID_SOLIC_AGRI_PROD"] = row.Table.Columns.Contains("UID_SOLIC_AGRI_PROD")
-                                                ? row["UID_SOLIC_AGRI_PROD"] : (object)DBNull.Value;
+                    f["ID_SOLIC_DETA"] = row.Table.Columns.Contains("ID_SOLIC_DETA")
+                                                ? row["ID_SOLIC_DETA"] : (object)DBNull.Value;
+                    f["UID_SOLIC_DETA"] = row.Table.Columns.Contains("UID_SOLIC_DETA")
+                                                ? row["UID_SOLIC_DETA"] : (object)DBNull.Value;
                     _dtDetalle.Rows.Add(f);
                 }
             }
@@ -385,7 +398,7 @@ namespace SistemaContable.UI.Forms.Ventas
             txtTIPO_CONTRIBUYENTE.Text = fila["TIPO_CONTRIBUYENTE"].ToString();
             // Lectura del CODIPROVEEDOR para filtrar las solicitudes. Si la búsqueda
             // resumida todavía no expone la columna, se recupera desde OBTENER.
-            _codiProveedorCliente = ObtenerCodiProveedorCliente(fila);
+            CargarCodigosSolicitudCliente(fila);
             // Al cambiar de cliente cambia la regla de retención/percepción -> recalcular.
             ActualizarTotales();
             // Cambiar de cliente invalida la solicitud agrícola que estuviera seleccionada.
@@ -416,7 +429,7 @@ namespace SistemaContable.UI.Forms.Ventas
         }
         private string ObtenerCodiProveedorCliente(DataRow fila)
         {
-            if (fila.Table.Columns.Contains("CODIPROVEEDOR") &&
+            if (fila != null && fila.Table.Columns.Contains("CODIPROVEEDOR") &&
                 fila["CODIPROVEEDOR"] != DBNull.Value)
             {
                 string codiProveedor = fila["CODIPROVEEDOR"].ToString().Trim();
@@ -434,6 +447,45 @@ namespace SistemaContable.UI.Forms.Ventas
                    entidad.Columns.Contains("CODIPROVEEDOR") &&
                    entidad.Rows[0]["CODIPROVEEDOR"] != DBNull.Value
                 ? entidad.Rows[0]["CODIPROVEEDOR"].ToString().Trim()
+                : string.Empty;
+        }
+
+        private void CargarCodigosSolicitudCliente(DataRow filaBusqueda)
+        {
+            _codiProveedorCliente = ObtenerCodiProveedorCliente(filaBusqueda);
+            _codigoTransportistaCliente = string.Empty;
+            _codigoFrenteRozaCliente = string.Empty;
+            _codigoFrenteQuerqueoCliente = string.Empty;
+
+            DataTable entidad = _dal.EjecutarConsulta("[EDTE].[SP_ENTIDAD]", new
+            {
+                ACCION = "OBTENER",
+                ID_ENTIDAD = _idEntidad
+            });
+            if (entidad != null && entidad.Rows.Count > 0)
+            {
+                DataRow r = entidad.Rows[0];
+                _codigoTransportistaCliente = ValorCodigo(r, "CODTRANSPORT");
+            }
+
+            DataTable integracion = _dal.EjecutarConsulta("[EDTE].[SP_ENTIDAD]", new
+            {
+                ACCION = "OBTENER_INTEGRACION",
+                ID_ENTIDAD = _idEntidad
+            });
+            if (integracion != null && integracion.Rows.Count > 0)
+            {
+                DataRow r = integracion.Rows[0];
+                _codigoFrenteRozaCliente = ValorCodigo(r, "ID_PROVEEDOR_ROZA");
+                _codigoFrenteQuerqueoCliente = ValorCodigo(r, "ID_PROVEE_QQ");
+            }
+        }
+
+        private static string ValorCodigo(DataRow fila, string columna)
+        {
+            return fila != null && fila.Table.Columns.Contains(columna) &&
+                   fila[columna] != DBNull.Value
+                ? fila[columna].ToString().Trim()
                 : string.Empty;
         }
         private void CargarEmisor(int idEmisor)
@@ -552,8 +604,8 @@ namespace SistemaContable.UI.Forms.Ventas
             // ACTION='PRODUCTOR_DETALLE'. No se muestran en el grid (ver OcultarColumna abajo);
             // se envían a [EDTE].[SP_CREDITOFISCAL_DET] al guardar.
             _dtDetalle.Columns.Add("ID_SOLICITUD", typeof(int));
-            _dtDetalle.Columns.Add("ID_SOLIC_AGRI_PROD", typeof(int));
-            _dtDetalle.Columns.Add("UID_SOLIC_AGRI_PROD", typeof(string));
+            _dtDetalle.Columns.Add("ID_SOLIC_DETA", typeof(int));
+            _dtDetalle.Columns.Add("UID_SOLIC_DETA", typeof(string));
             AgregarFilaVacia();
             gridControl1.DataSource = _dtDetalle;
             var view = gridControl1.MainView as GridView;
@@ -562,8 +614,8 @@ namespace SistemaContable.UI.Forms.Ventas
             view.PopulateColumns();
             OcultarColumna(view, "ID_PRODUCTO");
             OcultarColumna(view, "ID_SOLICITUD");
-            OcultarColumna(view, "ID_SOLIC_AGRI_PROD");
-            OcultarColumna(view, "UID_SOLIC_AGRI_PROD");
+            OcultarColumna(view, "ID_SOLIC_DETA");
+            OcultarColumna(view, "UID_SOLIC_DETA");
             ConfigurarColumna(view, "COD_REF", "Código", 90, true);
             ConfigurarColumna(view, "DESCRIPCION", "Descripción", 250, true);
             ConfigurarColumna(view, "UM", "U.M.", 55, false);
@@ -753,8 +805,8 @@ namespace SistemaContable.UI.Forms.Ventas
             fila["ES_EXENTO"] = false;
             fila["ID_UNIDAD_MEDIDA"] = 0;
             fila["ID_SOLICITUD"] = DBNull.Value;
-            fila["ID_SOLIC_AGRI_PROD"] = DBNull.Value;
-            fila["UID_SOLIC_AGRI_PROD"] = DBNull.Value;
+            fila["ID_SOLIC_DETA"] = DBNull.Value;
+            fila["UID_SOLIC_DETA"] = DBNull.Value;
             _dtDetalle.Rows.Add(fila);
         }
         private void RecalcularLinea(GridView view, int rowHandle)
@@ -1167,11 +1219,15 @@ namespace SistemaContable.UI.Forms.Ventas
                     // [EDTE].[CREDITOFISCAL_ENC] para llevar el historial de lo importado.
                     NUM_SOLICITUD = NullIfEmpty(txtNUM_SOLICITUD.Text),
                     NOMBRE_CUENTA = NullIfEmpty(txtNOMBRE_CUENTA.Text),
-                    UID_SOLIC_AGRICOLA = NullIfEmpty(txtREFERENCIA.Text),
+                    UID_SOLICITUD = NullIfEmpty(txtREFERENCIA.Text),
                     // (2026-08-26) NUEVO: se guardan directo en el CCF para que
                     // [ESOLICITUD].[SP_CREDITO_ENCA] los lea sin hacer joins.
                     ID_CUENTA_FINAN = _idCuentaFinanSolicitud,
-                    CODIPROVEEDOR = NullIfEmpty(_codiProveedorCliente),
+                    TIPO_SOLICITUD = NullIfEmpty(_tipoSolicitudSeleccionada),
+                    ID_TIPO_SOLICITUD = _idTipoSolicitudSeleccionada,
+                    NOMBRE_ZAFRA = NullIfEmpty(_nombreZafraSolicitud),
+                    CODIGO = NullIfEmpty(_codigoSolicitudSeleccionada),
+                    NOMBRE_PROVEEDOR = NullIfEmpty(_nombreProveedorSolicitud),
                     ID_ESTADO = 1,
                     USUARIO = Configuracion.UsuarioActual,
                 });
@@ -1225,10 +1281,10 @@ namespace SistemaContable.UI.Forms.Ventas
                         // línea hacia la solicitud agrícola de origen, si aplica.
                         ID_SOLICITUD = fila.Table.Columns.Contains("ID_SOLICITUD") && fila["ID_SOLICITUD"] != DBNull.Value
                             ? (int?)Convert.ToInt32(fila["ID_SOLICITUD"]) : null,
-                        ID_SOLIC_AGRI_PROD = fila.Table.Columns.Contains("ID_SOLIC_AGRI_PROD") && fila["ID_SOLIC_AGRI_PROD"] != DBNull.Value
-                            ? (int?)Convert.ToInt32(fila["ID_SOLIC_AGRI_PROD"]) : null,
-                        UID_SOLIC_AGRI_PROD = fila.Table.Columns.Contains("UID_SOLIC_AGRI_PROD") && fila["UID_SOLIC_AGRI_PROD"] != DBNull.Value
-                            ? fila["UID_SOLIC_AGRI_PROD"].ToString() : null,
+                        ID_SOLIC_DETA = fila.Table.Columns.Contains("ID_SOLIC_DETA") && fila["ID_SOLIC_DETA"] != DBNull.Value
+                            ? (int?)Convert.ToInt32(fila["ID_SOLIC_DETA"]) : null,
+                        UID_SOLIC_DETA = fila.Table.Columns.Contains("UID_SOLIC_DETA") && fila["UID_SOLIC_DETA"] != DBNull.Value
+                            ? fila["UID_SOLIC_DETA"].ToString() : null,
                         USUARIO = Configuracion.UsuarioActual,
                     });
                 }
@@ -1365,7 +1421,15 @@ namespace SistemaContable.UI.Forms.Ventas
             CargarZafra();
             if (cbxZAFRA.Items.Count > 0) cbxZAFRA.SelectedIndex = 0;
             _codiProveedorCliente = string.Empty;
+            _codigoTransportistaCliente = string.Empty;
+            _codigoFrenteRozaCliente = string.Empty;
+            _codigoFrenteQuerqueoCliente = string.Empty;
             _idSolicitudSeleccionada = null;
+            _tipoSolicitudSeleccionada = string.Empty;
+            _idTipoSolicitudSeleccionada = null;
+            _codigoSolicitudSeleccionada = string.Empty;
+            _nombreProveedorSolicitud = string.Empty;
+            _nombreZafraSolicitud = string.Empty;
             AsignarDatosHistorialSolicitud(null);
             CargarCentroCosto();
             if (cbxCENTRO_COSTO.Items.Count > 0) cbxCENTRO_COSTO.SelectedIndex = 0;
@@ -1420,10 +1484,10 @@ namespace SistemaContable.UI.Forms.Ventas
         private void btnEliminar_Click(object sender, EventArgs e) => EliminarFilaDetalle();
         private void btn_solicitudAgricola_Click(object sender, EventArgs e)
         {
-            if (_idEntidad <= 0 || string.IsNullOrWhiteSpace(_codiProveedorCliente))
+            if (_idEntidad <= 0)
             {
                 XtraMessageBox.Show(
-                    "Seleccione primero un cliente que tenga código de proveedor asociado.",
+                    "Seleccione primero un cliente.",
                     "Solicitud agrícola",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
@@ -1445,7 +1509,11 @@ namespace SistemaContable.UI.Forms.Ventas
 
             using (var frm = new frmConsultaSolicitudAgricola(
                 _codiProveedorCliente,
-                idZafra.Value))
+                _codigoTransportistaCliente,
+                _codigoFrenteRozaCliente,
+                _codigoFrenteQuerqueoCliente,
+                idZafra.Value,
+                cbxZAFRA.Text))
             {
                 if (frm.ShowDialog(this) != DialogResult.OK ||
                     frm.SolicitudSeleccionada == null)
@@ -1498,6 +1566,11 @@ namespace SistemaContable.UI.Forms.Ventas
                 txtNOMBRE_CUENTA.Text = "";
                 txtREFERENCIA.Text = "";
                 _idCuentaFinanSolicitud = null;
+                _tipoSolicitudSeleccionada = string.Empty;
+                _idTipoSolicitudSeleccionada = null;
+                _codigoSolicitudSeleccionada = string.Empty;
+                _nombreProveedorSolicitud = string.Empty;
+                _nombreZafraSolicitud = string.Empty;
                 return;
             }
             txtNUM_SOLICITUD.Text = encabezadoSolicitud.Table.Columns.Contains("NUM_SOLICITUD") &&
@@ -1506,12 +1579,23 @@ namespace SistemaContable.UI.Forms.Ventas
             txtNOMBRE_CUENTA.Text = encabezadoSolicitud.Table.Columns.Contains("NOMBRE_CUENTA") &&
                                      encabezadoSolicitud["NOMBRE_CUENTA"] != DBNull.Value
                 ? encabezadoSolicitud["NOMBRE_CUENTA"].ToString() : "";
-            txtREFERENCIA.Text = encabezadoSolicitud.Table.Columns.Contains("UID_SOLIC_AGRICOLA") &&
-                                  encabezadoSolicitud["UID_SOLIC_AGRICOLA"] != DBNull.Value
-                ? encabezadoSolicitud["UID_SOLIC_AGRICOLA"].ToString() : "";
+            txtREFERENCIA.Text = encabezadoSolicitud.Table.Columns.Contains("UID_SOLICITUD") &&
+                                  encabezadoSolicitud["UID_SOLICITUD"] != DBNull.Value
+                ? encabezadoSolicitud["UID_SOLICITUD"].ToString() : "";
             _idCuentaFinanSolicitud = encabezadoSolicitud.Table.Columns.Contains("ID_CUENTA_FINAN") &&
                                        encabezadoSolicitud["ID_CUENTA_FINAN"] != DBNull.Value
                 ? (int?)Convert.ToInt32(encabezadoSolicitud["ID_CUENTA_FINAN"]) : null;
+            _tipoSolicitudSeleccionada = ValorCodigo(encabezadoSolicitud, "TIPO_SOLICITUD");
+            _idTipoSolicitudSeleccionada = encabezadoSolicitud.Table.Columns.Contains("ID_TIPO_SOLICITUD") &&
+                                            encabezadoSolicitud["ID_TIPO_SOLICITUD"] != DBNull.Value
+                ? (int?)Convert.ToInt32(encabezadoSolicitud["ID_TIPO_SOLICITUD"]) : null;
+            _codigoSolicitudSeleccionada = ValorCodigo(encabezadoSolicitud, "CODIGO");
+            _nombreProveedorSolicitud = ValorCodigo(encabezadoSolicitud, "NOMBRE_PROVEEDOR");
+            // La zafra del CCF siempre procede del combo seleccionado en Datos del Documento;
+            // no se sustituye con el texto recibido desde SIGESTA.
+            _nombreZafraSolicitud = cbxZAFRA.Text == null
+                ? string.Empty
+                : cbxZAFRA.Text.Trim();
         }
 
         private void CargarDetalleSolicitudAgricola(DataTable detalleSolicitud)
@@ -1585,12 +1669,12 @@ namespace SistemaContable.UI.Forms.Ventas
                 filaDetalle["ID_SOLICITUD"] = productoSolicitud.Table.Columns.Contains("ID_SOLICITUD") &&
                                                productoSolicitud["ID_SOLICITUD"] != DBNull.Value
                     ? (object)Convert.ToInt32(productoSolicitud["ID_SOLICITUD"]) : DBNull.Value;
-                filaDetalle["ID_SOLIC_AGRI_PROD"] = productoSolicitud.Table.Columns.Contains("ID_SOLIC_AGRI_PROD") &&
-                                                     productoSolicitud["ID_SOLIC_AGRI_PROD"] != DBNull.Value
-                    ? (object)Convert.ToInt32(productoSolicitud["ID_SOLIC_AGRI_PROD"]) : DBNull.Value;
-                filaDetalle["UID_SOLIC_AGRI_PROD"] = productoSolicitud.Table.Columns.Contains("UID_SOLIC_AGRI_PROD") &&
-                                                      productoSolicitud["UID_SOLIC_AGRI_PROD"] != DBNull.Value
-                    ? (object)productoSolicitud["UID_SOLIC_AGRI_PROD"].ToString() : DBNull.Value;
+                filaDetalle["ID_SOLIC_DETA"] = productoSolicitud.Table.Columns.Contains("ID_SOLIC_DETA") &&
+                                                productoSolicitud["ID_SOLIC_DETA"] != DBNull.Value
+                    ? (object)Convert.ToInt32(productoSolicitud["ID_SOLIC_DETA"]) : DBNull.Value;
+                filaDetalle["UID_SOLIC_DETA"] = productoSolicitud.Table.Columns.Contains("UID_SOLIC_DETA") &&
+                                                 productoSolicitud["UID_SOLIC_DETA"] != DBNull.Value
+                    ? (object)productoSolicitud["UID_SOLIC_DETA"].ToString() : DBNull.Value;
                 detallePreparado.Rows.Add(filaDetalle);
             }
 
@@ -1598,7 +1682,9 @@ namespace SistemaContable.UI.Forms.Ventas
             foreach (DataRow filaPreparada in detallePreparado.Rows)
                 _dtDetalle.ImportRow(filaPreparada);
 
-            AgregarFilaVacia();
+            // Al importar desde una solicitud se muestran únicamente sus productos.
+            // No se agrega una fila vacía porque puede interpretarse como una línea
+            // incompleta o como un producto que no terminó de cargarse.
             gridControl1.RefreshDataSource();
             ActualizarTotales();
         }

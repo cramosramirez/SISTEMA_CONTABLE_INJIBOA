@@ -13,6 +13,7 @@ namespace SistemaContable.UI.Forms.Clientes
     public partial class frmCliente : Form
     {
         #region === CAMPOS PRIVADOS ===
+        private const int IdTipoClientePredeterminado = 11;
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtRoles;
         private DataTable _dtAllMunicipios;
@@ -1306,6 +1307,44 @@ namespace SistemaContable.UI.Forms.Clientes
             fila["FECHA_ASIGNACION"] = DateTime.Today;
             _dtRoles.Rows.Add(fila);
         }
+
+        private void CargarTipoClientePredeterminado()
+        {
+            if (_dtRoles == null)
+                return;
+
+            bool yaExiste = _dtRoles.AsEnumerable().Any(fila =>
+                fila.RowState != DataRowState.Deleted
+                && fila["ID_TIPO_CLIENTE"] != DBNull.Value
+                && Convert.ToInt32(fila["ID_TIPO_CLIENTE"]) == IdTipoClientePredeterminado);
+
+            if (yaExiste)
+                return;
+
+            DataTable tipoCliente = _dal.EjecutarConsulta("[EMH].[SP_TIPO_CLIENTE]", new
+            {
+                ACCION = "CONSULTAR",
+                ID_TIPO_CLIENTE = IdTipoClientePredeterminado
+            });
+
+            if (tipoCliente == null || tipoCliente.Rows.Count == 0)
+                throw new InvalidOperationException(
+                    $"No existe el tipo de cliente predeterminado {IdTipoClientePredeterminado}.");
+
+            DataRow tipo = tipoCliente.Rows[0];
+            DataRow filaPredeterminada = _dtRoles.NewRow();
+            filaPredeterminada["ID_ENTIDAD_TPC"] = 0;
+            filaPredeterminada["ID_ENTIDAD"] = 0;
+            filaPredeterminada["ID_TIPO_CLIENTE"] = IdTipoClientePredeterminado;
+            filaPredeterminada["NOMBRE_TIPO_CLIENTE"] =
+                tipo["NOMBRE_TIPO_CLIENTE"] == DBNull.Value
+                    ? ""
+                    : tipo["NOMBRE_TIPO_CLIENTE"].ToString();
+            filaPredeterminada["ACTIVO"] = true;
+            filaPredeterminada["FECHA_ASIGNACION"] = DateTime.Today;
+            _dtRoles.Rows.Add(filaPredeterminada);
+        }
+
         private void EliminarRol()
         {
             var view = gridRoles.MainView as GridView;
@@ -1467,7 +1506,8 @@ namespace SistemaContable.UI.Forms.Clientes
                 }
                 IdEntidad = Convert.ToInt32(dtResult.Rows[0]["ID_GENERADO"]);
                 GuardarCodigosIntegracion(IdEntidad);
-                GuardarRolCliente(IdEntidad);
+                if (!TieneRol(IdEntidad, "CLI"))
+                    GuardarRolCliente(IdEntidad);
                 GuardarEntidadCliente();
                 GuardarRoles();
                 XtraMessageBox.Show("Entidad guardada correctamente.",
@@ -1538,15 +1578,29 @@ namespace SistemaContable.UI.Forms.Clientes
         }
         /// <summary>
         /// Da de alta (o reactiva) el rol 'CLI' para la entidad en dbo.ENTIDAD_ROL.
-        /// SP_ENTIDAD.GUARDAR no maneja roles; el alta/activación del rol se hace
-        /// aparte contra [EMH].[SP_ENTIDAD_ROL], que ya evita duplicar el mismo ROL.
+        /// Si la relación ya existe, envía su identificador para que el procedimiento
+        /// la actualice en lugar de intentar insertar nuevamente (ID_ENTIDAD, ROL).
         /// </summary>
         private void GuardarRolCliente(int idEntidad)
         {
+            DataTable rolExistente = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD_ROL]", new
+            {
+                ACCION = "LISTAR",
+                ID_ENTIDAD = idEntidad
+            });
+
+            DataRow filaRolCliente = rolExistente?.AsEnumerable().FirstOrDefault(fila =>
+                string.Equals(fila["ROL"]?.ToString()?.Trim(), "CLI",
+                    StringComparison.OrdinalIgnoreCase));
+
+            int idEntidadRol = filaRolCliente != null
+                ? Convert.ToInt32(filaRolCliente["ID_ENTIDAD_ROL"])
+                : 0;
+
             _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD_ROL]", new
             {
                 ACCION = "GUARDAR",
-                ID_ENTIDAD_ROL = 0,
+                ID_ENTIDAD_ROL = idEntidadRol,
                 ID_ENTIDAD = idEntidad,
                 ROL = "CLI",
                 ACTIVO = true,
@@ -1951,6 +2005,7 @@ namespace SistemaContable.UI.Forms.Clientes
             txtACTIVIDAD_3.Text = "";
             cbxORIGEN.SelectedIndex = 0;
             _dtRoles?.Clear();
+            CargarTipoClientePredeterminado();
         }
         #endregion
         #region === BOTONES ===

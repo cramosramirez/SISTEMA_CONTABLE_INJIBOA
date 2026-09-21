@@ -16,8 +16,12 @@ namespace SistemaContable.UI.Forms.Ventas
     public partial class frmConsultaSolicitudAgricola : Form
     {
         private readonly DALBase _dal = new DALBase();
-        private readonly string _codiProveedor;
+        private readonly string _codigoProductor;
+        private readonly string _codigoTransportista;
+        private readonly string _codigoFrenteRoza;
+        private readonly string _codigoFrenteQuerqueo;
         private readonly int _idZafra;
+        private readonly string _nombreZafra;
         private DataTable _solicitudes;
         private DataTable _detalle;
         private bool _datosCargados;
@@ -30,42 +34,87 @@ namespace SistemaContable.UI.Forms.Ventas
         public DataRow SolicitudSeleccionada { get; private set; }
         public DataTable DetalleSeleccionado { get; private set; }
 
-        public frmConsultaSolicitudAgricola(string codiProveedor, int idZafra)
+        public frmConsultaSolicitudAgricola(
+            string codigoProductor,
+            string codigoTransportista,
+            string codigoFrenteRoza,
+            string codigoFrenteQuerqueo,
+            int idZafra,
+            string nombreZafra)
         {
             InitializeComponent();
-            _codiProveedor = (codiProveedor ?? string.Empty).Trim();
+            _codigoProductor = (codigoProductor ?? string.Empty).Trim();
+            _codigoTransportista = (codigoTransportista ?? string.Empty).Trim();
+            _codigoFrenteRoza = (codigoFrenteRoza ?? string.Empty).Trim();
+            _codigoFrenteQuerqueo = (codigoFrenteQuerqueo ?? string.Empty).Trim();
             _idZafra = idZafra;
+            _nombreZafra = (nombreZafra ?? string.Empty).Trim();
             ActualizarEncabezadoZafra();
             ConfigurarVistas();
         }
 
+        public frmConsultaSolicitudAgricola(string codigoProductor, int idZafra)
+            : this(codigoProductor, null, null, null, idZafra, null)
+        {
+        }
+
         private void ActualizarEncabezadoZafra()
         {
-            string nombreZafra = null;
-            if (_solicitudes != null &&
-                _solicitudes.Rows.Count > 0 &&
-                _solicitudes.Columns.Contains("NOMBRE_ZAFRA"))
-            {
-                nombreZafra = Convert.ToString(
-                    _solicitudes.Rows[0]["NOMBRE_ZAFRA"]).Trim();
-            }
-
             string zafraMostrada;
-            if (string.IsNullOrWhiteSpace(nombreZafra))
+            if (string.IsNullOrWhiteSpace(_nombreZafra))
             {
                 zafraMostrada = $"Zafra {_idZafra}";
             }
             else
             {
-                zafraMostrada = nombreZafra.StartsWith(
+                zafraMostrada = _nombreZafra.StartsWith(
                     "Zafra",
                     StringComparison.OrdinalIgnoreCase)
-                    ? nombreZafra
-                    : $"Zafra {nombreZafra}";
+                    ? _nombreZafra
+                    : $"Zafra {_nombreZafra}";
             }
 
             lblSolicitudes.Text =
-                $"Solicitudes del proveedor {_codiProveedor} - {zafraMostrada}";
+                $"Solicitudes de {TipoSolicitudActual} - Código {CodigoSolicitudActual} - {zafraMostrada}";
+        }
+
+        private string TipoSolicitudActual
+        {
+            get
+            {
+                if (tabTiposSolicitud.SelectedTab == tabTransportista) return "TRANSPORTISTA";
+                if (tabTiposSolicitud.SelectedTab == tabFrenteRoza) return "FRENTE ROZA";
+                if (tabTiposSolicitud.SelectedTab == tabFrenteQuerqueo) return "FRENTE QUERQUEO";
+                return "PRODUCTOR";
+            }
+        }
+
+        private string PrefijoAccionActual
+        {
+            get
+            {
+                if (tabTiposSolicitud.SelectedTab == tabTransportista) return "TRANSPORTISTA";
+                if (tabTiposSolicitud.SelectedTab == tabFrenteRoza) return "FRENTE_ROZA";
+                if (tabTiposSolicitud.SelectedTab == tabFrenteQuerqueo) return "FRENTE_QUERQUEO";
+                return "PRODUCTOR";
+            }
+        }
+
+        private string CodigoSolicitudActual
+        {
+            get
+            {
+                if (tabTiposSolicitud.SelectedTab == tabTransportista) return _codigoTransportista;
+                if (tabTiposSolicitud.SelectedTab == tabFrenteRoza) return _codigoFrenteRoza;
+                if (tabTiposSolicitud.SelectedTab == tabFrenteQuerqueo) return _codigoFrenteQuerqueo;
+                return _codigoProductor;
+            }
+        }
+
+        private async void tabTiposSolicitud_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_datosCargados) return;
+            await CargarDatosAsync();
         }
 
         private void ConfigurarVistas()
@@ -174,24 +223,55 @@ namespace SistemaContable.UI.Forms.Ventas
 
             try
             {
-                var resultado = await Task.Run(() => new
+                string codigo = CodigoSolicitudActual;
+                string prefijoAccion = PrefijoAccionActual;
+                ActualizarEncabezadoZafra();
+
+                if (string.IsNullOrWhiteSpace(codigo))
                 {
-                    Solicitudes = _dal.EjecutarConsulta(
+                    _solicitudes = new DataTable();
+                    _detalle = new DataTable();
+                    gridSolicitudes.DataSource = _solicitudes;
+                    gridDetalle.DataSource = _detalle;
+                    lblEstado.Text = $"El cliente no tiene código relacionado para {TipoSolicitudActual}.";
+                    return;
+                }
+
+                var resultado = await Task.Run(() =>
+                {
+                    DataTable solicitudes = _dal.EjecutarConsulta(
                         "[ESOLICITUD].[SP_SOLICITUDES_SIGESTA]",
                         new
                         {
-                            ACTION = "PRODUCTOR_ENCABEZADO",
-                            CODIPROVEEDOR = _codiProveedor,
+                            ACTION = prefijoAccion + "_ENCABEZADO",
+                            CODIGO = codigo,
                             ID_ZAFRA = _idZafra
-                        }),
-                    Detalle = _dal.EjecutarConsulta(
-                        "[ESOLICITUD].[SP_SOLICITUDES_SIGESTA]",
-                        new
+                        }) ?? new DataTable();
+
+                    DataTable detalle = null;
+                    foreach (DataRow solicitud in solicitudes.Rows)
+                    {
+                        int idSolicitud = Convert.ToInt32(solicitud["ID_SOLICITUD"]);
+                        DataTable detalleSolicitud = _dal.EjecutarConsulta(
+                            "[ESOLICITUD].[SP_SOLICITUDES_SIGESTA]",
+                            new
+                            {
+                                ACTION = prefijoAccion + "_DETALLE",
+                                ID_ZAFRA = _idZafra,
+                                ID_SOLICITUD = idSolicitud
+                            });
+
+                        if (detalleSolicitud == null) continue;
+                        if (detalle == null) detalle = detalleSolicitud.Clone();
+                        foreach (DataRow fila in detalleSolicitud.Rows)
+                            detalle.ImportRow(fila);
+                    }
+
+                    return new
                         {
-                            ACTION = "PRODUCTOR_DETALLE",
-                            CODIPROVEEDOR = _codiProveedor,
-                            ID_ZAFRA = _idZafra
-                        })
+                            Solicitudes = solicitudes,
+                            Detalle = detalle ?? new DataTable()
+                        };
                 });
 
                 if (IsDisposed) return;

@@ -39,6 +39,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private const int TIPO_CONTRIB_NO_CONTRIBUY = 0;
         private const int PAIS_EL_SALVADOR = 61;
         private const int DESPLAZAMIENTO_COMPACTO_CODIGOS = 70;
+        private const int TIPO_PROVEEDOR_PREDETERMINADO = 4;
         public int IdEntidad { get; set; } = 0;
 
         public frmProveedor()
@@ -64,7 +65,10 @@ namespace SistemaContable.UI.Forms.Proveedores
             if (IdEntidad > 0)
                 CargarEntidadParaEditar();
             else
+            {
                 AplicarReglasOrigen();   // estado inicial según origen seleccionado
+                CargarTipoProveedorPredeterminado();
+            }
 
             FormHelper.RegistrarBusqueda(
                 txtCUENTA_X_PAGAR,
@@ -394,6 +398,28 @@ namespace SistemaContable.UI.Forms.Proveedores
                 SugerirCodigo();
             };
 
+            // Refuerzo: SelectedValue de un combo enlazado a DataSource puede estar
+            // desactualizado durante SelectedIndexChanged/TextChanged. Se re-aplican las
+            // reglas de forma diferida (cuando el valor ya cambió) para que la dirección
+            // y demás campos respondan al cambiar Tipo de persona / Clasificación / Origen.
+            Action reaplicarReglasDiferido = () =>
+            {
+                if (_cargandoFormulario || IsDisposed || !IsHandleCreated) return;
+                BeginInvoke(new Action(() =>
+                {
+                    if (_cargandoFormulario || IsDisposed) return;
+                    AplicarReglasTipoPersona();
+                    AplicarReglasTipoContribuyente();
+                }));
+            };
+            EventHandler reaplicarHandler = (s, e) => reaplicarReglasDiferido();
+            foreach (System.Windows.Forms.ComboBox cbx in new[] { cbxORIGEN_ENTIDAD, cbxTIPO_PERSONA, cbxTIPO_CONTRIBUYENTE })
+            {
+                cbx.SelectedValueChanged += reaplicarHandler;
+                cbx.SelectionChangeCommitted += reaplicarHandler;
+                cbx.TextChanged += reaplicarHandler;
+            }
+
             cbxDEPARTAMENTO.SelectedIndexChanged += (s, e) =>
             {
                 if (_cargandoFormulario) return;
@@ -551,13 +577,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             // Tipo de contribuyente (solo Local)
             cbxTIPO_CONTRIBUYENTE.Enabled = !esExterior;
 
-            // Dirección detallada local (solo Local)
-            txtCOMPLEMENTO.Enabled = esExterior;
-            txtCALLE.Enabled = !esExterior;
-            txtCASA.Enabled = !esExterior;
-            txtAPTO_LOCAL.Enabled = !esExterior;
-            txtCOLONIA.Enabled = !esExterior;
-            txtOTROS_DATOS.Enabled = !esExterior;
+            // Dirección: campos detallados solo si NATURAL + NO CONTRIBUYENTE; si no, solo "Dirección"
+            AplicarReglasDireccion();
 
             // Códigos auxiliares (solo Local)
             txtCODIPROVEEDOR.Enabled = !esExterior;
@@ -636,6 +657,33 @@ namespace SistemaContable.UI.Forms.Proveedores
             AplicarEstadoPermisosProveedor();
         }
 
+        // ============================================================
+        // Dirección: si TIPO PERSONA = NATURAL y CLASIFICACIÓN = NO CONTRIBUYENTE
+        // (y origen LOCAL) se habilitan Calle, Número de casa, Apartamento/Local
+        // y Colonia/Barrio, y se deshabilita "Dirección". En cualquier otro caso
+        // se deshabilitan esos cuatro campos y se habilita únicamente "Dirección".
+        // No borra valores existentes.
+        // ============================================================
+        private void AplicarReglasDireccion()
+        {
+            int? idOrigen = ComboHelper.ObtenerInt(cbxORIGEN_ENTIDAD);
+            int? idTipoPersona = ComboHelper.ObtenerInt(cbxTIPO_PERSONA);
+            int? idTipoContrib = ComboHelper.ObtenerInt(cbxTIPO_CONTRIBUYENTE);
+
+            bool esExterior = idOrigen == ORIGEN_EXTERIOR;
+            bool esNatural = idTipoPersona.HasValue
+                && idTipoPersona.Value != TIPO_PERSONA_JURIDICA;
+            bool esNoContribuyente = idTipoContrib == TIPO_CONTRIB_NO_CONTRIBUY;
+            bool usarDireccionDetallada = !esExterior && esNatural && esNoContribuyente;
+
+            txtCALLE.Enabled = usarDireccionDetallada;
+            txtCASA.Enabled = usarDireccionDetallada;
+            txtAPTO_LOCAL.Enabled = usarDireccionDetallada;
+            txtCOLONIA.Enabled = usarDireccionDetallada;
+            txtCOMPLEMENTO.Enabled = !usarDireccionDetallada;
+            txtOTROS_DATOS.Enabled = !esExterior;
+        }
+
         private void AplicarReglasTipoContribuyente()
         {
             int? idOrigen = ComboHelper.ObtenerInt(cbxORIGEN_ENTIDAD);
@@ -646,14 +694,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             bool esNoContribuyente = idTipoContrib == TIPO_CONTRIB_NO_CONTRIBUY;
             bool esNatural = idTipoPersona.HasValue
                 && idTipoPersona.Value != TIPO_PERSONA_JURIDICA;
-            bool usarDireccionDetallada = !esExterior;
-
-            txtCOMPLEMENTO.Enabled = esExterior;
-            txtCALLE.Enabled = usarDireccionDetallada;
-            txtCASA.Enabled = usarDireccionDetallada;
-            txtAPTO_LOCAL.Enabled = usarDireccionDetallada;
-            txtOTROS_DATOS.Enabled = usarDireccionDetallada;
-            txtCOLONIA.Enabled = usarDireccionDetallada;
+            AplicarReglasDireccion();
 
             // NRC: habilitado solo si NO es Exterior Y NO es No Contribuyente
             txtNRC.Enabled = !esExterior && !esNoContribuyente;
@@ -978,14 +1019,14 @@ namespace SistemaContable.UI.Forms.Proveedores
                     marcarError(txtNIT, "El NIT es obligatorio para origen LOCAL.");
                 if (!esNoContribuyente && string.IsNullOrWhiteSpace(txtNRC.Text))
                     marcarError(txtNRC, "El NRC es obligatorio para este tipo de contribuyente.");
-                if (string.IsNullOrWhiteSpace(txtNOMBRE_COMERCIAL.Text))
-                    marcarError(txtNOMBRE_COMERCIAL, "El nombre comercial es obligatorio para origen LOCAL.");
-                if (string.IsNullOrWhiteSpace(txtCALLE.Text))
+                if (txtCALLE.Enabled && string.IsNullOrWhiteSpace(txtCALLE.Text))
                     marcarError(txtCALLE, "La calle es obligatoria para origen LOCAL.");
-                if (string.IsNullOrWhiteSpace(txtCASA.Text))
+                if (txtCASA.Enabled && string.IsNullOrWhiteSpace(txtCASA.Text))
                     marcarError(txtCASA, "El número de casa es obligatorio para origen LOCAL.");
-                if (string.IsNullOrWhiteSpace(txtCOLONIA.Text))
+                if (txtCOLONIA.Enabled && string.IsNullOrWhiteSpace(txtCOLONIA.Text))
                     marcarError(txtCOLONIA, "La colonia o barrio es obligatoria para origen LOCAL.");
+                if (txtCOMPLEMENTO.Enabled && string.IsNullOrWhiteSpace(txtCOMPLEMENTO.Text))
+                    marcarError(txtCOMPLEMENTO, "La dirección es obligatoria.");
                 if (!string.Equals(cbxPAIS.Text.Trim(), "EL SALVADOR", StringComparison.OrdinalIgnoreCase))
                     marcarError(cbxPAIS, "Si el origen es LOCAL, el país debe ser EL SALVADOR.");
                 if (ComboHelper.ObtenerString(cbxDEPARTAMENTO) == null)
@@ -1463,6 +1504,40 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void AgregarTipoProveedor()
         {
             _dtTiposProveedor.Rows.Add(0, IdEntidad, DBNull.Value, "", true, DateTime.Today);
+        }
+
+        private void CargarTipoProveedorPredeterminado()
+        {
+            if (_dtTiposProveedor == null)
+                return;
+
+            bool yaExiste = _dtTiposProveedor.AsEnumerable().Any(fila =>
+                fila.RowState != DataRowState.Deleted
+                && fila["ID_TIPO_PROVEEDOR"] != DBNull.Value
+                && Convert.ToInt32(fila["ID_TIPO_PROVEEDOR"]) == TIPO_PROVEEDOR_PREDETERMINADO);
+
+            if (yaExiste)
+                return;
+
+            DataTable tiposProveedor = _dal.EjecutarConsulta(
+                "[ESEGURIDAD].[SP_TIPO_PROVEEDOR]",
+                new { ACCION = "LISTAR" });
+
+            DataRow tipoPredeterminado = tiposProveedor?.AsEnumerable().FirstOrDefault(fila =>
+                fila["ID_TIPO_PROVEEDOR"] != DBNull.Value
+                && Convert.ToInt32(fila["ID_TIPO_PROVEEDOR"]) == TIPO_PROVEEDOR_PREDETERMINADO);
+
+            if (tipoPredeterminado == null)
+                throw new InvalidOperationException(
+                    $"No existe o no está activo el tipo de proveedor predeterminado {TIPO_PROVEEDOR_PREDETERMINADO}.");
+
+            _dtTiposProveedor.Rows.Add(
+                0,
+                0,
+                TIPO_PROVEEDOR_PREDETERMINADO,
+                tipoPredeterminado["NOMBRE_TIPO_PROVEEDOR"].ToString(),
+                true,
+                DateTime.Today);
         }
 
         private void CargarTiposProveedorExistentes(int idEntidad)

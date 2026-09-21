@@ -14,6 +14,11 @@ namespace SistemaContable.UI.Forms.Ventas
         private void InitializeComponent()
         {
             this.layoutPrincipal = new System.Windows.Forms.TableLayoutPanel();
+            this.tabTiposSolicitud = new System.Windows.Forms.TabControl();
+            this.tabProductor = new System.Windows.Forms.TabPage();
+            this.tabTransportista = new System.Windows.Forms.TabPage();
+            this.tabFrenteRoza = new System.Windows.Forms.TabPage();
+            this.tabFrenteQuerqueo = new System.Windows.Forms.TabPage();
             this.lblSolicitudes = new System.Windows.Forms.Label();
             this.gridSolicitudes = new DevExpress.XtraGrid.GridControl();
             this.gridViewSolicitudes = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -25,6 +30,7 @@ namespace SistemaContable.UI.Forms.Ventas
             this.btnCerrar = new DevExpress.XtraEditors.SimpleButton();
             this.btnSeleccionar = new DevExpress.XtraEditors.SimpleButton();
             this.layoutPrincipal.SuspendLayout();
+            this.tabTiposSolicitud.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridSolicitudes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSolicitudes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridDetalle)).BeginInit();
@@ -36,16 +42,18 @@ namespace SistemaContable.UI.Forms.Ventas
             //
             this.layoutPrincipal.ColumnCount = 1;
             this.layoutPrincipal.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.layoutPrincipal.Controls.Add(this.lblSolicitudes, 0, 0);
-            this.layoutPrincipal.Controls.Add(this.gridSolicitudes, 0, 1);
-            this.layoutPrincipal.Controls.Add(this.lblDetalle, 0, 2);
-            this.layoutPrincipal.Controls.Add(this.gridDetalle, 0, 3);
-            this.layoutPrincipal.Controls.Add(this.pnlAcciones, 0, 4);
+            this.layoutPrincipal.Controls.Add(this.tabTiposSolicitud, 0, 0);
+            this.layoutPrincipal.Controls.Add(this.lblSolicitudes, 0, 1);
+            this.layoutPrincipal.Controls.Add(this.gridSolicitudes, 0, 2);
+            this.layoutPrincipal.Controls.Add(this.lblDetalle, 0, 3);
+            this.layoutPrincipal.Controls.Add(this.gridDetalle, 0, 4);
+            this.layoutPrincipal.Controls.Add(this.pnlAcciones, 0, 5);
             this.layoutPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutPrincipal.Location = new System.Drawing.Point(0, 0);
             this.layoutPrincipal.Name = "layoutPrincipal";
             this.layoutPrincipal.Padding = new System.Windows.Forms.Padding(10);
-            this.layoutPrincipal.RowCount = 5;
+            this.layoutPrincipal.RowCount = 6;
+            this.layoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.layoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.layoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 52F));
             this.layoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
@@ -54,12 +62,62 @@ namespace SistemaContable.UI.Forms.Ventas
             this.layoutPrincipal.Size = new System.Drawing.Size(1084, 661);
             this.layoutPrincipal.TabIndex = 0;
             //
+            // tabTiposSolicitud
+            //
+            this.tabTiposSolicitud.Controls.Add(this.tabProductor);
+            this.tabTiposSolicitud.Controls.Add(this.tabTransportista);
+            this.tabTiposSolicitud.Controls.Add(this.tabFrenteRoza);
+            this.tabTiposSolicitud.Controls.Add(this.tabFrenteQuerqueo);
+            this.tabTiposSolicitud.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabTiposSolicitud.Location = new System.Drawing.Point(13, 13);
+            this.tabTiposSolicitud.Name = "tabTiposSolicitud";
+            this.tabTiposSolicitud.SelectedIndex = 0;
+            this.tabTiposSolicitud.Size = new System.Drawing.Size(1058, 34);
+            this.tabTiposSolicitud.TabIndex = 0;
+            this.tabTiposSolicitud.SelectedIndexChanged += new System.EventHandler(this.tabTiposSolicitud_SelectedIndexChanged);
+            //
+            // tabProductor
+            //
+            this.tabProductor.Location = new System.Drawing.Point(4, 24);
+            this.tabProductor.Name = "tabProductor";
+            this.tabProductor.Size = new System.Drawing.Size(1050, 6);
+            this.tabProductor.TabIndex = 0;
+            this.tabProductor.Text = "Productor";
+            this.tabProductor.UseVisualStyleBackColor = true;
+            //
+            // tabTransportista
+            //
+            this.tabTransportista.Location = new System.Drawing.Point(4, 24);
+            this.tabTransportista.Name = "tabTransportista";
+            this.tabTransportista.Size = new System.Drawing.Size(1050, 6);
+            this.tabTransportista.TabIndex = 1;
+            this.tabTransportista.Text = "Transportista";
+            this.tabTransportista.UseVisualStyleBackColor = true;
+            //
+            // tabFrenteRoza
+            //
+            this.tabFrenteRoza.Location = new System.Drawing.Point(4, 24);
+            this.tabFrenteRoza.Name = "tabFrenteRoza";
+            this.tabFrenteRoza.Size = new System.Drawing.Size(1050, 6);
+            this.tabFrenteRoza.TabIndex = 2;
+            this.tabFrenteRoza.Text = "Frente Roza";
+            this.tabFrenteRoza.UseVisualStyleBackColor = true;
+            //
+            // tabFrenteQuerqueo
+            //
+            this.tabFrenteQuerqueo.Location = new System.Drawing.Point(4, 24);
+            this.tabFrenteQuerqueo.Name = "tabFrenteQuerqueo";
+            this.tabFrenteQuerqueo.Size = new System.Drawing.Size(1050, 6);
+            this.tabFrenteQuerqueo.TabIndex = 3;
+            this.tabFrenteQuerqueo.Text = "Frente Querqueo";
+            this.tabFrenteQuerqueo.UseVisualStyleBackColor = true;
+            //
             // lblSolicitudes
             //
             this.lblSolicitudes.AutoSize = true;
             this.lblSolicitudes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblSolicitudes.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblSolicitudes.Location = new System.Drawing.Point(13, 10);
+            this.lblSolicitudes.Location = new System.Drawing.Point(13, 50);
             this.lblSolicitudes.Name = "lblSolicitudes";
             this.lblSolicitudes.Size = new System.Drawing.Size(1058, 28);
             this.lblSolicitudes.TabIndex = 0;
@@ -70,7 +128,7 @@ namespace SistemaContable.UI.Forms.Ventas
             //
             this.gridSolicitudes.AccessibleName = "Solicitudes agrícolas";
             this.gridSolicitudes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridSolicitudes.Location = new System.Drawing.Point(13, 41);
+            this.gridSolicitudes.Location = new System.Drawing.Point(13, 81);
             this.gridSolicitudes.MainView = this.gridViewSolicitudes;
             this.gridSolicitudes.Name = "gridSolicitudes";
             this.gridSolicitudes.Size = new System.Drawing.Size(1058, 264);
@@ -90,7 +148,7 @@ namespace SistemaContable.UI.Forms.Ventas
             this.lblDetalle.AutoSize = true;
             this.lblDetalle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDetalle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblDetalle.Location = new System.Drawing.Point(13, 308);
+            this.lblDetalle.Location = new System.Drawing.Point(13, 328);
             this.lblDetalle.Name = "lblDetalle";
             this.lblDetalle.Size = new System.Drawing.Size(1058, 28);
             this.lblDetalle.TabIndex = 2;
@@ -101,7 +159,7 @@ namespace SistemaContable.UI.Forms.Ventas
             //
             this.gridDetalle.AccessibleName = "Productos de la solicitud seleccionada";
             this.gridDetalle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridDetalle.Location = new System.Drawing.Point(13, 339);
+            this.gridDetalle.Location = new System.Drawing.Point(13, 359);
             this.gridDetalle.MainView = this.gridViewDetalle;
             this.gridDetalle.Name = "gridDetalle";
             this.gridDetalle.Size = new System.Drawing.Size(1058, 257);
@@ -184,6 +242,7 @@ namespace SistemaContable.UI.Forms.Ventas
             this.Shown += new System.EventHandler(this.frmConsultaSolicitudAgricola_Shown);
             this.layoutPrincipal.ResumeLayout(false);
             this.layoutPrincipal.PerformLayout();
+            this.tabTiposSolicitud.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridSolicitudes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSolicitudes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridDetalle)).EndInit();
@@ -193,6 +252,11 @@ namespace SistemaContable.UI.Forms.Ventas
         }
 
         private System.Windows.Forms.TableLayoutPanel layoutPrincipal;
+        private System.Windows.Forms.TabControl tabTiposSolicitud;
+        private System.Windows.Forms.TabPage tabProductor;
+        private System.Windows.Forms.TabPage tabTransportista;
+        private System.Windows.Forms.TabPage tabFrenteRoza;
+        private System.Windows.Forms.TabPage tabFrenteQuerqueo;
         private System.Windows.Forms.Label lblSolicitudes;
         private DevExpress.XtraGrid.GridControl gridSolicitudes;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewSolicitudes;
