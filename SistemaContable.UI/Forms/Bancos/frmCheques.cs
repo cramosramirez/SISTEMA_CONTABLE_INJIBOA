@@ -129,17 +129,17 @@ namespace SistemaContable.UI.Forms.Bancos
                     Accion = "BUSCAR",
                     Columnas = new Dictionary<string, string>
                     {
-                        { "NUM_CHEQUE",    "N° CHEQUE" },
+                        { "NUM_CHEQUE",    "NUMERO" },                        
+                        { "CONCEPTO",  "CONCEPTO" },
                         { "FECHA_CHEQUE",  "FECHA" },
-                        { "NOMBRE_CHEQUE", "PROVEEDOR" },
-                        { "MONTO", "MONTO" }
+                        { "MONTO",  "MONTO" }
                     },
                     Anchos = new Dictionary<string, int>
                     {
-                        { "NUM_CHEQUE",     90 },
-                        { "FECHA_CHEQUE",  100 },
-                        { "NOMBRE_CHEQUE", 350 },
-                        { "MONTO", 100 }
+                        { "NUM_CHEQUE", 50 },                                                
+                        { "CONCEPTO", 350 },
+                        { "FECHA", 20 },
+                        { "MONTO", 80 }
                     },
                     // Los parámetros ID_CTA_BANCO y TIPO_PARTIDA se pasan dinámicamente
                     // en tiempo de ejecución. Usamos un delegate para armarlos al momento.
@@ -147,7 +147,8 @@ namespace SistemaContable.UI.Forms.Bancos
                     {
                         ID_CTA_BANCO = Convert.ToInt32(txtNUM_CUENTA.Tag ?? 0),
                         TIPO_PARTIDA = txtOPERACION.Text.Trim()
-                    }
+                    },
+                    AnchoFormulario = 1000
                 },
                 fila =>
                 {
@@ -573,7 +574,7 @@ namespace SistemaContable.UI.Forms.Bancos
                         siguiente: true,
                         finalizar: true,
                         borrarFila: false,
-                        anular: false,
+                        anular: true,
                         documentos: false 
                     );                    
                     HabilitarControlesEncabezado(false);
@@ -698,6 +699,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 using (var frm = new frmChequeDocumentosContado())
                 {
                     frm.UidEnlaceCheque = _uidEnlaceCheque;
+                    frm.IdCheque = _idCheque;
                     var principal = Application.OpenForms["frmPrincipalRibbon"];
 
                     if (principal != null)
@@ -1977,7 +1979,59 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private void btnAnular_Click(object sender, EventArgs e)
         {
+            if (_idCheque == 0)
+            {
+                XtraMessageBox.Show("Debe cargar un cheque para anularlo.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            var resp = XtraMessageBox.Show(
+                $"¿Está seguro que desea anular el cheque N° {txtNUMERO_CHEQUE.Text.Trim()}?",
+                "Confirmar anuación",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (resp != DialogResult.Yes) return;
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                DataTable dt = _dal.EjecutarConsulta("SP_CHEQUE", new
+                {
+                    ACCION = "ANULAR",
+                    ID_CHEQUE = _idCheque,
+                    USUARIO = Configuracion.UsuarioActual
+                });
+
+                // El SP retorna si hay CCFs contado y el nuevo UID
+                bool tieneContado = false;
+                if (dt.Rows.Count > 0)
+                {
+                    tieneContado = Convert.ToBoolean(dt.Rows[0]["TIENE_CONTADO"]);
+                }
+
+                string mensaje = "Cheque anulado correctamente.";
+                if (tieneContado)
+                {
+                    mensaje += "\n\nLos documentos al contado quedaron pendientes. " +
+                               "Podrá retomarlos la próxima vez que abra esta pantalla.";
+                }
+
+                XtraMessageBox.Show(mensaje, "Eliminado",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                btnIgnorar_Click(sender, e);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al eliminar el cheque:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private void btnModificar_Click(object sender, EventArgs e)

@@ -29,16 +29,16 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions4 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.riVerRVacio = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.colFECHA_EMISION = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colSALDO = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -52,6 +52,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.riEditar = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gvDetalle = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.colID_CCF_COMPRA = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colNUM_CONTROL = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
@@ -89,7 +90,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colFECHA_EMISION.OptionsColumn.AllowEdit = false;
             this.colFECHA_EMISION.OptionsColumn.FixedWidth = true;
             this.colFECHA_EMISION.Visible = true;
-            this.colFECHA_EMISION.VisibleIndex = 6;
+            this.colFECHA_EMISION.VisibleIndex = 2;
             this.colFECHA_EMISION.Width = 87;
             // 
             // colSALDO
@@ -106,20 +107,21 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colSALDO.OptionsColumn.AllowEdit = false;
             this.colSALDO.OptionsColumn.FixedWidth = true;
             this.colSALDO.Visible = true;
-            this.colSALDO.VisibleIndex = 5;
+            this.colSALDO.VisibleIndex = 7;
             this.colSALDO.Width = 105;
             // 
             // colCOD_GENERACION
             // 
             this.colCOD_GENERACION.Caption = "N°/Cod. Generación";
             this.colCOD_GENERACION.FieldName = "COD_GENERACION";
-            this.colCOD_GENERACION.MinWidth = 21;
+            this.colCOD_GENERACION.MaxWidth = 300;
+            this.colCOD_GENERACION.MinWidth = 300;
             this.colCOD_GENERACION.Name = "colCOD_GENERACION";
             this.colCOD_GENERACION.OptionsColumn.AllowEdit = false;
             this.colCOD_GENERACION.OptionsColumn.FixedWidth = true;
             this.colCOD_GENERACION.Visible = true;
-            this.colCOD_GENERACION.VisibleIndex = 4;
-            this.colCOD_GENERACION.Width = 276;
+            this.colCOD_GENERACION.VisibleIndex = 6;
+            this.colCOD_GENERACION.Width = 300;
             // 
             // colTIPO_DTE
             // 
@@ -132,35 +134,37 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colTIPO_DTE.OptionsColumn.AllowEdit = false;
             this.colTIPO_DTE.OptionsColumn.FixedWidth = true;
             this.colTIPO_DTE.Visible = true;
-            this.colTIPO_DTE.VisibleIndex = 3;
+            this.colTIPO_DTE.VisibleIndex = 4;
             this.colTIPO_DTE.Width = 80;
             // 
             // colNOMBRE_ENTIDAD
             // 
             this.colNOMBRE_ENTIDAD.Caption = "Proveedor";
             this.colNOMBRE_ENTIDAD.FieldName = "NOMBRE_ENTIDAD";
-            this.colNOMBRE_ENTIDAD.MinWidth = 21;
+            this.colNOMBRE_ENTIDAD.MinWidth = 400;
             this.colNOMBRE_ENTIDAD.Name = "colNOMBRE_ENTIDAD";
             this.colNOMBRE_ENTIDAD.OptionsColumn.AllowEdit = false;
             this.colNOMBRE_ENTIDAD.OptionsColumn.FixedWidth = true;
             this.colNOMBRE_ENTIDAD.Visible = true;
-            this.colNOMBRE_ENTIDAD.VisibleIndex = 2;
-            this.colNOMBRE_ENTIDAD.Width = 289;
+            this.colNOMBRE_ENTIDAD.VisibleIndex = 3;
+            this.colNOMBRE_ENTIDAD.Width = 400;
             // 
             // riVerR
             // 
             this.riVerR.AllowFocused = false;
             this.riVerR.AutoHeight = false;
-            editorButtonImageOptions3.Image = global::SistemaContable.UI.RecursosAdicionales01.retencion20x20;
+            editorButtonImageOptions1.Image = global::SistemaContable.UI.RecursosAdicionales01.retencion20x20;
             this.riVerR.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riVerR.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
             this.riVerR.Name = "riVerR";
             this.riVerR.ReadOnly = true;
             this.riVerR.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.riVerR.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.riVerR_ButtonClick);
             // 
             // colVER_R
             // 
+            this.colVER_R.Caption = "Ver R";
             this.colVER_R.ColumnEdit = this.riVerR;
             this.colVER_R.ImageOptions.Alignment = System.Drawing.StringAlignment.Center;
             this.colVER_R.MaxWidth = 40;
@@ -168,8 +172,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colVER_R.Name = "colVER_R";
             this.colVER_R.OptionsColumn.AllowSize = false;
             this.colVER_R.OptionsColumn.FixedWidth = true;
-            this.colVER_R.OptionsColumn.ShowCaption = false;
             this.colVER_R.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+            this.colVER_R.ToolTip = "Ver Comprobante de Retención";
             this.colVER_R.Visible = true;
             this.colVER_R.VisibleIndex = 1;
             this.colVER_R.Width = 40;
@@ -185,14 +189,14 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colFECHA_RECIBIDO.MinWidth = 21;
             this.colFECHA_RECIBIDO.Name = "colFECHA_RECIBIDO";
             this.colFECHA_RECIBIDO.OptionsColumn.AllowEdit = false;
-            this.colFECHA_RECIBIDO.OptionsColumn.FixedWidth = true;
             this.colFECHA_RECIBIDO.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.colFECHA_RECIBIDO.Visible = true;
-            this.colFECHA_RECIBIDO.VisibleIndex = 7;
-            this.colFECHA_RECIBIDO.Width = 87;
+            this.colFECHA_RECIBIDO.VisibleIndex = 8;
+            this.colFECHA_RECIBIDO.Width = 21;
             // 
             // colEDITAR
             // 
+            this.colEDITAR.Caption = "Editar";
             this.colEDITAR.ColumnEdit = this.riEditar;
             this.colEDITAR.ImageOptions.Alignment = System.Drawing.StringAlignment.Center;
             this.colEDITAR.MaxWidth = 40;
@@ -200,8 +204,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colEDITAR.Name = "colEDITAR";
             this.colEDITAR.OptionsColumn.AllowSize = false;
             this.colEDITAR.OptionsColumn.FixedWidth = true;
-            this.colEDITAR.OptionsColumn.ShowCaption = false;
             this.colEDITAR.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+            this.colEDITAR.ToolTip = "Editar comprobante";
             this.colEDITAR.Visible = true;
             this.colEDITAR.VisibleIndex = 0;
             this.colEDITAR.Width = 40;
@@ -210,9 +214,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             // 
             this.riEditar.AllowFocused = false;
             this.riEditar.AutoHeight = false;
-            editorButtonImageOptions4.Image = global::SistemaContable.UI.RecursosAdicionales01.editar2_20x20;
+            editorButtonImageOptions2.Image = global::SistemaContable.UI.RecursosAdicionales01.editar2_20x20;
             this.riEditar.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions4, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.riEditar.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
             this.riEditar.Name = "riEditar";
             this.riEditar.ReadOnly = true;
@@ -226,11 +230,12 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colID_CCF_COMPRA,
             this.colEDITAR,
             this.colVER_R,
+            this.colFECHA_EMISION,
             this.colNOMBRE_ENTIDAD,
             this.colTIPO_DTE,
+            this.colNUM_CONTROL,
             this.colCOD_GENERACION,
             this.colSALDO,
-            this.colFECHA_EMISION,
             this.colFECHA_RECIBIDO});
             this.gvDetalle.GridControl = this.gridControl1;
             this.gvDetalle.Name = "gvDetalle";
@@ -246,6 +251,17 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colID_CCF_COMPRA.Name = "colID_CCF_COMPRA";
             this.colID_CCF_COMPRA.SortMode = DevExpress.XtraGrid.ColumnSortMode.Value;
             this.colID_CCF_COMPRA.Width = 79;
+            // 
+            // colNUM_CONTROL
+            // 
+            this.colNUM_CONTROL.Caption = "N° DTE";
+            this.colNUM_CONTROL.FieldName = "NUM_CONTROL";
+            this.colNUM_CONTROL.MaxWidth = 300;
+            this.colNUM_CONTROL.MinWidth = 300;
+            this.colNUM_CONTROL.Name = "colNUM_CONTROL";
+            this.colNUM_CONTROL.Visible = true;
+            this.colNUM_CONTROL.VisibleIndex = 5;
+            this.colNUM_CONTROL.Width = 300;
             // 
             // gridControl1
             // 
@@ -380,5 +396,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private DevExpress.XtraEditors.SimpleButton btnNuevoGasto;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
+        private DevExpress.XtraGrid.Columns.GridColumn colNUM_CONTROL;
     }
 }

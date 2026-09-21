@@ -20,6 +20,8 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private DataTable _dtDocumentos;
         public string UidEnlaceCheque { get; set; }
+
+        public int IdCheque { get; set; }
         public DataTable TotalesAcumulados { get; private set; }
         public decimal TotalNetoAPagar { get; private set; }
 
@@ -217,6 +219,7 @@ namespace SistemaContable.UI.Forms.Bancos
                     new
                     {
                         ACCION = "LISTAR_POR_UID",
+                        ID_CHEQUE = IdCheque, 
                         UID_ENLACE_CHEQUE = UidEnlaceCheque
                     });
 

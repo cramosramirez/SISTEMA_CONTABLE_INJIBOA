@@ -15,31 +15,39 @@ namespace SistemaContable.UI.ImportaDistrib
         private static string UrlApi =>
             ConfigurationManager.AppSettings["UrlConsultaDistrib"];
 
+        private static string UsarTokenFijo =>
+            ConfigurationManager.AppSettings["UsarTokenFijo"];
+
+        private static string TokenFijo =>
+            ConfigurationManager.AppSettings["TokenFijo"];
+
         // ============================================================
         // 1) Token del día (base de datos ERPMH, servidor distinto)
         // ============================================================
-       
+
         public string ObtenerTokenDelDia()
         {
-            using (var cn = new SqlConnection(CadenaConexionDistrib))
+            if(UsarTokenFijo == "S")
             {
-                cn.Open();
-                using (var cmd = new SqlCommand(
-                    "SELECT TOP 1 TOKENDZ FROM [ERPMH].[EDIZUCAR].[TOKEN] WHERE ACTIVO = 1", cn))
-                {
-                    object resultado = cmd.ExecuteScalar();
-                    if (resultado == null || resultado == DBNull.Value)
-                        throw new Exception("No se encontró un token activo en ERPMH.EDIZUCAR.TOKEN.");
-
-                    return resultado.ToString();
-                }
+                return TokenFijo; 
             }
+            else
+            {
+                using (var cn = new SqlConnection(CadenaConexionDistrib))
+                {
+                    cn.Open();
+                    using (var cmd = new SqlCommand(
+                        "SELECT TOP 1 TOKENDZ FROM [ERPMH].[EDIZUCAR].[TOKEN] WHERE ACTIVO = 1", cn))
+                    {
+                        object resultado = cmd.ExecuteScalar();
+                        if (resultado == null || resultado == DBNull.Value)
+                            throw new Exception("No se encontró un token activo en ERPMH.EDIZUCAR.TOKEN.");
+
+                        return resultado.ToString();
+                    }
+                }
+            }            
         }
-        
-        //public string ObtenerTokenDelDia()
-        //{
-        //    return "527-6DC-F8W22LFBEQH-FE8493J2KA7935D98Y7-BXQE9Z9Y2J97V-OJXD3O5DEO-32V88MLGPSU-BH58FWG-8H-237DNLSBI3529EUN9L5129Q-5579ALE5QD36R7H-BC98WBD878-VRV7CQB9SS524BTGGBY6-8V5CO3-YDE9-H9N784Z3..C1A-CB00F171001-171105-010-150-70101";
-        //}
 
         // ============================================================
         // 2) Llamada al API (tipo = "D" ventas, "A" gastos)

@@ -36,9 +36,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.dteFECHA_LIQUIDACION = new DevExpress.XtraEditors.DateEdit();
             this.label1 = new System.Windows.Forms.Label();
             this.panelResumen = new System.Windows.Forms.Panel();
-            this.linkImportarDIZUCAR = new System.Windows.Forms.LinkLabel();
-            this.linkGenerarTodos = new System.Windows.Forms.LinkLabel();
-            this.linkExpandirContraer = new System.Windows.Forms.LinkLabel();
+            this.btnImportarDIZUCAR = new DevExpress.XtraEditors.SimpleButton();
+            this.btnGenerarTodos = new DevExpress.XtraEditors.SimpleButton();
+            this.btnExpandirContraer = new DevExpress.XtraEditors.SimpleButton();
             this.panel4 = new System.Windows.Forms.Panel();
             this.lblVENTAS_MENOS_GASTOS = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -99,7 +99,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.cbxEMPRESA.Location = new System.Drawing.Point(461, 48);
             this.cbxEMPRESA.Name = "cbxEMPRESA";
             this.cbxEMPRESA.Size = new System.Drawing.Size(342, 31);
-            this.cbxEMPRESA.TabIndex = 4;
+            this.cbxEMPRESA.TabIndex = 1;
             // 
             // label3
             // 
@@ -142,7 +142,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.dteFECHA_LIQUIDACION.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dteFECHA_LIQUIDACION.Properties.Mask.EditMask = "dd/MM/yyyy";
             this.dteFECHA_LIQUIDACION.Size = new System.Drawing.Size(123, 28);
-            this.dteFECHA_LIQUIDACION.TabIndex = 1;
+            this.dteFECHA_LIQUIDACION.TabIndex = 0;
             // 
             // label1
             // 
@@ -156,9 +156,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             // 
             // panelResumen
             // 
-            this.panelResumen.Controls.Add(this.linkImportarDIZUCAR);
-            this.panelResumen.Controls.Add(this.linkGenerarTodos);
-            this.panelResumen.Controls.Add(this.linkExpandirContraer);
+            this.panelResumen.Controls.Add(this.btnImportarDIZUCAR);
+            this.panelResumen.Controls.Add(this.btnGenerarTodos);
+            this.panelResumen.Controls.Add(this.btnExpandirContraer);
             this.panelResumen.Controls.Add(this.panel4);
             this.panelResumen.Controls.Add(this.panel3);
             this.panelResumen.Controls.Add(this.panel2);
@@ -169,39 +169,44 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panelResumen.Size = new System.Drawing.Size(1539, 99);
             this.panelResumen.TabIndex = 1;
             // 
-            // linkImportarDIZUCAR
+            // btnImportarDIZUCAR
             // 
-            this.linkImportarDIZUCAR.AutoSize = true;
-            this.linkImportarDIZUCAR.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkImportarDIZUCAR.Location = new System.Drawing.Point(1187, 52);
-            this.linkImportarDIZUCAR.Name = "linkImportarDIZUCAR";
-            this.linkImportarDIZUCAR.Size = new System.Drawing.Size(203, 21);
-            this.linkImportarDIZUCAR.TabIndex = 6;
-            this.linkImportarDIZUCAR.TabStop = true;
-            this.linkImportarDIZUCAR.Text = "Importar datos de DIZUCAR";
-            this.linkImportarDIZUCAR.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkImportarDIZUCAR_LinkClicked);
+            this.btnImportarDIZUCAR.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnImportarDIZUCAR.Appearance.Options.UseFont = true;
+            this.btnImportarDIZUCAR.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnImportarDIZUCAR.ImageOptions.ImageToTextIndent = 10;
+            this.btnImportarDIZUCAR.Location = new System.Drawing.Point(1256, 16);
+            this.btnImportarDIZUCAR.Name = "btnImportarDIZUCAR";
+            this.btnImportarDIZUCAR.Size = new System.Drawing.Size(254, 34);
+            this.btnImportarDIZUCAR.TabIndex = 0;
+            this.btnImportarDIZUCAR.Text = "Importar API de DIZUCAR";
+            this.btnImportarDIZUCAR.Click += new System.EventHandler(this.btnImportarDIZUCAR_Click);
             // 
-            // linkGenerarTodos
+            // btnGenerarTodos
             // 
-            this.linkGenerarTodos.AutoSize = true;
-            this.linkGenerarTodos.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkGenerarTodos.Location = new System.Drawing.Point(1187, 17);
-            this.linkGenerarTodos.Name = "linkGenerarTodos";
-            this.linkGenerarTodos.Size = new System.Drawing.Size(264, 21);
-            this.linkGenerarTodos.TabIndex = 5;
-            this.linkGenerarTodos.TabStop = true;
-            this.linkGenerarTodos.Text = "Generar masivamente todos los CLQ";
+            this.btnGenerarTodos.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGenerarTodos.Appearance.Options.UseFont = true;
+            this.btnGenerarTodos.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnGenerarTodos.ImageOptions.ImageToTextIndent = 10;
+            this.btnGenerarTodos.Location = new System.Drawing.Point(1256, 57);
+            this.btnGenerarTodos.Name = "btnGenerarTodos";
+            this.btnGenerarTodos.Size = new System.Drawing.Size(254, 34);
+            this.btnGenerarTodos.TabIndex = 2;
+            this.btnGenerarTodos.Text = "Generar documentos (CLQ y gastos)";
+            this.btnGenerarTodos.Click += new System.EventHandler(this.btnGenerarTodos_Click);
             // 
-            // linkExpandirContraer
+            // btnExpandirContraer
             // 
-            this.linkExpandirContraer.AutoSize = true;
-            this.linkExpandirContraer.Font = new System.Drawing.Font("Segoe UI", 10.01739F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkExpandirContraer.Location = new System.Drawing.Point(1058, 17);
-            this.linkExpandirContraer.Name = "linkExpandirContraer";
-            this.linkExpandirContraer.Size = new System.Drawing.Size(113, 21);
-            this.linkExpandirContraer.TabIndex = 4;
-            this.linkExpandirContraer.TabStop = true;
-            this.linkExpandirContraer.Text = "Expandir todos";
+            this.btnExpandirContraer.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExpandirContraer.Appearance.Options.UseFont = true;
+            this.btnExpandirContraer.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnExpandirContraer.ImageOptions.ImageToTextIndent = 10;
+            this.btnExpandirContraer.Location = new System.Drawing.Point(1102, 17);
+            this.btnExpandirContraer.Name = "btnExpandirContraer";
+            this.btnExpandirContraer.Size = new System.Drawing.Size(119, 34);
+            this.btnExpandirContraer.TabIndex = 1;
+            this.btnExpandirContraer.Text = "Expandir todos";
+            this.btnExpandirContraer.Click += new System.EventHandler(this.btnExpandirContraer_Click);
             // 
             // panel4
             // 
@@ -384,7 +389,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.tabNavigationPage2.Controls.Add(this.gridControl2);
             this.tabNavigationPage2.Name = "tabNavigationPage2";
             this.tabNavigationPage2.PageText = "GASTOS APLICADOS";
-            this.tabNavigationPage2.Size = new System.Drawing.Size(1323, 528);
+            this.tabNavigationPage2.Size = new System.Drawing.Size(1539, 528);
             // 
             // gridControl2
             // 
@@ -392,7 +397,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.gridControl2.Location = new System.Drawing.Point(0, 0);
             this.gridControl2.MainView = this.gridGASTOS;
             this.gridControl2.Name = "gridControl2";
-            this.gridControl2.Size = new System.Drawing.Size(1323, 528);
+            this.gridControl2.Size = new System.Drawing.Size(1539, 528);
             this.gridControl2.TabIndex = 1;
             this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridGASTOS});
@@ -422,7 +427,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties)).EndInit();
             this.panelResumen.ResumeLayout(false);
-            this.panelResumen.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -469,8 +473,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private DevExpress.XtraGrid.Views.Grid.GridView gridCLQ;
         private DevExpress.XtraGrid.GridControl gridControl2;
         private DevExpress.XtraGrid.Views.Grid.GridView gridGASTOS;
-        private System.Windows.Forms.LinkLabel linkExpandirContraer;
-        private System.Windows.Forms.LinkLabel linkGenerarTodos;
-        private System.Windows.Forms.LinkLabel linkImportarDIZUCAR;
+        private DevExpress.XtraEditors.SimpleButton btnExpandirContraer;
+        private DevExpress.XtraEditors.SimpleButton btnImportarDIZUCAR;
+        private DevExpress.XtraEditors.SimpleButton btnGenerarTodos;
     }
 }

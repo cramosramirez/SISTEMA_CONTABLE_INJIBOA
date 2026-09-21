@@ -35,13 +35,11 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
         private int _idEntidad = 0;
         private string _codigoEntidad = string.Empty;
-        private string _idTipoContribProveedor = "";
-        private string _idTipoPersona = "";
+        private string _idTipoContribProveedor = "";        
         private bool _validarCompIVAR = false;
         private bool _guardado = false;
 
-        public int IdCcfGasto { get; set; } = 0;
-        public bool EsContado { get; set; } = false;
+        public int IdCcfGasto { get; set; } = 0;       
         public string UidEnlaceCheque { get; set; } = string.Empty;
 
         #endregion
@@ -51,13 +49,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         }
 
 
-        private void frmDocumentoCompra_Load(object sender, EventArgs e)
+        private void frmDocumento_Gasto_Load(object sender, EventArgs e)
         {
-            FormHelper.Inicializar(this);
-            if (EsContado)
-            {
-                Text = "Compras al Contado";                
-            }
+            FormHelper.Inicializar(this);           
             InicializarHelperMinisterioHacienda();
             CargarCombos();
             cbxSUCURSAL.SelectedValue = 1;
@@ -89,7 +83,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                         { "NOMBRE",         300 },
                         { "NIT",            120 }
                     },
-                    ParametrosExtra = new { ROL = "PRO" }
+                    ParametrosExtra = new { ROL = "DISTRIB" }
                 },
                 fila => AsignarProveedor(fila)
             );
@@ -130,33 +124,24 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                 case EstadoFormulario.Nuevo:
                     txtPROVEEDOR.Enabled = true;
                     btnGuardar.Enabled = true;
-                    btnValidar.Enabled = false;
-                    btnAdicionar.Enabled = false;
-                    btnImprimirQuedan.Enabled = false;
+                    btnValidar.Enabled = false;                    
                     btnImprimirRetencion.Enabled = false;
-                    btnCorreo.Enabled = false;
-                    btnProvision.Enabled = false;
+                    btnCorreo.Enabled = false;                    
                     break;
                 case EstadoFormulario.Guardado:
                     txtPROVEEDOR.Enabled = false;
                     btnGuardar.Enabled = true;
-                    btnValidar.Enabled = _validarCompIVAR;
-                    btnAdicionar.Enabled = !EsContado && _codigoEntidad.Equals(Configuracion.CodigoCCJIBOA);
-                    btnImprimirQuedan.Enabled = !EsContado;
+                    btnValidar.Enabled = _validarCompIVAR;                   
                     btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
-                    btnCorreo.Enabled = false;
-                    btnProvision.Enabled = !EsContado;
+                    btnCorreo.Enabled = false;                    
                     _guardado = true;
                     break;
                 case EstadoFormulario.Validado:
                     txtPROVEEDOR.Enabled = false;
                     btnGuardar.Enabled = true;
-                    btnValidar.Enabled = false;
-                    btnAdicionar.Enabled = false;
-                    btnImprimirQuedan.Enabled = true;
+                    btnValidar.Enabled = false;                    
                     btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
-                    btnCorreo.Enabled = (ObtenerDecimal(txtIVAR) > 0);
-                    btnProvision.Enabled = !EsContado;
+                    btnCorreo.Enabled = (ObtenerDecimal(txtIVAR) > 0);                    
                     break;
             }
         }
@@ -167,11 +152,11 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             {
                 Cursor = Cursors.WaitCursor;
 
-                DataTable dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",
+                DataTable dt = _dal.EjecutarConsulta("DISTRIB.SP_CREDITO_FISCAL_GASTO",
                     new
                     {
                         ACCION = "OBTENER",
-                        ID_CCF_COMPRA = idCcfCompra
+                        ID_CCF_GASTO = idCcfCompra
                     });
 
                 if (dt.Rows.Count == 0)
@@ -184,8 +169,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
                 DataRow r = dt.Rows[0];               
                 // ---------- Proveedor ----------
-                _idEntidad = Convert.ToInt32(r["ID_ENTIDAD"]);
-                _idTipoPersona = r["ID_TIPO_ENTIDAD"].ToString();
+                _idEntidad = Convert.ToInt32(r["ID_ENTIDAD"]);                
                 _codigoEntidad = r["CODIGO_ENTIDAD"].ToString();
                 _idTipoContribProveedor = r["ID_TIPO_CONTRIB"] == DBNull.Value
                                           ? "0"
@@ -208,6 +192,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                 txtSELLO_RECIBIDO.Text = AsString(r["SELLO_RECIBIDO"]);
                 txtUNICO.Text = AsString(r["UNICO"]);                
                 mskFECHA_EMISION.Text = AsFecha(r["FECHA_EMISION"]);
+                mskFECHA_RECIBIDO.Text = AsFecha(r["FECHA_RECIBIDO"]);
                 cbxSUCURSAL.SelectedValue = Convert.ToInt32(r["ID_SUCURSAL"]);
 
                 // ---------- Cascada de clasificación ----------
@@ -400,7 +385,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                 {
                     ACCION = "BUSCAR_POR_CODIGO",
                     FILTRO = codigo,
-                    ROL = "PRO"
+                    ROL = "DISTRIB"
                 });
 
                 if (dt.Rows.Count > 0)
@@ -434,8 +419,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             txtACTIVIDAD_PRIMARIA.Text = fila["ACTIVIDAD_PRIMARIA"].ToString();
             txtTIPO_CONTRIBUYENTE.Text = fila["TIPO_CONTRIBUYENTE"].ToString();
             txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
-            _idTipoContribProveedor = fila["ID_TIPO_CONTRIB"].ToString();
-            _idTipoPersona = fila["ID_TIPO_ENTIDAD"].ToString();
+            _idTipoContribProveedor = fila["ID_TIPO_CONTRIB"].ToString();            
             RecalcularTotales();
         }
         private void LimpiarProveedor()
@@ -454,7 +438,16 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
         private void txtCONSULTA_MH_Leave(object sender, EventArgs e)
         {
-            _mhHelper.OnTxtConsultaLeave(txtCONSULTA_MH.Text);
+            if(_idEntidad > 0)
+            {
+                _mhHelper.OnTxtConsultaLeave(txtCONSULTA_MH.Text);
+            }
+            else
+            {
+                XtraMessageBox.Show("Debe ingresar un proveedor.", "Validación",
+                   MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPROVEEDOR.Focus();
+            }            
         }
 
         private void CargarComboFiltrado(int idClasifica)
@@ -641,14 +634,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         // ================================================================
 
 
-        #region === VARIABLES DE ESTADO ===
-
-        // ID del Quedan al que pertenece la operación actual.
-        //   0  = el SP lo creará al guardar el primer CCF
-        //  > 0 = ya existe (se reutiliza para CCFs adicionales del mismo proveedor)
-        private int _idQuedanActual = 0;
-
-        #endregion
+        
 
 
 
@@ -783,7 +769,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     USUARIO = Configuracion.UsuarioActual
                 };
 
-                DataTable dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA", parametros);
+                DataTable dt = _dal.EjecutarConsulta("DISTRIB.SP_CREDITO_FISCAL_GASTO", parametros);
 
                 if (dt.Rows.Count == 0)
                     throw new Exception("El SP no devolvió los IDs generados.");
@@ -814,72 +800,12 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
         #endregion
 
-
-        #region === BOTÓN "NUEVO CCF MISMO QUEDAN" ===
-
-        private void btnADICIONAR_Click(object sender, EventArgs e)
-        {
-            if (_idQuedanActual == 0)
-            {
-                XtraMessageBox.Show(
-                    "Aún no se ha guardado ningún documento. Primero guarde uno para crear el Quedan.",
-                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (XtraMessageBox.Show(
-                    "¿Agregar otro documento al mismo Quedan y proveedor?",
-                    "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-                != DialogResult.Yes) return;
-
-            LimpiarParaNuevoCcf();
-        }
-
-        private void LimpiarParaNuevoCcf()
-        {
-
-            IdCcfGasto = 0;
-
-            cbxTIPO_DTE.SelectedValue = -1;
-            txtNUM_CONTROL.Text = "";
-            txtCOD_GENERACION.Text = "";
-            txtSELLO_RECIBIDO.Text = "";
-            mskFECHA_EMISION.Text = "";
-            mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");                       
-
-            cbxTIPO_SERVICIO.SelectedValue = -1;
-            cbxTIPO_OPERACION.SelectedValue = -1;
-            LimpiarCombo(cbxCLASIFICACION, "ID_CLASIFICA");
-            LimpiarCombo(cbxSECTOR, "ID_SECTOR");
-            LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");            
-
-            foreach (var tb in new[] {
-                txtGRAVADA, txtEXENTA, txtEXCLUIDO,
-                txtIVA,     txtTOTAL,
-                txtCARGO,   txtABONO,  
-                txtIVAR,    txtSALDO, txtOBSERVACION })
-            {
-                tb.Text = "";
-            }
-            txtCONSULTA_MH.Focus();
-        }
-
-        #endregion
-
-
+        
         #region === HELPERS DE PARSEO ===
 
         private static DateTime ParsearFecha(string texto)
         {
             return DateTime.ParseExact(texto, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-        }
-
-        private static DateTime? ParsearFechaOpcional(string texto)
-        {
-            if (DateTime.TryParseExact(texto, "dd/MM/yyyy",
-                    CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime f))
-                return f;
-            return null;
         }
 
         private static string NullIfEmpty(string texto)
@@ -976,31 +902,13 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             }
             catch { }
         }      
-
-        private void btnImprimirQuedan_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Cursor = Cursors.WaitCursor;
-                var reporte = new rptQuedan { IdQuedan = _idQuedanActual };
-                reporte.MostrarPreview();
-            }
-            catch (Exception ex)
-            {
-                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
-            }
-        }
-
+                
         private void btnImprimirRetencion_Click(object sender, EventArgs e)
         {
             try
             {
                 Cursor = Cursors.WaitCursor;
-                var reporte = new rptCompRetencion { IdCcfCompra = IdCcfGasto };
+                var reporte = new rptCompRetencion { IdCcfCompra = IdCcfGasto, Origen = rptCompRetencion.OrigenDatos.Distribucion };
                 reporte.MostrarPreview();
             }
             catch (Exception ex)
@@ -1032,7 +940,41 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     txtUNICO.ReadOnly = false;
                 }
             }
-        }      
+        }
+
+        private void cbxTIPO_OPERACION_SelectionChangeCommitted_1(object sender, EventArgs e)
+        {
+            LimpiarCombo(cbxCLASIFICACION, "ID_CLASIFICA");
+            LimpiarCombo(cbxSECTOR, "ID_SECTOR");
+            LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) return;
+            int idTipoOpera = Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue);
+            CargarClasificacion(idTipoOpera);
+        }
+
+        private void cbxCLASIFICACION_SelectionChangeCommitted_1(object sender, EventArgs e)
+        {
+            LimpiarCombo(cbxSECTOR, "ID_SECTOR");
+            LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
+            if (!ComboHelper.TieneSeleccion(cbxCLASIFICACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) return;
+            int idTipoOpera = Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue);
+            int idClasifica = Convert.ToInt32(cbxCLASIFICACION.SelectedValue);
+            CargarSector(idTipoOpera, idClasifica);
+        }
+
+        private void cbxSECTOR_SelectionChangeCommitted_1(object sender, EventArgs e)
+        {
+            LimpiarCombo(cbxTIPO_COSTO, "ID_TIPO_COSTO");
+            if (!ComboHelper.TieneSeleccion(cbxSECTOR)) return;
+            if (!ComboHelper.TieneSeleccion(cbxCLASIFICACION)) return;
+            if (!ComboHelper.TieneSeleccion(cbxTIPO_OPERACION)) return;
+            int idTipoOpera = Convert.ToInt32(cbxTIPO_OPERACION.SelectedValue);
+            int idClasifica = Convert.ToInt32(cbxCLASIFICACION.SelectedValue);
+            int idSector = Convert.ToInt32(cbxSECTOR.SelectedValue);
+            CargarTipoCosto(idTipoOpera, idClasifica, idSector);
+        }
+        
     }
 
 }

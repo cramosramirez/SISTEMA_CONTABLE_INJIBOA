@@ -816,7 +816,16 @@ namespace SistemaContable.UI.Forms.Proveedores
         
         private void txtCONSULTA_MH_Leave(object sender, EventArgs e)
         {
-            _mhHelper.OnTxtConsultaLeave(txtCONSULTA_MH.Text);            
+            if (_idEntidad > 0)
+            {
+                _mhHelper.OnTxtConsultaLeave(txtCONSULTA_MH.Text);
+            }
+            else
+            {
+                XtraMessageBox.Show("Debe ingresar un proveedor.", "Validación",
+                   MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPROVEEDOR.Focus();
+            }
         }
                       
         private void btnFinalizar_Click(object sender, EventArgs e)

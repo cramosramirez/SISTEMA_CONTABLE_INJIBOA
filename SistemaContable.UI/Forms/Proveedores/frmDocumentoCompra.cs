@@ -82,7 +82,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 new BusquedaConfig
                 {
                     StoredProcedure = "SP_ENTIDAD",
-                    Accion = "BUSCAR",
+                    Accion = "BUSCAR_CONTRIBUYENTES",
                     Columnas = new Dictionary<string, string>
                     {
                         { "CODIGO_ENTIDAD", "PROVEEDOR" },
@@ -458,7 +458,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 var dt = _dal.EjecutarConsulta("SP_ENTIDAD", new
                 {
-                    ACCION = "BUSCAR_POR_CODIGO",
+                    ACCION = "BUSCAR_POR_CODIGO_CONTRIBUYENTE",
                     FILTRO = codigo,
                     ROL = "PRO"
                 });
@@ -514,7 +514,16 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void txtCONSULTA_MH_Leave(object sender, EventArgs e)
         {
-            _mhHelper.OnTxtConsultaLeave(txtCONSULTA_MH.Text);
+            if (_idEntidad > 0)
+            {
+                _mhHelper.OnTxtConsultaLeave(txtCONSULTA_MH.Text);
+            }
+            else
+            {
+                XtraMessageBox.Show("Debe ingresar un proveedor.", "Validación",
+                   MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPROVEEDOR.Focus();
+            }
         }
        
         private void CargarComboFiltrado(int idClasifica)
@@ -767,6 +776,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
+            
             if(IdCcfCompra == 0 && !string.IsNullOrWhiteSpace(txtCOD_GENERACION.Text.Trim()) && !string.IsNullOrWhiteSpace(txtNUM_CONTROL.Text.Trim()))
             {
                 var resp = DevExpress.XtraEditors.XtraMessageBox.Show(

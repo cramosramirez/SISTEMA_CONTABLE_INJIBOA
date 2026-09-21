@@ -36,15 +36,12 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtUNICO = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
-            this.btnProvision = new DevExpress.XtraEditors.SimpleButton();
             this.txtDIRECCION = new System.Windows.Forms.TextBox();
             this.btnCorreo = new DevExpress.XtraEditors.SimpleButton();
             this.label6 = new System.Windows.Forms.Label();
             this.btnImprimirRetencion = new DevExpress.XtraEditors.SimpleButton();
-            this.btnImprimirQuedan = new DevExpress.XtraEditors.SimpleButton();
             this.btnValidar = new DevExpress.XtraEditors.SimpleButton();
             this.txtTIPO_CONTRIBUYENTE = new System.Windows.Forms.TextBox();
-            this.btnAdicionar = new DevExpress.XtraEditors.SimpleButton();
             this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.label39 = new System.Windows.Forms.Label();
             this.txtACTIVIDAD_PRIMARIA = new System.Windows.Forms.TextBox();
@@ -117,15 +114,12 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.groupBox1.Controls.Add(this.txtUNICO);
             this.groupBox1.Controls.Add(this.label25);
             this.groupBox1.Controls.Add(this.btnFinalizar);
-            this.groupBox1.Controls.Add(this.btnProvision);
             this.groupBox1.Controls.Add(this.txtDIRECCION);
             this.groupBox1.Controls.Add(this.btnCorreo);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.btnImprimirRetencion);
-            this.groupBox1.Controls.Add(this.btnImprimirQuedan);
             this.groupBox1.Controls.Add(this.btnValidar);
             this.groupBox1.Controls.Add(this.txtTIPO_CONTRIBUYENTE);
-            this.groupBox1.Controls.Add(this.btnAdicionar);
             this.groupBox1.Controls.Add(this.btnGuardar);
             this.groupBox1.Controls.Add(this.label39);
             this.groupBox1.Controls.Add(this.txtACTIVIDAD_PRIMARIA);
@@ -213,7 +207,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.mskFECHA_RECIBIDO.Mask = "00/00/0000";
             this.mskFECHA_RECIBIDO.Name = "mskFECHA_RECIBIDO";
             this.mskFECHA_RECIBIDO.Size = new System.Drawing.Size(131, 24);
-            this.mskFECHA_RECIBIDO.TabIndex = 119;
+            this.mskFECHA_RECIBIDO.TabIndex = 17;
             // 
             // txtUNICO
             // 
@@ -244,24 +238,10 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.btnFinalizar.Location = new System.Drawing.Point(1158, 494);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(119, 47);
-            this.btnFinalizar.TabIndex = 48;
+            this.btnFinalizar.TabIndex = 40;
             this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
-            // 
-            // btnProvision
-            // 
-            this.btnProvision.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnProvision.Appearance.Options.UseFont = true;
-            this.btnProvision.Appearance.Options.UseTextOptions = true;
-            this.btnProvision.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnProvision.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnProvision.ImageOptions.Image")));
-            this.btnProvision.ImageOptions.ImageToTextIndent = 10;
-            this.btnProvision.Location = new System.Drawing.Point(1158, 436);
-            this.btnProvision.Name = "btnProvision";
-            this.btnProvision.Size = new System.Drawing.Size(119, 47);
-            this.btnProvision.TabIndex = 47;
-            this.btnProvision.Text = "Provisión";
-            this.btnProvision.Visible = false;
+            this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
             // 
             // txtDIRECCION
             // 
@@ -282,10 +262,10 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.btnCorreo.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnCorreo.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnCorreo.ImageOptions.Image")));
             this.btnCorreo.ImageOptions.ImageToTextIndent = 10;
-            this.btnCorreo.Location = new System.Drawing.Point(1158, 318);
+            this.btnCorreo.Location = new System.Drawing.Point(1158, 203);
             this.btnCorreo.Name = "btnCorreo";
             this.btnCorreo.Size = new System.Drawing.Size(119, 47);
-            this.btnCorreo.TabIndex = 45;
+            this.btnCorreo.TabIndex = 37;
             this.btnCorreo.Text = "Correo";
             // 
             // label6
@@ -306,25 +286,12 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.btnImprimirRetencion.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnImprimirRetencion.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimirRetencion.ImageOptions.Image")));
             this.btnImprimirRetencion.ImageOptions.ImageToTextIndent = 10;
-            this.btnImprimirRetencion.Location = new System.Drawing.Point(1158, 260);
+            this.btnImprimirRetencion.Location = new System.Drawing.Point(1158, 145);
             this.btnImprimirRetencion.Name = "btnImprimirRetencion";
             this.btnImprimirRetencion.Size = new System.Drawing.Size(119, 47);
-            this.btnImprimirRetencion.TabIndex = 44;
+            this.btnImprimirRetencion.TabIndex = 36;
             this.btnImprimirRetencion.Text = "Imprimir Retención";
-            // 
-            // btnImprimirQuedan
-            // 
-            this.btnImprimirQuedan.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnImprimirQuedan.Appearance.Options.UseFont = true;
-            this.btnImprimirQuedan.Appearance.Options.UseTextOptions = true;
-            this.btnImprimirQuedan.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnImprimirQuedan.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimirQuedan.ImageOptions.Image")));
-            this.btnImprimirQuedan.ImageOptions.ImageToTextIndent = 10;
-            this.btnImprimirQuedan.Location = new System.Drawing.Point(1158, 203);
-            this.btnImprimirQuedan.Name = "btnImprimirQuedan";
-            this.btnImprimirQuedan.Size = new System.Drawing.Size(119, 47);
-            this.btnImprimirQuedan.TabIndex = 43;
-            this.btnImprimirQuedan.Text = "Imprimir Quedan";
+            this.btnImprimirRetencion.Click += new System.EventHandler(this.btnImprimirRetencion_Click);
             // 
             // btnValidar
             // 
@@ -333,10 +300,10 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.btnValidar.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnValidar.ImageOptions.Image")));
             this.btnValidar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnValidar.ImageOptions.ImageToTextIndent = 10;
-            this.btnValidar.Location = new System.Drawing.Point(1158, 376);
+            this.btnValidar.Location = new System.Drawing.Point(1158, 261);
             this.btnValidar.Name = "btnValidar";
             this.btnValidar.Size = new System.Drawing.Size(119, 47);
-            this.btnValidar.TabIndex = 46;
+            this.btnValidar.TabIndex = 38;
             this.btnValidar.Text = "Validar";
             // 
             // txtTIPO_CONTRIBUYENTE
@@ -350,20 +317,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtTIPO_CONTRIBUYENTE.TabIndex = 8;
             this.txtTIPO_CONTRIBUYENTE.TabStop = false;
             // 
-            // btnAdicionar
-            // 
-            this.btnAdicionar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAdicionar.Appearance.Options.UseFont = true;
-            this.btnAdicionar.Appearance.Options.UseTextOptions = true;
-            this.btnAdicionar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnAdicionar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
-            this.btnAdicionar.ImageOptions.ImageToTextIndent = 10;
-            this.btnAdicionar.Location = new System.Drawing.Point(1155, 146);
-            this.btnAdicionar.Name = "btnAdicionar";
-            this.btnAdicionar.Size = new System.Drawing.Size(119, 47);
-            this.btnAdicionar.TabIndex = 42;
-            this.btnAdicionar.Text = "Adicionar documento";
-            // 
             // btnGuardar
             // 
             this.btnGuardar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -374,8 +327,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.btnGuardar.Location = new System.Drawing.Point(1155, 88);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(119, 47);
-            this.btnGuardar.TabIndex = 41;
+            this.btnGuardar.TabIndex = 33;
             this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // label39
             // 
@@ -467,7 +421,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtOBSERVACION.Multiline = true;
             this.txtOBSERVACION.Name = "txtOBSERVACION";
             this.txtOBSERVACION.Size = new System.Drawing.Size(974, 49);
-            this.txtOBSERVACION.TabIndex = 40;
+            this.txtOBSERVACION.TabIndex = 32;
             // 
             // txtSALDO
             // 
@@ -476,7 +430,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtSALDO.Name = "txtSALDO";
             this.txtSALDO.ReadOnly = true;
             this.txtSALDO.Size = new System.Drawing.Size(201, 24);
-            this.txtSALDO.TabIndex = 39;
+            this.txtSALDO.TabIndex = 31;
             this.txtSALDO.TabStop = false;
             this.txtSALDO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -497,7 +451,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtIVAR.Name = "txtIVAR";
             this.txtIVAR.ReadOnly = true;
             this.txtIVAR.Size = new System.Drawing.Size(201, 24);
-            this.txtIVAR.TabIndex = 38;
+            this.txtIVAR.TabIndex = 30;
             this.txtIVAR.TabStop = false;
             this.txtIVAR.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -518,7 +472,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtABONO.Name = "txtABONO";
             this.txtABONO.ReadOnly = true;
             this.txtABONO.Size = new System.Drawing.Size(201, 24);
-            this.txtABONO.TabIndex = 34;
+            this.txtABONO.TabIndex = 29;
             this.txtABONO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label31
@@ -538,7 +492,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtCARGO.Name = "txtCARGO";
             this.txtCARGO.ReadOnly = true;
             this.txtCARGO.Size = new System.Drawing.Size(201, 24);
-            this.txtCARGO.TabIndex = 33;
+            this.txtCARGO.TabIndex = 28;
             this.txtCARGO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label32
@@ -558,7 +512,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtTOTAL.Name = "txtTOTAL";
             this.txtTOTAL.ReadOnly = true;
             this.txtTOTAL.Size = new System.Drawing.Size(129, 24);
-            this.txtTOTAL.TabIndex = 32;
+            this.txtTOTAL.TabIndex = 27;
             this.txtTOTAL.TabStop = false;
             this.txtTOTAL.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -579,7 +533,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtIVA.Name = "txtIVA";
             this.txtIVA.ReadOnly = true;
             this.txtIVA.Size = new System.Drawing.Size(129, 24);
-            this.txtIVA.TabIndex = 29;
+            this.txtIVA.TabIndex = 26;
             this.txtIVA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label29
@@ -598,7 +552,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtEXCLUIDO.Location = new System.Drawing.Point(673, 391);
             this.txtEXCLUIDO.Name = "txtEXCLUIDO";
             this.txtEXCLUIDO.Size = new System.Drawing.Size(129, 24);
-            this.txtEXCLUIDO.TabIndex = 28;
+            this.txtEXCLUIDO.TabIndex = 25;
             this.txtEXCLUIDO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label24
@@ -617,7 +571,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtEXENTA.Location = new System.Drawing.Point(673, 361);
             this.txtEXENTA.Name = "txtEXENTA";
             this.txtEXENTA.Size = new System.Drawing.Size(129, 24);
-            this.txtEXENTA.TabIndex = 27;
+            this.txtEXENTA.TabIndex = 24;
             this.txtEXENTA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label23
@@ -636,7 +590,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.txtGRAVADA.Location = new System.Drawing.Point(673, 331);
             this.txtGRAVADA.Name = "txtGRAVADA";
             this.txtGRAVADA.Size = new System.Drawing.Size(129, 24);
-            this.txtGRAVADA.TabIndex = 26;
+            this.txtGRAVADA.TabIndex = 23;
             this.txtGRAVADA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label22
@@ -657,7 +611,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.cbxSUCURSAL.Location = new System.Drawing.Point(676, 256);
             this.cbxSUCURSAL.Name = "cbxSUCURSAL";
             this.cbxSUCURSAL.Size = new System.Drawing.Size(434, 25);
-            this.cbxSUCURSAL.TabIndex = 20;
+            this.cbxSUCURSAL.TabIndex = 15;
             // 
             // label20
             // 
@@ -677,7 +631,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.cbxTIPO_COSTO.Location = new System.Drawing.Point(136, 454);
             this.cbxTIPO_COSTO.Name = "cbxTIPO_COSTO";
             this.cbxTIPO_COSTO.Size = new System.Drawing.Size(460, 25);
-            this.cbxTIPO_COSTO.TabIndex = 25;
+            this.cbxTIPO_COSTO.TabIndex = 22;
             // 
             // label10
             // 
@@ -697,7 +651,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.cbxSECTOR.Location = new System.Drawing.Point(136, 424);
             this.cbxSECTOR.Name = "cbxSECTOR";
             this.cbxSECTOR.Size = new System.Drawing.Size(460, 25);
-            this.cbxSECTOR.TabIndex = 24;
+            this.cbxSECTOR.TabIndex = 21;
+            this.cbxSECTOR.SelectionChangeCommitted += new System.EventHandler(this.cbxSECTOR_SelectionChangeCommitted_1);
             // 
             // label9
             // 
@@ -717,7 +672,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.cbxCLASIFICACION.Location = new System.Drawing.Point(136, 394);
             this.cbxCLASIFICACION.Name = "cbxCLASIFICACION";
             this.cbxCLASIFICACION.Size = new System.Drawing.Size(460, 25);
-            this.cbxCLASIFICACION.TabIndex = 23;
+            this.cbxCLASIFICACION.TabIndex = 20;
+            this.cbxCLASIFICACION.SelectionChangeCommitted += new System.EventHandler(this.cbxCLASIFICACION_SelectionChangeCommitted_1);
             // 
             // label8
             // 
@@ -737,7 +693,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.cbxTIPO_OPERACION.Location = new System.Drawing.Point(136, 364);
             this.cbxTIPO_OPERACION.Name = "cbxTIPO_OPERACION";
             this.cbxTIPO_OPERACION.Size = new System.Drawing.Size(460, 25);
-            this.cbxTIPO_OPERACION.TabIndex = 22;
+            this.cbxTIPO_OPERACION.TabIndex = 19;
+            this.cbxTIPO_OPERACION.SelectionChangeCommitted += new System.EventHandler(this.cbxTIPO_OPERACION_SelectionChangeCommitted_1);
             // 
             // label7
             // 
@@ -757,7 +714,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.cbxTIPO_SERVICIO.Location = new System.Drawing.Point(136, 334);
             this.cbxTIPO_SERVICIO.Name = "cbxTIPO_SERVICIO";
             this.cbxTIPO_SERVICIO.Size = new System.Drawing.Size(460, 25);
-            this.cbxTIPO_SERVICIO.TabIndex = 21;
+            this.cbxTIPO_SERVICIO.TabIndex = 18;
             // 
             // label5
             // 
@@ -986,6 +943,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.Name = "frmDocumento_Gasto";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gasto de distribuidora";
+            this.Load += new System.EventHandler(this.frmDocumento_Gasto_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -998,15 +956,12 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private System.Windows.Forms.TextBox txtUNICO;
         private System.Windows.Forms.Label label25;
         private DevExpress.XtraEditors.SimpleButton btnFinalizar;
-        private DevExpress.XtraEditors.SimpleButton btnProvision;
         private System.Windows.Forms.TextBox txtDIRECCION;
         private DevExpress.XtraEditors.SimpleButton btnCorreo;
         private System.Windows.Forms.Label label6;
         private DevExpress.XtraEditors.SimpleButton btnImprimirRetencion;
-        private DevExpress.XtraEditors.SimpleButton btnImprimirQuedan;
         private DevExpress.XtraEditors.SimpleButton btnValidar;
         private System.Windows.Forms.TextBox txtTIPO_CONTRIBUYENTE;
-        private DevExpress.XtraEditors.SimpleButton btnAdicionar;
         private DevExpress.XtraEditors.SimpleButton btnGuardar;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.TextBox txtACTIVIDAD_PRIMARIA;

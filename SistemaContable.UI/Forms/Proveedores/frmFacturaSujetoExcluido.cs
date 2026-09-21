@@ -533,6 +533,14 @@ namespace SistemaContable.UI.Forms.Proveedores
                 return false;
             }
 
+            if (txtCONCEPTO.Text.Trim() == "")
+            {
+                XtraMessageBox.Show("Ingrese el concepto de la factura.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCONCEPTO.Focus();
+                return false;
+            }
+
             return true;
         }
 

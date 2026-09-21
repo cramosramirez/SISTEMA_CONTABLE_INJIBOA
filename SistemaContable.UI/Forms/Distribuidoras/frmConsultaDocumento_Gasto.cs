@@ -9,6 +9,8 @@ using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using SistemaContable.RP.Bancos.Proveedores;
+using DevExpress.XtraEditors;
 
 namespace SistemaContable.UI.Forms.Distribuidoras
 {
@@ -77,7 +79,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         {
             if (e.Column == colVER_R)
             {
-                object val = gvDetalle.GetRowCellValue(e.RowHandle, "ID_COMPROBANTE_RET_GASTO");
+                object val = gvDetalle.GetRowCellValue(e.RowHandle, "ID_COMPROBANTE_RET");
                 bool tieneRetencion = val != null && val != DBNull.Value;
 
                 e.RepositoryItem = tieneRetencion ? riVerR : riVerRVacio;
@@ -87,7 +89,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private void CargarDatos()
         {
             _dtDetalle = _dal.EjecutarConsulta("DISTRIB.SP_CREDITO_FISCAL_GASTO",
-                new { ACCION = "LISTAR_COMPRA_X_CAJA_CHICA" });
+                new { ACCION = "LISTAR_COMPROBANTES_CCF" });
             gridControl1.DataSource = _dtDetalle;
         }
 
@@ -103,8 +105,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         {
             using (var frm = new frmDocumento_Gasto())
             {
-                frm.IdCcfGasto = idCcfGasto;
-                frm.EsContado = true;
+                frm.IdCcfGasto = idCcfGasto;                
                 if (frm.ShowDialog(this) == DialogResult.OK)
                 {
                     CargarDatos();
@@ -132,6 +133,28 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private void btnNuevoGasto_Click(object sender, EventArgs e)
         {
             AbrirDocumento(0);
+        }
+
+        private void riVerR_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                int? id = ObtenerIdFilaActiva();
+                if (id.HasValue)
+                {
+                    var reporte = new rptCompRetencion { IdCcfCompra = id.Value, Origen = rptCompRetencion.OrigenDatos.Distribucion };
+                    reporte.MostrarPreview();
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
     }
 }

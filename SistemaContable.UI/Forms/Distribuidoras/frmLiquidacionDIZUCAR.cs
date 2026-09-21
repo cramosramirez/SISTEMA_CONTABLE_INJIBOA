@@ -41,16 +41,14 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             ConfigurarNivelesGridGastos();
             dteFECHA_LIQUIDACION.EditValueChanged += (s, ev) => CargarDatos();
             cbxEMPRESA.SelectedIndexChanged += (s, ev) => AplicarFiltroEmpresa();
-
-            linkExpandirContraer.Click += LinkExpandirContraer_Click;
-            linkGenerarTodos.Click += LinkGenerarTodos_Click;
+                 
             ActualizarTextoLink(); 
             tabPane1.SelectedPageChanged += (s, ev) => ActualizarTextoLink();
 
             CargarDatos();
         }
 
-        private void LinkExpandirContraer_Click(object sender, EventArgs e)
+        private void btnExpandirContraer_Click(object sender, EventArgs e)
         {
             if (tabPane1.SelectedPageIndex == 0)   // CLQ y Documentos de Venta
             {
@@ -65,7 +63,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             ActualizarTextoLink();
         }
 
-        private void LinkGenerarTodos_Click(object sender, EventArgs e)
+        private void btnGenerarTodos_Click(object sender, EventArgs e)
         {
             if (cbxEMPRESA.SelectedValue == null || cbxEMPRESA.SelectedValue == DBNull.Value)
             {
@@ -88,7 +86,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             {
                 Cursor = Cursors.WaitCursor;
 
-                var dt = _dal.EjecutarConsulta("DISTRIB.SP_LIQUIDACION_GENERAR_CLQ", new
+                // 1) Generar CLQ
+                var dtClq = _dal.EjecutarConsulta("DISTRIB.SP_LIQUIDACION_GENERAR_CLQ", new
                 {
                     ACCION = "GENERAR_MASIVO",
                     ID_EMPRESA = idEmpresa,
@@ -96,17 +95,25 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     USUARIO = Configuracion.UsuarioActual
                 });
 
-                int generados = dt.Rows.Count > 0 ? Convert.ToInt32(dt.Rows[0]["CANTIDAD_GENERADOS"]) : 0;
-                string errores = dt.Rows.Count > 0 ? dt.Rows[0]["ERRORES"]?.ToString() : "";
+                // 2) Generar Gastos (misma empresa/fecha)
+                var dtGastos = _dal.EjecutarConsulta("DISTRIB.SP_LIQUIDACION_GENERAR_CREDITO_FISCAL_GASTO", new
+                {
+                    ACCION = "GENERAR_MASIVO",
+                    ID_EMPRESA_PRORRATEO_GASTO = idEmpresa,
+                    FECHA_PROCESA = fecha,
+                    USUARIO = Configuracion.UsuarioActual
+                });
 
-                string mensaje = $"Se generaron {generados} comprobante(s) correctamente.";
-                if (!string.IsNullOrWhiteSpace(errores))
-                    mensaje += $"\n\nOcurrieron errores en algunos documentos:\n{errores}";
+                int generadosClq = dtClq.Rows.Count > 0 ? Convert.ToInt32(dtClq.Rows[0]["CANTIDAD_GENERADOS"]) : 0;
+                string erroresClq = dtClq.Rows.Count > 0 ? dtClq.Rows[0]["ERRORES"]?.ToString() : "";
+                int marcadosGasto = dtGastos.Rows.Count > 0 ? Convert.ToInt32(dtGastos.Rows[0]["CANTIDAD_GENERADOS"]) : 0;
 
-                XtraMessageBox.Show(mensaje, "Generación masiva",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string mensaje = $"CLQ generados: {generadosClq}\nGastos procesados: {marcadosGasto}";
+                if (!string.IsNullOrWhiteSpace(erroresClq))
+                    mensaje += $"\n\nErrores en CLQ:\n{erroresClq}";
 
-                CargarDatos();   // recarga el grid para reflejar los nuevos documento_generado = 1
+                XtraMessageBox.Show(mensaje, "Generación masiva", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarDatos();
             }
             catch (Exception ex)
             {
@@ -122,7 +129,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private void ActualizarTextoLink()
         {
             bool estadoActual = tabPane1.SelectedPageIndex == 0 ? _todosExpandidosClq : _todosExpandidosGastos;
-            linkExpandirContraer.Text = estadoActual ? "Contraer todos" : "Expandir todos";
+            btnExpandirContraer.Text = estadoActual ? "Contraer todos" : "Expandir todos";
         }
 
         private void ExpandirTodasLasFilas(GridView view, bool expandir)
@@ -383,7 +390,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             gridCLQ.CustomUnboundColumnData -= GridCLQ_CustomUnboundColumnData;
             gridCLQ.CustomUnboundColumnData += GridCLQ_CustomUnboundColumnData;
 
-            ConfigurarBotonGenerarGrid();
+            //ConfigurarBotonGenerarGrid();
         }
 
         private void ConfigurarBotonGenerarGrid()
@@ -545,9 +552,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
             string condicion = view.GetRowCellValue(e.RowHandle, "condicion_de_pago")?.ToString() ?? "";
 
-            if (!condicion.ToUpper().Contains("CONTADO"))
+            if (!condicion.ToUpper().Contains("CONTADO") && condicion.ToUpper().Trim() != "")
             {
-                e.Appearance.BackColor = Color.FromArgb(253, 226, 226);   // rojo pálido
+                e.Appearance.BackColor = Color.FromArgb(255, 255, 204);   // amarillo pálido
                 e.Appearance.Options.UseBackColor = true;
             }
         }
@@ -702,7 +709,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             return col;   
         }
 
-        private void linkImportarDIZUCAR_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void btnImportarDIZUCAR_Click(object sender, EventArgs e)
         {
             DateTime fecha = dteFECHA_LIQUIDACION.DateTime.Date;
 

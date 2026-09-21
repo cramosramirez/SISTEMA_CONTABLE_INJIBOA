@@ -31,7 +31,12 @@ namespace SistemaContable.UI.Helpers
         public frmBusquedaGenerica(BusquedaConfig config)
         {            
             InitializeComponent();
-            _config = config;           
+            _config = config;
+            if (_config.AnchoFormulario.HasValue)
+                this.Width = _config.AnchoFormulario.Value;
+
+            if (_config.AltoFormulario.HasValue)
+                this.Height = _config.AltoFormulario.Value;
         }
 
         #endregion
@@ -128,6 +133,8 @@ namespace SistemaContable.UI.Helpers
                 gridCol.Caption = col.Value;
                 gridCol.Visible = true;
                 gridCol.OptionsColumn.AllowEdit = false;
+                gridCol.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+                gridCol.AppearanceHeader.Options.UseTextOptions = true;
 
                 // Aplicar ancho si está definido
                 if (_config.Anchos != null && _config.Anchos.ContainsKey(col.Key))

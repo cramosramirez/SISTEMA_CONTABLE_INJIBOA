@@ -40,6 +40,9 @@ namespace SistemaContable.UI.Helpers
 
         public Func<object> ObtenerParametrosExtra { get; set; }
 
+        public int? AnchoFormulario { get; set; }
+        public int? AltoFormulario { get; set; }
+
         public BusquedaConfig()
         {
             Columnas = new Dictionary<string, string>();
