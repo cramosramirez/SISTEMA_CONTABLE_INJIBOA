@@ -9,6 +9,8 @@ using System.Drawing;
 using DevExpress.XtraEditors;
 using DevExpress.Utils;
 using SistemaContable.RP.Bancos.Proveedores;
+using DevExpress.XtraEditors.Repository;
+using System.ComponentModel;
 
 namespace SistemaContable.UI.Forms.Bancos
 {
@@ -756,6 +758,8 @@ namespace SistemaContable.UI.Forms.Bancos
             // ✅ Recalcular cuadre cuando cambien filas (manual o por código)
             _dtPartida.RowChanged += (s, ev) => ActualizarCuadre();
             _dtPartida.RowDeleted += (s, ev) => ActualizarCuadre();
+                        
+            gridView1.ShownEditor += GridView1_ShownEditor;
 
             // Actualiza el label de cuenta contable en cuanto cambia el valor de la columna
             _dtPartida.ColumnChanged += (s, ev) =>
@@ -772,7 +776,7 @@ namespace SistemaContable.UI.Forms.Bancos
             AgregarFilaVacia();
 
             // Enlazar al grid
-            gridControl1.DataSource = _dtPartida;
+            gridControl1.DataSource = _dtPartida;            
 
             // Configurar columnas visibles con títulos
             var view = gridControl1.MainView as GridView;
@@ -2122,5 +2126,72 @@ namespace SistemaContable.UI.Forms.Bancos
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void GridView1_ShownEditor(object sender, EventArgs e)
+        {
+            var view = sender as GridView;
+            if (view?.ActiveEditor is TextEdit editor)
+            {
+                // Solo para columnas de texto (evitar aplicar a numéricas)
+                string columna = view.FocusedColumn?.FieldName;
+                if (columna == "CTACONTABLE" || columna == "DETALLE")
+                {
+                    editor.Properties.CharacterCasing = CharacterCasing.Upper;
+                }
+                // === Columnas numéricas: bloquear doble punto ===
+                if (columna == "CARGO" || columna == "ABONO")
+                {
+                    editor.KeyPress -= EditorMonto_KeyPress;
+                    editor.KeyPress += EditorMonto_KeyPress;
+
+                    editor.Validating -= EditorMonto_Validating;
+                    editor.Validating += EditorMonto_Validating;
+                }
+            }
+        }
+
+        private void EditorMonto_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            var editor = sender as TextEdit;
+            if (editor == null) return;
+
+            char c = e.KeyChar;
+
+            // Permitir teclas de control (backspace, delete, etc.)
+            if (char.IsControl(c)) return;
+
+            // Permitir dígitos
+            if (char.IsDigit(c)) return;
+
+            // Permitir un solo punto decimal
+            if (c == '.')
+            {
+                if (editor.Text.Contains("."))
+                    e.Handled = true;   // ya hay uno, bloquear
+                return;
+            }
+
+            // Cualquier otra tecla se bloquea
+            e.Handled = true;
+        }
+
+        private void EditorMonto_Validating(object sender, CancelEventArgs e)
+        {
+            var editor = sender as TextEdit;
+            if (editor == null) return;
+
+            if (decimal.TryParse(editor.Text,
+                System.Globalization.NumberStyles.Any,
+                System.Globalization.CultureInfo.InvariantCulture,
+                out decimal valor))
+            {
+                // Redondear a 2 decimales
+                decimal redondeado = Math.Round(valor, 2, MidpointRounding.AwayFromZero);
+                editor.Text = redondeado.ToString("0.00");
+            }
+        }
+
     }
+
+    
 }
