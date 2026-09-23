@@ -289,6 +289,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             lblTOTAL_CREDITO.Text = 0m.ToString("C2");
             lblTOTAL_GASTOS.Text = 0m.ToString("C2");
             lblVENTAS_MENOS_GASTOS.Text = 0m.ToString("C2");
+            lblREMESA.Text = 0m.ToString("C2");
         }
 
         private void AplicarFiltroEmpresa()
@@ -315,12 +316,23 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             {
                 foreach (DataRow ventaRow in clqRow.GetChildRows("Documentos"))
                 {
-                    decimal total = ToDecimal(ventaRow["total"]);
-                    totalVentas += total;
-
+                    decimal total = 0m;
+                    decimal totalLiq = 0m;
                     string condicion = ventaRow["condicion_de_pago"]?.ToString() ?? "";
-                    if (!condicion.ToUpper().Contains("CONTADO"))
-                        totalCredito += total;
+
+                    if(condicion != "")
+                    {
+                        total = ToDecimal(ventaRow["total"]);
+                        totalLiq = ToDecimal(ventaRow["total_liq"]);
+
+                        totalVentas += total;
+                        if (!condicion.ToUpper().Contains("CONTADO"))
+                        {
+                            totalCredito += totalLiq;
+                        }                        
+                    }
+                    
+                    
                 }
             }
 
@@ -332,6 +344,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             lblTOTAL_CREDITO.Text = totalCredito.ToString("C2");
             lblTOTAL_GASTOS.Text = totalGastos.ToString("C2");
             lblVENTAS_MENOS_GASTOS.Text = (totalVentas - totalGastos).ToString("C2");
+            lblREMESA.Text = (totalVentas - totalGastos - totalCredito).ToString("C2");
         }
 
         private static decimal ToDecimal(object valor)
@@ -378,6 +391,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             colSacos.Width = 80;
             colSacos.VisibleIndex = 4;
 
+            AgregarColumnaCalculada(gridCLQ, "TOTAL_CREDITO", "Monto Crédito").Width = 150;
             AgregarColumnaCalculada(gridCLQ, "SUBTOTAL_CLQ", "Subtotal").Width = 150;
             AgregarColumnaCalculada(gridCLQ, "IVA_CLQ", "IVA").Width = 150;
             AgregarColumnaCalculada(gridCLQ, "RETENCION_CLQ", "Retención").Width = 150;
@@ -480,13 +494,14 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             if (!(e.Row is DataRowView drv)) return;
 
             string campo = e.Column.FieldName;
-            bool esColumnaCLQ = campo == "SUBTOTAL_CLQ" || campo == "IVA_CLQ"
+            bool esColumnaCLQ = campo == "TOTAL_CREDITO" || campo == "SUBTOTAL_CLQ" || campo == "IVA_CLQ"
                               || campo == "RETENCION_CLQ" || campo == "TOTAL_CLQ";
             if (!esColumnaCLQ) return;
 
-            decimal subtotal = 0, iva = 0, retencion = 0, total = 0;
+            decimal total_liq = 0, subtotal = 0, iva = 0, retencion = 0, total = 0;
             foreach (DataRow ventaRow in drv.Row.GetChildRows("Documentos"))
             {
+                total_liq += ToDecimal(ventaRow["total_liq"]);
                 subtotal += ToDecimal(ventaRow["subtotal"]);
                 iva += ToDecimal(ventaRow["iva"]);
                 retencion += ToDecimal(ventaRow["retencion"]);
@@ -495,6 +510,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
             switch (campo)
             {
+                case "TOTAL_CREDITO": e.Value = total_liq; break;
                 case "SUBTOTAL_CLQ": e.Value = subtotal; break;
                 case "IVA_CLQ": e.Value = iva; break;
                 case "RETENCION_CLQ": e.Value = retencion; break;
@@ -512,11 +528,11 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             gridDocumentos.OptionsBehavior.AutoPopulateColumns = false;
             gridDocumentos.Columns.Clear();
 
-            AgregarColumnaTexto(gridDocumentos, "dte", "DTE").Width = 220;
+            AgregarColumnaTexto(gridDocumentos, "dte", "DTE").Width = 250;
             AgregarColumnaTexto(gridDocumentos, "nombrecliente", "Cliente").Width = 300;
             AgregarColumnaTexto(gridDocumentos, "tipo_dte", "Tipo").Width = 70;
             AgregarColumnaTexto(gridDocumentos, "condicion_de_pago", "Condición").Width = 200;
-
+            AgregarColumnaMoneda(gridDocumentos, "total_liq", "Monto crédito").Width = 150;
             AgregarColumnaMoneda(gridDocumentos, "subtotal", "Subtotal").Width = 150;
             AgregarColumnaMoneda(gridDocumentos, "iva", "IVA").Width = 150;
             AgregarColumnaMoneda(gridDocumentos, "retencion", "Retención").Width = 150;
@@ -536,7 +552,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             gridProductos.OptionsBehavior.AutoPopulateColumns = false;
             gridProductos.Columns.Clear();
 
-            AgregarColumnaTexto(gridProductos, "descripcionproducto", "Producto").Width = 230;
+            AgregarColumnaTexto(gridProductos, "descripcionproducto", "Producto").Width = 300;
             AgregarColumnaNumero(gridProductos, "cantidad", "Cantidad").Width = 50;
             AgregarColumnaNumero(gridProductos, "sacos50", "Sacos").Width = 50;
             AgregarColumnaMoneda(gridProductos, "precio", "Precio").Width = 50;

@@ -42,6 +42,10 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtCANTIDAD = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.chkEntregado = new System.Windows.Forms.CheckBox();
+            this.chkListo = new System.Windows.Forms.CheckBox();
+            this.chkImpreso = new System.Windows.Forms.CheckBox();
             this.txtOPERACION = new System.Windows.Forms.TextBox();
             this.txtMONEDA = new System.Windows.Forms.TextBox();
             this.txtNOMBRE_CHEQUE = new System.Windows.Forms.TextBox();
@@ -71,19 +75,15 @@ namespace SistemaContable.UI.Forms.Bancos
             this.lblTOTAL_ABONO = new System.Windows.Forms.Label();
             this.lblTOTAL_CARGO = new System.Windows.Forms.Label();
             this.lblCUADRE = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.chkImpreso = new System.Windows.Forms.CheckBox();
-            this.chkListo = new System.Windows.Forms.CheckBox();
-            this.chkEntregado = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).BeginInit();
             this.groupControl3.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtNOMBRE
@@ -147,11 +147,14 @@ namespace SistemaContable.UI.Forms.Bancos
             // mskFECHA_CHEQUE
             // 
             this.mskFECHA_CHEQUE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mskFECHA_CHEQUE.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
             this.mskFECHA_CHEQUE.Location = new System.Drawing.Point(249, 63);
             this.mskFECHA_CHEQUE.Mask = "00/00/0000";
             this.mskFECHA_CHEQUE.Name = "mskFECHA_CHEQUE";
             this.mskFECHA_CHEQUE.Size = new System.Drawing.Size(94, 24);
             this.mskFECHA_CHEQUE.TabIndex = 8;
+            this.mskFECHA_CHEQUE.ValidatingType = typeof(System.DateTime);
+            this.mskFECHA_CHEQUE.Leave += new System.EventHandler(this.mskFECHA_CHEQUE_Leave);
             // 
             // label4
             // 
@@ -233,6 +236,52 @@ namespace SistemaContable.UI.Forms.Bancos
             this.groupControl1.Size = new System.Drawing.Size(866, 149);
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "Datos de la operación";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.chkEntregado);
+            this.panel1.Controls.Add(this.chkListo);
+            this.panel1.Controls.Add(this.chkImpreso);
+            this.panel1.Location = new System.Drawing.Point(311, 122);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(244, 25);
+            this.panel1.TabIndex = 16;
+            // 
+            // chkEntregado
+            // 
+            this.chkEntregado.AutoSize = true;
+            this.chkEntregado.Enabled = false;
+            this.chkEntregado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkEntregado.Location = new System.Drawing.Point(148, 1);
+            this.chkEntregado.Name = "chkEntregado";
+            this.chkEntregado.Size = new System.Drawing.Size(90, 21);
+            this.chkEntregado.TabIndex = 2;
+            this.chkEntregado.Text = "Entregado";
+            this.chkEntregado.UseVisualStyleBackColor = true;
+            // 
+            // chkListo
+            // 
+            this.chkListo.AutoSize = true;
+            this.chkListo.Enabled = false;
+            this.chkListo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkListo.Location = new System.Drawing.Point(87, 1);
+            this.chkListo.Name = "chkListo";
+            this.chkListo.Size = new System.Drawing.Size(54, 21);
+            this.chkListo.TabIndex = 1;
+            this.chkListo.Text = "Listo";
+            this.chkListo.UseVisualStyleBackColor = true;
+            // 
+            // chkImpreso
+            // 
+            this.chkImpreso.AutoSize = true;
+            this.chkImpreso.Enabled = false;
+            this.chkImpreso.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkImpreso.Location = new System.Drawing.Point(4, 1);
+            this.chkImpreso.Name = "chkImpreso";
+            this.chkImpreso.Size = new System.Drawing.Size(76, 21);
+            this.chkImpreso.TabIndex = 0;
+            this.chkImpreso.Text = "Impreso";
+            this.chkImpreso.UseVisualStyleBackColor = true;
             // 
             // txtOPERACION
             // 
@@ -590,52 +639,6 @@ namespace SistemaContable.UI.Forms.Bancos
             this.lblCUADRE.Text = "-";
             this.lblCUADRE.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.chkEntregado);
-            this.panel1.Controls.Add(this.chkListo);
-            this.panel1.Controls.Add(this.chkImpreso);
-            this.panel1.Location = new System.Drawing.Point(311, 122);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(244, 25);
-            this.panel1.TabIndex = 16;
-            // 
-            // chkImpreso
-            // 
-            this.chkImpreso.AutoSize = true;
-            this.chkImpreso.Enabled = false;
-            this.chkImpreso.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chkImpreso.Location = new System.Drawing.Point(4, 1);
-            this.chkImpreso.Name = "chkImpreso";
-            this.chkImpreso.Size = new System.Drawing.Size(76, 21);
-            this.chkImpreso.TabIndex = 0;
-            this.chkImpreso.Text = "Impreso";
-            this.chkImpreso.UseVisualStyleBackColor = true;
-            // 
-            // chkListo
-            // 
-            this.chkListo.AutoSize = true;
-            this.chkListo.Enabled = false;
-            this.chkListo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chkListo.Location = new System.Drawing.Point(87, 1);
-            this.chkListo.Name = "chkListo";
-            this.chkListo.Size = new System.Drawing.Size(54, 21);
-            this.chkListo.TabIndex = 1;
-            this.chkListo.Text = "Listo";
-            this.chkListo.UseVisualStyleBackColor = true;
-            // 
-            // chkEntregado
-            // 
-            this.chkEntregado.AutoSize = true;
-            this.chkEntregado.Enabled = false;
-            this.chkEntregado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chkEntregado.Location = new System.Drawing.Point(148, 1);
-            this.chkEntregado.Name = "chkEntregado";
-            this.chkEntregado.Size = new System.Drawing.Size(90, 21);
-            this.chkEntregado.TabIndex = 2;
-            this.chkEntregado.Text = "Entregado";
-            this.chkEntregado.UseVisualStyleBackColor = true;
-            // 
             // frmCheques
             // 
             this.Appearance.Options.UseFont = true;
@@ -659,6 +662,8 @@ namespace SistemaContable.UI.Forms.Bancos
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
             this.groupControl2.ResumeLayout(false);
             this.groupControl2.PerformLayout();
@@ -666,8 +671,6 @@ namespace SistemaContable.UI.Forms.Bancos
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).EndInit();
             this.groupControl3.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }

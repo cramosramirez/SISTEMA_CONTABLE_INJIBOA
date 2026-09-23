@@ -388,9 +388,10 @@ namespace SistemaContable.UI.Forms.Proveedores
             decimal iva = chkIVA.Checked ? Calculo.Redondear(monto * 0.13m, 2) : 0;
             decimal ivar = iva; // mismo valor, se resta en SALDO
             decimal renta = ObtenerDecimal(txtRENTA);
+            decimal abono = ObtenerDecimal(txtABONO_CHEQUE);
 
             decimal total = monto + iva;
-            decimal saldo = total - renta - ivar;
+            decimal saldo = total - renta - ivar - abono;
 
             AsignarDecimal(txtIVA, iva);
             AsignarDecimal(txtIVAR, ivar);
@@ -474,7 +475,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                 AsignarDecimal(txtTOTAL, ToDecimal(r["TOTAL"]));
                 AsignarDecimal(txtRENTA, ToDecimal(r["RENTA"]));
                 AsignarDecimal(txtIVAR, ToDecimal(r["IVAR"]));
-                AsignarDecimal(txtSALDO, ToDecimal(r["SALDO"]));
+                AsignarDecimal(txtSALDO, ToDecimal(r["SALDO"])); 
+                AsignarDecimal(txtABONO_CHEQUE, ToDecimal(r["ABONO_CHEQUE"]));
 
                 txtCONCEPTO.Text = AsString(r["CONCEPTO"]);
             }
@@ -762,7 +764,37 @@ namespace SistemaContable.UI.Forms.Proveedores
             decimal renta = aplicaRenta ? Calculo.Redondear(monto * 0.10m) : 0m;
             txtRENTA.Text = renta.ToString("N2");
             RecalcularTotales();
-        }        
-       
+        }
+
+        private void btnConsultaCheque_Click(object sender, EventArgs e)
+        {
+            // Realizar consulta de cheque
+            DataTable dt = _dal.EjecutarConsulta("SP_FACTURA_SUJETO_EXC",
+                    new
+                    {
+                        ACCION = "OBTENER_CHEQUE",
+                        ID_FSE = IdFse
+                    });
+
+            if (dt.Rows.Count == 0)
+            {
+                XtraMessageBox.Show("No hay cheque emitido.",
+                    "Información de pago", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                DataRow r = dt.Rows[0];
+                var args = new XtraMessageBoxArgs
+                {
+                    Caption = "Información de pago",
+                    Text = $"<b>N° Cheque: {r["NUM_CHEQUE"].ToString()}</b>" + Environment.NewLine +
+                        $"<b>Fecha: {AsFecha(r["FECHA_CHEQUE"])}</b>",
+                    Buttons = new[] { DialogResult.OK },
+                    Icon = SystemIcons.Information,
+                    AllowHtmlText = DefaultBoolean.True
+                };
+                XtraMessageBox.Show(args);
+            }
+        }
     }
 }

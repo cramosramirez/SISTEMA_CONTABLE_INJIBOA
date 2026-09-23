@@ -36,6 +36,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.dteFECHA_LIQUIDACION = new DevExpress.XtraEditors.DateEdit();
             this.label1 = new System.Windows.Forms.Label();
             this.panelResumen = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.lblREMESA = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.btnImportarDIZUCAR = new DevExpress.XtraEditors.SimpleButton();
             this.btnGenerarTodos = new DevExpress.XtraEditors.SimpleButton();
             this.btnExpandirContraer = new DevExpress.XtraEditors.SimpleButton();
@@ -63,6 +66,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties)).BeginInit();
             this.panelResumen.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -156,6 +160,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             // 
             // panelResumen
             // 
+            this.panelResumen.Controls.Add(this.panel5);
             this.panelResumen.Controls.Add(this.btnImportarDIZUCAR);
             this.panelResumen.Controls.Add(this.btnGenerarTodos);
             this.panelResumen.Controls.Add(this.btnExpandirContraer);
@@ -169,13 +174,42 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panelResumen.Size = new System.Drawing.Size(1539, 99);
             this.panelResumen.TabIndex = 1;
             // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(202)))), ((int)(((byte)(216)))), ((int)(((byte)(249)))));
+            this.panel5.Controls.Add(this.lblREMESA);
+            this.panel5.Controls.Add(this.label6);
+            this.panel5.Location = new System.Drawing.Point(903, 17);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(215, 66);
+            this.panel5.TabIndex = 4;
+            // 
+            // lblREMESA
+            // 
+            this.lblREMESA.Font = new System.Drawing.Font("Tahoma", 11.89565F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblREMESA.ForeColor = System.Drawing.Color.Black;
+            this.lblREMESA.Location = new System.Drawing.Point(14, 33);
+            this.lblREMESA.Name = "lblREMESA";
+            this.lblREMESA.Size = new System.Drawing.Size(175, 23);
+            this.lblREMESA.TabIndex = 1;
+            this.lblREMESA.Text = "$ 0.00";
+            // 
+            // label6
+            // 
+            this.label6.ForeColor = System.Drawing.Color.Black;
+            this.label6.Location = new System.Drawing.Point(14, 10);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(150, 23);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "REMESA";
+            // 
             // btnImportarDIZUCAR
             // 
             this.btnImportarDIZUCAR.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnImportarDIZUCAR.Appearance.Options.UseFont = true;
             this.btnImportarDIZUCAR.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnImportarDIZUCAR.ImageOptions.ImageToTextIndent = 10;
-            this.btnImportarDIZUCAR.Location = new System.Drawing.Point(1256, 16);
+            this.btnImportarDIZUCAR.Location = new System.Drawing.Point(1268, 16);
             this.btnImportarDIZUCAR.Name = "btnImportarDIZUCAR";
             this.btnImportarDIZUCAR.Size = new System.Drawing.Size(254, 34);
             this.btnImportarDIZUCAR.TabIndex = 0;
@@ -188,7 +222,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.btnGenerarTodos.Appearance.Options.UseFont = true;
             this.btnGenerarTodos.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnGenerarTodos.ImageOptions.ImageToTextIndent = 10;
-            this.btnGenerarTodos.Location = new System.Drawing.Point(1256, 57);
+            this.btnGenerarTodos.Location = new System.Drawing.Point(1268, 57);
             this.btnGenerarTodos.Name = "btnGenerarTodos";
             this.btnGenerarTodos.Size = new System.Drawing.Size(254, 34);
             this.btnGenerarTodos.TabIndex = 2;
@@ -201,7 +235,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.btnExpandirContraer.Appearance.Options.UseFont = true;
             this.btnExpandirContraer.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnExpandirContraer.ImageOptions.ImageToTextIndent = 10;
-            this.btnExpandirContraer.Location = new System.Drawing.Point(1102, 17);
+            this.btnExpandirContraer.Location = new System.Drawing.Point(1140, 15);
             this.btnExpandirContraer.Name = "btnExpandirContraer";
             this.btnExpandirContraer.Size = new System.Drawing.Size(119, 34);
             this.btnExpandirContraer.TabIndex = 1;
@@ -213,9 +247,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(239)))), ((int)(((byte)(252)))));
             this.panel4.Controls.Add(this.lblVENTAS_MENOS_GASTOS);
             this.panel4.Controls.Add(this.label11);
-            this.panel4.Location = new System.Drawing.Point(781, 16);
+            this.panel4.Location = new System.Drawing.Point(461, 17);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(240, 66);
+            this.panel4.Size = new System.Drawing.Size(215, 66);
             this.panel4.TabIndex = 3;
             // 
             // lblVENTAS_MENOS_GASTOS
@@ -224,7 +258,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.lblVENTAS_MENOS_GASTOS.ForeColor = System.Drawing.Color.DarkGreen;
             this.lblVENTAS_MENOS_GASTOS.Location = new System.Drawing.Point(14, 33);
             this.lblVENTAS_MENOS_GASTOS.Name = "lblVENTAS_MENOS_GASTOS";
-            this.lblVENTAS_MENOS_GASTOS.Size = new System.Drawing.Size(217, 23);
+            this.lblVENTAS_MENOS_GASTOS.Size = new System.Drawing.Size(175, 23);
             this.lblVENTAS_MENOS_GASTOS.TabIndex = 1;
             this.lblVENTAS_MENOS_GASTOS.Text = "$ 0.00";
             // 
@@ -233,7 +267,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label11.ForeColor = System.Drawing.Color.Green;
             this.label11.Location = new System.Drawing.Point(14, 10);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(217, 23);
+            this.label11.Size = new System.Drawing.Size(175, 23);
             this.label11.TabIndex = 0;
             this.label11.Text = "VENTAS menos GASTOS";
             // 
@@ -242,9 +276,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(232)))), ((int)(((byte)(232)))));
             this.panel3.Controls.Add(this.lblTOTAL_GASTOS);
             this.panel3.Controls.Add(this.label9);
-            this.panel3.Location = new System.Drawing.Point(528, 16);
+            this.panel3.Location = new System.Drawing.Point(238, 17);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(240, 66);
+            this.panel3.Size = new System.Drawing.Size(215, 66);
             this.panel3.TabIndex = 2;
             // 
             // lblTOTAL_GASTOS
@@ -253,16 +287,16 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.lblTOTAL_GASTOS.ForeColor = System.Drawing.Color.Maroon;
             this.lblTOTAL_GASTOS.Location = new System.Drawing.Point(14, 33);
             this.lblTOTAL_GASTOS.Name = "lblTOTAL_GASTOS";
-            this.lblTOTAL_GASTOS.Size = new System.Drawing.Size(217, 23);
+            this.lblTOTAL_GASTOS.Size = new System.Drawing.Size(175, 23);
             this.lblTOTAL_GASTOS.TabIndex = 1;
             this.lblTOTAL_GASTOS.Text = "$ 0.00";
             // 
             // label9
             // 
             this.label9.ForeColor = System.Drawing.Color.Brown;
-            this.label9.Location = new System.Drawing.Point(14, 10);
+            this.label9.Location = new System.Drawing.Point(3, 10);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(217, 23);
+            this.label9.Size = new System.Drawing.Size(209, 23);
             this.label9.TabIndex = 0;
             this.label9.Text = "TOTAL GASTOS APLICADOS";
             // 
@@ -271,9 +305,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.panel2.Controls.Add(this.lblTOTAL_CREDITO);
             this.panel2.Controls.Add(this.label7);
-            this.panel2.Location = new System.Drawing.Point(273, 16);
+            this.panel2.Location = new System.Drawing.Point(682, 17);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(240, 66);
+            this.panel2.Size = new System.Drawing.Size(215, 66);
             this.panel2.TabIndex = 1;
             // 
             // lblTOTAL_CREDITO
@@ -282,7 +316,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.lblTOTAL_CREDITO.ForeColor = System.Drawing.Color.Maroon;
             this.lblTOTAL_CREDITO.Location = new System.Drawing.Point(14, 33);
             this.lblTOTAL_CREDITO.Name = "lblTOTAL_CREDITO";
-            this.lblTOTAL_CREDITO.Size = new System.Drawing.Size(217, 23);
+            this.lblTOTAL_CREDITO.Size = new System.Drawing.Size(175, 23);
             this.lblTOTAL_CREDITO.TabIndex = 1;
             this.lblTOTAL_CREDITO.Text = "$ 0.00";
             // 
@@ -291,9 +325,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label7.ForeColor = System.Drawing.Color.Brown;
             this.label7.Location = new System.Drawing.Point(14, 10);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(217, 23);
+            this.label7.Size = new System.Drawing.Size(150, 23);
             this.label7.TabIndex = 0;
-            this.label7.Text = "TOTAL CRÉDITO";
+            this.label7.Text = "TOTAL CRÉDITOS";
             // 
             // panel1
             // 
@@ -302,7 +336,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panel1.Controls.Add(this.label4);
             this.panel1.Location = new System.Drawing.Point(17, 17);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(240, 66);
+            this.panel1.Size = new System.Drawing.Size(215, 66);
             this.panel1.TabIndex = 0;
             // 
             // lblTOTAL_VENTAS
@@ -311,16 +345,16 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.lblTOTAL_VENTAS.ForeColor = System.Drawing.Color.DarkGreen;
             this.lblTOTAL_VENTAS.Location = new System.Drawing.Point(14, 33);
             this.lblTOTAL_VENTAS.Name = "lblTOTAL_VENTAS";
-            this.lblTOTAL_VENTAS.Size = new System.Drawing.Size(217, 23);
+            this.lblTOTAL_VENTAS.Size = new System.Drawing.Size(175, 23);
             this.lblTOTAL_VENTAS.TabIndex = 1;
-            this.lblTOTAL_VENTAS.Text = "$ 0.00";
+            this.lblTOTAL_VENTAS.Text = "$ 999,999,999.99";
             // 
             // label4
             // 
             this.label4.ForeColor = System.Drawing.Color.Green;
-            this.label4.Location = new System.Drawing.Point(14, 10);
+            this.label4.Location = new System.Drawing.Point(4, 10);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(217, 23);
+            this.label4.Size = new System.Drawing.Size(175, 23);
             this.label4.TabIndex = 0;
             this.label4.Text = "TOTAL VENTAS";
             // 
@@ -427,6 +461,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties)).EndInit();
             this.panelResumen.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -476,5 +511,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private DevExpress.XtraEditors.SimpleButton btnExpandirContraer;
         private DevExpress.XtraEditors.SimpleButton btnImportarDIZUCAR;
         private DevExpress.XtraEditors.SimpleButton btnGenerarTodos;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Label lblREMESA;
+        private System.Windows.Forms.Label label6;
     }
 }

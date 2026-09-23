@@ -50,7 +50,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void AsignarNumeroPartida()
         {
-            var infoPartida = NumeradorPartidaHelper.Consultar("DI");
+            var infoPartida = NumeradorPartidaHelper.Consultar("DI", dateEdit1.DateTime.Year, dateEdit1.DateTime.Month);
             txtNUMERO_PARTIDA.Text = infoPartida.NumSiguienteFormateado;
         }
 

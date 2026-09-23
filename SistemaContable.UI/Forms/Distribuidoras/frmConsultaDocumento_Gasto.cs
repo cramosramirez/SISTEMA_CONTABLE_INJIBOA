@@ -91,6 +91,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             _dtDetalle = _dal.EjecutarConsulta("DISTRIB.SP_CREDITO_FISCAL_GASTO",
                 new { ACCION = "LISTAR_COMPROBANTES_CCF" });
             gridControl1.DataSource = _dtDetalle;
+            ConfigurarSumariosTotales();
         }
 
         private int? ObtenerIdFilaActiva()
@@ -154,6 +155,56 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             finally
             {
                 Cursor = Cursors.Default;
+            }
+        }
+        private void ConfigurarSumariosTotales()
+        {
+            // Activar el footer del grid
+            gvDetalle.OptionsView.ShowFooter = true;
+
+            // Estilo llamativo para el footer
+            gvDetalle.Appearance.FooterPanel.BackColor = Color.FromArgb(30, 64, 175);
+            gvDetalle.Appearance.FooterPanel.ForeColor = Color.White;
+            gvDetalle.Appearance.FooterPanel.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+            gvDetalle.Appearance.FooterPanel.Options.UseBackColor = true;
+            gvDetalle.Appearance.FooterPanel.Options.UseForeColor = true;
+            gvDetalle.Appearance.FooterPanel.Options.UseFont = true;
+            gvDetalle.Appearance.FooterPanel.TextOptions.HAlignment =
+                DevExpress.Utils.HorzAlignment.Far;
+
+            // Repintar el footer con el color del fondo
+            gvDetalle.CustomDrawFooter += (s, ev) =>
+            {
+                using (var brush = new SolidBrush(Color.FromArgb(30, 64, 175)))
+                    ev.Graphics.FillRectangle(brush, ev.Bounds);
+            };
+
+            gvDetalle.CustomDrawFooterCell += (s, ev) =>
+            {
+                using (var brush = new SolidBrush(Color.FromArgb(30, 64, 175)))
+                    ev.Graphics.FillRectangle(brush, ev.Bounds);
+
+                using (var sf = new StringFormat
+                {
+                    Alignment = StringAlignment.Far,
+                    LineAlignment = StringAlignment.Center
+                })
+                using (var brush = new SolidBrush(Color.White))
+                using (var font = new Font("Segoe UI", 9f, FontStyle.Bold))
+                {
+                    ev.Graphics.DrawString(ev.Info.DisplayText, font, brush,
+                        ev.Bounds, sf);
+                }
+
+                ev.Handled = true;
+            };
+
+            // Agregar summary a la columna TOTAL
+            var colTotal = gvDetalle.Columns["SALDO"];
+            if (colTotal != null)
+            {
+                colTotal.SummaryItem.SummaryType = DevExpress.Data.SummaryItemType.Sum;
+                colTotal.SummaryItem.DisplayFormat = "{0:C2}";
             }
         }
     }

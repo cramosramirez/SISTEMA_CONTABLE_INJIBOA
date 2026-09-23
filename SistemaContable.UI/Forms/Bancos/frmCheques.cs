@@ -218,8 +218,12 @@ namespace SistemaContable.UI.Forms.Bancos
                 txtNUMERO_CHEQUE.Text = (correlativo + 1).ToString();
 
                 // Sugerir siguiente número de partida (sin consumirlo aún)
-                var infoPartida = NumeradorPartidaHelper.Consultar("CH");
-                txtNUMERO_PARTIDA.Text = infoPartida.NumSiguienteFormateado;
+                DateTime? fecha = FormHelper.ObtenerFecha(mskFECHA_CHEQUE);
+                if (fecha.HasValue)
+                {
+                    var infoPartida = NumeradorPartidaHelper.Consultar("CH", fecha.Value.Year, fecha.Value.Month);
+                    txtNUMERO_PARTIDA.Text = infoPartida.NumSiguienteFormateado;
+                }                    
             }
         }
 
@@ -251,26 +255,24 @@ namespace SistemaContable.UI.Forms.Bancos
                 _uidEnlaceCheque = FormHelper.ObtenerUUID();   // regenerar UID por si edita
                 _flujoEsQuedan = r["CODIGO_ENTIDAD"] != DBNull.Value
                                     && !string.IsNullOrWhiteSpace(r["CODIGO_ENTIDAD"].ToString());
-
                 txtOPERACION.Text = SafeStr(r["TIPO_PARTIDA"]);
                 txtNUM_CUENTA.Tag = SafeStr(r["ID_CTA_BANCO"]);
                 txtNUM_CUENTA.Text = SafeStr(r["NUM_CUENTA"]);
                 txtNOMBRE.Text = SafeStr(r["NOMBRE_CUENTA"]);
                 txtMONEDA.Text = "DOLARES";
-
                 txtNUMERO_CHEQUE.Text = SafeStr(r["NUM_CHEQUE"]);
                 txtNUMERO_PARTIDA.Text = SafeStr(r["NID_PARTIDA"]);   // formateado
-
                 DateTime fechaCheque = Convert.ToDateTime(r["FECHA_CHEQUE"]);
                 mskFECHA_CHEQUE.Text = fechaCheque.ToString("dd/MM/yyyy");
-
                 txtNOMBRE_CHEQUE.Text = SafeStr(r["NOMBRE_CHEQUE"]);
                 txtCONCEPTO.Text = SafeStr(r["CONCEPTO"]);
                 txtPROVEEDOR.Text = SafeStr(r["CODIGO_ENTIDAD"]);
                 chkImpreso.Checked = r["IMPRESO"] != DBNull.Value && Convert.ToBoolean(r["IMPRESO"]); ; 
-
                 decimal monto = r["MONTO"] == DBNull.Value ? 0m : Convert.ToDecimal(r["MONTO"]);
                 txtCANTIDAD.Text = monto.ToString("N2");
+                bool estaAnulado = r.Table.Columns.Contains("ANULADO")
+                        && r["ANULADO"] != DBNull.Value
+                        && Convert.ToBoolean(r["ANULADO"]);
 
                 _asignandoCuentaPorCodigo = true;
                 try
@@ -308,8 +310,17 @@ namespace SistemaContable.UI.Forms.Bancos
                 }
 
                 // ---------- Estado final ----------
-                ConfigurarCRUD(EstadoFormulario.Guardar);
-                btnImprimir.Enabled = false;
+                if (estaAnulado)
+                {
+                    ConfigurarCRUD(EstadoFormulario.Guardar, chequeAnulado: true);
+                    btnImprimir.Enabled = false;
+                }                    
+                else
+                {
+                    ConfigurarCRUD(EstadoFormulario.Guardar);
+                    btnImprimir.Enabled = !chkImpreso.Checked;
+                }
+                    
             }
             catch (Exception ex)
             {
@@ -438,7 +449,7 @@ namespace SistemaContable.UI.Forms.Bancos
             _flujoEsQuedan = false;
         }
 
-        private void ConfigurarCRUD(EstadoFormulario estado)
+        private void ConfigurarCRUD(EstadoFormulario estado, bool chequeAnulado = false)
         {
             _estadoActual = estado;
             switch (estado)
@@ -566,16 +577,16 @@ namespace SistemaContable.UI.Forms.Bancos
                     HabilitarBotones(
                         agregar: true,
                         buscar: true,
-                        modificar: true,
+                        modificar: !chequeAnulado,
                         guardar: false,
                         ignorar: false,
-                        eliminar: true,
-                        imprimir: true,
+                        eliminar: !chequeAnulado,
+                        imprimir: !chequeAnulado,
                         anterior: true,
                         siguiente: true,
                         finalizar: true,
                         borrarFila: false,
-                        anular: true,
+                        anular: !chequeAnulado,
                         documentos: false 
                     );                    
                     HabilitarControlesEncabezado(false);
@@ -1898,8 +1909,7 @@ namespace SistemaContable.UI.Forms.Bancos
             ConfigurarCRUD(EstadoFormulario.Agregar);
             if (!VerificarDocumentosHuerfanos())
             {
-                _uidEnlaceCheque = FormHelper.ObtenerUUID();
-                return;
+                _uidEnlaceCheque = FormHelper.ObtenerUUID();               
             }
 
             // Abrir automáticamente la búsqueda de Tipo de Operación
@@ -1989,15 +1999,18 @@ namespace SistemaContable.UI.Forms.Bancos
         {
             if (_idCheque == 0)
             {
-                XtraMessageBox.Show("Debe cargar un cheque para anularlo.",
+                XtraMessageBox.Show(
+                    "Debe cargar un cheque para anularlo.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            // Confirmación explícita al usuario
             var resp = XtraMessageBox.Show(
-                $"¿Está seguro que desea anular el cheque N° {txtNUMERO_CHEQUE.Text.Trim()}?",
-                "Confirmar anuación",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                $"¿Está seguro de anular el cheque N° {txtNUMERO_CHEQUE.Text.Trim()}",
+                "Anular cheque",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
             if (resp != DialogResult.Yes) return;
 
@@ -2005,36 +2018,29 @@ namespace SistemaContable.UI.Forms.Bancos
             {
                 Cursor = Cursors.WaitCursor;
 
-                DataTable dt = _dal.EjecutarConsulta("SP_CHEQUE", new
+                _dal.EjecutarEscalar("SP_CHEQUE", new
                 {
                     ACCION = "ANULAR",
                     ID_CHEQUE = _idCheque,
                     USUARIO = Configuracion.UsuarioActual
                 });
 
-                // El SP retorna si hay CCFs contado y el nuevo UID
-                bool tieneContado = false;
-                if (dt.Rows.Count > 0)
-                {
-                    tieneContado = Convert.ToBoolean(dt.Rows[0]["TIENE_CONTADO"]);
-                }
+                XtraMessageBox.Show(
+                    $"Cheque N° {txtNUMERO_CHEQUE.Text.Trim()} anulado correctamente.",
+                    "Anulado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
-                string mensaje = "Cheque anulado correctamente.";
-                if (tieneContado)
-                {
-                    mensaje += "\n\nLos documentos al contado quedaron pendientes. " +
-                               "Podrá retomarlos la próxima vez que abra esta pantalla.";
-                }
-
-                XtraMessageBox.Show(mensaje, "Eliminado",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                btnIgnorar_Click(sender, e);
+                // Recargar el cheque para reflejar los valores actualizados
+                CargarCheque(_idCheque);
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show("Error al eliminar el cheque:\n\n" + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                XtraMessageBox.Show(
+                    "Error al anular el cheque:\n\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             finally
             {
@@ -2079,6 +2085,42 @@ namespace SistemaContable.UI.Forms.Bancos
         private void btnDocumentos_Click(object sender, EventArgs e)
         {
             AbrirContadoConUid();
+        }
+
+        private void mskFECHA_CHEQUE_Leave(object sender, EventArgs e)
+        {
+            // 1. Escape de foco (Ignorar/Finalizar/etc.)
+            if (FormHelper.EsEscapeDeFoco(this)) return;
+
+            // 2. Solo aplicar en modo Agregar
+            if (_estadoActual != EstadoFormulario.Agregar) return;
+
+            // 3. Modo búsqueda no aplica
+            if (_modoBusqueda) return;
+
+            // 4. Validar que haya fecha
+            DateTime? fecha = FormHelper.ObtenerFecha(mskFECHA_CHEQUE);
+            if (!fecha.HasValue)
+            {
+                txtNUMERO_PARTIDA.Text = ""; 
+                return;
+            }
+           
+            // 5. Recalcular número de partida sugerido
+            try
+            {
+                var infoPartida = NumeradorPartidaHelper.Consultar(
+                    "CH",
+                    fecha.Value.Year,
+                    fecha.Value.Month);
+                txtNUMERO_PARTIDA.Text = infoPartida.NumSiguienteFormateado;                
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    "Error al consultar el número de partida:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

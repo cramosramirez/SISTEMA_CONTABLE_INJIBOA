@@ -310,7 +310,9 @@ namespace SistemaContable.UI.Helpers
                 return false;
             }
 
-            if (!DateTime.TryParseExact(campo.Text, "dd/MM/yyyy",
+            string[] formatos = { "dd/MM/yyyy", "ddMMyyyy", "d/M/yyyy", "dd-MM-yyyy" };
+
+            if (!DateTime.TryParseExact(campo.Text, formatos,
                 System.Globalization.CultureInfo.InvariantCulture,
                 System.Globalization.DateTimeStyles.None, out _))
             {
@@ -329,9 +331,15 @@ namespace SistemaContable.UI.Helpers
         /// </summary>
         public static DateTime? ObtenerFecha(MaskedTextBox campo)
         {
-            if (string.IsNullOrWhiteSpace(campo.Text.Replace("/", "").Trim()))
+            if (campo == null) return null;
+
+            string texto = campo.Text?.Trim() ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(campo.Text.Replace("/", "").Replace(" ", "")))
                 return null;
-            if (DateTime.TryParseExact(campo.Text, "dd/MM/yyyy",
+
+            string[] formatos = { "dd/MM/yyyy", "ddMMyyyy", "d/M/yyyy", "dd-MM-yyyy" };
+
+            if (DateTime.TryParseExact(campo.Text, formatos,
                 System.Globalization.CultureInfo.InvariantCulture,
                 System.Globalization.DateTimeStyles.None, out DateTime fecha))
                 return fecha;
