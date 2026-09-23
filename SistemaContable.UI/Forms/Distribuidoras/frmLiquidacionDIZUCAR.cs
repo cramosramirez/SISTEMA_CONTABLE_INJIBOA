@@ -19,6 +19,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private readonly DALBase _dal = new DALBase();
         private DataSet _ds;
         private DataTable _dtGastos;
+        private DataTable _dtReintegro;
 
         private GridView gridDocumentos;
         private GridView gridProductos;
@@ -187,6 +188,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                 _ds.Tables[3].TableName = "DETALLE";
                 _dtGastos = _ds.Tables[4];
                 _dtGastos.TableName = "GASTOS_DETALLE";   // ✅ renombrado (antes "GASTOS")
+                _dtReintegro = _ds.Tables[5];
+                _dtReintegro.TableName = "REINTEGRO";
 
                 _ds.Relations.Clear();
 
@@ -288,7 +291,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             lblTOTAL_VENTAS.Text = 0m.ToString("C2");
             lblTOTAL_CREDITO.Text = 0m.ToString("C2");
             lblTOTAL_GASTOS.Text = 0m.ToString("C2");
-            lblVENTAS_MENOS_GASTOS.Text = 0m.ToString("C2");
+            lblTOTAL_REINTEGROS.Text = 0m.ToString("C2");
             lblREMESA.Text = 0m.ToString("C2");
         }
 
@@ -311,6 +314,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         {
             decimal totalVentas = 0;
             decimal totalCredito = 0;
+            decimal totalGastos = 0;
+            decimal totalReintegro = 0;
 
             foreach (DataRow clqRow in _ds.Tables["CLQ"].Select($"id_empresa = {idEmpresa}"))
             {
@@ -336,15 +341,23 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                 }
             }
 
-            decimal totalGastos = 0;
-            foreach (DataRow gastoRow in _dtGastos.Select($"id_empresa_prorrateo_gasto = {idEmpresa}"))
-                totalGastos += ToDecimal(gastoRow["total"]);
+            foreach (DataRow reintegroRow in _dtReintegro.Select($"id_empresa_prorrateo_gasto = {idEmpresa}"))
+            {
+                totalReintegro += ToDecimal(reintegroRow["total"]);
+            }
 
+            foreach (DataRow gastoRow in _dtGastos.Select($"id_empresa_prorrateo_gasto = {idEmpresa}"))
+            {
+                if (ToDecimal(gastoRow["total"]) > 0)
+                {
+                    totalGastos += ToDecimal(gastoRow["total"]);
+                }
+            }                
             lblTOTAL_VENTAS.Text = totalVentas.ToString("C2");
-            lblTOTAL_CREDITO.Text = totalCredito.ToString("C2");
-            lblTOTAL_GASTOS.Text = totalGastos.ToString("C2");
-            lblVENTAS_MENOS_GASTOS.Text = (totalVentas - totalGastos).ToString("C2");
-            lblREMESA.Text = (totalVentas - totalGastos - totalCredito).ToString("C2");
+            lblTOTAL_CREDITO.Text = (-1 * totalCredito).ToString("C2");
+            lblTOTAL_GASTOS.Text = (-1 * totalGastos).ToString("C2");
+            lblTOTAL_REINTEGROS.Text = (totalReintegro).ToString("C2");
+            lblREMESA.Text = (totalVentas - totalGastos - totalCredito + totalReintegro).ToString("C2");
         }
 
         private static decimal ToDecimal(object valor)
@@ -407,38 +420,38 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             //ConfigurarBotonGenerarGrid();
         }
 
-        private void ConfigurarBotonGenerarGrid()
-        {
-            // Botón de Generar/Regenerar comprobante de liquidación
-            _riBotonGenerar = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            _riBotonGenerar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            _riBotonGenerar.Buttons.Clear();
+        //private void ConfigurarBotonGenerarGrid()
+        //{
+        //    // Botón de Generar/Regenerar comprobante de liquidación
+        //    _riBotonGenerar = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+        //    _riBotonGenerar.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+        //    _riBotonGenerar.Buttons.Clear();
 
-            var boton = new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)
-            {
-                Image = ObtenerImagenRecurso("descargar20x20")
-            };
-            var superTip = new DevExpress.Utils.SuperToolTip();
-            superTip.Items.Add("Generar comprobante de liquidación (CLQ)");
-            boton.SuperTip = superTip;
-            _riBotonGenerar.Buttons.Add(boton);
-            _riBotonGenerar.ButtonClick += RiBotonGenerar_ButtonClick;
+        //    var boton = new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)
+        //    {
+        //        Image = ObtenerImagenRecurso("descargar20x20")
+        //    };
+        //    var superTip = new DevExpress.Utils.SuperToolTip();
+        //    superTip.Items.Add("Generar comprobante de liquidación (CLQ)");
+        //    boton.SuperTip = superTip;
+        //    _riBotonGenerar.Buttons.Add(boton);
+        //    _riBotonGenerar.ButtonClick += RiBotonGenerar_ButtonClick;
 
-            gridControl1.RepositoryItems.Add(_riBotonGenerar);
+        //    gridControl1.RepositoryItems.Add(_riBotonGenerar);
 
-            var colGenerar = AgregarColumna(gridCLQ, " ", "");
-            colGenerar.Width = 40;
-            colGenerar.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            colGenerar.ColumnEdit = _riBotonGenerar;
-            colGenerar.OptionsColumn.AllowEdit = true;   // el botón necesita que la celda sea "editable" para responder al clic
-        }
+        //    var colGenerar = AgregarColumna(gridCLQ, " ", "");
+        //    colGenerar.Width = 40;
+        //    colGenerar.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+        //    colGenerar.ColumnEdit = _riBotonGenerar;
+        //    colGenerar.OptionsColumn.AllowEdit = true;   // el botón necesita que la celda sea "editable" para responder al clic
+        //}
 
-        private Image ObtenerImagenRecurso(string nombre)
-        {
-            object recurso = Properties.Resources.ResourceManager.GetObject(nombre)
-                              ?? SistemaContable.UI.RecursosAdicionales01.ResourceManager.GetObject(nombre);
-            return recurso as Image;
-        }
+        //private Image ObtenerImagenRecurso(string nombre)
+        //{
+        //    object recurso = Properties.Resources.ResourceManager.GetObject(nombre)
+        //                      ?? SistemaContable.UI.RecursosAdicionales01.ResourceManager.GetObject(nombre);
+        //    return recurso as Image;
+        //}
 
         private void RiBotonGenerar_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
