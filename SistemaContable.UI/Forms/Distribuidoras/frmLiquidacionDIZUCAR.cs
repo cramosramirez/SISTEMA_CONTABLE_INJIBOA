@@ -348,7 +348,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
             foreach (DataRow gastoRow in _dtGastos.Select($"id_empresa_prorrateo_gasto = {idEmpresa}"))
             {
-                if (ToDecimal(gastoRow["total"]) > 0)
+                if (gastoRow["concepto_general"].ToString() != "SERVICIO DE CARGADO (AJUSTE)")
                 {
                     totalGastos += ToDecimal(gastoRow["total"]);
                 }

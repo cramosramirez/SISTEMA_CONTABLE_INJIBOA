@@ -39,6 +39,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.dteFECHA_LIQUIDACION = new DevExpress.XtraEditors.DateEdit();
             this.label1 = new System.Windows.Forms.Label();
             this.panelResumen = new System.Windows.Forms.Panel();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.lblTOTAL_REINTEGROS = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.lblREMESA = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -59,13 +62,11 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.tabNavigationPage2 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gridGASTOS = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.lblTOTAL_REINTEGROS = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.panelFiltros.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties)).BeginInit();
             this.panelResumen.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -79,7 +80,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.tabNavigationPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridGASTOS)).BeginInit();
-            this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelFiltros
@@ -213,12 +213,45 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panelResumen.Size = new System.Drawing.Size(1539, 99);
             this.panelResumen.TabIndex = 1;
             // 
+            // panel6
+            // 
+            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(249)))), ((int)(((byte)(225)))));
+            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel6.Controls.Add(this.lblTOTAL_REINTEGROS);
+            this.panel6.Controls.Add(this.label8);
+            this.panel6.Location = new System.Drawing.Point(680, 17);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(215, 66);
+            this.panel6.TabIndex = 5;
+            // 
+            // lblTOTAL_REINTEGROS
+            // 
+            this.lblTOTAL_REINTEGROS.Font = new System.Drawing.Font("Tahoma", 11.89565F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTOTAL_REINTEGROS.ForeColor = System.Drawing.Color.DarkGreen;
+            this.lblTOTAL_REINTEGROS.Location = new System.Drawing.Point(1, 33);
+            this.lblTOTAL_REINTEGROS.Name = "lblTOTAL_REINTEGROS";
+            this.lblTOTAL_REINTEGROS.Size = new System.Drawing.Size(211, 23);
+            this.lblTOTAL_REINTEGROS.TabIndex = 1;
+            this.lblTOTAL_REINTEGROS.Text = "$ 0.00";
+            this.lblTOTAL_REINTEGROS.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label8
+            // 
+            this.label8.ForeColor = System.Drawing.Color.Green;
+            this.label8.Location = new System.Drawing.Point(4, 10);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(208, 23);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "REINTEGROS";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(202)))), ((int)(((byte)(216)))), ((int)(((byte)(249)))));
+            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel5.Controls.Add(this.lblREMESA);
             this.panel5.Controls.Add(this.label6);
-            this.panel5.Location = new System.Drawing.Point(903, 17);
+            this.panel5.Location = new System.Drawing.Point(901, 17);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(215, 66);
             this.panel5.TabIndex = 4;
@@ -247,6 +280,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(232)))), ((int)(((byte)(232)))));
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.lblTOTAL_GASTOS);
             this.panel3.Controls.Add(this.label9);
             this.panel3.Location = new System.Drawing.Point(238, 17);
@@ -279,6 +313,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(232)))), ((int)(((byte)(232)))));
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.lblTOTAL_CREDITO);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Location = new System.Drawing.Point(459, 17);
@@ -311,6 +346,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(249)))), ((int)(((byte)(225)))));
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.lblTOTAL_VENTAS);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Location = new System.Drawing.Point(17, 17);
@@ -423,37 +459,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.gridGASTOS.GridControl = this.gridControl2;
             this.gridGASTOS.Name = "gridGASTOS";
             // 
-            // panel6
-            // 
-            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(249)))), ((int)(((byte)(225)))));
-            this.panel6.Controls.Add(this.lblTOTAL_REINTEGROS);
-            this.panel6.Controls.Add(this.label8);
-            this.panel6.Location = new System.Drawing.Point(680, 17);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(215, 66);
-            this.panel6.TabIndex = 5;
-            // 
-            // lblTOTAL_REINTEGROS
-            // 
-            this.lblTOTAL_REINTEGROS.Font = new System.Drawing.Font("Tahoma", 11.89565F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTOTAL_REINTEGROS.ForeColor = System.Drawing.Color.DarkGreen;
-            this.lblTOTAL_REINTEGROS.Location = new System.Drawing.Point(1, 33);
-            this.lblTOTAL_REINTEGROS.Name = "lblTOTAL_REINTEGROS";
-            this.lblTOTAL_REINTEGROS.Size = new System.Drawing.Size(211, 23);
-            this.lblTOTAL_REINTEGROS.TabIndex = 1;
-            this.lblTOTAL_REINTEGROS.Text = "$ 0.00";
-            this.lblTOTAL_REINTEGROS.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label8
-            // 
-            this.label8.ForeColor = System.Drawing.Color.Green;
-            this.label8.Location = new System.Drawing.Point(4, 10);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(208, 23);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "REINTEGROS";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
             // frmLiquidacionDIZUCAR
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -474,6 +479,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties)).EndInit();
             this.panelResumen.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -487,7 +493,6 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.tabNavigationPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridGASTOS)).EndInit();
-            this.panel6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
