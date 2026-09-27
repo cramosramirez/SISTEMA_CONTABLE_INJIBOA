@@ -208,6 +208,14 @@ namespace SistemaContable.UI.Forms
             if (string.IsNullOrWhiteSpace(nombreFormulario))
                 return null;
 
+            // Compatibilidad con los nombres de Planilla guardados en el menú.
+            if (string.Equals(nombreFormulario, "Planilla.frmFacturacionInt", StringComparison.OrdinalIgnoreCase))
+                nombreFormulario = "Planilla.frmFacturaCorte";
+            else if (string.Equals(nombreFormulario, "Planilla.frmSujectoExcInt", StringComparison.OrdinalIgnoreCase))
+                nombreFormulario = "Planilla.frmSujectoExcCorte";
+            else if (string.Equals(nombreFormulario, "Planilla.frmRetencionInt", StringComparison.OrdinalIgnoreCase))
+                nombreFormulario = "Planilla.frmRetencionCorte";
+
             // Buscar en caché
             if (_formCache.TryGetValue(nombreFormulario, out var tipoCache))
                 return tipoCache;

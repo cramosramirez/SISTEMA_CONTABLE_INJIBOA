@@ -1,4 +1,4 @@
-using SistemaContable.DAL;
+﻿using SistemaContable.DAL;
 using SistemaContable.UI.Forms.Ventas; // frmCreditoFiscal vive en Ventas
 using System;
 using System.Data;
@@ -7,23 +7,23 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 
-namespace SistemaContable.UI.Planilla
+namespace SistemaContable.UI.Forms.Planilla
 {
     // Pantalla dedicada a Crédito Fiscal: consume [EGENERALES].[SP_TIPO_DOCUMENTO] @ACCION='FACTURA_CCF'
     // (ID_TIPO_COMPROB en 1, 2, 11). Sujeto Excluido y Retención tienen sus propios formularios:
-    // frmSujectoExcInt y frmRetencionInt.
-    public partial class frmFacturacionInt : Form
+    // frmSujectoExcCorte y frmRetencionCorte.
+    public partial class frmFacturaCorte : Form
     {
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtCandidatos;
         private DataTable _dtDocumentos;
 
-        public frmFacturacionInt()
+        public frmFacturaCorte()
         {
             InitializeComponent();
         }
 
-        private void frmFacturacionInt_Load(object sender, EventArgs e)
+        private void frmFacturaCorte_Load(object sender, EventArgs e)
         {
             ConfigurarGridCandidatos();
             ConfigurarGridDocumentos();

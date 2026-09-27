@@ -1,6 +1,6 @@
-namespace SistemaContable.UI.Forms.Planilla
+﻿namespace SistemaContable.UI.Forms.Planilla
 {
-    partial class frmRetencionInt
+    partial class frmSujectoExcCorte
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -19,7 +19,7 @@ namespace SistemaContable.UI.Forms.Planilla
         // filtro, panel aparte solo con botones de acción, TabIndex por control, columnas de grid con
         // MinWidth/AllowSize/AllowEdit. Ábrelo en el diseñador con DevExpress instalado para ajustar
         // anclas/tamaños/skin si hace falta; los nombres de los controles ya coinciden con
-        // frmRetencionInt.cs.
+        // frmSujectoExcCorte.cs.
 
         private void InitializeComponent()
         {
@@ -534,9 +534,9 @@ namespace SistemaContable.UI.Forms.Planilla
             this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvDocumentos});
             //
-            // gvDocumentos — sin columnas fijas ni datos por ahora: falta confirmar con Roberto
-            // qué formulario/SP representa los documentos de Retención ya generados (ver TODO
-            // en CargarGridDocumentos y btnNuevo_Click, .cs).
+            // gvDocumentos — sin columnas fijas ni datos por ahora: SP_FACTURA_SUJETO_EXC no tiene
+            // (todavía) una acción que liste todas las facturas generadas (ver TODO en
+            // CargarGridDocumentos, .cs).
             //
             this.gvDocumentos.GridControl = this.gridControl2;
             this.gvDocumentos.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
@@ -544,7 +544,7 @@ namespace SistemaContable.UI.Forms.Planilla
             this.gvDocumentos.OptionsView.ShowIndicator = false;
             this.gvDocumentos.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
             //
-            // frmRetencionInt
+            // frmSujectoExcCorte
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -554,10 +554,10 @@ namespace SistemaContable.UI.Forms.Planilla
             this.Controls.Add(this.panelCandidatos);
             this.Controls.Add(this.panelBotones);
             this.Controls.Add(this.grpFiltros);
-            this.Name = "frmRetencionInt";
+            this.Name = "frmSujectoExcCorte";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Facturación Interna - Retención";
-            this.Load += new System.EventHandler(this.frmRetencionInt_Load);
+            this.Text = "Facturación Interna - Sujeto Excluido";
+            this.Load += new System.EventHandler(this.frmSujectoExcCorte_Load);
             this.grpFiltros.ResumeLayout(false);
             this.grpFiltros.PerformLayout();
             this.panelBotones.ResumeLayout(false);

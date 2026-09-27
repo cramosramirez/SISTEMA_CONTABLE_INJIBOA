@@ -1,5 +1,5 @@
-using SistemaContable.DAL;
-using SistemaContable.UI.Forms.Ventas; // frmCreditoFiscal vive en Ventas
+﻿using SistemaContable.DAL;
+using SistemaContable.UI.Forms.Proveedores; // frmFacturaSujetoExcluido vive en Proveedores
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -9,21 +9,20 @@ using DevExpress.XtraGrid.Views.Grid;
 
 namespace SistemaContable.UI.Forms.Planilla
 {
-    // Pantalla dedicada a Crédito Fiscal: consume [EGENERALES].[SP_TIPO_DOCUMENTO] @ACCION='FACTURA_CCF'
-    // (ID_TIPO_COMPROB en 1, 2, 11). Sujeto Excluido y Retención tienen sus propios formularios:
-    // frmSujectoExcInt y frmRetencionInt.
-    public partial class frmFacturacionInt : Form
+    // Hermano de frmFacturaCorte, dedicado a Sujeto Excluido: consume
+    // [EGENERALES].[SP_TIPO_DOCUMENTO] @ACCION='FACTURA_SUJETO_EXCLUIDO' (ID_TIPO_COMPROB = 10).
+    public partial class frmSujectoExcCorte : Form
     {
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtCandidatos;
         private DataTable _dtDocumentos;
 
-        public frmFacturacionInt()
+        public frmSujectoExcCorte()
         {
             InitializeComponent();
         }
 
-        private void frmFacturacionInt_Load(object sender, EventArgs e)
+        private void frmSujectoExcCorte_Load(object sender, EventArgs e)
         {
             ConfigurarGridCandidatos();
             ConfigurarGridDocumentos();
@@ -37,9 +36,8 @@ namespace SistemaContable.UI.Forms.Planilla
 
         private void CargarTipoComprobante()
         {
-            // Pantalla fija a Crédito Fiscal: solo la acción FACTURA_CCF (ID_TIPO_COMPROB 1, 2, 11).
             var dt = _dal.EjecutarConsulta("[EGENERALES].[SP_TIPO_DOCUMENTO]",
-                new { ACCION = "FACTURA_CCF" });
+                new { ACCION = "FACTURA_SUJETO_EXCLUIDO" });
 
             cbxTIPO_COMPROBANTE.DataSource = dt;
             cbxTIPO_COMPROBANTE.ValueMember = "ID_TIPO_COMPROB";
@@ -103,7 +101,7 @@ namespace SistemaContable.UI.Forms.Planilla
                 cbxTIPO_PLANILLA.SelectedValue == null)
             {
                 XtraMessageBox.Show("Debe seleccionar Tipo Comprobante, Zafra, Catorcena y Tipo Planilla.",
-                    "Facturación Interna", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    "Sujeto Excluido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
             return true;
@@ -131,9 +129,6 @@ namespace SistemaContable.UI.Forms.Planilla
         #endregion
 
         #region === GRID INFERIOR (documentos ya generados) ===
-        // Reutiliza EXACTAMENTE la misma consulta de frmConsultaCreditoFiscal (SP_CREDITOFISCAL_ENC LISTAR),
-        // ya que esta pantalla está fija a Crédito Fiscal. El grid se puebla con PopulateColumns()
-        // en vez de columnas fijas en el Designer, igual patrón reutilizable para las pantallas hermanas.
 
         private void ConfigurarGridDocumentos()
         {
@@ -149,45 +144,21 @@ namespace SistemaContable.UI.Forms.Planilla
 
         private void CargarGridDocumentos()
         {
-            // Mismo query que frmConsultaCreditoFiscal
-            _dtDocumentos = _dal.EjecutarConsulta("[EDTE].[SP_CREDITOFISCAL_ENC]", new
-            {
-                ACCION = "LISTAR",
-                ID_EMISOR = 1
-            });
-
-            gridControl2.DataSource = _dtDocumentos;
-            gvDocumentos.PopulateColumns();
-            AjustarColumnasDocumentos();
-            gridControl2.Refresh();
-        }
-
-        // Ajusta captions/orden de las columnas que trae SP_CREDITOFISCAL_ENC @ACCION='LISTAR'.
-        private void AjustarColumnasDocumentos()
-        {
-            void Ajustar(string campo, string caption, int? ancho = null)
-            {
-                var col = gvDocumentos.Columns[campo];
-                if (col == null) return;
-                col.Caption = caption;
-                col.OptionsColumn.AllowEdit = false;
-                if (ancho.HasValue) col.Width = ancho.Value;
-            }
-
-            Ajustar("ID_CCFENC", "Sistema(Id)", 80);
-            Ajustar("FECHA", "Fecha", 90);
-            Ajustar("NUMINTERNO", "N° Interno", 130);
-            Ajustar("NOMBRE_ENTIDAD", "Cliente", 260);
-            Ajustar("CODGENERACION", "Cód. Generación", 220);
-            Ajustar("NUMCONTROL", "N° Control", 220);
-            Ajustar("SELLORECEPCION", "Sello Recepción", 200);
-            Ajustar("TOTALVENTA", "Total Venta", 100);
+            // TODO: pendiente de confirmar con Roberto. Revisé el SP completo de
+            // [dbo].[SP_FACTURA_SUJETO_EXC] y ninguna de sus acciones existentes lista "todas las
+            // facturas de Sujeto Excluido generadas" (que es lo que necesita este grid):
+            //   - OBTENER            -> una sola fila por ID_FSE
+            //   - LISTAR_POR_UID     -> filtra por @UID_ENLACE_CHEQUE (enlace a un cheque puntual,
+            //                           no un listado general)
+            //   - LISTAR_UIDS_HUERFANOS -> agrupa por UID_ENLACE_CHEQUE huérfano y @USUARIO
+            // Falta agregar una acción tipo LISTAR (igual a SP_CREDITOFISCAL_ENC) o confirmar cuál
+            // usar. El grid queda vacío mientras tanto.
         }
 
         private int? ObtenerIdDocumentoFilaActiva()
         {
             if (gvDocumentos.FocusedRowHandle < 0) return null;
-            object val = gvDocumentos.GetRowCellValue(gvDocumentos.FocusedRowHandle, "ID_CCFENC");
+            object val = gvDocumentos.GetRowCellValue(gvDocumentos.FocusedRowHandle, "ID_FSE");
             if (val == null || val == DBNull.Value) return null;
             return Convert.ToInt32(val);
         }
@@ -201,10 +172,9 @@ namespace SistemaContable.UI.Forms.Planilla
 
         private void AbrirDocumento(int id)
         {
-            using (var frm = new frmCreditoFiscal())
+            using (var frm = new frmFacturaSujetoExcluido())
             {
-                // TODO: confirmar el nombre real de la propiedad de entrada de frmCreditoFiscal (IdCCFEnc).
-                frm.IdCCFEnc = id;
+                frm.IdFse = id;
                 frm.ShowDialog(this);
             }
 
@@ -219,7 +189,7 @@ namespace SistemaContable.UI.Forms.Planilla
         {
             if (cbxTIPO_COMPROBANTE.SelectedValue == null)
             {
-                XtraMessageBox.Show("Seleccione primero el Tipo Comprobante.", "Facturación Interna",
+                XtraMessageBox.Show("Seleccione primero el Tipo Comprobante.", "Sujeto Excluido",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -229,9 +199,8 @@ namespace SistemaContable.UI.Forms.Planilla
 
         private void btnImportar_Click(object sender, EventArgs e)
         {
-            // TODO (pendiente, según lo hablado): tomar la fila seleccionada del grid superior
-            // (candidato de SP_COMPROB_PLANILLA) y pasar sus datos al grid inferior, abriendo
-            // frmCreditoFiscal precargado. Se deja sin implementar por ahora.
+            // TODO: mismo comportamiento pendiente que en frmFacturaCorte (pasar la fila
+            // seleccionada del grid superior al inferior y abrir frmFacturaSujetoExcluido precargado).
         }
 
         private void btnReporte_Click(object sender, EventArgs e)

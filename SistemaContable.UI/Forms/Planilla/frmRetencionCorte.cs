@@ -1,4 +1,4 @@
-using SistemaContable.DAL;
+﻿using SistemaContable.DAL;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -8,7 +8,7 @@ using DevExpress.XtraGrid.Views.Grid;
 
 namespace SistemaContable.UI.Forms.Planilla
 {
-    // Hermano de frmFacturacionInt, dedicado a Retención: consume
+    // Hermano de frmFacturaCorte, dedicado a Retención: consume
     // [EGENERALES].[SP_TIPO_DOCUMENTO] @ACCION='RETENCION' (ID_TIPO_COMPROB = 9).
     //
     // TODO: a diferencia de Crédito Fiscal (frmCreditoFiscal/SP_CREDITOFISCAL_ENC) y Sujeto
@@ -17,18 +17,18 @@ namespace SistemaContable.UI.Forms.Planilla
     // (rama RETENCION) excluye candidatos ya presentes en [ERPMH].ECHEQUES.quedan, lo que sugiere
     // que podría estar relacionado con frmDocumentoCompra/frmConsultaQuedan, pero falta confirmar
     // con Roberto antes de cablear el grid inferior y el botón Nuevo.
-    public partial class frmRetencionInt : Form
+    public partial class frmRetencionCorte : Form
     {
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtCandidatos;
         private DataTable _dtDocumentos;
 
-        public frmRetencionInt()
+        public frmRetencionCorte()
         {
             InitializeComponent();
         }
 
-        private void frmRetencionInt_Load(object sender, EventArgs e)
+        private void frmRetencionCorte_Load(object sender, EventArgs e)
         {
             ConfigurarGridCandidatos();
             ConfigurarGridDocumentos();
@@ -167,7 +167,7 @@ namespace SistemaContable.UI.Forms.Planilla
 
         private void btnImportar_Click(object sender, EventArgs e)
         {
-            // TODO: mismo comportamiento pendiente que en frmFacturacionInt (pasar la fila
+            // TODO: mismo comportamiento pendiente que en frmFacturaCorte (pasar la fila
             // seleccionada del grid superior al inferior y abrir el documento de Retención precargado).
         }
 
