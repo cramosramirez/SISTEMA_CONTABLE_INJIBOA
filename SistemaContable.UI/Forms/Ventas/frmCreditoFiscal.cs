@@ -1318,6 +1318,61 @@ namespace SistemaContable.UI.Forms.Ventas
                             "el registro de crédito agrícola asociado:\n\n" + exCredito.Message,
                             "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
+
+                    // (2026-09-28) NUEVO: además del crédito agrícola, se genera el espejo del
+                    // CCF en las tablas de integración SIGESTA [INJIBOA].[dbo].[CCF_ENCA] /
+                    // [CCF_DETA], llamando a [ESOLICITUD].[SP_CCF_ENCA] (GUARDAR_ENCA y luego
+                    // GUARDAR_DETA por cada línea). Llamada explícita, no trigger; si falla no
+                    // revierte el CCF ya guardado, solo avisa (mismo criterio que arriba).
+                    try
+                    {
+                        var dtCcfEnca = _dal.EjecutarConsulta("[ESOLICITUD].[SP_CCF_ENCA]", new
+                        {
+                            ACCION = "GUARDAR_ENCA",
+                            ID_SOLICITUD = _idSolicitudSeleccionada,
+                            ID_ZAFRA = ObtenerIdCombo(cbxZAFRA),
+                            ID_CUENTA_FINAN = _idCuentaFinanSolicitud,
+                            NO_CCF = txtNUMINTERNO.Text.Trim(),
+                            FECHA = ParsearFecha(mskFECHA.Text),
+                            CODIPROVEEDOR = NullIfEmpty(_codigoSolicitudSeleccionada),
+                            SUB_TOTAL = ObtenerTextBoxDecimal(txtSUBTOTAL),
+                            DESCTO_MONTO = ObtenerTextBoxDecimal(txtDESCUENTO),
+                            IVA = ObtenerTextBoxDecimal(txtIVA),
+                            TOTAL = ObtenerTextBoxDecimal(txtTOTAL_VENTA),
+                            USUARIO = Configuracion.UsuarioActual,
+                        });
+
+                        if (dtCcfEnca != null && dtCcfEnca.Rows.Count > 0)
+                        {
+                            int idCcfEncaGenerado = Convert.ToInt32(dtCcfEnca.Rows[0]["ID_GENERADO"]);
+                            foreach (DataRow fila in _dtDetalle.Rows)
+                            {
+                                if (string.IsNullOrWhiteSpace(fila["COD_REF"].ToString())) continue;
+                                _dal.EjecutarSinRetorno("[ESOLICITUD].[SP_CCF_ENCA]", new
+                                {
+                                    ACCION = "GUARDAR_DETA",
+                                    ID_CCF_ENCA = idCcfEncaGenerado,
+                                    // NOTA (2026-09-28): se manda COD_REF, no ID_PRODUCTO — el ID_PRODUCTO
+                                    // de este DataTable es el ID local (PH2), distinto al de SIGESTA
+                                    // (INJIBOA.dbo.PRODUCTO) que exige la FK de CCF_DETA. El SP resuelve
+                                    // el ID_PRODUCTO de SIGESTA a partir del COD_REF.
+                                    COD_REF = fila["COD_REF"].ToString(),
+                                    NOMBRE_PRODUCTO = fila["DESCRIPCION"].ToString(),
+                                    UNIDAD = fila["UM"].ToString(),
+                                    CANTIDAD = Convert.ToDecimal(fila["CANTIDAD"]),
+                                    PRECIO_UNITARIO = Convert.ToDecimal(fila["PRECIO"]),
+                                    TOTAL_LINEA = Convert.ToDecimal(fila["TOTAL"]),
+                                });
+                            }
+                        }
+                    }
+                    catch (Exception exCcf)
+                    {
+                        XtraMessageBox.Show(
+                            "El crédito fiscal se guardó correctamente, pero no se pudo generar " +
+                            "el registro CCF_ENCA/CCF_DETA asociado:\n\n" + exCcf.Message,
+                            "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
                 XtraMessageBox.Show("Crédito fiscal guardado correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);

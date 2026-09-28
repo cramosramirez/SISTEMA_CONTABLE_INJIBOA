@@ -213,6 +213,16 @@ namespace SistemaContable.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap CCFPlanilla32x32 {
+            get {
+                object obj = ResourceManager.GetObject("CCFPlanilla32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap cerrarProducto32x32 {
             get {
                 object obj = ResourceManager.GetObject("cerrarProducto32x32", resourceCulture);

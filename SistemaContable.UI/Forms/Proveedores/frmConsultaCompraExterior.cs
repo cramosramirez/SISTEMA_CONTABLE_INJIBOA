@@ -46,7 +46,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             gvDetalle.OptionsBehavior.AutoPopulateColumns = false; // solo usar las columnas definidas en el diseñador
             gvDetalle.OptionsView.ShowGroupPanel = false;   // panel de agrupación visible
             gvDetalle.OptionsView.ShowAutoFilterRow = true;
-            gvDetalle.OptionsBehavior.AutoExpandAllGroups = true;
             gvDetalle.OptionsBehavior.Editable = true;   // necesario para los botones por fila
             colVER_R.Visible = false; // "Ver R" oculto a pedido de Roberto (2026-08-25)
             colVER_Q.Visible = false; // "Ver Q" oculto a pedido de Roberto (2026-08-25)
@@ -71,11 +70,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             gvDetalle.Appearance.Row.Font = new Font("Segoe UI", 9f);
             gvDetalle.Appearance.Row.Options.UseFont = true;
 
-            // --- Agrupación por NUM_QUEDAN ---
-            colNUM_QUEDAN.GroupIndex = 0;
-
-            // Personaliza el texto del header del grupo: "N° Quedan: 24337"
-            gvDetalle.CustomDrawGroupRow += GvDetalle_CustomDrawGroupRow;
+            // Agrupación por NUM_QUEDAN eliminada a pedido de Roberto (2026-09-28):
+            // se deja únicamente la columna "Sistema(id)" (ID_COMPRA_EXTERIOR), sin agrupar.
 
             // --- Embedded Navigator: solo Nuevo ---
             gridControl1.UseEmbeddedNavigator = true;
@@ -100,13 +96,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             }
         }
 
-        private void GvDetalle_CustomDrawGroupRow(object sender, RowObjectCustomDrawEventArgs e)
-        {
-            if (e.Info is GridGroupRowInfo info)
-            {
-                info.GroupText = $"N° Quedan: {info.EditValue}";
-            }
-        }
         #endregion
 
 
@@ -122,6 +111,11 @@ namespace SistemaContable.UI.Forms.Proveedores
             // el Visible=false definido en el diseñador.
             colVER_R.Visible = false;
             colVER_Q.Visible = false;
+
+            // Distribuye el ancho de las columnas según su contenido (a pedido de Roberto,
+            // 2026-09-28): evita que "Sistema(id)" quede desproporcionadamente ancha y que
+            // "Proveedor" quede sin espacio visible.
+            gvDetalle.BestFitColumns();
         }
         #endregion
                       

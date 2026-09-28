@@ -197,8 +197,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gvDetalle.Name = "gvDetalle";
             this.gvDetalle.OptionsView.ShowIndicator = false;
             this.gvDetalle.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
-            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colNUM_QUEDAN, DevExpress.Data.ColumnSortOrder.Descending),
-            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colID_COMPRA_EXTERIOR, DevExpress.Data.ColumnSortOrder.Ascending)});
+            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colID_COMPRA_EXTERIOR, DevExpress.Data.ColumnSortOrder.Descending)});
             // 
             // colID_QUEDAN
             // 
@@ -207,26 +206,34 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.colID_QUEDAN.MinWidth = 21;
             this.colID_QUEDAN.Name = "colID_QUEDAN";
             this.colID_QUEDAN.Width = 79;
-            // 
+            //
             // colNUM_QUEDAN
-            // 
+            //
             this.colNUM_QUEDAN.Caption = "N° Quedan";
             this.colNUM_QUEDAN.FieldName = "NUM_QUEDAN";
             this.colNUM_QUEDAN.MinWidth = 21;
             this.colNUM_QUEDAN.Name = "colNUM_QUEDAN";
             this.colNUM_QUEDAN.OptionsColumn.AllowEdit = false;
             this.colNUM_QUEDAN.SortMode = DevExpress.XtraGrid.ColumnSortMode.Value;
-            this.colNUM_QUEDAN.Visible = true;
-            this.colNUM_QUEDAN.VisibleIndex = 0;
+            // Oculto a pedido de Roberto (2026-09-28): se quita la agrupación por Quedan,
+            // queda solo el ID interno del sistema (colID_COMPRA_EXTERIOR) como identificador.
+            this.colNUM_QUEDAN.Visible = false;
             this.colNUM_QUEDAN.Width = 35;
-            // 
+            //
             // colID_COMPRA_EXTERIOR
-            // 
-            this.colID_COMPRA_EXTERIOR.Caption = "gridColumn1";
+            //
+            this.colID_COMPRA_EXTERIOR.Caption = "Sistema(id)";
             this.colID_COMPRA_EXTERIOR.FieldName = "ID_COMPRA_EXTERIOR";
             this.colID_COMPRA_EXTERIOR.MinWidth = 21;
             this.colID_COMPRA_EXTERIOR.Name = "colID_COMPRA_EXTERIOR";
+            this.colID_COMPRA_EXTERIOR.OptionsColumn.AllowEdit = false;
+            // FixedWidth = true (2026-09-28): sin esto, al ser la única columna visible sin
+            // ancho fijo, el grid le asignaba todo el espacio sobrante del panel y la columna
+            // se veía desproporcionadamente ancha.
+            this.colID_COMPRA_EXTERIOR.OptionsColumn.FixedWidth = true;
             this.colID_COMPRA_EXTERIOR.SortMode = DevExpress.XtraGrid.ColumnSortMode.Value;
+            this.colID_COMPRA_EXTERIOR.Visible = true;
+            this.colID_COMPRA_EXTERIOR.VisibleIndex = 0;
             this.colID_COMPRA_EXTERIOR.Width = 79;
             // 
             // colEDITAR
