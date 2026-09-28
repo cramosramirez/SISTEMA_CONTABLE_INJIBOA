@@ -105,11 +105,21 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     USUARIO = Configuracion.UsuarioActual
                 });
 
+                // 3) Generar Ventas al crédito (misma empresa/fecha)
+                var dtCreditos = _dal.EjecutarConsulta("DISTRIB.SP_LIQUIDACION_GENERAR_VENTA_CREDITO", new
+                {
+                    ACCION = "GENERAR_MASIVO",
+                    ID_EMPRESA = idEmpresa,
+                    FECHA_PROCESA = fecha,
+                    USUARIO = Configuracion.UsuarioActual
+                });
+
                 int generadosClq = dtClq.Rows.Count > 0 ? Convert.ToInt32(dtClq.Rows[0]["CANTIDAD_GENERADOS"]) : 0;
                 string erroresClq = dtClq.Rows.Count > 0 ? dtClq.Rows[0]["ERRORES"]?.ToString() : "";
                 int marcadosGasto = dtGastos.Rows.Count > 0 ? Convert.ToInt32(dtGastos.Rows[0]["CANTIDAD_GENERADOS"]) : 0;
+                int marcadosCredito = dtCreditos.Rows.Count > 0 ? Convert.ToInt32(dtCreditos.Rows[0]["CANTIDAD_GENERADOS"]) : 0;
 
-                string mensaje = $"CLQ generados: {generadosClq}\nGastos procesados: {marcadosGasto}";
+                string mensaje = $"CLQ generados: {generadosClq}\nGastos procesados: {marcadosGasto}\nCréditos procesados: {marcadosCredito}";
                 if (!string.IsNullOrWhiteSpace(erroresClq))
                     mensaje += $"\n\nErrores en CLQ:\n{erroresClq}";
 

@@ -39,6 +39,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.dteFECHA_LIQUIDACION = new DevExpress.XtraEditors.DateEdit();
             this.label1 = new System.Windows.Forms.Label();
             this.panelResumen = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this.lblTOTAL_REINTEGROS = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -66,6 +69,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties)).BeginInit();
             this.panelResumen.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -116,9 +120,9 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.btnGenerarTodos.ImageOptions.ImageToTextIndent = 10;
             this.btnGenerarTodos.Location = new System.Drawing.Point(1150, 53);
             this.btnGenerarTodos.Name = "btnGenerarTodos";
-            this.btnGenerarTodos.Size = new System.Drawing.Size(254, 34);
+            this.btnGenerarTodos.Size = new System.Drawing.Size(326, 34);
             this.btnGenerarTodos.TabIndex = 2;
-            this.btnGenerarTodos.Text = "Generar documentos (CLQ y gastos)";
+            this.btnGenerarTodos.Text = "Generar documentos (CLQ, gastos y créditos)";
             this.btnGenerarTodos.Click += new System.EventHandler(this.btnGenerarTodos_Click);
             // 
             // btnImportarDIZUCAR
@@ -129,7 +133,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.btnImportarDIZUCAR.ImageOptions.ImageToTextIndent = 10;
             this.btnImportarDIZUCAR.Location = new System.Drawing.Point(1150, 11);
             this.btnImportarDIZUCAR.Name = "btnImportarDIZUCAR";
-            this.btnImportarDIZUCAR.Size = new System.Drawing.Size(254, 35);
+            this.btnImportarDIZUCAR.Size = new System.Drawing.Size(326, 35);
             this.btnImportarDIZUCAR.TabIndex = 0;
             this.btnImportarDIZUCAR.Text = "Importar API de DIZUCAR";
             this.btnImportarDIZUCAR.Click += new System.EventHandler(this.btnImportarDIZUCAR_Click);
@@ -160,11 +164,11 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.btnExpandirContraer.Appearance.Options.UseFont = true;
             this.btnExpandirContraer.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnExpandirContraer.ImageOptions.ImageToTextIndent = 10;
-            this.btnExpandirContraer.Location = new System.Drawing.Point(1014, 11);
+            this.btnExpandirContraer.Location = new System.Drawing.Point(979, 11);
             this.btnExpandirContraer.Name = "btnExpandirContraer";
-            this.btnExpandirContraer.Size = new System.Drawing.Size(119, 34);
+            this.btnExpandirContraer.Size = new System.Drawing.Size(154, 34);
             this.btnExpandirContraer.TabIndex = 1;
-            this.btnExpandirContraer.Text = "Expandir todos";
+            this.btnExpandirContraer.Text = "Expandir/Contraer";
             this.btnExpandirContraer.Click += new System.EventHandler(this.btnExpandirContraer_Click);
             // 
             // dteFECHA_LIQUIDACION
@@ -202,6 +206,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             // 
             // panelResumen
             // 
+            this.panelResumen.Controls.Add(this.panel4);
             this.panelResumen.Controls.Add(this.panel6);
             this.panelResumen.Controls.Add(this.panel5);
             this.panelResumen.Controls.Add(this.panel3);
@@ -212,6 +217,39 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panelResumen.Name = "panelResumen";
             this.panelResumen.Size = new System.Drawing.Size(1539, 99);
             this.panelResumen.TabIndex = 1;
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
+            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Controls.Add(this.label5);
+            this.panel4.Controls.Add(this.label10);
+            this.panel4.Location = new System.Drawing.Point(901, 17);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(215, 66);
+            this.panel4.TabIndex = 6;
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("Tahoma", 11.89565F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.DarkGreen;
+            this.label5.Location = new System.Drawing.Point(1, 33);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(211, 23);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "$ 0.00";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label10
+            // 
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.ForeColor = System.Drawing.Color.Green;
+            this.label10.Location = new System.Drawing.Point(2, 10);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(215, 23);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "PAGO DE CREDITOS";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // panel6
             // 
@@ -237,12 +275,13 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             // 
             // label8
             // 
+            this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.ForeColor = System.Drawing.Color.Green;
-            this.label8.Location = new System.Drawing.Point(4, 10);
+            this.label8.Location = new System.Drawing.Point(2, 10);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(208, 23);
+            this.label8.Size = new System.Drawing.Size(215, 23);
             this.label8.TabIndex = 0;
-            this.label8.Text = "REINTEGROS";
+            this.label8.Text = "REINTEGROS, DESCUENTOS";
             this.label8.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // panel5
@@ -251,7 +290,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel5.Controls.Add(this.lblREMESA);
             this.panel5.Controls.Add(this.label6);
-            this.panel5.Location = new System.Drawing.Point(901, 17);
+            this.panel5.Location = new System.Drawing.Point(1121, 17);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(215, 66);
             this.panel5.TabIndex = 4;
@@ -340,7 +379,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(209, 23);
             this.label7.TabIndex = 0;
-            this.label7.Text = "TOTAL CRÉDITOS";
+            this.label7.Text = "VENTAS AL CRÉDITO";
             this.label7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // panel1
@@ -479,6 +518,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteFECHA_LIQUIDACION.Properties)).EndInit();
             this.panelResumen.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
@@ -532,5 +572,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label lblTOTAL_REINTEGROS;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label10;
     }
 }

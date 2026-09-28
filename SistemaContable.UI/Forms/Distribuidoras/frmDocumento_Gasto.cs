@@ -83,7 +83,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                         { "NOMBRE",         300 },
                         { "NIT",            120 }
                     },
-                    ParametrosExtra = new { ROL = "DISTRIB" }
+                    ParametrosExtra = new { ROL = "DIST" }
                 },
                 fila => AsignarProveedor(fila)
             );
@@ -385,7 +385,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                 {
                     ACCION = "BUSCAR_POR_CODIGO",
                     FILTRO = codigo,
-                    ROL = "DISTRIB"
+                    ROL = "DIST"
                 });
 
                 if (dt.Rows.Count > 0)

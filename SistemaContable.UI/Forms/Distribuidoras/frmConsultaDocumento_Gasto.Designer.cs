@@ -85,13 +85,13 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colFECHA_EMISION.FieldName = "FECHA_EMISION";
             this.colFECHA_EMISION.GroupFormat.FormatString = "dd/MM/yyyy";
             this.colFECHA_EMISION.GroupFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.colFECHA_EMISION.MinWidth = 21;
+            this.colFECHA_EMISION.MinWidth = 100;
             this.colFECHA_EMISION.Name = "colFECHA_EMISION";
             this.colFECHA_EMISION.OptionsColumn.AllowEdit = false;
             this.colFECHA_EMISION.OptionsColumn.FixedWidth = true;
             this.colFECHA_EMISION.Visible = true;
             this.colFECHA_EMISION.VisibleIndex = 2;
-            this.colFECHA_EMISION.Width = 87;
+            this.colFECHA_EMISION.Width = 100;
             // 
             // colSALDO
             // 

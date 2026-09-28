@@ -365,8 +365,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             _dtDetalle.Columns.Add("ID_PRODUCTO", typeof(int));
             _dtDetalle.Columns.Add("COD_REF", typeof(string));
             _dtDetalle.Columns.Add("DESCRIPCION", typeof(string));
-            _dtDetalle.Columns.Add("CANTIDAD", typeof(decimal));
-            //_dtDetalle.Columns.Add("UNIDAD", typeof(string));
+            _dtDetalle.Columns.Add("CANTIDAD", typeof(decimal));            
             _dtDetalle.Columns.Add("ES_EXENTO", typeof(bool));
             _dtDetalle.Columns.Add("PRECIO", typeof(decimal));
             _dtDetalle.Columns.Add("GRAVADO", typeof(decimal));
@@ -375,6 +374,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
 
             var fila = _dtDetalle.NewRow();
             fila["CANTIDAD"] = 0m;
+            fila["ES_EXENTO"] = false;
             _dtDetalle.Rows.Add(fila);
 
             gridControl1.DataSource = _dtDetalle;
@@ -400,6 +400,16 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             ConfigurarColumnaDetalle(gridDETALLE_PROD.Columns["GRAVADO"], "GRAVADO", 110);
             ConfigurarColumnaDetalle(gridDETALLE_PROD.Columns["EXENTO"], "EXENTO", 110);
             ConfigurarColumnaDetalle(gridDETALLE_PROD.Columns["SUBTOTAL"], "SUBTOTAL", 120);
+
+            // ✅ AGREGAR ESTO: Editor CheckEdit para Es Exento
+            var repCheck = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            repCheck.ValueChecked = true;
+            repCheck.ValueUnchecked = false;
+            repCheck.AllowGrayed = false;
+            gridControl1.RepositoryItems.Add(repCheck);
+            gridDETALLE_PROD.Columns["ES_EXENTO"].ColumnEdit = repCheck;
+            gridDETALLE_PROD.Columns["ES_EXENTO"].AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridDETALLE_PROD.Columns["ES_EXENTO"].AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
 
             var view = gridControl1.MainView as GridView;
             if (view == null) return;
@@ -737,7 +747,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
                     _dtDetalle.Rows[0]["COD_REF"] = SafeStr(d, "COD_REF");
                     _dtDetalle.Rows[0]["DESCRIPCION"] = SafeStr(d, "DESCRIPCION");
                     _dtDetalle.Rows[0]["CANTIDAD"] = ToDecimal(d["CANTIDAD"]);
-                    //_dtDetalle.Rows[0]["UNIDAD"] = SafeStr(d, "UNIDAD");
+                    _dtDetalle.Rows[0]["ES_EXENTO"] = Convert.ToBoolean(d["ES_EXENTO"]);
                     _dtDetalle.Rows[0]["PRECIO"] = ToDecimal(d["PRECIO"]);
                     _dtDetalle.Rows[0]["GRAVADO"] = ToDecimal(d["GRAVADO"]);
                     _dtDetalle.Rows[0]["EXENTO"] = ToDecimal(d["EXENTO"]);

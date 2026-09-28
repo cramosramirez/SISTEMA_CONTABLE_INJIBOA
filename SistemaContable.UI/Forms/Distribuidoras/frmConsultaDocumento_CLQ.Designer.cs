@@ -211,13 +211,13 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colFECHA.FieldName = "FECHA";
             this.colFECHA.GroupFormat.FormatString = "dd/MM/yyyy";
             this.colFECHA.GroupFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.colFECHA.MinWidth = 21;
+            this.colFECHA.MinWidth = 100;
             this.colFECHA.Name = "colFECHA";
             this.colFECHA.OptionsColumn.AllowEdit = false;
             this.colFECHA.OptionsColumn.FixedWidth = true;
             this.colFECHA.Visible = true;
             this.colFECHA.VisibleIndex = 1;
-            this.colFECHA.Width = 87;
+            this.colFECHA.Width = 100;
             // 
             // colNUMERO
             // 
@@ -295,7 +295,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colRESOLUCION.Name = "colRESOLUCION";
             this.colRESOLUCION.Visible = true;
             this.colRESOLUCION.VisibleIndex = 7;
-            this.colRESOLUCION.Width = 159;
+            this.colRESOLUCION.Width = 146;
             // 
             // gridView1
             // 
