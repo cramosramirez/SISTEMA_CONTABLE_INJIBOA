@@ -104,7 +104,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnFinalizar.TabIndex = 2;
             this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
-            this.btnFinalizar.ToolTip = "Nuevo Quedan";
             this.btnFinalizar.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.btnFinalizar.ToolTipTitle = "Operación";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
@@ -124,7 +123,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnNuevoQuedan.TabIndex = 1;
             this.btnNuevoQuedan.TabStop = false;
             this.btnNuevoQuedan.Text = "Nuevo";
-            this.btnNuevoQuedan.ToolTip = "Nuevo Quedan";
             this.btnNuevoQuedan.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.btnNuevoQuedan.ToolTipTitle = "Operación";
             this.btnNuevoQuedan.Click += new System.EventHandler(this.btnNuevoQuedan_Click);
@@ -252,7 +250,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.riVerQ.Name = "riVerQ";
             this.riVerQ.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.riVerQ.UseReadOnlyAppearance = false;
-           
             // 
             // colVER_R
             // 
@@ -277,7 +274,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.riVerR.Name = "riVerR";
             this.riVerR.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.riVerR.UseReadOnlyAppearance = false;
-            
             // 
             // colNOMBRE_ENTIDAD
             // 

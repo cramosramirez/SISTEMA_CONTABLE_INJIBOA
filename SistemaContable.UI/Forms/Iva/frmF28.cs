@@ -460,7 +460,7 @@ namespace SistemaContable.UI.Forms.Iva
 
                     if (dt != null)
                     {
-                        ExportarExcel(dt, "Anexo_1_Vtas_Contribuyentes", anio, mes, "Anexo_1");
+                        ExportarExcel(dt, "Anexo_ComprasF28", anio, mes, "Anexo");
                          progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
@@ -476,7 +476,7 @@ namespace SistemaContable.UI.Forms.Iva
                     var dt = ObtenerDatosAnexo2(anio, mes);
                     if (dt != null)
                     {
-                        ExportarExcel(dt, "Anexo_2_Vtas_Consumidor", anio, mes, "Anexo_2");
+                        ExportarExcel(dt, "Anexo_ExportacionF28", anio, mes, "Anexo");
                          progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
@@ -492,7 +492,7 @@ namespace SistemaContable.UI.Forms.Iva
                     var dt = ObtenerDatosAnexo3(anio, mes);
                     if (dt != null)
                     {
-                        ExportarExcel(dt, "Anexo_3_Compras", anio, mes, "Anexo_3");
+                        ExportarExcel(dt, "Anexo_ConsumidorFinalF28", anio, mes, "Anexo");
                          progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
@@ -508,7 +508,7 @@ namespace SistemaContable.UI.Forms.Iva
                     var dt = ObtenerDatosAnexo5(anio, mes);
                     if (dt != null)
                     {
-                        ExportarExcel(dt, "Anexo_5_Compras_Sujetos", anio, mes, "Anexo_5");
+                        ExportarExcel(dt, "Anexo_ContribuyenteF28", anio, mes, "Anexo");
                          progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
@@ -574,7 +574,7 @@ namespace SistemaContable.UI.Forms.Iva
                     if (dt != null)
                     {
 
-                        ExportarCsv(dt, "Anexo_1_Vtas_Contribuyentes", anio, mes, "Anexo_1");
+                        ExportarCsv(dt, "Anexo_CompraF28", anio, mes, "Anexo");
                          progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
@@ -590,7 +590,7 @@ namespace SistemaContable.UI.Forms.Iva
                     var dt = ObtenerDatosAnexo2(anio, mes);
                     if (dt != null)
                     {
-                        ExportarCsv(dt, "Anexo_2_Vtas_Consumidor", anio, mes, "Anexo_2");
+                        ExportarCsv(dt, "Anexo_ExportacionF28", anio, mes, "Anexo");
                          progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
@@ -606,7 +606,7 @@ namespace SistemaContable.UI.Forms.Iva
                     var dt = ObtenerDatosAnexo3(anio, mes);
                     if (dt != null)
                     {
-                        ExportarCsv(dt, "Anexo_3_Compras", anio, mes, "Anexo_3");
+                        ExportarCsv(dt, "Anexo_ConsumidorFinalF28", anio, mes, "Anexo");
                          progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }
@@ -622,7 +622,7 @@ namespace SistemaContable.UI.Forms.Iva
                     var dt = ObtenerDatosAnexo5(anio, mes);
                     if (dt != null)
                     {
-                        ExportarCsv(dt, "Anexo_5_Compras_Sujetos", anio, mes, "Anexo_5");
+                        ExportarCsv(dt, "Anexo_ContribuyenteF28", anio, mes, "Anexo");
                          progressBar1.Value = 100; // Excel generado
                         lblEstado.Text = "Completado 100%";
                     }

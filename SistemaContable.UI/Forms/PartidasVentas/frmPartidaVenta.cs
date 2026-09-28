@@ -117,19 +117,19 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             switch (cbTipoPartida.SelectedValue.ToString())
             {
                 case "1":
-                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_MELAZA", centroCostoNombre);
+                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA", centroCostoNombre);
                     break;
                 case "2":
                     Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_DISTRIBUIDORA", centroCostoNombre);
                     break;
                 case "3":
-                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_OTROSPRODUCTOS", centroCostoNombre);
+                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA", centroCostoNombre);
                     break;
                 case "4":
-                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_CORTECANIA", centroCostoNombre);
+                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA", centroCostoNombre);
                     break;
                 case "5":
-                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_ELECTRICIDA", centroCostoNombre);
+                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_DISTRIBUIDORA", centroCostoNombre);
                     break;
                 case "6":
                     Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_EXPORTACION", centroCostoNombre);

@@ -29,7 +29,9 @@ namespace SistemaContable.UI.Forms.Iva
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmF14));
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.lblEstado = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.bt_AbrirDirectorio = new DevExpress.XtraEditors.SimpleButton();
@@ -38,20 +40,19 @@ namespace SistemaContable.UI.Forms.Iva
             this.bt_DescargaXls = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
-            this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.txt_Anio = new DevExpress.XtraEditors.TextEdit();
+            this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
+            this.ck_Anexo3 = new DevExpress.XtraEditors.CheckEdit();
             this.ck_Anexo2 = new DevExpress.XtraEditors.CheckEdit();
             this.ck_Anexo1 = new DevExpress.XtraEditors.CheckEdit();
-            this.ck_Anexo3 = new DevExpress.XtraEditors.CheckEdit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txt_Anio.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txt_Anio.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo1.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo3.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // groupControl1
@@ -83,6 +84,26 @@ namespace SistemaContable.UI.Forms.Iva
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "Generación de Informe DGII F-14";
             // 
+            // btnFinalizar
+            // 
+            this.btnFinalizar.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
+            this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnFinalizar.Appearance.ForeColor = System.Drawing.Color.White;
+            this.btnFinalizar.Appearance.Options.UseBackColor = true;
+            this.btnFinalizar.Appearance.Options.UseFont = true;
+            this.btnFinalizar.Appearance.Options.UseForeColor = true;
+            this.btnFinalizar.Appearance.Options.UseTextOptions = true;
+            this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
+            this.btnFinalizar.Location = new System.Drawing.Point(465, 215);
+            this.btnFinalizar.Margin = new System.Windows.Forms.Padding(2);
+            this.btnFinalizar.Name = "btnFinalizar";
+            this.btnFinalizar.Size = new System.Drawing.Size(136, 44);
+            this.btnFinalizar.TabIndex = 55;
+            this.btnFinalizar.TabStop = false;
+            this.btnFinalizar.Text = "Finalizar";
+            this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
+            // 
             // lblEstado
             // 
             this.lblEstado.BackColor = System.Drawing.Color.Transparent;
@@ -109,6 +130,7 @@ namespace SistemaContable.UI.Forms.Iva
             this.bt_AbrirDirectorio.Appearance.Options.UseBackColor = true;
             this.bt_AbrirDirectorio.Appearance.Options.UseFont = true;
             this.bt_AbrirDirectorio.Appearance.Options.UseForeColor = true;
+            this.bt_AbrirDirectorio.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("bt_AbrirDirectorio.ImageOptions.Image")));
             this.bt_AbrirDirectorio.Location = new System.Drawing.Point(324, 215);
             this.bt_AbrirDirectorio.Name = "bt_AbrirDirectorio";
             this.bt_AbrirDirectorio.Size = new System.Drawing.Size(136, 44);
@@ -179,6 +201,15 @@ namespace SistemaContable.UI.Forms.Iva
             this.labelControl1.TabIndex = 3;
             this.labelControl1.Text = "Año";
             // 
+            // txt_Anio
+            // 
+            this.txt_Anio.Location = new System.Drawing.Point(40, 62);
+            this.txt_Anio.Name = "txt_Anio";
+            this.txt_Anio.Properties.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txt_Anio.Properties.Appearance.Options.UseFont = true;
+            this.txt_Anio.Size = new System.Drawing.Size(90, 22);
+            this.txt_Anio.TabIndex = 1;
+            // 
             // groupControl2
             // 
             this.groupControl2.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -196,34 +227,13 @@ namespace SistemaContable.UI.Forms.Iva
             this.groupControl2.TabIndex = 0;
             this.groupControl2.Text = "Seleccione el Informe a Emitir";
             // 
-            // btnFinalizar
+            // ck_Anexo3
             // 
-            this.btnFinalizar.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
-            this.btnFinalizar.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnFinalizar.Appearance.ForeColor = System.Drawing.Color.White;
-            this.btnFinalizar.Appearance.Options.UseBackColor = true;
-            this.btnFinalizar.Appearance.Options.UseFont = true;
-            this.btnFinalizar.Appearance.Options.UseForeColor = true;
-            this.btnFinalizar.Appearance.Options.UseTextOptions = true;
-            this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(465, 215);
-            this.btnFinalizar.Margin = new System.Windows.Forms.Padding(2);
-            this.btnFinalizar.Name = "btnFinalizar";
-            this.btnFinalizar.Size = new System.Drawing.Size(136, 44);
-            this.btnFinalizar.TabIndex = 55;
-            this.btnFinalizar.TabStop = false;
-            this.btnFinalizar.Text = "Finalizar";
-            this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
-            // 
-            // txt_Anio
-            // 
-            this.txt_Anio.Location = new System.Drawing.Point(40, 62);
-            this.txt_Anio.Name = "txt_Anio";
-            this.txt_Anio.Properties.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txt_Anio.Properties.Appearance.Options.UseFont = true;
-            this.txt_Anio.Size = new System.Drawing.Size(90, 22);
-            this.txt_Anio.TabIndex = 1;
+            this.ck_Anexo3.Location = new System.Drawing.Point(5, 78);
+            this.ck_Anexo3.Name = "ck_Anexo3";
+            this.ck_Anexo3.Properties.Caption = "Anexo Unificado";
+            this.ck_Anexo3.Size = new System.Drawing.Size(212, 20);
+            this.ck_Anexo3.TabIndex = 6;
             // 
             // ck_Anexo2
             // 
@@ -241,14 +251,6 @@ namespace SistemaContable.UI.Forms.Iva
             this.ck_Anexo1.Size = new System.Drawing.Size(213, 20);
             this.ck_Anexo1.TabIndex = 4;
             // 
-            // ck_Anexo3
-            // 
-            this.ck_Anexo3.Location = new System.Drawing.Point(5, 78);
-            this.ck_Anexo3.Name = "ck_Anexo3";
-            this.ck_Anexo3.Properties.Caption = "Anexo Unificado";
-            this.ck_Anexo3.Size = new System.Drawing.Size(212, 20);
-            this.ck_Anexo3.TabIndex = 6;
-            // 
             // frmF14
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -262,12 +264,12 @@ namespace SistemaContable.UI.Forms.Iva
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txt_Anio.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
             this.groupControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txt_Anio.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo3.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo1.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ck_Anexo3.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
