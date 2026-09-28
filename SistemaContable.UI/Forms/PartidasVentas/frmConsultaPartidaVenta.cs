@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
 using SistemaContable.RP.Partidas;
+using System.Drawing;
 
 namespace SistemaContable.UI.Forms.PartidasVentas
 {
@@ -62,6 +63,7 @@ namespace SistemaContable.UI.Forms.PartidasVentas
 
         private RepositoryItemButtonEdit _btnVerPartida, _btnVerParcial, _btnEditar, _btnEliminar;
 
+
         private void ConfigurarGrid()
         {
             // Editable debe quedar en true para que los botones respondan al clic.
@@ -72,10 +74,10 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             gridView1.OptionsView.ShowFooter = true;
             gridView1.OptionsView.ColumnAutoWidth = false;
 
-            _btnVerPartida = CrearBotonRepo("Ver partida", "Ver partida");
-            _btnVerParcial = CrearBotonRepo("Ver parcial", "Ver parcial");
-            _btnEditar = CrearBotonRepo("Editar", "Editar partida");
-            _btnEliminar = CrearBotonRepo("Eliminar", "Eliminar partida");
+            _btnVerPartida = CrearBotonRepo(Properties.Resource_Fredy.verpartida16x16, "Ver partida");
+            _btnVerParcial = CrearBotonRepo(Properties.Resource_Fredy.verpartida16x16, "Ver parcial");
+            _btnEditar = CrearBotonRepo(Properties.Resource_Fredy.editargv2_16x16, "Editar partida");
+            _btnEliminar = CrearBotonRepo(Properties.Resource_Fredy.eliminar16x16, "Eliminar partida");
 
             _btnVerPartida.ButtonClick += btnVerPartida_ButtonClick;
             _btnVerParcial.ButtonClick += btnVerParcial_ButtonClick;
@@ -86,19 +88,23 @@ namespace SistemaContable.UI.Forms.PartidasVentas
                 { _btnVerPartida, _btnVerParcial, _btnEditar, _btnEliminar });
         }
 
-        private RepositoryItemButtonEdit CrearBotonRepo(string texto, string tooltip)
+      
+
+        private RepositoryItemButtonEdit CrearBotonRepo(Image imagen, string tooltip)
         {
             var repo = new RepositoryItemButtonEdit();
-            repo.TextEditStyle = TextEditStyles.HideTextEditor; // solo el botón, sin caja de texto
+            repo.TextEditStyle = TextEditStyles.HideTextEditor;
             repo.Buttons.Clear();
-            repo.Buttons.Add(new EditorButton(ButtonPredefines.Glyph)
+
+            var boton = new EditorButton(ButtonPredefines.Glyph)
             {
-                Caption = texto,
                 ToolTip = tooltip
-            });
+            };
+            boton.ImageOptions.Image = imagen;   // en versiones antiguas: boton.Image = imagen;
+
+            repo.Buttons.Add(boton);
             return repo;
         }
-
         #endregion
 
         #region Consulta
@@ -215,10 +221,10 @@ namespace SistemaContable.UI.Forms.PartidasVentas
                 c.OptionsColumn.AllowEdit = false;
 
             // Columnas de botones
-            AgregarColumnaBoton("colVerPartida", "Ver partida", _btnVerPartida, 90);
-            AgregarColumnaBoton("colVerParcial", "Ver parcial", _btnVerParcial, 90);
-            AgregarColumnaBoton("colEditar", "Editar", _btnEditar, 70);
-            AgregarColumnaBoton("colEliminar", "Eliminar", _btnEliminar, 75);
+            AgregarColumnaBoton("colVerPartida", "Ver partida", _btnVerPartida, 80);
+            AgregarColumnaBoton("colVerParcial", "Ver parcial", _btnVerParcial, 80);
+            AgregarColumnaBoton("colEditar", "Editar", _btnEditar, 55);
+            AgregarColumnaBoton("colEliminar", "Eliminar", _btnEliminar, 60);
         }
 
         private void AgregarColumnaBoton(string nombre, string caption,
@@ -277,9 +283,6 @@ namespace SistemaContable.UI.Forms.PartidasVentas
         {
             object id = ObtenerIdPartidaSeleccionada();
             if (id == null) return;
-
-            // TODO: abrir el formulario de detalle de la partida
-            // using (var frm = new frmDetallePartida(Convert.ToInt64(id))) frm.ShowDialog(this);
             try
             {
                 Cursor = Cursors.WaitCursor;
@@ -294,16 +297,26 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             {
                 Cursor = Cursors.Default;
             }
-            // XtraMessageBox.Show("Ver partida: " + id, "Pendiente");
         }
 
         private void btnVerParcial_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             object id = ObtenerIdPartidaSeleccionada();
             if (id == null) return;
-
-            // TODO: abrir el formulario de parciales
-            XtraMessageBox.Show("Ver parcial: " + id, "Pendiente");
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var reporte = new RptPartida_Parciales { _NID_PARTIDA = (string)id, _Titulo = "DETALLE DE PARTIDA CONTABLE" };
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                Alertas.Error(ex.Message);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private void btnEditarPartida_ButtonClick(object sender, ButtonPressedEventArgs e)

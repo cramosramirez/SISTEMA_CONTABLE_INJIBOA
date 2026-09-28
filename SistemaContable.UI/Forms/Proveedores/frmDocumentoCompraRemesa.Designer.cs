@@ -32,6 +32,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDocumentoCompraRemesa));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtUnico = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.bt_CosultarSAIP = new DevExpress.XtraEditors.SimpleButton();
             this.cbxTIPO_SERVICIO = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
@@ -115,8 +117,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtPROVEEDOR = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.behaviorManager1 = new DevExpress.Utils.Behaviors.BehaviorManager(this.components);
-            this.txtUnico = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panelQUEDAN.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).BeginInit();
@@ -216,6 +216,25 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.groupBox1.TabStop = false;
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // txtUnico
+            // 
+            this.txtUnico.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUnico.Location = new System.Drawing.Point(837, 178);
+            this.txtUnico.Name = "txtUnico";
+            this.txtUnico.Size = new System.Drawing.Size(132, 20);
+            this.txtUnico.TabIndex = 121;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(794, 179);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(37, 14);
+            this.label19.TabIndex = 122;
+            this.label19.Text = "Unico";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // bt_CosultarSAIP
             // 
             this.bt_CosultarSAIP.Appearance.Font = new System.Drawing.Font("Tahoma", 8F);
@@ -314,6 +333,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panelQUEDAN.Name = "panelQUEDAN";
             this.panelQUEDAN.Size = new System.Drawing.Size(234, 32);
             this.panelQUEDAN.TabIndex = 112;
+            this.panelQUEDAN.Visible = false;
             // 
             // lblNUM_QUEDAN
             // 
@@ -386,6 +406,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.btnGuardar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGuardar.Appearance.Options.UseFont = true;
+            this.btnGuardar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.guardar2_32x32;
             this.btnGuardar.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnGuardar.ImageOptions.ImageToTextIndent = 10;
             this.btnGuardar.Location = new System.Drawing.Point(987, 178);
@@ -615,14 +636,13 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // txtIVA
             // 
-            this.txtIVA.Enabled = false;
             this.txtIVA.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtIVA.Location = new System.Drawing.Point(436, 389);
             this.txtIVA.Name = "txtIVA";
-            this.txtIVA.ReadOnly = true;
             this.txtIVA.Size = new System.Drawing.Size(123, 20);
             this.txtIVA.TabIndex = 28;
             this.txtIVA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtIVA.TextChanged += new System.EventHandler(this.txtIVA_TextChanged);
             // 
             // label29
             // 
@@ -1077,25 +1097,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label1.TabIndex = 16;
             this.label1.Text = "Proveedor";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtUnico
-            // 
-            this.txtUnico.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUnico.Location = new System.Drawing.Point(837, 178);
-            this.txtUnico.Name = "txtUnico";
-            this.txtUnico.Size = new System.Drawing.Size(132, 20);
-            this.txtUnico.TabIndex = 121;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(794, 179);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(37, 14);
-            this.label19.TabIndex = 122;
-            this.label19.Text = "Unico";
-            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // frmDocumentoCompraRemesa
             // 

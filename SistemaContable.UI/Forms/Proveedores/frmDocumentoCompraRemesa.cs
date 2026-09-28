@@ -340,24 +340,33 @@ namespace SistemaContable.UI.Forms.Proveedores
             DataTable dt = _dal.EjecutarConsulta("[ECOMPRAS].[SP_TIPO_IMPORTACION]",
                 new { ACCION = "BUSCAR" });
 
-            DataRow fila = dt.NewRow();
-            fila["ID_TIPO_IMPORTACION"] = -1;
-            fila["NOMBRE"] = "-- Seleccione --";
-            dt.Rows.InsertAt(fila, 0);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.NewRow();
+                dr["ID_TIPO_IMPORTACION"] = 0;
+                dr["NOMBRE"] = "-- Seleccione --";
 
-            cbxTIPO_IMPORTACION.DataSource = dt;
-            cbxTIPO_IMPORTACION.ValueMember = "ID_TIPO_IMPORTACION";
-            cbxTIPO_IMPORTACION.DisplayMember = "NOMBRE";
+                cbxTIPO_IMPORTACION.DataSource = dt;
+                cbxTIPO_IMPORTACION.ValueMember = "ID_TIPO_IMPORTACION";
+                cbxTIPO_IMPORTACION.DisplayMember = "NOMBRE";
+            }
         }
         private void CargarTipoOperacion()
         {
             DataTable dt = _dal.EjecutarConsulta("[EPROVEEDOR].[SP_COMPRA_TIPO_OPERACION]",
                 new { ACCION = "COMBO" });
 
-            InsertarFilaSeleccione(dt, "ID_TIPO_OPERA");
-            cbxTIPO_OPERACION.DataSource = dt;
-            cbxTIPO_OPERACION.ValueMember = "ID_TIPO_OPERA";
-            cbxTIPO_OPERACION.DisplayMember = "NOMBRE";
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.NewRow();
+                dr["ID_TIPO_OPERA"] = 0;
+                dr["NOMBRE"] = "-- Seleccione --";
+
+                dt.Rows.InsertAt(dr, 0);
+                cbxTIPO_OPERACION.DataSource = dt;
+                cbxTIPO_OPERACION.ValueMember = "ID_TIPO_OPERA";
+                cbxTIPO_OPERACION.DisplayMember = "NOMBRE";
+            }
         }
         private void CargarClasificacion(int idTipoOpera)
         {
@@ -367,10 +376,16 @@ namespace SistemaContable.UI.Forms.Proveedores
                     ACCION = "COMBO",
                     ID_TIPO_OPERA = idTipoOpera
                 });
-            InsertarFilaSeleccione(dt, "ID_CLASIFICA");
-            cbxCLASIFICACION.DataSource = dt;
-            cbxCLASIFICACION.ValueMember = "ID_CLASIFICA";
-            cbxCLASIFICACION.DisplayMember = "NOMBRE";
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.NewRow();
+                dr["ID_CLASIFICA"] = 0;
+                dr["NOMBRE"] = "-- Seleccione --";
+                dt.Rows.InsertAt(dr, 0); // Agrega la fila al inicio
+                cbxCLASIFICACION.DataSource = dt;
+                cbxCLASIFICACION.ValueMember = "ID_CLASIFICA";
+                cbxCLASIFICACION.DisplayMember = "NOMBRE";
+            }
         }
         private void CargarSector(int idTipoOpera, int idClasifica)
         {
@@ -381,10 +396,16 @@ namespace SistemaContable.UI.Forms.Proveedores
                     ID_TIPO_OPERA = idTipoOpera,
                     ID_CLASIFICA = idClasifica
                 });
-            InsertarFilaSeleccione(dt, "ID_SECTOR");
-            cbxSECTOR.DataSource = dt;
-            cbxSECTOR.ValueMember = "ID_SECTOR";
-            cbxSECTOR.DisplayMember = "NOMBRE";
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.NewRow();
+                dr["ID_SECTOR"] = 0;
+                dr["NOMBRE"] = "-- Seleccione --";
+                dt.Rows.InsertAt(dr, 0); // Agrega la fila al inicio
+                cbxSECTOR.DataSource = dt;
+                cbxSECTOR.ValueMember = "ID_SECTOR";
+                cbxSECTOR.DisplayMember = "NOMBRE";
+            }
         }
         private void CargarTipoCosto(int idTipoOpera, int idClasifica, int idSector)
         {
@@ -396,10 +417,16 @@ namespace SistemaContable.UI.Forms.Proveedores
                     ID_CLASIFICA = idClasifica,
                     ID_SECTOR = idSector
                 });
-            InsertarFilaSeleccione(dt, "ID_TIPO_COSTO");
-            cbxTIPO_COSTO.DataSource = dt;
-            cbxTIPO_COSTO.ValueMember = "ID_TIPO_COSTO";
-            cbxTIPO_COSTO.DisplayMember = "NOMBRE";
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.NewRow();
+                dr["ID_TIPO_COSTO"] = 0;
+                dr["NOMBRE"] = "-- Seleccione --";
+                dt.Rows.InsertAt(dr, 0); // Agrega la fila al inicio
+                cbxTIPO_COSTO.DataSource = dt;
+                cbxTIPO_COSTO.ValueMember = "ID_TIPO_COSTO";
+                cbxTIPO_COSTO.DisplayMember = "NOMBRE";
+            }
         }
 
         private void CargarTipoRenta()
@@ -416,22 +443,26 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void CargarTipoServicio()
         {
-            DataTable dt = _dal.EjecutarConsulta("SP_COMPRA_TIPO_SERVICIO",
-                new { ACCION = "COMBO" });
-            InsertarFilaSeleccione(dt, "ID_TIPO_SERVI");
-            cbxTIPO_SERVICIO.DataSource = dt;
-            cbxTIPO_SERVICIO.ValueMember = "ID_TIPO_SERVI";
-            cbxTIPO_SERVICIO.DisplayMember = "NOMBRE";
+            DataTable dt = _dal.EjecutarConsulta(
+                "[EPROVEEDOR].[SP_COMPRA_TIPO_SERVICIO]",
+                new { ACCION = "COMBO_DTE" });
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.NewRow();
+                dr["ID_TIPO_SERVI"] = 0;
+                dr["NOMBRE"] = "-- Seleccione --";
+
+                dt.Rows.InsertAt(dr, 0); // Agrega la fila al inicio
+
+                cbxTIPO_SERVICIO.DataSource = dt;
+                cbxTIPO_SERVICIO.ValueMember = "ID_TIPO_SERVI";
+                cbxTIPO_SERVICIO.DisplayMember = "NOMBRE";
+                cbxTIPO_SERVICIO.SelectedIndex = 0;
+            }
         }
 
-        private void InsertarFilaSeleccione(DataTable dt, string idField)
-        {
-            DataRow fila = dt.NewRow();
-            fila[idField] = -1;
-            fila["CODIGO"] = "";
-            fila["NOMBRE"] = "-- Seleccione --";
-            dt.Rows.InsertAt(fila, 0);
-        }
+
         private void LimpiarCombo(ComboBox cbx, string idField)
         {
             DataTable dt = new DataTable();
@@ -768,7 +799,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             if (codigoDocumento == "POL")
             {
-                txtSELLO_RECIBIDO.Text = "POL";
+                txtSELLO_RECIBIDO.Text = "DM";
                 txtNUM_CONTROL.Text = "0";
                 cbxTIPO_SERVICIO.SelectedValue = 1;
                 cbxTIPO_OPERACION.SelectedValue = 1;
@@ -802,7 +833,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             else
             {
                 // Si el valor fue asignado automáticamente por POL o RBI, limpiar
-                if (txtSELLO_RECIBIDO.Text == "POL" ||
+                if (txtSELLO_RECIBIDO.Text == "DM" ||
                     txtSELLO_RECIBIDO.Text == "MI")
                 {
                     txtSELLO_RECIBIDO.Clear();
@@ -1021,7 +1052,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     NO_SUJETA = ObtenerDecimal(txtEXCLUIDO),
                     EXENTA = ObtenerDecimal(txtEXENTA),
                     GRAVADA = ObtenerDecimal(txtGRAVADA),
-                    IVA = 0m,
+                    IVA = ObtenerDecimal(txtIVA),
                     //FOVIAL = ObtenerDecimal(txtFOVIAL),
                     //COTRANS = ObtenerDecimal(txtCONTRANS),
                     TOTAL = ObtenerDecimal(txtTOTAL),
@@ -1302,5 +1333,10 @@ namespace SistemaContable.UI.Forms.Proveedores
             UseShellExecute = true
         });
     }
-}
+
+        private void txtIVA_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
