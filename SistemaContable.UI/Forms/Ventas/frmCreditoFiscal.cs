@@ -1292,38 +1292,19 @@ namespace SistemaContable.UI.Forms.Ventas
                 {
                     ID_CCFENC = IdCCFEnc
                 });
-                // (2026-08-26) Si este CCF viene de una Solicitud Agrícola (hay _idSolicitudSeleccionada)
-                // y es la primera vez que se guarda (esNuevoCCF), se genera el registro de crédito
-                // en [INJIBOA].[dbo].[CREDITO_ENCA] llamando explícitamente a
-                // [ESOLICITUD].[SP_CREDITO_ENCA] ACCION='GUARDAR_DESDE_CCF'. NO es un disparador de
-                // base de datos: es una llamada explícita desde aquí, justo después del guardado
-                // exitoso del CCF, tal como pidió Roberto. Si falla, no se revierte el CCF (ya quedó
-                // guardado) — solo se avisa, para no bloquear la operación principal.
+                // (2026-09-28) Si este CCF viene de una Solicitud Agrícola (hay _idSolicitudSeleccionada)
+                // y es la primera vez que se guarda (esNuevoCCF): se genera el espejo del CCF en las
+                // tablas de integración SIGESTA [INJIBOA].[dbo].[CCF_ENCA]/[CCF_DETA] llamando a
+                // [ESOLICITUD].[SP_CCF_ENCA] (GUARDAR_ENCA y luego GUARDAR_DETA por cada línea), y
+                // recién con el UID_REFERENCIA_CCF que ese guardado genera, se llama a
+                // [ESOLICITUD].[SP_CREDITO_ENCA] ACCION='GUARDAR_DESDE_CCF' para generar el registro
+                // de crédito agrícola en [INJIBOA].[dbo].[CREDITO_ENCA] (esa acción fue reescrita el
+                // 2026-09-28 para leer desde CCF_ENCA, ya no desde EDTE.CREDITOFISCAL_ENC). Ninguna es
+                // un disparador de base de datos: son llamadas explícitas desde aquí, justo después
+                // del guardado exitoso del CCF. Si falla, no se revierte el CCF (ya quedó guardado) —
+                // solo se avisa, para no bloquear la operación principal.
                 if (esNuevoCCF && _idSolicitudSeleccionada.HasValue)
                 {
-                    try
-                    {
-                        _dal.EjecutarSinRetorno("[ESOLICITUD].[SP_CREDITO_ENCA]", new
-                        {
-                            ACCION = "GUARDAR_DESDE_CCF",
-                            ID_CCFENC = IdCCFEnc,
-                            ID_EMISOR = 1,
-                            USUARIO = Configuracion.UsuarioActual,
-                        });
-                    }
-                    catch (Exception exCredito)
-                    {
-                        XtraMessageBox.Show(
-                            "El crédito fiscal se guardó correctamente, pero no se pudo generar " +
-                            "el registro de crédito agrícola asociado:\n\n" + exCredito.Message,
-                            "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-
-                    // (2026-09-28) NUEVO: además del crédito agrícola, se genera el espejo del
-                    // CCF en las tablas de integración SIGESTA [INJIBOA].[dbo].[CCF_ENCA] /
-                    // [CCF_DETA], llamando a [ESOLICITUD].[SP_CCF_ENCA] (GUARDAR_ENCA y luego
-                    // GUARDAR_DETA por cada línea). Llamada explícita, no trigger; si falla no
-                    // revierte el CCF ya guardado, solo avisa (mismo criterio que arriba).
                     try
                     {
                         var dtCcfEnca = _dal.EjecutarConsulta("[ESOLICITUD].[SP_CCF_ENCA]", new
@@ -1345,6 +1326,8 @@ namespace SistemaContable.UI.Forms.Ventas
                         if (dtCcfEnca != null && dtCcfEnca.Rows.Count > 0)
                         {
                             int idCcfEncaGenerado = Convert.ToInt32(dtCcfEnca.Rows[0]["ID_GENERADO"]);
+                            Guid uidReferenciaCcf = (Guid)dtCcfEnca.Rows[0]["UID_REFERENCIA_CCF"];
+
                             foreach (DataRow fila in _dtDetalle.Rows)
                             {
                                 if (string.IsNullOrWhiteSpace(fila["COD_REF"].ToString())) continue;
@@ -1364,13 +1347,22 @@ namespace SistemaContable.UI.Forms.Ventas
                                     TOTAL_LINEA = Convert.ToDecimal(fila["TOTAL"]),
                                 });
                             }
+
+                            // Genera el registro de crédito agrícola asociado, ahora a partir del
+                            // espejo CCF_ENCA recién creado (reescrito 2026-09-28, a pedido de Roberto).
+                            _dal.EjecutarSinRetorno("[ESOLICITUD].[SP_CREDITO_ENCA]", new
+                            {
+                                ACCION = "GUARDAR_DESDE_CCF",
+                                UID_REFERENCIA = uidReferenciaCcf,
+                                USUARIO = Configuracion.UsuarioActual,
+                            });
                         }
                     }
                     catch (Exception exCcf)
                     {
                         XtraMessageBox.Show(
                             "El crédito fiscal se guardó correctamente, pero no se pudo generar " +
-                            "el registro CCF_ENCA/CCF_DETA asociado:\n\n" + exCcf.Message,
+                            "el registro CCF_ENCA/CCF_DETA/crédito agrícola asociado:\n\n" + exCcf.Message,
                             "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }

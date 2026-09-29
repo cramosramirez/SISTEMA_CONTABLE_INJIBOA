@@ -76,14 +76,21 @@ namespace SistemaContable.UI.Forms.PartidasVentas
                    dbType: DbType.String,
                    size: 50,
                    direction: ParameterDirection.Output);
+                parametros.Add("@NUM_",
+                   dbType: DbType.String,
+                   size: 6,
+                   direction: ParameterDirection.Output);
 
                 _dal.EjecutarConSalida(procedimiento, parametros);
 
                 int? resultado = parametros.Get<int?>("@Resultado");
                 string mensaje = parametros.Get<string>("@Mensaje");
                 txtNID_PARTIDA.Text = parametros.Get<string>("@NID_");
+               
                 if (resultado == 1)
                 {
+                    txtNumero.Text = parametros.Get<string>("@NUM_");
+                    txtNumero_Leave(null, null);
                     Alertas.Exito(mensaje+ centroCosto);
                     btnImprimir.Enabled = true;
                     btnProcesar.Enabled = false;

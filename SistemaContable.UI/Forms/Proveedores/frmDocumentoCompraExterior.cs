@@ -737,9 +737,21 @@ namespace SistemaContable.UI.Forms.Proveedores
             decimal renta = ObtenerDecimal(txtRENTA);   // lee, no calcula
             // IVA = 13% de la base gravada
             decimal iva = 0m; // Las compras exteriores no calculan IVA.
-            // IVAR (1%): solo si gravada >= 100 y proveedor NO es Gran Contribuyente
+            // IVAR (1%): solo si gravada >= 100 y proveedor NO es Gran Contribuyente.
+            // Excepción (2026-09-28, confirmada por Roberto contra el sistema legacy
+            // "Ingreso de (TE, Intereses, Dividendos, Indemnizacion)"): los documentos
+            // de esa categoría (INV, INT, DIV, TE, TEI, IND — Tipo Documento) nunca
+            // retienen IVA, sin importar el monto ni el tipo de contribuyente; solo
+            // aplican su % de renta específico (ver SeleccionarRentaPorTipoDocumento).
+            // Los 5 ejemplos compartidos (Afecta desde 530 hasta 245,972.22) confirman
+            // IVAR=0.00 en todos los casos de esta categoría.
+            string codigoDocumento = ObtenerCodigoTipoDocumentoSeleccionado();
+            bool esCategoriaSinIvar = codigoDocumento == "INV" || codigoDocumento == "INT"
+                                    || codigoDocumento == "DIV" || codigoDocumento == "TE"
+                                    || codigoDocumento == "TEI" || codigoDocumento == "IND";
             decimal ivar = 0;
-            bool retieneIva = gravada >= 100m
+            bool retieneIva = !esCategoriaSinIvar
+                              && gravada >= 100m
                               && _idTipoContribProveedor != "3"
                               && _idTipoContribProveedor != "0";
             if (retieneIva)
