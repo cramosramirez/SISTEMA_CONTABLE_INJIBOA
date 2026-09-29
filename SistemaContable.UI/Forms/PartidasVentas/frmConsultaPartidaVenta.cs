@@ -11,6 +11,7 @@ using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
 using SistemaContable.RP.Partidas;
 using System.Drawing;
+using Dapper;
 
 namespace SistemaContable.UI.Forms.PartidasVentas
 {
@@ -345,22 +346,47 @@ namespace SistemaContable.UI.Forms.PartidasVentas
 
             try
             {
-                Cursor = Cursors.WaitCursor;
 
-                // TODO: ajustar al SP real de eliminación
-                _dal.EjecutarConsulta("[CONTA].DEL_PARTIDA",
-                    new SqlParameter("@NID_PARTIDA", id));
+                var parametros = new DynamicParameters();
+
+                parametros.Add("@NID_PARTIDA", (string)id);
+                parametros.Add("@USUARIO", Configuracion.UsuarioActual);
+
+                parametros.Add("@pResCode",
+                    dbType: DbType.Int32,
+                    direction: ParameterDirection.Output);
+
+                parametros.Add("@pMsg",
+                    dbType: DbType.String,
+                    size: 500,
+                    direction: ParameterDirection.Output);
+
+                _dal.EjecutarConSalida("[CONTA].DEL_PARATIDA_VENTAS", parametros);
+
+                int? resultado = parametros.Get<int?>("@pResCode");
+                string mensaje = parametros.Get<string>("@pMsg");
+
+                if (resultado == 0)
+                {
+                    Alertas.Exito(mensaje);
+                    
+                }
+                else
+                {
+                    Alertas.Error(mensaje);
+                }
+
+               
 
                 CargarPartidas(false); // refrescar el grid
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show("Error al eliminar la partida:\n" + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Alertas.Error("Error al eliminar la partida:\n" + ex.Message);
             }
             finally
             {
-                Cursor = Cursors.Default;
+               
             }
         }
 
