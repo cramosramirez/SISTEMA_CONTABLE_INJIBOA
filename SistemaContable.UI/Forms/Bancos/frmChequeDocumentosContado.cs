@@ -240,7 +240,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private void btnAdicionarCCF_Click(object sender, EventArgs e)
         {
-            try
+                try
             {
                 using (var frm = new frmDocumentoCompra())
                 {

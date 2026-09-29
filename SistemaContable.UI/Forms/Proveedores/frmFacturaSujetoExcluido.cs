@@ -716,10 +716,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             _procesandoCheckRenta = true;
             try
-            {
-                // Si se marca este, desmarcar el otro (mutuamente excluyentes)
-                if (chkRENTA.Checked && chkArrendamiento.Checked)
-                    chkArrendamiento.Checked = false;
+            {               
                 RecalcularRenta();
             }
             finally
@@ -734,11 +731,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             _procesandoCheckRenta = true;
             try
-            {
-                // Si se marca este, desmarcar el otro (mutuamente excluyentes)
-                if (chkArrendamiento.Checked && chkRENTA.Checked)
-                    chkRENTA.Checked = false;
-
+            {                
                 RecalcularRenta();
             }
             finally

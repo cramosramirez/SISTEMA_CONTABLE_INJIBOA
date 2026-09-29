@@ -1492,9 +1492,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
 
                 // Construir TVP para pago de CCFs de Quedan (puede venir vacío)
-                DataTable dtPagoQuedan = esModificacion
-                    ? new DataTable()   // vacío, no se toca en modificación
-                    : ConstruirTvpPagoCcfQuedan();
+                DataTable dtPagoQuedan = ConstruirTvpPagoCcfQuedan();
 
                 // Parámetros del cheque
                 var parametros = new

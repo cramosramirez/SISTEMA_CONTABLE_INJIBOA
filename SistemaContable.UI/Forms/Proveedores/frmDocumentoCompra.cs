@@ -46,6 +46,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         public int IdCcfCompra { get; set; } = 0;
         public bool EsContado { get; set; } = false;
         public string UidEnlaceCheque { get; set; } = string.Empty;
+        private readonly ParametrosCcfBusqueda _parametrosCcf = new ParametrosCcfBusqueda();
 
         #endregion
         public frmDocumentoCompra()
@@ -98,6 +99,37 @@ namespace SistemaContable.UI.Forms.Proveedores
                     ParametrosExtra = new { ROL = "PRO" }
                 },
                 fila => AsignarProveedor(fila)
+            );
+
+            // Búsqueda de CCF pendientes del proveedor ya seleccionado
+            FormHelper.RegistrarBusqueda(
+                txtCOD_GENERACION,
+                new BusquedaConfig
+                {
+                    StoredProcedure = "SP_CREDITO_FISCAL_COMPRA",
+                    Accion = "LISTAR_CCF_CONTADO_PENDIENTES_PAGO",
+                    Columnas = new Dictionary<string, string>
+                    {
+                        { "TIPO_DTE",       "TIPO" },
+                        { "COD_GENERACION", "COD. GENERACIÓN" },                        
+                        { "FECHA_VENCE",    "VENCE" },
+                        { "SALDO_FMT",      "SALDO" }
+                    },
+                    Anchos = new Dictionary<string, int>
+                    {
+                        { "TIPO_DTE",        60 },
+                        { "COD_GENERACION", 350 },                        
+                        { "FECHA_VENCE",     90 },
+                        { "SALDO_FMT",      100 }
+                    },
+                    ParametrosExtra = _parametrosCcf   // ← objeto mutable, no anónimo
+                },
+                fila =>
+                {
+                    IdCcfCompra = Convert.ToInt32(fila["ID_CCF_COMPRA"]);
+                    CargarCcfExistente(IdCcfCompra);
+                    ConfigurarCRUD(EstadoFormulario.Guardado);
+                }
             );
             txtPROVEEDOR.Leave += txtPROVEEDOR_Leave;
             txtCONSULTA_MH.Leave += txtCONSULTA_MH_Leave;
@@ -500,6 +532,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             }
             _idEntidad = Convert.ToInt32(fila["ID_ENTIDAD"]);
             _codigoEntidad = fila["CODIGO_ENTIDAD"].ToString();
+            _parametrosCcf.CODIGO_ENTIDAD = _codigoEntidad;
             txtPROVEEDOR.Text = fila["CODIGO_ENTIDAD"].ToString();
             txtNOMBRE_PROVEEDOR.Text = fila["NOMBRE"].ToString();
             txtNRC.Text = fila["NRC"].ToString();
