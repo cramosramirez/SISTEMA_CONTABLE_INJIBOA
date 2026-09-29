@@ -283,7 +283,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 var dt = _dal.EjecutarConsulta("SP_ENTIDAD", new
                 {
-                    ACCION = "BUSCAR_POR_CODIGO",
+                    ACCION = "BUSCAR_POR_CODIGO_NO_CONTRIBUYENTE",
                     FILTRO = codigo,
                     ROL = "PRO"
                 });
@@ -319,6 +319,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtACTIVIDAD_PRIMARIA.Text = fila["ACTIVIDAD_PRIMARIA"].ToString();
             txtTIPO_CONTRIBUYENTE.Text = fila["TIPO_CONTRIBUYENTE"].ToString();
             txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
+            chkIVA.Checked = ToBoolean(fila["APLICA_IVA"]);
+            chkRENTA.Checked = ToBoolean(fila["APLICA_RENTA"]);
+            chkArrendamiento.Checked = ToBoolean(fila["APLICA_ARRENDAMIENTO"]);
         }
 
         private void LimpiarProveedor()
@@ -795,6 +798,14 @@ namespace SistemaContable.UI.Forms.Proveedores
                 };
                 XtraMessageBox.Show(args);
             }
+        }
+
+        private static bool ToBoolean(object valor)
+        {
+            if (valor != DBNull.Value)
+                return Convert.ToBoolean(valor);
+            else
+                return false;
         }
     }
 }

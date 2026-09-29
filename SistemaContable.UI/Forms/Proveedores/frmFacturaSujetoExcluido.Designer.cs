@@ -31,6 +31,9 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmFacturaSujetoExcluido));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnConsultaCheque = new DevExpress.XtraEditors.SimpleButton();
+            this.label19 = new System.Windows.Forms.Label();
+            this.txtABONO_CHEQUE = new System.Windows.Forms.TextBox();
             this.chkArrendamiento = new System.Windows.Forms.CheckBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -95,14 +98,12 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtDUI = new System.Windows.Forms.TextBox();
             this.txtPROVEEDOR = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.txtABONO_CHEQUE = new System.Windows.Forms.TextBox();
-            this.btnConsultaCheque = new DevExpress.XtraEditors.SimpleButton();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panel1.Controls.Add(this.btnConsultaCheque);
             this.panel1.Controls.Add(this.label19);
             this.panel1.Controls.Add(this.txtABONO_CHEQUE);
@@ -175,6 +176,44 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1255, 506);
             this.panel1.TabIndex = 0;
+            // 
+            // btnConsultaCheque
+            // 
+            this.btnConsultaCheque.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConsultaCheque.Appearance.Options.UseFont = true;
+            this.btnConsultaCheque.ImageOptions.Image = global::SistemaContable.UI.RecursosAdicionales01.buscar_01_16x16;
+            this.btnConsultaCheque.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnConsultaCheque.ImageOptions.ImageToTextIndent = 0;
+            this.btnConsultaCheque.Location = new System.Drawing.Point(1126, 304);
+            this.btnConsultaCheque.Name = "btnConsultaCheque";
+            this.btnConsultaCheque.Size = new System.Drawing.Size(30, 25);
+            this.btnConsultaCheque.TabIndex = 38;
+            this.btnConsultaCheque.TabStop = false;
+            this.btnConsultaCheque.ToolTip = "Consulta de Cheque";
+            this.btnConsultaCheque.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.btnConsultaCheque.ToolTipTitle = "Pago";
+            this.btnConsultaCheque.Click += new System.EventHandler(this.btnConsultaCheque_Click);
+            // 
+            // label19
+            // 
+            this.label19.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(843, 305);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(127, 20);
+            this.label19.TabIndex = 200;
+            this.label19.Text = "Abono";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtABONO_CHEQUE
+            // 
+            this.txtABONO_CHEQUE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtABONO_CHEQUE.Location = new System.Drawing.Point(972, 304);
+            this.txtABONO_CHEQUE.Name = "txtABONO_CHEQUE";
+            this.txtABONO_CHEQUE.ReadOnly = true;
+            this.txtABONO_CHEQUE.Size = new System.Drawing.Size(148, 24);
+            this.txtABONO_CHEQUE.TabIndex = 28;
+            this.txtABONO_CHEQUE.TabStop = false;
+            this.txtABONO_CHEQUE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // chkArrendamiento
             // 
@@ -848,44 +887,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label1.TabIndex = 123;
             this.label1.Text = "Proveedor";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label19
-            // 
-            this.label19.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(843, 305);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(127, 20);
-            this.label19.TabIndex = 200;
-            this.label19.Text = "Abono";
-            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtABONO_CHEQUE
-            // 
-            this.txtABONO_CHEQUE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtABONO_CHEQUE.Location = new System.Drawing.Point(972, 304);
-            this.txtABONO_CHEQUE.Name = "txtABONO_CHEQUE";
-            this.txtABONO_CHEQUE.ReadOnly = true;
-            this.txtABONO_CHEQUE.Size = new System.Drawing.Size(148, 24);
-            this.txtABONO_CHEQUE.TabIndex = 28;
-            this.txtABONO_CHEQUE.TabStop = false;
-            this.txtABONO_CHEQUE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // btnConsultaCheque
-            // 
-            this.btnConsultaCheque.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConsultaCheque.Appearance.Options.UseFont = true;
-            this.btnConsultaCheque.ImageOptions.Image = global::SistemaContable.UI.RecursosAdicionales01.buscar_01_16x16;
-            this.btnConsultaCheque.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnConsultaCheque.ImageOptions.ImageToTextIndent = 0;
-            this.btnConsultaCheque.Location = new System.Drawing.Point(1126, 304);
-            this.btnConsultaCheque.Name = "btnConsultaCheque";
-            this.btnConsultaCheque.Size = new System.Drawing.Size(30, 25);
-            this.btnConsultaCheque.TabIndex = 38;
-            this.btnConsultaCheque.TabStop = false;
-            this.btnConsultaCheque.ToolTip = "Consulta de Cheque";
-            this.btnConsultaCheque.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
-            this.btnConsultaCheque.ToolTipTitle = "Pago";
-            this.btnConsultaCheque.Click += new System.EventHandler(this.btnConsultaCheque_Click);
             // 
             // frmFacturaSujetoExcluido
             // 

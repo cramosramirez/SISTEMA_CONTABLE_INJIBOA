@@ -663,7 +663,11 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             decimal subtotal = subtotalBruto - descuento;
 
             decimal gravadoNeto = gravado - Calculo.Redondear(gravado * porcDescto / 100m, 2);
-            decimal iva = Calculo.Redondear(gravadoNeto * 0.13m, 2);
+            decimal iva = 0;
+            if (_codigoEntidad != "106921-7")
+            {
+                iva = Calculo.Redondear(gravadoNeto * 0.13m, 2);
+            }           
 
             // ✅ Ahora sobre GRAVADO neto de descuento, no sobre SUBTOTAL
             decimal percepcion = chkPERCEPCION.Checked

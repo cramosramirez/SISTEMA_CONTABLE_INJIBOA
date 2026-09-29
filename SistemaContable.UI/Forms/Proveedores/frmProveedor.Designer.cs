@@ -153,6 +153,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnGuardar = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.errorProviderValidacion = new System.Windows.Forms.ErrorProvider(this.components);
+            this.chkAPLICA_IVA = new System.Windows.Forms.CheckBox();
+            this.chkAPLICA_RENTA = new System.Windows.Forms.CheckBox();
+            this.chkAPLICA_ARRENDAMIENTO = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gclDatosProveedor)).BeginInit();
             this.gclDatosProveedor.SuspendLayout();
@@ -196,6 +199,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.gclDatosProveedor.AppearanceCaption.Options.UseTextOptions = true;
             this.gclDatosProveedor.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gclDatosProveedor.Controls.Add(this.chkAPLICA_ARRENDAMIENTO);
+            this.gclDatosProveedor.Controls.Add(this.chkAPLICA_RENTA);
+            this.gclDatosProveedor.Controls.Add(this.chkAPLICA_IVA);
             this.gclDatosProveedor.Controls.Add(this.label1);
             this.gclDatosProveedor.Controls.Add(this.txtCODIGO_ENTIDAD);
             this.gclDatosProveedor.Controls.Add(this.cbxORIGEN_ENTIDAD);
@@ -282,7 +288,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCODIGO_ENTIDAD.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCODIGO_ENTIDAD.Location = new System.Drawing.Point(156, 26);
             this.txtCODIGO_ENTIDAD.Name = "txtCODIGO_ENTIDAD";
-            this.txtCODIGO_ENTIDAD.Size = new System.Drawing.Size(173, 22);
+            this.txtCODIGO_ENTIDAD.Size = new System.Drawing.Size(173, 24);
             this.txtCODIGO_ENTIDAD.TabIndex = 1;
             this.txtCODIGO_ENTIDAD.TabStop = false;
             // 
@@ -293,7 +299,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxORIGEN_ENTIDAD.FormattingEnabled = true;
             this.cbxORIGEN_ENTIDAD.Location = new System.Drawing.Point(156, 133);
             this.cbxORIGEN_ENTIDAD.Name = "cbxORIGEN_ENTIDAD";
-            this.cbxORIGEN_ENTIDAD.Size = new System.Drawing.Size(173, 22);
+            this.cbxORIGEN_ENTIDAD.Size = new System.Drawing.Size(173, 25);
             this.cbxORIGEN_ENTIDAD.TabIndex = 2;
             // 
             // label11
@@ -313,7 +319,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxTIPO_DOCUMENTO_IDENTIDAD.FormattingEnabled = true;
             this.cbxTIPO_DOCUMENTO_IDENTIDAD.Location = new System.Drawing.Point(542, 133);
             this.cbxTIPO_DOCUMENTO_IDENTIDAD.Name = "cbxTIPO_DOCUMENTO_IDENTIDAD";
-            this.cbxTIPO_DOCUMENTO_IDENTIDAD.Size = new System.Drawing.Size(231, 22);
+            this.cbxTIPO_DOCUMENTO_IDENTIDAD.Size = new System.Drawing.Size(231, 25);
             this.cbxTIPO_DOCUMENTO_IDENTIDAD.TabIndex = 4;
             // 
             // label2
@@ -331,7 +337,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtDOCUMENTO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDOCUMENTO.Location = new System.Drawing.Point(952, 135);
             this.txtDOCUMENTO.Name = "txtDOCUMENTO";
-            this.txtDOCUMENTO.Size = new System.Drawing.Size(198, 22);
+            this.txtDOCUMENTO.Size = new System.Drawing.Size(198, 24);
             this.txtDOCUMENTO.TabIndex = 6;
             // 
             // label21
@@ -351,7 +357,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxTIPO_PERSONA.FormattingEnabled = true;
             this.cbxTIPO_PERSONA.Location = new System.Drawing.Point(156, 168);
             this.cbxTIPO_PERSONA.Name = "cbxTIPO_PERSONA";
-            this.cbxTIPO_PERSONA.Size = new System.Drawing.Size(173, 22);
+            this.cbxTIPO_PERSONA.Size = new System.Drawing.Size(173, 25);
             this.cbxTIPO_PERSONA.TabIndex = 8;
             // 
             // label3
@@ -371,7 +377,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxTIPO_CONTRIBUYENTE.FormattingEnabled = true;
             this.cbxTIPO_CONTRIBUYENTE.Location = new System.Drawing.Point(542, 170);
             this.cbxTIPO_CONTRIBUYENTE.Name = "cbxTIPO_CONTRIBUYENTE";
-            this.cbxTIPO_CONTRIBUYENTE.Size = new System.Drawing.Size(231, 22);
+            this.cbxTIPO_CONTRIBUYENTE.Size = new System.Drawing.Size(231, 25);
             this.cbxTIPO_CONTRIBUYENTE.TabIndex = 10;
             // 
             // label4
@@ -389,7 +395,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNRC.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNRC.Location = new System.Drawing.Point(952, 172);
             this.txtNRC.Name = "txtNRC";
-            this.txtNRC.Size = new System.Drawing.Size(198, 22);
+            this.txtNRC.Size = new System.Drawing.Size(198, 24);
             this.txtNRC.TabIndex = 12;
             // 
             // label5
@@ -407,7 +413,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtDUI.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDUI.Location = new System.Drawing.Point(156, 204);
             this.txtDUI.Name = "txtDUI";
-            this.txtDUI.Size = new System.Drawing.Size(173, 22);
+            this.txtDUI.Size = new System.Drawing.Size(173, 24);
             this.txtDUI.TabIndex = 14;
             // 
             // label6
@@ -425,7 +431,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNIT.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNIT.Location = new System.Drawing.Point(542, 204);
             this.txtNIT.Name = "txtNIT";
-            this.txtNIT.Size = new System.Drawing.Size(231, 22);
+            this.txtNIT.Size = new System.Drawing.Size(231, 24);
             this.txtNIT.TabIndex = 16;
             // 
             // label7
@@ -443,7 +449,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNOMBRE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNOMBRE.Location = new System.Drawing.Point(156, 239);
             this.txtNOMBRE.Name = "txtNOMBRE";
-            this.txtNOMBRE.Size = new System.Drawing.Size(610, 22);
+            this.txtNOMBRE.Size = new System.Drawing.Size(610, 24);
             this.txtNOMBRE.TabIndex = 18;
             // 
             // label8
@@ -461,7 +467,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCOMPLEMENTO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCOMPLEMENTO.Location = new System.Drawing.Point(156, 275);
             this.txtCOMPLEMENTO.Name = "txtCOMPLEMENTO";
-            this.txtCOMPLEMENTO.Size = new System.Drawing.Size(610, 22);
+            this.txtCOMPLEMENTO.Size = new System.Drawing.Size(610, 24);
             this.txtCOMPLEMENTO.TabIndex = 20;
             // 
             // label9
@@ -479,7 +485,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCALLE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCALLE.Location = new System.Drawing.Point(156, 309);
             this.txtCALLE.Name = "txtCALLE";
-            this.txtCALLE.Size = new System.Drawing.Size(575, 22);
+            this.txtCALLE.Size = new System.Drawing.Size(575, 24);
             this.txtCALLE.TabIndex = 22;
             // 
             // label10
@@ -497,7 +503,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCASA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCASA.Location = new System.Drawing.Point(932, 309);
             this.txtCASA.Name = "txtCASA";
-            this.txtCASA.Size = new System.Drawing.Size(218, 22);
+            this.txtCASA.Size = new System.Drawing.Size(218, 24);
             this.txtCASA.TabIndex = 24;
             // 
             // label12
@@ -515,7 +521,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtAPTO_LOCAL.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAPTO_LOCAL.Location = new System.Drawing.Point(156, 345);
             this.txtAPTO_LOCAL.Name = "txtAPTO_LOCAL";
-            this.txtAPTO_LOCAL.Size = new System.Drawing.Size(173, 22);
+            this.txtAPTO_LOCAL.Size = new System.Drawing.Size(173, 24);
             this.txtAPTO_LOCAL.TabIndex = 26;
             // 
             // label13
@@ -533,7 +539,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtOTROS_DATOS.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOTROS_DATOS.Location = new System.Drawing.Point(580, 345);
             this.txtOTROS_DATOS.Name = "txtOTROS_DATOS";
-            this.txtOTROS_DATOS.Size = new System.Drawing.Size(570, 22);
+            this.txtOTROS_DATOS.Size = new System.Drawing.Size(570, 24);
             this.txtOTROS_DATOS.TabIndex = 28;
             // 
             // label14
@@ -551,7 +557,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCOLONIA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCOLONIA.Location = new System.Drawing.Point(156, 378);
             this.txtCOLONIA.Name = "txtCOLONIA";
-            this.txtCOLONIA.Size = new System.Drawing.Size(337, 22);
+            this.txtCOLONIA.Size = new System.Drawing.Size(337, 24);
             this.txtCOLONIA.TabIndex = 30;
             // 
             // label15
@@ -569,7 +575,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCORREO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCORREO.Location = new System.Drawing.Point(580, 378);
             this.txtCORREO.Name = "txtCORREO";
-            this.txtCORREO.Size = new System.Drawing.Size(570, 22);
+            this.txtCORREO.Size = new System.Drawing.Size(570, 24);
             this.txtCORREO.TabIndex = 32;
             // 
             // label16
@@ -587,7 +593,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCORREO_CC.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCORREO_CC.Location = new System.Drawing.Point(156, 413);
             this.txtCORREO_CC.Name = "txtCORREO_CC";
-            this.txtCORREO_CC.Size = new System.Drawing.Size(337, 22);
+            this.txtCORREO_CC.Size = new System.Drawing.Size(337, 24);
             this.txtCORREO_CC.TabIndex = 34;
             // 
             // label17
@@ -607,7 +613,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxPAIS.FormattingEnabled = true;
             this.cbxPAIS.Location = new System.Drawing.Point(580, 413);
             this.cbxPAIS.Name = "cbxPAIS";
-            this.cbxPAIS.Size = new System.Drawing.Size(570, 22);
+            this.cbxPAIS.Size = new System.Drawing.Size(570, 25);
             this.cbxPAIS.TabIndex = 36;
             // 
             // label18
@@ -627,7 +633,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxDEPARTAMENTO.FormattingEnabled = true;
             this.cbxDEPARTAMENTO.Location = new System.Drawing.Point(156, 447);
             this.cbxDEPARTAMENTO.Name = "cbxDEPARTAMENTO";
-            this.cbxDEPARTAMENTO.Size = new System.Drawing.Size(337, 22);
+            this.cbxDEPARTAMENTO.Size = new System.Drawing.Size(337, 25);
             this.cbxDEPARTAMENTO.TabIndex = 38;
             // 
             // label19
@@ -647,7 +653,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxMUNICIPIO.FormattingEnabled = true;
             this.cbxMUNICIPIO.Location = new System.Drawing.Point(580, 447);
             this.cbxMUNICIPIO.Name = "cbxMUNICIPIO";
-            this.cbxMUNICIPIO.Size = new System.Drawing.Size(258, 22);
+            this.cbxMUNICIPIO.Size = new System.Drawing.Size(258, 25);
             this.cbxMUNICIPIO.TabIndex = 40;
             // 
             // label20
@@ -667,7 +673,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxDISTRITO.FormattingEnabled = true;
             this.cbxDISTRITO.Location = new System.Drawing.Point(925, 447);
             this.cbxDISTRITO.Name = "cbxDISTRITO";
-            this.cbxDISTRITO.Size = new System.Drawing.Size(225, 22);
+            this.cbxDISTRITO.Size = new System.Drawing.Size(225, 25);
             this.cbxDISTRITO.TabIndex = 42;
             // 
             // label22
@@ -685,7 +691,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCELULAR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCELULAR.Location = new System.Drawing.Point(156, 482);
             this.txtCELULAR.Name = "txtCELULAR";
-            this.txtCELULAR.Size = new System.Drawing.Size(337, 22);
+            this.txtCELULAR.Size = new System.Drawing.Size(337, 24);
             this.txtCELULAR.TabIndex = 44;
             // 
             // label24
@@ -703,7 +709,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtTELEFONO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTELEFONO.Location = new System.Drawing.Point(580, 482);
             this.txtTELEFONO.Name = "txtTELEFONO";
-            this.txtTELEFONO.Size = new System.Drawing.Size(258, 22);
+            this.txtTELEFONO.Size = new System.Drawing.Size(258, 24);
             this.txtTELEFONO.TabIndex = 46;
             // 
             // label23
@@ -722,7 +728,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtPROFESION.Location = new System.Drawing.Point(925, 481);
             this.txtPROFESION.MaxLength = 300;
             this.txtPROFESION.Name = "txtPROFESION";
-            this.txtPROFESION.Size = new System.Drawing.Size(225, 22);
+            this.txtPROFESION.Size = new System.Drawing.Size(225, 24);
             this.txtPROFESION.TabIndex = 48;
             // 
             // label36
@@ -751,7 +757,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCODI_ACTI1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCODI_ACTI1.Location = new System.Drawing.Point(146, 518);
             this.txtCODI_ACTI1.Name = "txtCODI_ACTI1";
-            this.txtCODI_ACTI1.Size = new System.Drawing.Size(82, 22);
+            this.txtCODI_ACTI1.Size = new System.Drawing.Size(82, 24);
             this.txtCODI_ACTI1.TabIndex = 51;
             // 
             // txtACTIVIDAD_ECONOMICA1
@@ -761,7 +767,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtACTIVIDAD_ECONOMICA1.Location = new System.Drawing.Point(229, 518);
             this.txtACTIVIDAD_ECONOMICA1.Name = "txtACTIVIDAD_ECONOMICA1";
             this.txtACTIVIDAD_ECONOMICA1.ReadOnly = true;
-            this.txtACTIVIDAD_ECONOMICA1.Size = new System.Drawing.Size(921, 22);
+            this.txtACTIVIDAD_ECONOMICA1.Size = new System.Drawing.Size(921, 24);
             this.txtACTIVIDAD_ECONOMICA1.TabIndex = 52;
             this.txtACTIVIDAD_ECONOMICA1.TabStop = false;
             // 
@@ -781,7 +787,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCODI_ACTI2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCODI_ACTI2.Location = new System.Drawing.Point(146, 551);
             this.txtCODI_ACTI2.Name = "txtCODI_ACTI2";
-            this.txtCODI_ACTI2.Size = new System.Drawing.Size(82, 22);
+            this.txtCODI_ACTI2.Size = new System.Drawing.Size(82, 24);
             this.txtCODI_ACTI2.TabIndex = 54;
             // 
             // txtACTIVIDAD_ECONOMICA2
@@ -791,7 +797,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtACTIVIDAD_ECONOMICA2.Location = new System.Drawing.Point(229, 551);
             this.txtACTIVIDAD_ECONOMICA2.Name = "txtACTIVIDAD_ECONOMICA2";
             this.txtACTIVIDAD_ECONOMICA2.ReadOnly = true;
-            this.txtACTIVIDAD_ECONOMICA2.Size = new System.Drawing.Size(920, 22);
+            this.txtACTIVIDAD_ECONOMICA2.Size = new System.Drawing.Size(920, 24);
             this.txtACTIVIDAD_ECONOMICA2.TabIndex = 55;
             this.txtACTIVIDAD_ECONOMICA2.TabStop = false;
             // 
@@ -811,7 +817,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCODI_ACTI3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCODI_ACTI3.Location = new System.Drawing.Point(146, 584);
             this.txtCODI_ACTI3.Name = "txtCODI_ACTI3";
-            this.txtCODI_ACTI3.Size = new System.Drawing.Size(82, 22);
+            this.txtCODI_ACTI3.Size = new System.Drawing.Size(82, 24);
             this.txtCODI_ACTI3.TabIndex = 57;
             // 
             // txtACTIVIDAD_ECONOMICA3
@@ -821,7 +827,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtACTIVIDAD_ECONOMICA3.Location = new System.Drawing.Point(229, 584);
             this.txtACTIVIDAD_ECONOMICA3.Name = "txtACTIVIDAD_ECONOMICA3";
             this.txtACTIVIDAD_ECONOMICA3.ReadOnly = true;
-            this.txtACTIVIDAD_ECONOMICA3.Size = new System.Drawing.Size(920, 22);
+            this.txtACTIVIDAD_ECONOMICA3.Size = new System.Drawing.Size(920, 24);
             this.txtACTIVIDAD_ECONOMICA3.TabIndex = 58;
             this.txtACTIVIDAD_ECONOMICA3.TabStop = false;
             // 
@@ -841,7 +847,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNOMBRE_COMERCIAL.Location = new System.Drawing.Point(900, 239);
             this.txtNOMBRE_COMERCIAL.MaxLength = 300;
             this.txtNOMBRE_COMERCIAL.Name = "txtNOMBRE_COMERCIAL";
-            this.txtNOMBRE_COMERCIAL.Size = new System.Drawing.Size(250, 22);
+            this.txtNOMBRE_COMERCIAL.Size = new System.Drawing.Size(250, 24);
             this.txtNOMBRE_COMERCIAL.TabIndex = 60;
             // 
             // lblACTIVIDAD_EXT
@@ -860,7 +866,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtACTIVIDAD_EXT.Location = new System.Drawing.Point(900, 275);
             this.txtACTIVIDAD_EXT.MaxLength = 300;
             this.txtACTIVIDAD_EXT.Name = "txtACTIVIDAD_EXT";
-            this.txtACTIVIDAD_EXT.Size = new System.Drawing.Size(250, 22);
+            this.txtACTIVIDAD_EXT.Size = new System.Drawing.Size(250, 24);
             this.txtACTIVIDAD_EXT.TabIndex = 62;
             // 
             // tabCodigosRelacionados
@@ -886,7 +892,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.tabProductor.Controls.Add(this.lblNitProductor);
             this.tabProductor.Controls.Add(this.txtNIT_PRODUCTOR_INTEGRACION);
             this.tabProductor.Name = "tabProductor";
-            this.tabProductor.Size = new System.Drawing.Size(1138, 46);
+            this.tabProductor.Size = new System.Drawing.Size(1138, 41);
             this.tabProductor.Text = "Productor";
             // 
             // lblCodigoProductor
@@ -894,7 +900,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblCodigoProductor.AutoSize = true;
             this.lblCodigoProductor.Location = new System.Drawing.Point(12, 14);
             this.lblCodigoProductor.Name = "lblCodigoProductor";
-            this.lblCodigoProductor.Size = new System.Drawing.Size(40, 13);
+            this.lblCodigoProductor.Size = new System.Drawing.Size(51, 17);
             this.lblCodigoProductor.TabIndex = 0;
             this.lblCodigoProductor.Text = "Código";
             // 
@@ -904,7 +910,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCODIPROVEEDOR.Location = new System.Drawing.Point(75, 12);
             this.txtCODIPROVEEDOR.MaxLength = 50;
             this.txtCODIPROVEEDOR.Name = "txtCODIPROVEEDOR";
-            this.txtCODIPROVEEDOR.Size = new System.Drawing.Size(145, 22);
+            this.txtCODIPROVEEDOR.Size = new System.Drawing.Size(145, 24);
             this.txtCODIPROVEEDOR.TabIndex = 1;
             // 
             // lblNombreProductor
@@ -912,7 +918,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblNombreProductor.AutoSize = true;
             this.lblNombreProductor.Location = new System.Drawing.Point(230, 14);
             this.lblNombreProductor.Name = "lblNombreProductor";
-            this.lblNombreProductor.Size = new System.Drawing.Size(44, 13);
+            this.lblNombreProductor.Size = new System.Drawing.Size(57, 17);
             this.lblNombreProductor.TabIndex = 2;
             this.lblNombreProductor.Text = "Nombre";
             // 
@@ -922,7 +928,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNOMBRE_PRODUCTOR_INTEGRACION.Location = new System.Drawing.Point(285, 12);
             this.txtNOMBRE_PRODUCTOR_INTEGRACION.Name = "txtNOMBRE_PRODUCTOR_INTEGRACION";
             this.txtNOMBRE_PRODUCTOR_INTEGRACION.ReadOnly = true;
-            this.txtNOMBRE_PRODUCTOR_INTEGRACION.Size = new System.Drawing.Size(430, 21);
+            this.txtNOMBRE_PRODUCTOR_INTEGRACION.Size = new System.Drawing.Size(430, 23);
             this.txtNOMBRE_PRODUCTOR_INTEGRACION.TabIndex = 3;
             this.txtNOMBRE_PRODUCTOR_INTEGRACION.TabStop = false;
             // 
@@ -931,7 +937,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblNitProductor.AutoSize = true;
             this.lblNitProductor.Location = new System.Drawing.Point(735, 14);
             this.lblNitProductor.Name = "lblNitProductor";
-            this.lblNitProductor.Size = new System.Drawing.Size(24, 13);
+            this.lblNitProductor.Size = new System.Drawing.Size(29, 17);
             this.lblNitProductor.TabIndex = 4;
             this.lblNitProductor.Text = "NIT";
             // 
@@ -941,7 +947,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNIT_PRODUCTOR_INTEGRACION.Location = new System.Drawing.Point(770, 12);
             this.txtNIT_PRODUCTOR_INTEGRACION.Name = "txtNIT_PRODUCTOR_INTEGRACION";
             this.txtNIT_PRODUCTOR_INTEGRACION.ReadOnly = true;
-            this.txtNIT_PRODUCTOR_INTEGRACION.Size = new System.Drawing.Size(220, 21);
+            this.txtNIT_PRODUCTOR_INTEGRACION.Size = new System.Drawing.Size(220, 23);
             this.txtNIT_PRODUCTOR_INTEGRACION.TabIndex = 5;
             this.txtNIT_PRODUCTOR_INTEGRACION.TabStop = false;
             // 
@@ -954,7 +960,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.tabTransportista.Controls.Add(this.lblNitTransportista);
             this.tabTransportista.Controls.Add(this.txtNIT_TRANSPORTISTA_INTEGRACION);
             this.tabTransportista.Name = "tabTransportista";
-            this.tabTransportista.Size = new System.Drawing.Size(1147, 46);
+            this.tabTransportista.Size = new System.Drawing.Size(1138, 41);
             this.tabTransportista.Text = "Transportista";
             // 
             // lblCodigoTransportista
@@ -962,7 +968,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblCodigoTransportista.AutoSize = true;
             this.lblCodigoTransportista.Location = new System.Drawing.Point(12, 14);
             this.lblCodigoTransportista.Name = "lblCodigoTransportista";
-            this.lblCodigoTransportista.Size = new System.Drawing.Size(40, 13);
+            this.lblCodigoTransportista.Size = new System.Drawing.Size(51, 17);
             this.lblCodigoTransportista.TabIndex = 0;
             this.lblCodigoTransportista.Text = "Código";
             // 
@@ -972,7 +978,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCODTRANSPORT.Location = new System.Drawing.Point(75, 12);
             this.txtCODTRANSPORT.MaxLength = 50;
             this.txtCODTRANSPORT.Name = "txtCODTRANSPORT";
-            this.txtCODTRANSPORT.Size = new System.Drawing.Size(145, 22);
+            this.txtCODTRANSPORT.Size = new System.Drawing.Size(145, 24);
             this.txtCODTRANSPORT.TabIndex = 1;
             // 
             // lblNombreTransportista
@@ -980,7 +986,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblNombreTransportista.AutoSize = true;
             this.lblNombreTransportista.Location = new System.Drawing.Point(230, 14);
             this.lblNombreTransportista.Name = "lblNombreTransportista";
-            this.lblNombreTransportista.Size = new System.Drawing.Size(44, 13);
+            this.lblNombreTransportista.Size = new System.Drawing.Size(57, 17);
             this.lblNombreTransportista.TabIndex = 2;
             this.lblNombreTransportista.Text = "Nombre";
             // 
@@ -990,7 +996,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.Location = new System.Drawing.Point(285, 12);
             this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.Name = "txtNOMBRE_TRANSPORTISTA_INTEGRACION";
             this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.ReadOnly = true;
-            this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.Size = new System.Drawing.Size(430, 21);
+            this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.Size = new System.Drawing.Size(430, 23);
             this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.TabIndex = 3;
             this.txtNOMBRE_TRANSPORTISTA_INTEGRACION.TabStop = false;
             // 
@@ -999,7 +1005,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblNitTransportista.AutoSize = true;
             this.lblNitTransportista.Location = new System.Drawing.Point(735, 14);
             this.lblNitTransportista.Name = "lblNitTransportista";
-            this.lblNitTransportista.Size = new System.Drawing.Size(24, 13);
+            this.lblNitTransportista.Size = new System.Drawing.Size(29, 17);
             this.lblNitTransportista.TabIndex = 4;
             this.lblNitTransportista.Text = "NIT";
             // 
@@ -1009,7 +1015,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNIT_TRANSPORTISTA_INTEGRACION.Location = new System.Drawing.Point(770, 12);
             this.txtNIT_TRANSPORTISTA_INTEGRACION.Name = "txtNIT_TRANSPORTISTA_INTEGRACION";
             this.txtNIT_TRANSPORTISTA_INTEGRACION.ReadOnly = true;
-            this.txtNIT_TRANSPORTISTA_INTEGRACION.Size = new System.Drawing.Size(220, 21);
+            this.txtNIT_TRANSPORTISTA_INTEGRACION.Size = new System.Drawing.Size(220, 23);
             this.txtNIT_TRANSPORTISTA_INTEGRACION.TabIndex = 5;
             this.txtNIT_TRANSPORTISTA_INTEGRACION.TabStop = false;
             // 
@@ -1022,7 +1028,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.tabCargadora.Controls.Add(this.lblNitCargadora);
             this.tabCargadora.Controls.Add(this.txtNIT_CARGADORA_INTEGRACION);
             this.tabCargadora.Name = "tabCargadora";
-            this.tabCargadora.Size = new System.Drawing.Size(1147, 46);
+            this.tabCargadora.Size = new System.Drawing.Size(1138, 41);
             this.tabCargadora.Text = "Cargadora";
             // 
             // lblCodigoCargadora
@@ -1030,7 +1036,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblCodigoCargadora.AutoSize = true;
             this.lblCodigoCargadora.Location = new System.Drawing.Point(12, 14);
             this.lblCodigoCargadora.Name = "lblCodigoCargadora";
-            this.lblCodigoCargadora.Size = new System.Drawing.Size(40, 13);
+            this.lblCodigoCargadora.Size = new System.Drawing.Size(51, 17);
             this.lblCodigoCargadora.TabIndex = 0;
             this.lblCodigoCargadora.Text = "Código";
             // 
@@ -1040,7 +1046,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtID_CARGADORA.Location = new System.Drawing.Point(75, 12);
             this.txtID_CARGADORA.MaxLength = 50;
             this.txtID_CARGADORA.Name = "txtID_CARGADORA";
-            this.txtID_CARGADORA.Size = new System.Drawing.Size(145, 22);
+            this.txtID_CARGADORA.Size = new System.Drawing.Size(145, 24);
             this.txtID_CARGADORA.TabIndex = 1;
             // 
             // lblNombreCargadora
@@ -1048,7 +1054,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblNombreCargadora.AutoSize = true;
             this.lblNombreCargadora.Location = new System.Drawing.Point(230, 14);
             this.lblNombreCargadora.Name = "lblNombreCargadora";
-            this.lblNombreCargadora.Size = new System.Drawing.Size(44, 13);
+            this.lblNombreCargadora.Size = new System.Drawing.Size(57, 17);
             this.lblNombreCargadora.TabIndex = 2;
             this.lblNombreCargadora.Text = "Nombre";
             // 
@@ -1058,7 +1064,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNOMBRE_CARGADORA_INTEGRACION.Location = new System.Drawing.Point(285, 12);
             this.txtNOMBRE_CARGADORA_INTEGRACION.Name = "txtNOMBRE_CARGADORA_INTEGRACION";
             this.txtNOMBRE_CARGADORA_INTEGRACION.ReadOnly = true;
-            this.txtNOMBRE_CARGADORA_INTEGRACION.Size = new System.Drawing.Size(430, 21);
+            this.txtNOMBRE_CARGADORA_INTEGRACION.Size = new System.Drawing.Size(430, 23);
             this.txtNOMBRE_CARGADORA_INTEGRACION.TabIndex = 3;
             this.txtNOMBRE_CARGADORA_INTEGRACION.TabStop = false;
             // 
@@ -1067,7 +1073,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblNitCargadora.AutoSize = true;
             this.lblNitCargadora.Location = new System.Drawing.Point(735, 14);
             this.lblNitCargadora.Name = "lblNitCargadora";
-            this.lblNitCargadora.Size = new System.Drawing.Size(24, 13);
+            this.lblNitCargadora.Size = new System.Drawing.Size(29, 17);
             this.lblNitCargadora.TabIndex = 4;
             this.lblNitCargadora.Text = "NIT";
             // 
@@ -1077,7 +1083,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNIT_CARGADORA_INTEGRACION.Location = new System.Drawing.Point(770, 12);
             this.txtNIT_CARGADORA_INTEGRACION.Name = "txtNIT_CARGADORA_INTEGRACION";
             this.txtNIT_CARGADORA_INTEGRACION.ReadOnly = true;
-            this.txtNIT_CARGADORA_INTEGRACION.Size = new System.Drawing.Size(220, 21);
+            this.txtNIT_CARGADORA_INTEGRACION.Size = new System.Drawing.Size(220, 23);
             this.txtNIT_CARGADORA_INTEGRACION.TabIndex = 5;
             this.txtNIT_CARGADORA_INTEGRACION.TabStop = false;
             // 
@@ -1090,7 +1096,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.tabRoza.Controls.Add(this.lblNitRoza);
             this.tabRoza.Controls.Add(this.txtNIT_ROZA_INTEGRACION);
             this.tabRoza.Name = "tabRoza";
-            this.tabRoza.Size = new System.Drawing.Size(1147, 46);
+            this.tabRoza.Size = new System.Drawing.Size(1138, 41);
             this.tabRoza.Text = "Roza";
             // 
             // lblCodigoRoza
@@ -1098,7 +1104,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblCodigoRoza.AutoSize = true;
             this.lblCodigoRoza.Location = new System.Drawing.Point(12, 14);
             this.lblCodigoRoza.Name = "lblCodigoRoza";
-            this.lblCodigoRoza.Size = new System.Drawing.Size(40, 13);
+            this.lblCodigoRoza.Size = new System.Drawing.Size(51, 17);
             this.lblCodigoRoza.TabIndex = 0;
             this.lblCodigoRoza.Text = "Código";
             // 
@@ -1108,7 +1114,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtID_PROVEEDOR_ROZA.Location = new System.Drawing.Point(75, 12);
             this.txtID_PROVEEDOR_ROZA.MaxLength = 50;
             this.txtID_PROVEEDOR_ROZA.Name = "txtID_PROVEEDOR_ROZA";
-            this.txtID_PROVEEDOR_ROZA.Size = new System.Drawing.Size(145, 22);
+            this.txtID_PROVEEDOR_ROZA.Size = new System.Drawing.Size(145, 24);
             this.txtID_PROVEEDOR_ROZA.TabIndex = 1;
             // 
             // lblNombreRoza
@@ -1116,7 +1122,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblNombreRoza.AutoSize = true;
             this.lblNombreRoza.Location = new System.Drawing.Point(230, 14);
             this.lblNombreRoza.Name = "lblNombreRoza";
-            this.lblNombreRoza.Size = new System.Drawing.Size(44, 13);
+            this.lblNombreRoza.Size = new System.Drawing.Size(57, 17);
             this.lblNombreRoza.TabIndex = 2;
             this.lblNombreRoza.Text = "Nombre";
             // 
@@ -1126,7 +1132,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNOMBRE_ROZA_INTEGRACION.Location = new System.Drawing.Point(285, 12);
             this.txtNOMBRE_ROZA_INTEGRACION.Name = "txtNOMBRE_ROZA_INTEGRACION";
             this.txtNOMBRE_ROZA_INTEGRACION.ReadOnly = true;
-            this.txtNOMBRE_ROZA_INTEGRACION.Size = new System.Drawing.Size(430, 21);
+            this.txtNOMBRE_ROZA_INTEGRACION.Size = new System.Drawing.Size(430, 23);
             this.txtNOMBRE_ROZA_INTEGRACION.TabIndex = 3;
             this.txtNOMBRE_ROZA_INTEGRACION.TabStop = false;
             // 
@@ -1135,7 +1141,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblNitRoza.AutoSize = true;
             this.lblNitRoza.Location = new System.Drawing.Point(735, 14);
             this.lblNitRoza.Name = "lblNitRoza";
-            this.lblNitRoza.Size = new System.Drawing.Size(24, 13);
+            this.lblNitRoza.Size = new System.Drawing.Size(29, 17);
             this.lblNitRoza.TabIndex = 4;
             this.lblNitRoza.Text = "NIT";
             // 
@@ -1145,7 +1151,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNIT_ROZA_INTEGRACION.Location = new System.Drawing.Point(770, 12);
             this.txtNIT_ROZA_INTEGRACION.Name = "txtNIT_ROZA_INTEGRACION";
             this.txtNIT_ROZA_INTEGRACION.ReadOnly = true;
-            this.txtNIT_ROZA_INTEGRACION.Size = new System.Drawing.Size(220, 21);
+            this.txtNIT_ROZA_INTEGRACION.Size = new System.Drawing.Size(220, 23);
             this.txtNIT_ROZA_INTEGRACION.TabIndex = 5;
             this.txtNIT_ROZA_INTEGRACION.TabStop = false;
             // 
@@ -1158,7 +1164,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.tabQuerqueo.Controls.Add(this.lblNitQuerqueo);
             this.tabQuerqueo.Controls.Add(this.txtNIT_QUERQUEO_INTEGRACION);
             this.tabQuerqueo.Name = "tabQuerqueo";
-            this.tabQuerqueo.Size = new System.Drawing.Size(1147, 46);
+            this.tabQuerqueo.Size = new System.Drawing.Size(1138, 41);
             this.tabQuerqueo.Text = "Querqueo";
             // 
             // lblCodigoQuerqueo
@@ -1166,7 +1172,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblCodigoQuerqueo.AutoSize = true;
             this.lblCodigoQuerqueo.Location = new System.Drawing.Point(12, 14);
             this.lblCodigoQuerqueo.Name = "lblCodigoQuerqueo";
-            this.lblCodigoQuerqueo.Size = new System.Drawing.Size(40, 13);
+            this.lblCodigoQuerqueo.Size = new System.Drawing.Size(51, 17);
             this.lblCodigoQuerqueo.TabIndex = 0;
             this.lblCodigoQuerqueo.Text = "Código";
             // 
@@ -1176,7 +1182,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtID_PROVEE_QQ.Location = new System.Drawing.Point(75, 12);
             this.txtID_PROVEE_QQ.MaxLength = 50;
             this.txtID_PROVEE_QQ.Name = "txtID_PROVEE_QQ";
-            this.txtID_PROVEE_QQ.Size = new System.Drawing.Size(145, 22);
+            this.txtID_PROVEE_QQ.Size = new System.Drawing.Size(145, 24);
             this.txtID_PROVEE_QQ.TabIndex = 1;
             // 
             // lblNombreQuerqueo
@@ -1184,7 +1190,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblNombreQuerqueo.AutoSize = true;
             this.lblNombreQuerqueo.Location = new System.Drawing.Point(230, 14);
             this.lblNombreQuerqueo.Name = "lblNombreQuerqueo";
-            this.lblNombreQuerqueo.Size = new System.Drawing.Size(44, 13);
+            this.lblNombreQuerqueo.Size = new System.Drawing.Size(57, 17);
             this.lblNombreQuerqueo.TabIndex = 2;
             this.lblNombreQuerqueo.Text = "Nombre";
             // 
@@ -1194,7 +1200,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNOMBRE_QUERQUEO_INTEGRACION.Location = new System.Drawing.Point(285, 12);
             this.txtNOMBRE_QUERQUEO_INTEGRACION.Name = "txtNOMBRE_QUERQUEO_INTEGRACION";
             this.txtNOMBRE_QUERQUEO_INTEGRACION.ReadOnly = true;
-            this.txtNOMBRE_QUERQUEO_INTEGRACION.Size = new System.Drawing.Size(430, 21);
+            this.txtNOMBRE_QUERQUEO_INTEGRACION.Size = new System.Drawing.Size(430, 23);
             this.txtNOMBRE_QUERQUEO_INTEGRACION.TabIndex = 3;
             this.txtNOMBRE_QUERQUEO_INTEGRACION.TabStop = false;
             // 
@@ -1203,7 +1209,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.lblNitQuerqueo.AutoSize = true;
             this.lblNitQuerqueo.Location = new System.Drawing.Point(735, 14);
             this.lblNitQuerqueo.Name = "lblNitQuerqueo";
-            this.lblNitQuerqueo.Size = new System.Drawing.Size(24, 13);
+            this.lblNitQuerqueo.Size = new System.Drawing.Size(29, 17);
             this.lblNitQuerqueo.TabIndex = 4;
             this.lblNitQuerqueo.Text = "NIT";
             // 
@@ -1213,7 +1219,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNIT_QUERQUEO_INTEGRACION.Location = new System.Drawing.Point(770, 12);
             this.txtNIT_QUERQUEO_INTEGRACION.Name = "txtNIT_QUERQUEO_INTEGRACION";
             this.txtNIT_QUERQUEO_INTEGRACION.ReadOnly = true;
-            this.txtNIT_QUERQUEO_INTEGRACION.Size = new System.Drawing.Size(220, 21);
+            this.txtNIT_QUERQUEO_INTEGRACION.Size = new System.Drawing.Size(220, 23);
             this.txtNIT_QUERQUEO_INTEGRACION.TabIndex = 5;
             this.txtNIT_QUERQUEO_INTEGRACION.TabStop = false;
             // 
@@ -1248,7 +1254,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCUENTA_X_PAGAR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCUENTA_X_PAGAR.Location = new System.Drawing.Point(156, 25);
             this.txtCUENTA_X_PAGAR.Name = "txtCUENTA_X_PAGAR";
-            this.txtCUENTA_X_PAGAR.Size = new System.Drawing.Size(173, 22);
+            this.txtCUENTA_X_PAGAR.Size = new System.Drawing.Size(173, 24);
             this.txtCUENTA_X_PAGAR.TabIndex = 1;
             // 
             // txtNOMBRE_CUENTA_X_PAGAR
@@ -1258,7 +1264,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNOMBRE_CUENTA_X_PAGAR.Location = new System.Drawing.Point(335, 25);
             this.txtNOMBRE_CUENTA_X_PAGAR.Name = "txtNOMBRE_CUENTA_X_PAGAR";
             this.txtNOMBRE_CUENTA_X_PAGAR.ReadOnly = true;
-            this.txtNOMBRE_CUENTA_X_PAGAR.Size = new System.Drawing.Size(815, 22);
+            this.txtNOMBRE_CUENTA_X_PAGAR.Size = new System.Drawing.Size(815, 24);
             this.txtNOMBRE_CUENTA_X_PAGAR.TabIndex = 2;
             this.txtNOMBRE_CUENTA_X_PAGAR.TabStop = false;
             // 
@@ -1277,7 +1283,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtCUENTA_GASTO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCUENTA_GASTO.Location = new System.Drawing.Point(156, 53);
             this.txtCUENTA_GASTO.Name = "txtCUENTA_GASTO";
-            this.txtCUENTA_GASTO.Size = new System.Drawing.Size(173, 22);
+            this.txtCUENTA_GASTO.Size = new System.Drawing.Size(173, 24);
             this.txtCUENTA_GASTO.TabIndex = 4;
             // 
             // txtNOMBRE_CUENTA_GASTO
@@ -1287,7 +1293,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNOMBRE_CUENTA_GASTO.Location = new System.Drawing.Point(335, 53);
             this.txtNOMBRE_CUENTA_GASTO.Name = "txtNOMBRE_CUENTA_GASTO";
             this.txtNOMBRE_CUENTA_GASTO.ReadOnly = true;
-            this.txtNOMBRE_CUENTA_GASTO.Size = new System.Drawing.Size(815, 22);
+            this.txtNOMBRE_CUENTA_GASTO.Size = new System.Drawing.Size(815, 24);
             this.txtNOMBRE_CUENTA_GASTO.TabIndex = 5;
             this.txtNOMBRE_CUENTA_GASTO.TabStop = false;
             // 
@@ -1347,7 +1353,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtDIAS_PLAZO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDIAS_PLAZO.Location = new System.Drawing.Point(156, 630);
             this.txtDIAS_PLAZO.Name = "txtDIAS_PLAZO";
-            this.txtDIAS_PLAZO.Size = new System.Drawing.Size(173, 22);
+            this.txtDIAS_PLAZO.Size = new System.Drawing.Size(173, 24);
             this.txtDIAS_PLAZO.TabIndex = 52;
             // 
             // chkRETENER_RENTA
@@ -1367,7 +1373,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtPORC_RENTA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPORC_RENTA.Location = new System.Drawing.Point(925, 696);
             this.txtPORC_RENTA.Name = "txtPORC_RENTA";
-            this.txtPORC_RENTA.Size = new System.Drawing.Size(254, 22);
+            this.txtPORC_RENTA.Size = new System.Drawing.Size(254, 24);
             this.txtPORC_RENTA.TabIndex = 54;
             this.txtPORC_RENTA.Visible = false;
             // 
@@ -1387,7 +1393,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtENCARGADO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtENCARGADO.Location = new System.Drawing.Point(156, 664);
             this.txtENCARGADO.Name = "txtENCARGADO";
-            this.txtENCARGADO.Size = new System.Drawing.Size(1004, 22);
+            this.txtENCARGADO.Size = new System.Drawing.Size(1004, 24);
             this.txtENCARGADO.TabIndex = 56;
             // 
             // label30
@@ -1412,7 +1418,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnGuardar.Size = new System.Drawing.Size(119, 47);
             this.btnGuardar.TabIndex = 39;
             this.btnGuardar.TabStop = false;
-            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.Text = "Guardar";            
             // 
             // btnFinalizar
             // 
@@ -1433,9 +1439,42 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.errorProviderValidacion.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errorProviderValidacion.ContainerControl = this;
             // 
+            // chkAPLICA_IVA
+            // 
+            this.chkAPLICA_IVA.AutoSize = true;
+            this.chkAPLICA_IVA.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkAPLICA_IVA.Location = new System.Drawing.Point(793, 206);
+            this.chkAPLICA_IVA.Name = "chkAPLICA_IVA";
+            this.chkAPLICA_IVA.Size = new System.Drawing.Size(84, 21);
+            this.chkAPLICA_IVA.TabIndex = 63;
+            this.chkAPLICA_IVA.Text = "Aplica IVA";
+            this.chkAPLICA_IVA.UseVisualStyleBackColor = true;
+            // 
+            // chkAPLICA_RENTA
+            // 
+            this.chkAPLICA_RENTA.AutoSize = true;
+            this.chkAPLICA_RENTA.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkAPLICA_RENTA.Location = new System.Drawing.Point(895, 206);
+            this.chkAPLICA_RENTA.Name = "chkAPLICA_RENTA";
+            this.chkAPLICA_RENTA.Size = new System.Drawing.Size(100, 21);
+            this.chkAPLICA_RENTA.TabIndex = 64;
+            this.chkAPLICA_RENTA.Text = "Aplica Renta";
+            this.chkAPLICA_RENTA.UseVisualStyleBackColor = true;
+            // 
+            // chkAPLICA_ARRENDAMIENTO
+            // 
+            this.chkAPLICA_ARRENDAMIENTO.AutoSize = true;
+            this.chkAPLICA_ARRENDAMIENTO.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkAPLICA_ARRENDAMIENTO.Location = new System.Drawing.Point(1001, 206);
+            this.chkAPLICA_ARRENDAMIENTO.Name = "chkAPLICA_ARRENDAMIENTO";
+            this.chkAPLICA_ARRENDAMIENTO.Size = new System.Drawing.Size(154, 21);
+            this.chkAPLICA_ARRENDAMIENTO.TabIndex = 65;
+            this.chkAPLICA_ARRENDAMIENTO.Text = "Aplica Arrendamiento";
+            this.chkAPLICA_ARRENDAMIENTO.UseVisualStyleBackColor = true;
+            // 
             // frmProveedor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1322, 965);
             this.Controls.Add(this.panel1);
@@ -1599,5 +1638,8 @@ namespace SistemaContable.UI.Forms.Proveedores
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.TextBox txtCUENTA_GASTO;
         private System.Windows.Forms.TextBox txtNOMBRE_CUENTA_GASTO;
+        private System.Windows.Forms.CheckBox chkAPLICA_ARRENDAMIENTO;
+        private System.Windows.Forms.CheckBox chkAPLICA_RENTA;
+        private System.Windows.Forms.CheckBox chkAPLICA_IVA;
     }
 }

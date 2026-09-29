@@ -727,6 +727,25 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtCODI_ACTI3.Tag = null;
                 txtACTIVIDAD_ECONOMICA3.Clear();
             }
+
+            if(esNoContribuyente && esNatural)
+            {
+                chkAPLICA_IVA.Enabled = true;
+                chkAPLICA_RENTA.Enabled = true;
+                chkAPLICA_ARRENDAMIENTO.Enabled = true;
+            }
+            else
+            {
+                chkAPLICA_IVA.Checked = false;
+                chkAPLICA_RENTA.Checked = false;
+                chkAPLICA_ARRENDAMIENTO.Checked = false;
+                chkAPLICA_IVA.Enabled = false;
+                chkAPLICA_RENTA.Enabled = false;
+                chkAPLICA_ARRENDAMIENTO.Enabled = false;
+            }
+            
+
+
         }
 
 
@@ -936,6 +955,9 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtID_PROVEE_QQ.Text = r.Table.Columns.Contains("ID_PROVEE_QQ")
                     ? SafeStr(r["ID_PROVEE_QQ"]) : "";
                 txtOTROS_DATOS.Text = SafeStr(r["OTROS_DATOS"]);
+                chkAPLICA_IVA.Checked = Convert.ToBoolean(r["APLICA_IVA"]);
+                chkAPLICA_RENTA.Checked = Convert.ToBoolean(r["APLICA_RENTA"]);
+                chkAPLICA_ARRENDAMIENTO.Checked = Convert.ToBoolean(r["APLICA_ARRENDAMIENTO"]);
 
                 // Actividades económicas
                 CargarActividadEditar(r, "ID_ACTIVIDAD_1", txtCODI_ACTI1, txtACTIVIDAD_ECONOMICA1);
@@ -1253,6 +1275,9 @@ namespace SistemaContable.UI.Forms.Proveedores
                     OTROS_DATOS = NullIfEmpty(txtOTROS_DATOS.Text),
                     PROFESION = NullIfEmpty(txtPROFESION.Text),
                     ACTIVIDAD_EXT = NullIfEmpty(txtACTIVIDAD_EXT.Text),
+                    APLICA_IVA = chkAPLICA_IVA.Checked,
+                    APLICA_RENTA = chkAPLICA_RENTA.Checked,
+                    APLICA_ARRENDAMIENTO = chkAPLICA_ARRENDAMIENTO.Checked,
                     ROL = "PRO"
                 };
 
@@ -1756,7 +1781,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 return false;
             }
             return true;
-        }
+        }       
     }
 }
 
