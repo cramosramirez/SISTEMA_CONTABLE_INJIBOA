@@ -264,5 +264,42 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             }
         }
 
+        private void deFecha_TextChanged(object sender, EventArgs e)
+        {
+            if (deFecha.EditValue == null)
+                return;
+
+            var infoPartida = NumeradorPartidaHelper.Consultar(txtPartida.Text);
+            txtNumero.Text = infoPartida.NumSiguienteFormateado;
+            ActualizarConcepto();
+        }
+
+        private void deFecha_Leave(object sender, EventArgs e)
+        {
+
+            if (deFecha.EditValue == null)
+                return;
+
+            var infoPartida = NumeradorPartidaHelper.Consultar(txtPartida.Text);
+            txtNumero.Text = infoPartida.NumSiguienteFormateado;
+            ActualizarConcepto();
+        }
+
+        private void txtNumero_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtNumero.Text))
+                return;
+
+            string numero = txtNumero.Text.Trim();
+
+            if (numero.Length > 6)
+            {
+                Alertas.Error("El número no puede tener más de 6 dígitos.");
+                txtNumero.Focus();
+                return;
+            }
+
+            txtNumero.Text = numero.PadLeft(6, '0');
+        }
     }
 }
