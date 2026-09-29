@@ -34,6 +34,7 @@ namespace SistemaContable.UI.Forms.Planilla
             this.panelBotones = new System.Windows.Forms.Panel();
             this.btnSalir = new DevExpress.XtraEditors.SimpleButton();
             this.btnReporte = new DevExpress.XtraEditors.SimpleButton();
+            this.btnEliminarPruebas = new DevExpress.XtraEditors.SimpleButton();
             this.btnImportar = new DevExpress.XtraEditors.SimpleButton();
             this.btnConsultar = new DevExpress.XtraEditors.SimpleButton();
             this.splitMain = new System.Windows.Forms.SplitContainer();
@@ -44,6 +45,7 @@ namespace SistemaContable.UI.Forms.Planilla
             this.gvDocumentos = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panelNuevo = new System.Windows.Forms.Panel();
             this.btnNuevo = new DevExpress.XtraEditors.SimpleButton();
+            this.btnGenerar = new DevExpress.XtraEditors.SimpleButton();
             this.lblTituloDocumentos = new System.Windows.Forms.Label();
             this.grpFiltros.SuspendLayout();
             this.panelBotones.SuspendLayout();
@@ -72,7 +74,7 @@ namespace SistemaContable.UI.Forms.Planilla
             this.grpFiltros.Location = new System.Drawing.Point(8, 8);
             this.grpFiltros.Name = "grpFiltros";
             this.grpFiltros.Padding = new System.Windows.Forms.Padding(8);
-            this.grpFiltros.Size = new System.Drawing.Size(1164, 92);
+            this.grpFiltros.Size = new System.Drawing.Size(1264, 92);
             this.grpFiltros.TabIndex = 0;
             this.grpFiltros.TabStop = false;
             this.grpFiltros.Text = "Filtros";
@@ -151,13 +153,14 @@ namespace SistemaContable.UI.Forms.Planilla
             // panelBotones
             //
             this.panelBotones.Controls.Add(this.btnSalir);
+            this.panelBotones.Controls.Add(this.btnEliminarPruebas);
             this.panelBotones.Controls.Add(this.btnReporte);
             this.panelBotones.Controls.Add(this.btnImportar);
             this.panelBotones.Controls.Add(this.btnConsultar);
             this.panelBotones.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelBotones.Location = new System.Drawing.Point(8, 100);
             this.panelBotones.Name = "panelBotones";
-            this.panelBotones.Size = new System.Drawing.Size(1164, 54);
+            this.panelBotones.Size = new System.Drawing.Size(1264, 54);
             this.panelBotones.TabIndex = 1;
             //
             // btnConsultar
@@ -199,13 +202,28 @@ namespace SistemaContable.UI.Forms.Planilla
             this.btnReporte.Text = "Reporte";
             this.btnReporte.Click += new System.EventHandler(this.btnReporte_Click);
             //
+            // btnEliminarPruebas  (borra los CCF generados de la planilla seleccionada)
+            //
+            this.btnEliminarPruebas.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnEliminarPruebas.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnEliminarPruebas.Appearance.Options.UseFont = true;
+            this.btnEliminarPruebas.Appearance.Options.UseForeColor = true;
+            this.btnEliminarPruebas.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminar32x32;
+            this.btnEliminarPruebas.Location = new System.Drawing.Point(384, 8);
+            this.btnEliminarPruebas.Name = "btnEliminarPruebas";
+            this.btnEliminarPruebas.Size = new System.Drawing.Size(160, 40);
+            this.btnEliminarPruebas.TabIndex = 4;
+            this.btnEliminarPruebas.TabStop = false;
+            this.btnEliminarPruebas.Text = "Eliminar pruebas";
+            this.btnEliminarPruebas.Click += new System.EventHandler(this.btnEliminarPruebas_Click);
+            //
             // btnSalir  (anclado a la derecha)
             //
             this.btnSalir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSalir.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnSalir.Appearance.Options.UseFont = true;
             this.btnSalir.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnSalir.Location = new System.Drawing.Point(1044, 8);
+            this.btnSalir.Location = new System.Drawing.Point(1144, 8);
             this.btnSalir.Name = "btnSalir";
             this.btnSalir.Size = new System.Drawing.Size(120, 40);
             this.btnSalir.TabIndex = 3;
@@ -230,8 +248,8 @@ namespace SistemaContable.UI.Forms.Planilla
             this.splitMain.Panel2.Controls.Add(this.gridControl2);
             this.splitMain.Panel2.Controls.Add(this.panelNuevo);
             this.splitMain.Panel2.Controls.Add(this.lblTituloDocumentos);
-            this.splitMain.Size = new System.Drawing.Size(1164, 618);
-            this.splitMain.SplitterDistance = 380;
+            this.splitMain.Size = new System.Drawing.Size(1264, 538);
+            this.splitMain.SplitterDistance = 269;
             this.splitMain.SplitterWidth = 6;
             this.splitMain.TabIndex = 2;
             //
@@ -244,7 +262,7 @@ namespace SistemaContable.UI.Forms.Planilla
             this.lblTituloCandidatos.Location = new System.Drawing.Point(0, 0);
             this.lblTituloCandidatos.Name = "lblTituloCandidatos";
             this.lblTituloCandidatos.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.lblTituloCandidatos.Size = new System.Drawing.Size(1164, 28);
+            this.lblTituloCandidatos.Size = new System.Drawing.Size(1264, 28);
             this.lblTituloCandidatos.TabIndex = 0;
             this.lblTituloCandidatos.Text = "Comprobantes de la planilla";
             this.lblTituloCandidatos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -255,7 +273,7 @@ namespace SistemaContable.UI.Forms.Planilla
             this.gridControl1.Location = new System.Drawing.Point(0, 28);
             this.gridControl1.MainView = this.gvCandidatos;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1164, 352);
+            this.gridControl1.Size = new System.Drawing.Size(1264, 241);
             this.gridControl1.TabIndex = 1;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvCandidatos});
@@ -274,18 +292,19 @@ namespace SistemaContable.UI.Forms.Planilla
             this.lblTituloDocumentos.Location = new System.Drawing.Point(0, 0);
             this.lblTituloDocumentos.Name = "lblTituloDocumentos";
             this.lblTituloDocumentos.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.lblTituloDocumentos.Size = new System.Drawing.Size(1164, 28);
+            this.lblTituloDocumentos.Size = new System.Drawing.Size(1264, 28);
             this.lblTituloDocumentos.TabIndex = 0;
             this.lblTituloDocumentos.Text = "Créditos fiscales generados";
             this.lblTituloDocumentos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             //
             // panelNuevo
             //
+            this.panelNuevo.Controls.Add(this.btnGenerar);
             this.panelNuevo.Controls.Add(this.btnNuevo);
             this.panelNuevo.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelNuevo.Location = new System.Drawing.Point(0, 28);
             this.panelNuevo.Name = "panelNuevo";
-            this.panelNuevo.Size = new System.Drawing.Size(1164, 50);
+            this.panelNuevo.Size = new System.Drawing.Size(1264, 50);
             this.panelNuevo.TabIndex = 1;
             //
             // btnNuevo
@@ -301,13 +320,26 @@ namespace SistemaContable.UI.Forms.Planilla
             this.btnNuevo.Text = "Nuevo";
             this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
             //
+            // btnGenerar  (emite los CCF de las filas seleccionadas arriba)
+            //
+            this.btnGenerar.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnGenerar.Appearance.Options.UseFont = true;
+            this.btnGenerar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.validar3_32x32;
+            this.btnGenerar.Location = new System.Drawing.Point(128, 5);
+            this.btnGenerar.Name = "btnGenerar";
+            this.btnGenerar.Size = new System.Drawing.Size(150, 40);
+            this.btnGenerar.TabIndex = 1;
+            this.btnGenerar.TabStop = false;
+            this.btnGenerar.Text = "Generar CCF";
+            this.btnGenerar.Click += new System.EventHandler(this.btnGenerar_Click);
+            //
             // gridControl2 — CCF generados (SP_CREDITOFISCAL_ENC LISTAR, columnas por código)
             //
             this.gridControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridControl2.Location = new System.Drawing.Point(0, 78);
             this.gridControl2.MainView = this.gvDocumentos;
             this.gridControl2.Name = "gridControl2";
-            this.gridControl2.Size = new System.Drawing.Size(1164, 154);
+            this.gridControl2.Size = new System.Drawing.Size(1264, 187);
             this.gridControl2.TabIndex = 2;
             this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvDocumentos});
@@ -322,11 +354,11 @@ namespace SistemaContable.UI.Forms.Planilla
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1180, 780);
+            this.ClientSize = new System.Drawing.Size(1280, 700);
             this.Controls.Add(this.splitMain);
             this.Controls.Add(this.panelBotones);
             this.Controls.Add(this.grpFiltros);
-            this.MinimumSize = new System.Drawing.Size(1000, 650);
+            this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "frmCreditoFiscalCorte";
             this.Padding = new System.Windows.Forms.Padding(8);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -362,6 +394,7 @@ namespace SistemaContable.UI.Forms.Planilla
         private DevExpress.XtraEditors.SimpleButton btnConsultar;
         private DevExpress.XtraEditors.SimpleButton btnImportar;
         private DevExpress.XtraEditors.SimpleButton btnReporte;
+        private DevExpress.XtraEditors.SimpleButton btnEliminarPruebas;
         private DevExpress.XtraEditors.SimpleButton btnSalir;
 
         private System.Windows.Forms.SplitContainer splitMain;
@@ -372,6 +405,7 @@ namespace SistemaContable.UI.Forms.Planilla
         private System.Windows.Forms.Label lblTituloDocumentos;
         private System.Windows.Forms.Panel panelNuevo;
         private DevExpress.XtraEditors.SimpleButton btnNuevo;
+        private DevExpress.XtraEditors.SimpleButton btnGenerar;
         private DevExpress.XtraGrid.GridControl gridControl2;
         private DevExpress.XtraGrid.Views.Grid.GridView gvDocumentos;
     }

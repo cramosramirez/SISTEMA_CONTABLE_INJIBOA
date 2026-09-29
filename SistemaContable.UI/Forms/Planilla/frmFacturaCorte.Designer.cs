@@ -13,202 +13,164 @@
 
         #region Windows Form Designer generated code
 
-        // NOTA: Designer redactado a mano como punto de partida (no generado por el diseñador visual
-        // de Visual Studio), pero siguiendo la misma estructura que usan las pantallas reales del
-        // sistema (frmFactura, frmConsultaFactura): GroupBox con título para agrupar los campos de
-        // filtro, panel aparte solo con botones de acción, TabIndex por control, columnas de grid con
-        // MinWidth/AllowSize/AllowEdit. Ábrelo en el diseñador con DevExpress instalado para ajustar
-        // anclas/tamaños/skin si hace falta; los nombres de los controles ya coinciden con
-        // frmFacturaCorte.cs.
+        // Rediseño 2026-09-29:
+        //   - Filtros compactos en dos filas.
+        //   - Barra de botones con Salir alineado a la derecha.
+        //   - SplitContainer: arriba la tabla de control (maestro-detalle), abajo las facturas generadas;
+        //     el usuario puede mover la división.
+        //   - Títulos de sección con color.
+        //   - Las columnas de gvCandidatos se crean por código (ConfigurarGridCandidatos).
 
         private void InitializeComponent()
         {
             this.grpFiltros = new System.Windows.Forms.GroupBox();
             this.chkNoSellados = new System.Windows.Forms.CheckBox();
-            this.cbxTIPO_PLANILLA = new System.Windows.Forms.ComboBox();
-            this.lblTipoPlanilla = new System.Windows.Forms.Label();
             this.cbxCATORCENA = new System.Windows.Forms.ComboBox();
             this.lblCatorcena = new System.Windows.Forms.Label();
             this.cbxZAFRA = new System.Windows.Forms.ComboBox();
             this.lblZafra = new System.Windows.Forms.Label();
-            this.cbxTIPO_COMPROBANTE = new System.Windows.Forms.ComboBox();
-            this.lblTipoComprobante = new System.Windows.Forms.Label();
-
+            this.cbxTIPO_PLANILLA = new System.Windows.Forms.ComboBox();
+            this.lblTipoPlanilla = new System.Windows.Forms.Label();
             this.panelBotones = new System.Windows.Forms.Panel();
             this.btnSalir = new DevExpress.XtraEditors.SimpleButton();
             this.btnReporte = new DevExpress.XtraEditors.SimpleButton();
+            this.btnEliminarPruebas = new DevExpress.XtraEditors.SimpleButton();
             this.btnImportar = new DevExpress.XtraEditors.SimpleButton();
             this.btnConsultar = new DevExpress.XtraEditors.SimpleButton();
-
-            this.panelCandidatos = new System.Windows.Forms.Panel();
+            this.splitMain = new System.Windows.Forms.SplitContainer();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gvCandidatos = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.colID_COMPROB_ENCA = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colNUM_DOCTO = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colSERIE = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colCODIGO = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colNOM_PROVEEDOR = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colFECHA_C = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colITEMS = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colSUMAS = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colIVA_C = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colRENTA = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colSUBTOTAL = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colIVA_RETENIDO = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colTOTAL_C = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.colAPLICA = new DevExpress.XtraGrid.Columns.GridColumn();
-
-            this.panelNuevo = new System.Windows.Forms.Panel();
-            this.btnNuevo = new DevExpress.XtraEditors.SimpleButton();
-
+            this.lblTituloCandidatos = new System.Windows.Forms.Label();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gvDocumentos = new DevExpress.XtraGrid.Views.Grid.GridView();
-
+            this.panelNuevo = new System.Windows.Forms.Panel();
+            this.btnNuevo = new DevExpress.XtraEditors.SimpleButton();
+            this.btnGenerar = new DevExpress.XtraEditors.SimpleButton();
+            this.lblTituloDocumentos = new System.Windows.Forms.Label();
             this.grpFiltros.SuspendLayout();
             this.panelBotones.SuspendLayout();
-            this.panelCandidatos.SuspendLayout();
-            this.panelNuevo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitMain)).BeginInit();
+            this.splitMain.Panel1.SuspendLayout();
+            this.splitMain.Panel2.SuspendLayout();
+            this.splitMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvCandidatos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDocumentos)).BeginInit();
+            this.panelNuevo.SuspendLayout();
             this.SuspendLayout();
             //
             // grpFiltros
             //
             this.grpFiltros.Controls.Add(this.chkNoSellados);
-            this.grpFiltros.Controls.Add(this.cbxTIPO_PLANILLA);
-            this.grpFiltros.Controls.Add(this.lblTipoPlanilla);
             this.grpFiltros.Controls.Add(this.cbxCATORCENA);
             this.grpFiltros.Controls.Add(this.lblCatorcena);
             this.grpFiltros.Controls.Add(this.cbxZAFRA);
             this.grpFiltros.Controls.Add(this.lblZafra);
-            this.grpFiltros.Controls.Add(this.cbxTIPO_COMPROBANTE);
-            this.grpFiltros.Controls.Add(this.lblTipoComprobante);
+            this.grpFiltros.Controls.Add(this.cbxTIPO_PLANILLA);
+            this.grpFiltros.Controls.Add(this.lblTipoPlanilla);
             this.grpFiltros.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpFiltros.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpFiltros.Location = new System.Drawing.Point(0, 0);
+            this.grpFiltros.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grpFiltros.Location = new System.Drawing.Point(8, 8);
             this.grpFiltros.Name = "grpFiltros";
-            this.grpFiltros.Size = new System.Drawing.Size(1120, 170);
+            this.grpFiltros.Padding = new System.Windows.Forms.Padding(8);
+            this.grpFiltros.Size = new System.Drawing.Size(1264, 92);
             this.grpFiltros.TabIndex = 0;
             this.grpFiltros.TabStop = false;
             this.grpFiltros.Text = "Filtros";
             //
-            // lblTipoComprobante
-            //
-            this.lblTipoComprobante.AutoSize = true;
-            this.lblTipoComprobante.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTipoComprobante.Location = new System.Drawing.Point(16, 30);
-            this.lblTipoComprobante.Name = "lblTipoComprobante";
-            this.lblTipoComprobante.Size = new System.Drawing.Size(107, 14);
-            this.lblTipoComprobante.TabIndex = 0;
-            this.lblTipoComprobante.Text = "Tipo Comprobante:";
-            //
-            // cbxTIPO_COMPROBANTE
-            //
-            this.cbxTIPO_COMPROBANTE.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxTIPO_COMPROBANTE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxTIPO_COMPROBANTE.FormattingEnabled = true;
-            this.cbxTIPO_COMPROBANTE.Location = new System.Drawing.Point(150, 27);
-            this.cbxTIPO_COMPROBANTE.Name = "cbxTIPO_COMPROBANTE";
-            this.cbxTIPO_COMPROBANTE.Size = new System.Drawing.Size(300, 22);
-            this.cbxTIPO_COMPROBANTE.TabIndex = 1;
-            //
-            // lblZafra
-            //
-            this.lblZafra.AutoSize = true;
-            this.lblZafra.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblZafra.Location = new System.Drawing.Point(16, 62);
-            this.lblZafra.Name = "lblZafra";
-            this.lblZafra.Size = new System.Drawing.Size(35, 14);
-            this.lblZafra.TabIndex = 2;
-            this.lblZafra.Text = "Zafra:";
-            //
-            // cbxZAFRA
-            //
-            this.cbxZAFRA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxZAFRA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxZAFRA.FormattingEnabled = true;
-            this.cbxZAFRA.Location = new System.Drawing.Point(150, 59);
-            this.cbxZAFRA.Name = "cbxZAFRA";
-            this.cbxZAFRA.Size = new System.Drawing.Size(160, 22);
-            this.cbxZAFRA.TabIndex = 3;
-            this.cbxZAFRA.SelectedIndexChanged += new System.EventHandler(this.cbxZAFRA_SelectedIndexChanged);
-            //
-            // lblCatorcena
-            //
-            this.lblCatorcena.AutoSize = true;
-            this.lblCatorcena.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCatorcena.Location = new System.Drawing.Point(330, 62);
-            this.lblCatorcena.Name = "lblCatorcena";
-            this.lblCatorcena.Size = new System.Drawing.Size(62, 14);
-            this.lblCatorcena.TabIndex = 4;
-            this.lblCatorcena.Text = "Catorcena:";
-            //
-            // cbxCATORCENA
-            //
-            this.cbxCATORCENA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxCATORCENA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxCATORCENA.FormattingEnabled = true;
-            this.cbxCATORCENA.Location = new System.Drawing.Point(420, 59);
-            this.cbxCATORCENA.Name = "cbxCATORCENA";
-            this.cbxCATORCENA.Size = new System.Drawing.Size(140, 22);
-            this.cbxCATORCENA.TabIndex = 5;
-            //
-            // lblTipoPlanilla
+            // lblTipoPlanilla  (fila 2, columna 1)
             //
             this.lblTipoPlanilla.AutoSize = true;
-            this.lblTipoPlanilla.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTipoPlanilla.Location = new System.Drawing.Point(16, 94);
+            this.lblTipoPlanilla.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblTipoPlanilla.Location = new System.Drawing.Point(16, 60);
             this.lblTipoPlanilla.Name = "lblTipoPlanilla";
-            this.lblTipoPlanilla.Size = new System.Drawing.Size(76, 14);
-            this.lblTipoPlanilla.TabIndex = 6;
+            this.lblTipoPlanilla.Size = new System.Drawing.Size(76, 15);
+            this.lblTipoPlanilla.TabIndex = 4;
             this.lblTipoPlanilla.Text = "Tipo Planilla:";
             //
             // cbxTIPO_PLANILLA
             //
             this.cbxTIPO_PLANILLA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxTIPO_PLANILLA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbxTIPO_PLANILLA.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.cbxTIPO_PLANILLA.FormattingEnabled = true;
-            this.cbxTIPO_PLANILLA.Location = new System.Drawing.Point(150, 91);
+            this.cbxTIPO_PLANILLA.Location = new System.Drawing.Point(136, 56);
             this.cbxTIPO_PLANILLA.Name = "cbxTIPO_PLANILLA";
-            this.cbxTIPO_PLANILLA.Size = new System.Drawing.Size(300, 22);
-            this.cbxTIPO_PLANILLA.TabIndex = 7;
+            this.cbxTIPO_PLANILLA.Size = new System.Drawing.Size(260, 23);
+            this.cbxTIPO_PLANILLA.TabIndex = 5;
+            //
+            // lblZafra  (fila 1, columna 1)
+            //
+            this.lblZafra.AutoSize = true;
+            this.lblZafra.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblZafra.Location = new System.Drawing.Point(16, 28);
+            this.lblZafra.Name = "lblZafra";
+            this.lblZafra.Size = new System.Drawing.Size(37, 15);
+            this.lblZafra.TabIndex = 0;
+            this.lblZafra.Text = "Zafra:";
+            //
+            // cbxZAFRA
+            //
+            this.cbxZAFRA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxZAFRA.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cbxZAFRA.FormattingEnabled = true;
+            this.cbxZAFRA.Location = new System.Drawing.Point(136, 24);
+            this.cbxZAFRA.Name = "cbxZAFRA";
+            this.cbxZAFRA.Size = new System.Drawing.Size(160, 23);
+            this.cbxZAFRA.TabIndex = 1;
+            this.cbxZAFRA.SelectedIndexChanged += new System.EventHandler(this.cbxZAFRA_SelectedIndexChanged);
+            //
+            // lblCatorcena  (fila 1, columna 2)
+            //
+            this.lblCatorcena.AutoSize = true;
+            this.lblCatorcena.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblCatorcena.Location = new System.Drawing.Point(430, 28);
+            this.lblCatorcena.Name = "lblCatorcena";
+            this.lblCatorcena.Size = new System.Drawing.Size(63, 15);
+            this.lblCatorcena.TabIndex = 2;
+            this.lblCatorcena.Text = "Catorcena:";
+            //
+            // cbxCATORCENA
+            //
+            this.cbxCATORCENA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxCATORCENA.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cbxCATORCENA.FormattingEnabled = true;
+            this.cbxCATORCENA.Location = new System.Drawing.Point(516, 24);
+            this.cbxCATORCENA.Name = "cbxCATORCENA";
+            this.cbxCATORCENA.Size = new System.Drawing.Size(120, 23);
+            this.cbxCATORCENA.TabIndex = 3;
             //
             // chkNoSellados
             //
             this.chkNoSellados.AutoSize = true;
-            this.chkNoSellados.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkNoSellados.Location = new System.Drawing.Point(470, 94);
+            this.chkNoSellados.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.chkNoSellados.Location = new System.Drawing.Point(430, 58);
             this.chkNoSellados.Name = "chkNoSellados";
-            this.chkNoSellados.Size = new System.Drawing.Size(88, 18);
-            this.chkNoSellados.TabIndex = 8;
-            this.chkNoSellados.Text = "No Sellados";
+            this.chkNoSellados.Size = new System.Drawing.Size(145, 19);
+            this.chkNoSellados.TabIndex = 6;
+            this.chkNoSellados.Text = "Solo pendientes (No Sellados)";
             //
-            // panelBotones — solo botones de acción (igual que panel1 en frmConsultaFactura),
-            // en una sola fila debajo del grupo de filtros, igual que la pantalla web.
+            // panelBotones
             //
             this.panelBotones.Controls.Add(this.btnSalir);
+            this.panelBotones.Controls.Add(this.btnEliminarPruebas);
             this.panelBotones.Controls.Add(this.btnReporte);
             this.panelBotones.Controls.Add(this.btnImportar);
             this.panelBotones.Controls.Add(this.btnConsultar);
             this.panelBotones.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelBotones.Location = new System.Drawing.Point(0, 170);
+            this.panelBotones.Location = new System.Drawing.Point(8, 100);
             this.panelBotones.Name = "panelBotones";
-            this.panelBotones.Size = new System.Drawing.Size(1120, 54);
+            this.panelBotones.Size = new System.Drawing.Size(1264, 54);
             this.panelBotones.TabIndex = 1;
             //
             // btnConsultar
             //
-            this.btnConsultar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConsultar.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnConsultar.Appearance.Options.UseFont = true;
-            this.btnConsultar.Appearance.Options.UseTextOptions = true;
-            this.btnConsultar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnConsultar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.BuscarProducto32x32;
-            this.btnConsultar.Location = new System.Drawing.Point(16, 10);
-            this.btnConsultar.Margin = new System.Windows.Forms.Padding(2);
+            this.btnConsultar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.buscar1_48x48;
+            this.btnConsultar.Location = new System.Drawing.Point(0, 8);
             this.btnConsultar.Name = "btnConsultar";
-            this.btnConsultar.Size = new System.Drawing.Size(100, 34);
+            this.btnConsultar.Size = new System.Drawing.Size(120, 40);
             this.btnConsultar.TabIndex = 0;
             this.btnConsultar.TabStop = false;
             this.btnConsultar.Text = "Consultar";
@@ -216,16 +178,12 @@
             //
             // btnImportar
             //
-            this.btnImportar.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnImportar.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnImportar.Appearance.Options.UseFont = true;
-            this.btnImportar.Appearance.Options.UseTextOptions = true;
-            this.btnImportar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            // TODO: sin ícono dedicado en Resources para "Importar"; ajustar si existe uno mejor.
-            this.btnImportar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.procesar32x32;
-            this.btnImportar.Location = new System.Drawing.Point(126, 10);
-            this.btnImportar.Margin = new System.Windows.Forms.Padding(2);
+            this.btnImportar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.descargar48x48;
+            this.btnImportar.Location = new System.Drawing.Point(128, 8);
             this.btnImportar.Name = "btnImportar";
-            this.btnImportar.Size = new System.Drawing.Size(100, 34);
+            this.btnImportar.Size = new System.Drawing.Size(120, 40);
             this.btnImportar.TabIndex = 1;
             this.btnImportar.TabStop = false;
             this.btnImportar.Text = "Importar";
@@ -233,347 +191,197 @@
             //
             // btnReporte
             //
-            this.btnReporte.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReporte.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnReporte.Appearance.Options.UseFont = true;
-            this.btnReporte.Appearance.Options.UseTextOptions = true;
-            this.btnReporte.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnReporte.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.reportes_48x48;
-            this.btnReporte.Location = new System.Drawing.Point(236, 10);
-            this.btnReporte.Margin = new System.Windows.Forms.Padding(2);
+            this.btnReporte.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.imprimir32x32;
+            this.btnReporte.Location = new System.Drawing.Point(256, 8);
             this.btnReporte.Name = "btnReporte";
-            this.btnReporte.Size = new System.Drawing.Size(100, 34);
+            this.btnReporte.Size = new System.Drawing.Size(120, 40);
             this.btnReporte.TabIndex = 2;
             this.btnReporte.TabStop = false;
             this.btnReporte.Text = "Reporte";
             this.btnReporte.Click += new System.EventHandler(this.btnReporte_Click);
             //
-            // btnSalir
+            // btnEliminarPruebas  (borra las facturas de planilla)
             //
-            this.btnSalir.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEliminarPruebas.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnEliminarPruebas.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnEliminarPruebas.Appearance.Options.UseFont = true;
+            this.btnEliminarPruebas.Appearance.Options.UseForeColor = true;
+            this.btnEliminarPruebas.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminar32x32;
+            this.btnEliminarPruebas.Location = new System.Drawing.Point(384, 8);
+            this.btnEliminarPruebas.Name = "btnEliminarPruebas";
+            this.btnEliminarPruebas.Size = new System.Drawing.Size(160, 40);
+            this.btnEliminarPruebas.TabIndex = 4;
+            this.btnEliminarPruebas.TabStop = false;
+            this.btnEliminarPruebas.Text = "Eliminar pruebas";
+            this.btnEliminarPruebas.Click += new System.EventHandler(this.btnEliminarPruebas_Click);
+            //
+            // btnSalir  (anclado a la derecha)
+            //
+            this.btnSalir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSalir.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnSalir.Appearance.Options.UseFont = true;
-            this.btnSalir.Appearance.Options.UseTextOptions = true;
-            this.btnSalir.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnSalir.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnSalir.Location = new System.Drawing.Point(346, 10);
-            this.btnSalir.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSalir.Location = new System.Drawing.Point(1144, 8);
             this.btnSalir.Name = "btnSalir";
-            this.btnSalir.Size = new System.Drawing.Size(100, 34);
+            this.btnSalir.Size = new System.Drawing.Size(120, 40);
             this.btnSalir.TabIndex = 3;
             this.btnSalir.TabStop = false;
             this.btnSalir.Text = "Salir";
             this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
             //
-            // panelCandidatos — grid superior (candidatos, SP_COMPROB_PLANILLA)
+            // splitMain  (arriba: tabla de control / abajo: facturas generadas)
             //
-            this.panelCandidatos.Controls.Add(this.gridControl1);
-            this.panelCandidatos.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelCandidatos.Location = new System.Drawing.Point(0, 224);
-            this.panelCandidatos.Name = "panelCandidatos";
-            this.panelCandidatos.Size = new System.Drawing.Size(1120, 220);
-            this.panelCandidatos.TabIndex = 2;
+            this.splitMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitMain.Location = new System.Drawing.Point(8, 154);
+            this.splitMain.Name = "splitMain";
+            this.splitMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
             //
-            // gridControl1
+            // splitMain.Panel1
+            //
+            this.splitMain.Panel1.Controls.Add(this.gridControl1);
+            this.splitMain.Panel1.Controls.Add(this.lblTituloCandidatos);
+            //
+            // splitMain.Panel2
+            //
+            this.splitMain.Panel2.Controls.Add(this.gridControl2);
+            this.splitMain.Panel2.Controls.Add(this.panelNuevo);
+            this.splitMain.Panel2.Controls.Add(this.lblTituloDocumentos);
+            this.splitMain.Size = new System.Drawing.Size(1264, 538);
+            this.splitMain.SplitterDistance = 269;
+            this.splitMain.SplitterWidth = 6;
+            this.splitMain.TabIndex = 2;
+            //
+            // lblTituloCandidatos
+            //
+            this.lblTituloCandidatos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(235)))), ((int)(((byte)(247)))));
+            this.lblTituloCandidatos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTituloCandidatos.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblTituloCandidatos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(78)))), ((int)(((byte)(121)))));
+            this.lblTituloCandidatos.Location = new System.Drawing.Point(0, 0);
+            this.lblTituloCandidatos.Name = "lblTituloCandidatos";
+            this.lblTituloCandidatos.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.lblTituloCandidatos.Size = new System.Drawing.Size(1264, 28);
+            this.lblTituloCandidatos.TabIndex = 0;
+            this.lblTituloCandidatos.Text = "Comprobantes de la planilla";
+            this.lblTituloCandidatos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // gridControl1 — tabla de control (maestro-detalle, columnas por código)
             //
             this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControl1.Location = new System.Drawing.Point(0, 0);
+            this.gridControl1.Location = new System.Drawing.Point(0, 28);
             this.gridControl1.MainView = this.gvCandidatos;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1120, 220);
-            this.gridControl1.TabIndex = 0;
+            this.gridControl1.Size = new System.Drawing.Size(1264, 241);
+            this.gridControl1.TabIndex = 1;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvCandidatos});
             //
             // gvCandidatos
             //
-            this.gvCandidatos.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.colID_COMPROB_ENCA,
-            this.colNUM_DOCTO,
-            this.colSERIE,
-            this.colCODIGO,
-            this.colNOM_PROVEEDOR,
-            this.colFECHA_C,
-            this.colITEMS,
-            this.colSUMAS,
-            this.colIVA_C,
-            this.colRENTA,
-            this.colSUBTOTAL,
-            this.colIVA_RETENIDO,
-            this.colTOTAL_C,
-            this.colAPLICA});
             this.gvCandidatos.GridControl = this.gridControl1;
-            this.gvCandidatos.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
             this.gvCandidatos.Name = "gvCandidatos";
-            this.gvCandidatos.OptionsView.ShowIndicator = false;
-            this.gvCandidatos.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
             //
-            // colID_COMPROB_ENCA
+            // lblTituloDocumentos
             //
-            this.colID_COMPROB_ENCA.Caption = "Id";
-            this.colID_COMPROB_ENCA.FieldName = "ID_COMPROB_ENCA";
-            this.colID_COMPROB_ENCA.MinWidth = 18;
-            this.colID_COMPROB_ENCA.Name = "colID_COMPROB_ENCA";
-            this.colID_COMPROB_ENCA.OptionsColumn.AllowEdit = false;
-            this.colID_COMPROB_ENCA.OptionsColumn.AllowSize = false;
-            this.colID_COMPROB_ENCA.Visible = true;
-            this.colID_COMPROB_ENCA.VisibleIndex = 0;
-            this.colID_COMPROB_ENCA.Width = 70;
-            //
-            // colNUM_DOCTO
-            //
-            this.colNUM_DOCTO.Caption = "Documento";
-            this.colNUM_DOCTO.FieldName = "NUM_DOCTO";
-            this.colNUM_DOCTO.MinWidth = 18;
-            this.colNUM_DOCTO.Name = "colNUM_DOCTO";
-            this.colNUM_DOCTO.OptionsColumn.AllowEdit = false;
-            this.colNUM_DOCTO.OptionsColumn.AllowSize = false;
-            this.colNUM_DOCTO.Visible = true;
-            this.colNUM_DOCTO.VisibleIndex = 1;
-            this.colNUM_DOCTO.Width = 110;
-            //
-            // colSERIE
-            //
-            this.colSERIE.Caption = "Serie";
-            this.colSERIE.FieldName = "SERIE";
-            this.colSERIE.MinWidth = 18;
-            this.colSERIE.Name = "colSERIE";
-            this.colSERIE.OptionsColumn.AllowEdit = false;
-            this.colSERIE.OptionsColumn.AllowSize = false;
-            this.colSERIE.Visible = true;
-            this.colSERIE.VisibleIndex = 2;
-            this.colSERIE.Width = 90;
-            //
-            // colCODIGO
-            //
-            this.colCODIGO.Caption = "Codigo";
-            this.colCODIGO.FieldName = "CODIGO";
-            this.colCODIGO.MinWidth = 18;
-            this.colCODIGO.Name = "colCODIGO";
-            this.colCODIGO.OptionsColumn.AllowEdit = false;
-            this.colCODIGO.OptionsColumn.AllowSize = false;
-            this.colCODIGO.Visible = true;
-            this.colCODIGO.VisibleIndex = 3;
-            this.colCODIGO.Width = 90;
-            //
-            // colNOM_PROVEEDOR
-            //
-            this.colNOM_PROVEEDOR.Caption = "Proveedor";
-            this.colNOM_PROVEEDOR.FieldName = "NOM_PROVEEDOR";
-            this.colNOM_PROVEEDOR.MinWidth = 18;
-            this.colNOM_PROVEEDOR.Name = "colNOM_PROVEEDOR";
-            this.colNOM_PROVEEDOR.OptionsColumn.AllowEdit = false;
-            this.colNOM_PROVEEDOR.OptionsColumn.AllowSize = false;
-            this.colNOM_PROVEEDOR.Visible = true;
-            this.colNOM_PROVEEDOR.VisibleIndex = 4;
-            this.colNOM_PROVEEDOR.Width = 260;
-            //
-            // colFECHA_C
-            //
-            this.colFECHA_C.Caption = "Fecha";
-            this.colFECHA_C.FieldName = "FECHA";
-            this.colFECHA_C.MinWidth = 18;
-            this.colFECHA_C.Name = "colFECHA_C";
-            this.colFECHA_C.OptionsColumn.AllowEdit = false;
-            this.colFECHA_C.OptionsColumn.AllowSize = false;
-            this.colFECHA_C.Visible = true;
-            this.colFECHA_C.VisibleIndex = 5;
-            this.colFECHA_C.Width = 90;
-            //
-            // colITEMS
-            //
-            this.colITEMS.Caption = "Items";
-            this.colITEMS.FieldName = "ITEMS";
-            this.colITEMS.MinWidth = 18;
-            this.colITEMS.Name = "colITEMS";
-            this.colITEMS.OptionsColumn.AllowEdit = false;
-            this.colITEMS.OptionsColumn.AllowSize = false;
-            this.colITEMS.Visible = true;
-            this.colITEMS.VisibleIndex = 6;
-            this.colITEMS.Width = 60;
-            //
-            // colSUMAS
-            //
-            this.colSUMAS.AppearanceCell.Options.UseTextOptions = true;
-            this.colSUMAS.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.colSUMAS.Caption = "Sumas";
-            this.colSUMAS.DisplayFormat.FormatString = "n2";
-            this.colSUMAS.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.colSUMAS.FieldName = "SUMAS";
-            this.colSUMAS.MinWidth = 18;
-            this.colSUMAS.Name = "colSUMAS";
-            this.colSUMAS.OptionsColumn.AllowEdit = false;
-            this.colSUMAS.OptionsColumn.AllowSize = false;
-            this.colSUMAS.Visible = true;
-            this.colSUMAS.VisibleIndex = 7;
-            this.colSUMAS.Width = 90;
-            //
-            // colIVA_C
-            //
-            this.colIVA_C.AppearanceCell.Options.UseTextOptions = true;
-            this.colIVA_C.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.colIVA_C.Caption = "Iva";
-            this.colIVA_C.DisplayFormat.FormatString = "n2";
-            this.colIVA_C.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.colIVA_C.FieldName = "IVA";
-            this.colIVA_C.MinWidth = 18;
-            this.colIVA_C.Name = "colIVA_C";
-            this.colIVA_C.OptionsColumn.AllowEdit = false;
-            this.colIVA_C.OptionsColumn.AllowSize = false;
-            this.colIVA_C.Visible = true;
-            this.colIVA_C.VisibleIndex = 8;
-            this.colIVA_C.Width = 80;
-            //
-            // colRENTA
-            //
-            this.colRENTA.AppearanceCell.Options.UseTextOptions = true;
-            this.colRENTA.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.colRENTA.Caption = "Renta";
-            this.colRENTA.DisplayFormat.FormatString = "n2";
-            this.colRENTA.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.colRENTA.FieldName = "RENTA";
-            this.colRENTA.MinWidth = 18;
-            this.colRENTA.Name = "colRENTA";
-            this.colRENTA.OptionsColumn.AllowEdit = false;
-            this.colRENTA.OptionsColumn.AllowSize = false;
-            this.colRENTA.Visible = true;
-            this.colRENTA.VisibleIndex = 9;
-            this.colRENTA.Width = 80;
-            //
-            // colSUBTOTAL
-            //
-            this.colSUBTOTAL.AppearanceCell.Options.UseTextOptions = true;
-            this.colSUBTOTAL.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.colSUBTOTAL.Caption = "Subtotal";
-            this.colSUBTOTAL.DisplayFormat.FormatString = "n2";
-            this.colSUBTOTAL.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.colSUBTOTAL.FieldName = "SUBTOTAL";
-            this.colSUBTOTAL.MinWidth = 18;
-            this.colSUBTOTAL.Name = "colSUBTOTAL";
-            this.colSUBTOTAL.OptionsColumn.AllowEdit = false;
-            this.colSUBTOTAL.OptionsColumn.AllowSize = false;
-            this.colSUBTOTAL.Visible = true;
-            this.colSUBTOTAL.VisibleIndex = 10;
-            this.colSUBTOTAL.Width = 90;
-            //
-            // colIVA_RETENIDO
-            //
-            this.colIVA_RETENIDO.AppearanceCell.Options.UseTextOptions = true;
-            this.colIVA_RETENIDO.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.colIVA_RETENIDO.Caption = "Iva Retenido";
-            this.colIVA_RETENIDO.DisplayFormat.FormatString = "n2";
-            this.colIVA_RETENIDO.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.colIVA_RETENIDO.FieldName = "IVA_RETENIDO";
-            this.colIVA_RETENIDO.MinWidth = 18;
-            this.colIVA_RETENIDO.Name = "colIVA_RETENIDO";
-            this.colIVA_RETENIDO.OptionsColumn.AllowEdit = false;
-            this.colIVA_RETENIDO.OptionsColumn.AllowSize = false;
-            this.colIVA_RETENIDO.Visible = true;
-            this.colIVA_RETENIDO.VisibleIndex = 11;
-            this.colIVA_RETENIDO.Width = 90;
-            //
-            // colTOTAL_C
-            //
-            this.colTOTAL_C.AppearanceCell.Options.UseTextOptions = true;
-            this.colTOTAL_C.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.colTOTAL_C.Caption = "Total";
-            this.colTOTAL_C.DisplayFormat.FormatString = "n2";
-            this.colTOTAL_C.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.colTOTAL_C.FieldName = "TOTAL";
-            this.colTOTAL_C.MinWidth = 18;
-            this.colTOTAL_C.Name = "colTOTAL_C";
-            this.colTOTAL_C.OptionsColumn.AllowEdit = false;
-            this.colTOTAL_C.OptionsColumn.AllowSize = false;
-            this.colTOTAL_C.Visible = true;
-            this.colTOTAL_C.VisibleIndex = 12;
-            this.colTOTAL_C.Width = 90;
-            //
-            // colAPLICA — solo viene poblada cuando ID_TIPO_COMPROB = 1 (CCF físico/electrónico).
-            //
-            this.colAPLICA.Caption = "Aplica";
-            this.colAPLICA.FieldName = "APLICA";
-            this.colAPLICA.MinWidth = 18;
-            this.colAPLICA.Name = "colAPLICA";
-            this.colAPLICA.OptionsColumn.AllowEdit = false;
-            this.colAPLICA.OptionsColumn.AllowSize = false;
-            this.colAPLICA.Visible = true;
-            this.colAPLICA.VisibleIndex = 13;
-            this.colAPLICA.Width = 70;
+            this.lblTituloDocumentos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(239)))), ((int)(((byte)(218)))));
+            this.lblTituloDocumentos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTituloDocumentos.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblTituloDocumentos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(86)))), ((int)(((byte)(35)))));
+            this.lblTituloDocumentos.Location = new System.Drawing.Point(0, 0);
+            this.lblTituloDocumentos.Name = "lblTituloDocumentos";
+            this.lblTituloDocumentos.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.lblTituloDocumentos.Size = new System.Drawing.Size(1264, 28);
+            this.lblTituloDocumentos.TabIndex = 0;
+            this.lblTituloDocumentos.Text = "Facturas generadas";
+            this.lblTituloDocumentos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             //
             // panelNuevo
             //
+            this.panelNuevo.Controls.Add(this.btnGenerar);
             this.panelNuevo.Controls.Add(this.btnNuevo);
             this.panelNuevo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelNuevo.Location = new System.Drawing.Point(0, 444);
+            this.panelNuevo.Location = new System.Drawing.Point(0, 28);
             this.panelNuevo.Name = "panelNuevo";
-            this.panelNuevo.Size = new System.Drawing.Size(1120, 50);
-            this.panelNuevo.TabIndex = 3;
+            this.panelNuevo.Size = new System.Drawing.Size(1264, 50);
+            this.panelNuevo.TabIndex = 1;
             //
             // btnNuevo
             //
-            this.btnNuevo.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNuevo.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnNuevo.Appearance.Options.UseFont = true;
-            this.btnNuevo.Appearance.Options.UseTextOptions = true;
-            this.btnNuevo.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnNuevo.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.nuevo32x32;
-            this.btnNuevo.Location = new System.Drawing.Point(16, 6);
-            this.btnNuevo.Margin = new System.Windows.Forms.Padding(2);
+            this.btnNuevo.Location = new System.Drawing.Point(0, 5);
             this.btnNuevo.Name = "btnNuevo";
-            this.btnNuevo.Size = new System.Drawing.Size(110, 38);
+            this.btnNuevo.Size = new System.Drawing.Size(120, 40);
             this.btnNuevo.TabIndex = 0;
             this.btnNuevo.TabStop = false;
             this.btnNuevo.Text = "Nuevo";
             this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
             //
-            // gridControl2 — grid inferior (documentos ya generados)
+            // btnGenerar  (emite las facturas de las filas seleccionadas arriba)
+            //
+            this.btnGenerar.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnGenerar.Appearance.Options.UseFont = true;
+            this.btnGenerar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.validar3_32x32;
+            this.btnGenerar.Location = new System.Drawing.Point(128, 5);
+            this.btnGenerar.Name = "btnGenerar";
+            this.btnGenerar.Size = new System.Drawing.Size(165, 40);
+            this.btnGenerar.TabIndex = 1;
+            this.btnGenerar.TabStop = false;
+            this.btnGenerar.Text = "Generar Factura";
+            this.btnGenerar.Click += new System.EventHandler(this.btnGenerar_Click);
+            //
+            // gridControl2 — facturas generadas (SP ... GENERADOS, columnas por código)
             //
             this.gridControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControl2.Location = new System.Drawing.Point(0, 494);
+            this.gridControl2.Location = new System.Drawing.Point(0, 78);
             this.gridControl2.MainView = this.gvDocumentos;
             this.gridControl2.Name = "gridControl2";
-            this.gridControl2.Size = new System.Drawing.Size(1120, 256);
-            this.gridControl2.TabIndex = 4;
+            this.gridControl2.Size = new System.Drawing.Size(1264, 187);
+            this.gridControl2.TabIndex = 2;
             this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvDocumentos});
             //
-            // gvDocumentos — NO trae columnas fijas: se repuebla por código (PopulateColumns) al llamar
-            // SP_CREDITOFISCAL_ENC @ACCION='LISTAR' (ver AjustarColumnasDocumentos en el .cs).
+            // gvDocumentos
             //
             this.gvDocumentos.GridControl = this.gridControl2;
-            this.gvDocumentos.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
             this.gvDocumentos.Name = "gvDocumentos";
             this.gvDocumentos.OptionsView.ShowIndicator = false;
-            this.gvDocumentos.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always;
             //
             // frmFacturaCorte
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1120, 750);
-            this.Controls.Add(this.gridControl2);
-            this.Controls.Add(this.panelNuevo);
-            this.Controls.Add(this.panelCandidatos);
+            this.ClientSize = new System.Drawing.Size(1280, 700);
+            this.Controls.Add(this.splitMain);
             this.Controls.Add(this.panelBotones);
             this.Controls.Add(this.grpFiltros);
+            this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "frmFacturaCorte";
+            this.Padding = new System.Windows.Forms.Padding(8);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Facturación Interna";
+            this.Text = "Factura de Planilla";
             this.Load += new System.EventHandler(this.frmFacturaCorte_Load);
             this.grpFiltros.ResumeLayout(false);
             this.grpFiltros.PerformLayout();
             this.panelBotones.ResumeLayout(false);
-            this.panelCandidatos.ResumeLayout(false);
-            this.panelNuevo.ResumeLayout(false);
+            this.splitMain.Panel1.ResumeLayout(false);
+            this.splitMain.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitMain)).EndInit();
+            this.splitMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvCandidatos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDocumentos)).EndInit();
+            this.panelNuevo.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
         #endregion
 
         private System.Windows.Forms.GroupBox grpFiltros;
-        private System.Windows.Forms.Label lblTipoComprobante;
-        private System.Windows.Forms.ComboBox cbxTIPO_COMPROBANTE;
         private System.Windows.Forms.Label lblZafra;
         private System.Windows.Forms.ComboBox cbxZAFRA;
         private System.Windows.Forms.Label lblCatorcena;
@@ -586,28 +394,18 @@
         private DevExpress.XtraEditors.SimpleButton btnConsultar;
         private DevExpress.XtraEditors.SimpleButton btnImportar;
         private DevExpress.XtraEditors.SimpleButton btnReporte;
+        private DevExpress.XtraEditors.SimpleButton btnEliminarPruebas;
         private DevExpress.XtraEditors.SimpleButton btnSalir;
 
-        private System.Windows.Forms.Panel panelCandidatos;
+        private System.Windows.Forms.SplitContainer splitMain;
+        private System.Windows.Forms.Label lblTituloCandidatos;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gvCandidatos;
-        private DevExpress.XtraGrid.Columns.GridColumn colID_COMPROB_ENCA;
-        private DevExpress.XtraGrid.Columns.GridColumn colNUM_DOCTO;
-        private DevExpress.XtraGrid.Columns.GridColumn colSERIE;
-        private DevExpress.XtraGrid.Columns.GridColumn colCODIGO;
-        private DevExpress.XtraGrid.Columns.GridColumn colNOM_PROVEEDOR;
-        private DevExpress.XtraGrid.Columns.GridColumn colFECHA_C;
-        private DevExpress.XtraGrid.Columns.GridColumn colITEMS;
-        private DevExpress.XtraGrid.Columns.GridColumn colSUMAS;
-        private DevExpress.XtraGrid.Columns.GridColumn colIVA_C;
-        private DevExpress.XtraGrid.Columns.GridColumn colRENTA;
-        private DevExpress.XtraGrid.Columns.GridColumn colSUBTOTAL;
-        private DevExpress.XtraGrid.Columns.GridColumn colIVA_RETENIDO;
-        private DevExpress.XtraGrid.Columns.GridColumn colTOTAL_C;
-        private DevExpress.XtraGrid.Columns.GridColumn colAPLICA;
 
+        private System.Windows.Forms.Label lblTituloDocumentos;
         private System.Windows.Forms.Panel panelNuevo;
         private DevExpress.XtraEditors.SimpleButton btnNuevo;
+        private DevExpress.XtraEditors.SimpleButton btnGenerar;
         private DevExpress.XtraGrid.GridControl gridControl2;
         private DevExpress.XtraGrid.Views.Grid.GridView gvDocumentos;
     }

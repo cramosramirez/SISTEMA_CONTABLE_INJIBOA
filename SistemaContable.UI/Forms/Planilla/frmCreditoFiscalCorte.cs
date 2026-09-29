@@ -47,8 +47,25 @@ namespace SistemaContable.UI.Forms.Planilla
             chkNoSellados.CheckedChanged += (s, a) => AplicarFiltroNoSellados();
 
             // Mismo tamaño para todos los íconos (los recursos vienen en 32 y 48 px).
-            foreach (var btn in new[] { btnConsultar, btnImportar, btnReporte, btnSalir, btnNuevo })
+            foreach (var btn in new[] { btnConsultar, btnImportar, btnReporte, btnSalir, btnNuevo, btnGenerar, btnEliminarPruebas })
                 AjustarIcono(btn, 28);
+        }
+
+        // Las dos secciones (planilla arriba / CCF generados abajo) del mismo alto,
+        // al abrir y cada vez que se cambia el tamaño de la ventana.
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            DividirMitad();
+            this.Resize += (s, a) => DividirMitad();
+        }
+
+        private void DividirMitad()
+        {
+            if (WindowState == FormWindowState.Minimized) return;
+            int mitad = (splitMain.Height - splitMain.SplitterWidth) / 2;
+            if (mitad > splitMain.Panel1MinSize && mitad < splitMain.Height - splitMain.Panel2MinSize)
+                splitMain.SplitterDistance = mitad;
         }
 
         private static void AjustarIcono(SimpleButton btn, int px)
@@ -134,6 +151,9 @@ namespace SistemaContable.UI.Forms.Planilla
             gvCandidatos.OptionsFind.AlwaysVisible = true;
             gvCandidatos.OptionsFind.FindNullPrompt = "Introduzca el texto a buscar...";
             gvCandidatos.OptionsSelection.EnableAppearanceFocusedCell = false;
+            // Selección múltiple (Ctrl / Shift) para el botón Generar CCF
+            gvCandidatos.OptionsSelection.MultiSelect = true;
+            gvCandidatos.OptionsSelection.MultiSelectMode = GridMultiSelectMode.RowSelect;
             gvCandidatos.OptionsDetail.EnableMasterViewMode = true;
             gvCandidatos.OptionsDetail.ShowDetailTabs = false;
 
@@ -429,7 +449,9 @@ namespace SistemaContable.UI.Forms.Planilla
             Mostrar("ID_COMPROB_ENCA", "Id Comprob.", 70);
             Mostrar("CODIPROVEEDOR_TRANSPORTISTA", "Código", 90);
             Mostrar("NOMBRE_ENTIDAD", "Cliente", 240);
-            Mostrar("NUMINTERNO", "N° Interno", 90);
+            Mostrar("NUMINTERNO", "N° Interno", 120);
+            if (gvDocumentos.Columns["NUMINTERNO"] != null)
+                gvDocumentos.Columns["NUMINTERNO"].MinWidth = 115;   // que se vea el numero completo
             Mostrar("FECHA", "Fecha", 80, fecha: true);
             Mostrar("NUMCONTROL", "N° Control", 220);
             Mostrar("AFECTA", "Afecto", 90, numerico: true);
@@ -544,6 +566,213 @@ namespace SistemaContable.UI.Forms.Planilla
             {
                 XtraMessageBox.Show($"No se pudo importar la planilla:\n\n{ex.Message}",
                     "Crédito Fiscal de Planilla", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        // Generar CCF = SP_EMITIR_DTE_CANIERO_CCF por cada fila seleccionada arriba.
+        // Solo procesa las pendientes (ESTADO <> '1') con cliente y productos relacionados.
+        // Cada CCF va en su propia transacción: si uno falla, los demás siguen.
+        private const string SP_EMITIR = "[ECOMPROB].[SP_EMITIR_DTE_CANIERO_CCF]";
+
+        private void btnGenerar_Click(object sender, EventArgs e)
+        {
+            if (_dsCandidatos == null || gvCandidatos.RowCount == 0)
+            {
+                XtraMessageBox.Show("Primero consulte la planilla.", "Generar CCF",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Filas seleccionadas (Ctrl / Shift)
+            var handles = new System.Collections.Generic.List<int>();
+            foreach (int h in gvCandidatos.GetSelectedRows())
+                if (h >= 0) handles.Add(h);
+
+            // Si hay una sola fila (o ninguna) seleccionada, preguntar si se generan TODAS las pendientes
+            if (handles.Count <= 1)
+            {
+                int pendientesTotal = 0;
+                for (int h = 0; h < gvCandidatos.DataRowCount; h++)
+                    if (Convert.ToString(gvCandidatos.GetRowCellValue(h, "ESTADO")) != "1") pendientesTotal++;
+
+                var resp = XtraMessageBox.Show(
+                    $"¿Generar TODAS las pendientes de la planilla ({pendientesTotal})?\n\n" +
+                    "Sí = todas las pendientes\n" +
+                    "No = solo la fila seleccionada\n" +
+                    "Cancelar = no generar",
+                    "Generar CCF", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (resp == DialogResult.Cancel) return;
+
+                handles.Clear();
+                if (resp == DialogResult.Yes)
+                {
+                    for (int h = 0; h < gvCandidatos.DataRowCount; h++) handles.Add(h);
+                }
+                else
+                {
+                    int foco = gvCandidatos.FocusedRowHandle;
+                    if (foco >= 0) handles.Add(foco);
+                }
+            }
+
+            var pendientes = new System.Collections.Generic.List<(int Id, string Proveedor)>();
+            int emitidas = 0, conProblema = 0;
+            foreach (int h in handles)
+            {
+                string estado = Convert.ToString(gvCandidatos.GetRowCellValue(h, "ESTADO"));
+                object rel = gvCandidatos.GetRowCellValue(h, "PROVEEDOR_RELACIONADO");
+                object sinProd = gvCandidatos.GetRowCellValue(h, "PRODUCTOS_SIN_RELACION");
+                bool proveedorOk = rel != null && rel != DBNull.Value && Convert.ToInt32(rel) == 1;
+                bool productosOk = sinProd == null || sinProd == DBNull.Value || Convert.ToInt32(sinProd) == 0;
+
+                if (estado == "1") { emitidas++; continue; }
+                if (!proveedorOk || !productosOk) { conProblema++; continue; }
+
+                pendientes.Add((Convert.ToInt32(gvCandidatos.GetRowCellValue(h, "ID_COMPROB_ENCA")),
+                                Convert.ToString(gvCandidatos.GetRowCellValue(h, "NOMBRE_CLIENTE"))));
+            }
+
+            if (pendientes.Count == 0)
+            {
+                XtraMessageBox.Show(
+                    "No hay filas pendientes para generar en la selección." +
+                    (emitidas > 0 ? $"\n- Ya emitidas: {emitidas}" : string.Empty) +
+                    (conProblema > 0 ? $"\n- Con cliente o producto sin relacionar: {conProblema}" : string.Empty),
+                    "Generar CCF", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string aviso = $"¿Generar {pendientes.Count} Crédito(s) Fiscal(es)?";
+            if (emitidas > 0) aviso += $"\n\nSe omiten {emitidas} ya emitida(s).";
+            if (conProblema > 0) aviso += $"\nSe omiten {conProblema} con cliente o producto sin relacionar.";
+            if (XtraMessageBox.Show(aviso, "Generar CCF", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+
+            int ok = 0;
+            var errores = new System.Text.StringBuilder();
+            string tituloOriginal = lblTituloCandidatos.Text;
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                btnGenerar.Enabled = false;
+
+                for (int i = 0; i < pendientes.Count; i++)
+                {
+                    var p = pendientes[i];
+                    lblTituloCandidatos.Text = $"Generando CCF {i + 1} de {pendientes.Count}  —  {p.Proveedor}";
+                    Application.DoEvents();
+
+                    try
+                    {
+                        DataTable r = _dal.EjecutarConsulta(SP_EMITIR, new
+                        {
+                            ID_COMPROB_ENCA = p.Id,
+                            ID_ZAFRA = ValorCombo(cbxZAFRA),
+                            ID_ALMACEN = Configuracion.Id_Almacen,
+                            ID_CAJA = Configuracion.Id_Cajero,      // igual que frmCreditoFiscal
+                            ID_CAJERO = Configuracion.Id_Cajero,
+                            USUARIO = Configuracion.UsuarioActual
+                        });
+
+                        string resultado = r != null && r.Rows.Count > 0 ? Convert.ToString(r.Rows[0]["RESULTADO"]) : "ERROR";
+                        string mensaje = r != null && r.Rows.Count > 0 ? Convert.ToString(r.Rows[0]["MENSAJE"]) : "Sin respuesta del SP.";
+
+                        if (resultado == "OK") ok++;
+                        else errores.AppendLine($"• {p.Proveedor}: {mensaje}");
+                    }
+                    catch (Exception exFila)
+                    {
+                        errores.AppendLine($"• {p.Proveedor}: {exFila.Message}");
+                    }
+                }
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                btnGenerar.Enabled = true;
+                lblTituloCandidatos.Text = tituloOriginal;
+            }
+
+            // Refrescar ambos grids
+            try
+            {
+                CargarCandidatos();
+                CargarGridDocumentos();
+            }
+            catch { /* el resumen se muestra igual */ }
+
+            int fallidos = pendientes.Count - ok;
+            string resumen = $"CCF generados: {ok}\nCon error: {fallidos}";
+            if (fallidos > 0)
+            {
+                string detalle = errores.ToString();
+                if (detalle.Length > 3000) detalle = detalle.Substring(0, 3000) + "\n...";
+                resumen += "\n\n" + detalle;
+            }
+
+            XtraMessageBox.Show(resumen, "Generar CCF", MessageBoxButtons.OK,
+                fallidos == 0 ? MessageBoxIcon.Information : MessageBoxIcon.Warning);
+        }
+
+        // Eliminar pruebas (definido por Roberto 2026-09-29): borra TODOS los CCF que vienen
+        // de la planilla (CREDITOFISCAL_ENC/DET con ID_COMPROB_ENCA) y toda la planilla importada
+        // (PLANILLA_CANIERO_ENCA/DETA). No depende de los filtros de arriba.
+        private void btnEliminarPruebas_Click(object sender, EventArgs e)
+        {
+            if (XtraMessageBox.Show(
+                    "Se eliminará TODO lo generado desde la planilla de cañeros:\n\n" +
+                    "  • Créditos fiscales de planilla (CREDITOFISCAL_ENC / _DET)\n" +
+                    "  • Planilla importada de CCF (PLANILLA_CANIERO_ENCA / _DETA con ID_TIPO_DTE = 2)\n\n" +
+                    "No importa la zafra / catorcena seleccionada.\n" +
+                    "Los CCF manuales o de solicitudes agrícolas NO se tocan.\n\n" +
+                    "¿Desea continuar?",
+                    "Eliminar pruebas", MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+                return;
+
+            if (XtraMessageBox.Show(
+                    "Esta acción no se puede deshacer.\n\n¿Confirma que desea eliminar?",
+                    "Eliminar pruebas", MessageBoxButtons.YesNo, MessageBoxIcon.Stop,
+                    MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+                return;
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                DataTable r = _dal.EjecutarConsulta(SP_PLANILLA, new
+                {
+                    ACCION = "ELIMINAR_PRUEBAS",
+                    ES_CONTRIBUYENTE = ES_CONTRIBUYENTE,   // 1 = solo CCF (la factura tiene su propio botón)
+                    USUARIO = Configuracion.UsuarioActual
+                });
+
+                string msg = "Listo.";
+                if (r != null && r.Rows.Count > 0)
+                {
+                    DataRow x = r.Rows[0];
+                    msg = $"CCF eliminados: {x["CCF_ELIMINADOS"]}  (líneas de detalle: {x["CCF_DETALLE_ELIMINADOS"]})" +
+                          $"\nComprobantes de planilla eliminados: {x["COMPROBANTES_IMPORTACION_ELIMINADOS"]}  (líneas: {x["DETALLE_IMPORTACION_ELIMINADOS"]})";
+                    msg += x["NUMERACION_NUEVA"] == DBNull.Value
+                        ? "\n\nLa numeración de CCF no se movió (hay CCF emitidos después de las pruebas)."
+                        : $"\n\nNumeración de CCF regresada de {x["NUMERACION_ANTERIOR"]} a {x["NUMERACION_NUEVA"]}.";
+                }
+
+                CargarCandidatos();
+                CargarGridDocumentos();
+
+                XtraMessageBox.Show(msg, "Eliminar pruebas", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"No se pudo eliminar:\n\n{ex.Message}", "Eliminar pruebas",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
