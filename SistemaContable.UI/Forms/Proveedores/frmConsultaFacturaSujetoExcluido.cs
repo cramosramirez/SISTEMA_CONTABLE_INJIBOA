@@ -41,8 +41,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             using (var frm = new frmFacturaSujetoExcluido())
             {
-                frm.IdFse = idFse;
-                frm.EsContado = true;
+                frm.IdFse = idFse;                
                 if (frm.ShowDialog(this) == DialogResult.OK)
                 {
                     CargarDatos(); 

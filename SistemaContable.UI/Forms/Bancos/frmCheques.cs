@@ -1790,15 +1790,19 @@ namespace SistemaContable.UI.Forms.Bancos
                //{
                     MarcarChequeComoImpreso(_idCheque);
                     // Si la impresión fué correcta habilitar la opción de anulación del cheque
-                    btnAnular.Enabled = true; 
+                    btnAnular.Enabled = true;
 
-                    // Mostrar en pantalla el anexo del cheque después de imprimir
-                    if (_flujoEsQuedan && (XtraMessageBox.Show("¿Desea emitir detalle de facturas canceladas?",
+                // Mostrar en pantalla el anexo del cheque después de imprimir
+                if (_flujoEsQuedan || (_documentosPago != null && _documentosPago.Rows.Count > 0))
+                {
+                    if ((XtraMessageBox.Show("¿Desea emitir anexo de documentos cancelados?",
                         "Validación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes))
                     {
                         var reporteAnexo = new rptChequeAnexo { IdCheque = _idCheque };
                         reporteAnexo.MostrarPreview();
-                    }                   
+                    }
+                }
+                                   
                 //}
             }
             catch (Exception ex)
@@ -1964,6 +1968,41 @@ namespace SistemaContable.UI.Forms.Bancos
 
         private void btnIgnorar_Click(object sender, EventArgs e)
         {
+            var resp = XtraMessageBox.Show(
+                "¿Está seguro de descartar los cambios?\n" +
+                "Se perderá la información ingresada en pantalla.\n" +
+                "¿Desea continuar?",
+                "Confirmación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+            if (resp == DialogResult.No) return;
+            // ============================================================
+            // Liberar documentos de contado (CCF + FSE) si estamos en Agregar
+            // Los pone con UID_ENLACE_CHEQUE = '' para que queden disponibles
+            // para asociarse a un cheque distinto.
+            // Solo aplica a documentos con ID_CHEQUE IS NULL (no guardados aún).
+            // ============================================================
+            if (_estadoActual == EstadoFormulario.Agregar &&
+                !string.IsNullOrWhiteSpace(_uidEnlaceCheque))
+            {
+                try
+                {
+                    _dal.EjecutarEscalar("SP_CHEQUE_CONTADO", new
+                    {
+                        ACCION = "LIBERAR_POR_UID",
+                        UID_ENLACE_CHEQUE = _uidEnlaceCheque
+                    });
+                }
+                catch (Exception ex)
+                {
+                    // No bloqueamos el ignorar por un error de liberación.
+                    // El mecanismo de huérfanos los detectará en próxima apertura.
+                    Logger.Advertencia(
+                        $"No se pudieron liberar los documentos del UID {_uidEnlaceCheque}: {ex.Message}",
+                        "CHEQUE_CONTADO");
+                }
+            }
             _idCheque = 0;
             _ultimoDetalleAutoGenerado = string.Empty;
             _dtPartida.Clear();

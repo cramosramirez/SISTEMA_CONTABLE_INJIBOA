@@ -37,6 +37,8 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private bool _guardado = false;
 
+        private readonly ParametrosCcfBusqueda _parametrosCcf = new ParametrosCcfBusqueda();
+
         #endregion
 
         public frmFacturaSujetoExcluido()
@@ -53,7 +55,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");           
             mskFECHA_EMISION.Text = DateTime.Today.ToString("dd/MM/yyyy");
             mskFECHA_RECIBIDO.ReadOnly = true;
-            txtCOD_GENERACION.Text = DALBase.NuevoGUID(); 
+            txtCOD_GENERACION.Text = "";
 
             CargarTipoServicio();
             CargarTipoOperacion();
@@ -83,6 +85,48 @@ namespace SistemaContable.UI.Forms.Proveedores
                 },
                 fila => AsignarProveedor(fila)
             );
+
+            // Búsqueda de CCF pendientes del proveedor ya seleccionado
+            if (EsContado)
+            {
+                FormHelper.RegistrarBusqueda(
+                txtCOD_GENERACION,
+                new BusquedaConfig
+                {
+                    StoredProcedure = "SP_FACTURA_SUJETO_EXC",
+                    Accion = "LISTAR_PENDIENTES_PAGO",
+                    Columnas = new Dictionary<string, string>
+                        {
+                            { "TIPO_DTE",       "TIPO" },
+                            { "COD_GENERACION", "COD. GENERACIÓN" },
+                            { "NUM_CONTROL_INTERNO", "No INTERNO" },
+                            { "FECHA_VENCE",    "VENCE" },
+                            { "SALDO",      "SALDO" }
+                        },
+                    Anchos = new Dictionary<string, int>
+                        {
+                            { "TIPO_DTE",        60 },
+                            { "COD_GENERACION", 350 },
+                            { "NUM_CONTROL_INTERNO", 60 },
+                            { "FECHA_VENCE",     90 },
+                            { "SALDO",      100 }
+                        },
+                    ParametrosExtra = _parametrosCcf   // ← objeto mutable, no anónimo
+                },
+                    fila =>
+                    {
+                        IdFse = Convert.ToInt32(fila["ID_FSE"]);
+                        CargarFseExistente(IdFse);
+                        ConfigurarCRUD(EstadoFormulario.Guardado);
+                    }
+                );
+            }
+            else
+            {
+                txtCOD_GENERACION.Text = Guid.NewGuid().ToString().ToUpper();
+                txtCOD_GENERACION.ReadOnly = true;
+            }
+
             txtPROVEEDOR.Leave += txtPROVEEDOR_Leave;
 
             chkIVA.CheckedChanged += (s, ev) => RecalcularTotales();
@@ -310,6 +354,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             _idEntidad = Convert.ToInt32(fila["ID_ENTIDAD"]);
             _codigoEntidad = fila["CODIGO_ENTIDAD"].ToString();
             _idTipoPersona = fila["ID_TIPO_ENTIDAD"].ToString();
+            _parametrosCcf.CODIGO_ENTIDAD = _codigoEntidad;
             txtPROVEEDOR.Text = fila["CODIGO_ENTIDAD"].ToString();
             txtNOMBRE_PROVEEDOR.Text = fila["NOMBRE"].ToString();
             txtDUI.Text = fila["DUI"].ToString();

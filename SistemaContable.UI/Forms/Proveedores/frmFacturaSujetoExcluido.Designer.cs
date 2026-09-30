@@ -685,8 +685,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             this.txtCOD_GENERACION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCOD_GENERACION.Location = new System.Drawing.Point(156, 142);
+            this.txtCOD_GENERACION.MaxLength = 36;
             this.txtCOD_GENERACION.Name = "txtCOD_GENERACION";
-            this.txtCOD_GENERACION.ReadOnly = true;
             this.txtCOD_GENERACION.Size = new System.Drawing.Size(351, 24);
             this.txtCOD_GENERACION.TabIndex = 11;
             this.txtCOD_GENERACION.TabStop = false;

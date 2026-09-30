@@ -6,6 +6,23 @@ namespace SistemaContable.DAL
 {
     public static class Configuracion
     {
+
+        public static int PeriodoAnio { get; set; } = DateTime.Today.Year;
+        public static int PeriodoMes { get; set; } = DateTime.Today.Month;
+
+        /// <summary>
+        /// Devuelve el período formateado como "Septiembre 2026".
+        /// </summary>
+        public static string PeriodoDescripcion
+        {
+            get
+            {                
+                var culturaEs = new System.Globalization.CultureInfo("es-ES");
+                string nombreMes = culturaEs.DateTimeFormat.GetMonthName(PeriodoMes).ToUpper();                                
+                return $"{nombreMes} {PeriodoAnio}";
+            }
+        }
+
         public static string CadenaConexion
         {
             get

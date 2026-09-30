@@ -31,9 +31,9 @@ namespace SistemaContable.UI.Forms
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPrincipalRibbon));
             this.ribbon = new DevExpress.XtraBars.Ribbon.RibbonControl();
-            this.barStaticItem1 = new DevExpress.XtraBars.BarStaticItem();
-            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            this.UsuarioNombre = new DevExpress.XtraBars.BarStaticItem();
             this.btnCerrarSesion = new DevExpress.XtraBars.BarButtonItem();
+            this.barStaticItemPeriodo = new DevExpress.XtraBars.BarStaticItem();
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
@@ -49,11 +49,11 @@ namespace SistemaContable.UI.Forms
             this.ribbon.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.ribbon.ExpandCollapseItem,
             this.ribbon.SearchEditItem,
-            this.barStaticItem1,
-            this.barButtonItem1,
-            this.btnCerrarSesion});
+            this.UsuarioNombre,
+            this.btnCerrarSesion,
+            this.barStaticItemPeriodo});
             this.ribbon.Location = new System.Drawing.Point(0, 0);
-            this.ribbon.MaxItemId = 9;
+            this.ribbon.MaxItemId = 12;
             this.ribbon.Name = "ribbon";
             this.ribbon.PageHeaderItemLinks.Add(this.btnCerrarSesion);
             this.ribbon.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
@@ -61,21 +61,13 @@ namespace SistemaContable.UI.Forms
             this.ribbon.Size = new System.Drawing.Size(1167, 188);
             this.ribbon.StatusBar = this.ribbonStatusBar;
             // 
-            // barStaticItem1
+            // UsuarioNombre
             // 
-            this.barStaticItem1.Caption = "barStaticItem1";
-            this.barStaticItem1.Id = 3;
-            this.barStaticItem1.ItemAppearance.Normal.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Bold);
-            this.barStaticItem1.ItemAppearance.Normal.Options.UseFont = true;
-            this.barStaticItem1.Name = "barStaticItem1";
-            // 
-            // barButtonItem1
-            // 
-            this.barButtonItem1.Caption = "barButtonItem1";
-            this.barButtonItem1.Id = 5;
-            this.barButtonItem1.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.quedan48x48;
-            this.barButtonItem1.Name = "barButtonItem1";
-            this.barButtonItem1.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            this.UsuarioNombre.Caption = "UsuarioNombre";
+            this.UsuarioNombre.Id = 3;
+            this.UsuarioNombre.ItemAppearance.Normal.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Bold);
+            this.UsuarioNombre.ItemAppearance.Normal.Options.UseFont = true;
+            this.UsuarioNombre.Name = "UsuarioNombre";
             // 
             // btnCerrarSesion
             // 
@@ -90,6 +82,15 @@ namespace SistemaContable.UI.Forms
             this.btnCerrarSesion.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.SmallWithText;
             this.btnCerrarSesion.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnCerrarSesion_ItemClick);
             // 
+            // barStaticItemPeriodo
+            // 
+            this.barStaticItemPeriodo.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
+            this.barStaticItemPeriodo.Id = 11;
+            this.barStaticItemPeriodo.ItemAppearance.Normal.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.barStaticItemPeriodo.ItemAppearance.Normal.Options.UseFont = true;
+            this.barStaticItemPeriodo.Name = "barStaticItemPeriodo";
+            this.barStaticItemPeriodo.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barStaticItemPeriodo_ItemClick);
+            // 
             // ribbonPage1
             // 
             this.ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -100,12 +101,12 @@ namespace SistemaContable.UI.Forms
             // ribbonPageGroup1
             // 
             this.ribbonPageGroup1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("ribbonPageGroup1.ImageOptions.SvgImage")));
-            this.ribbonPageGroup1.ItemLinks.Add(this.barButtonItem1);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
             // ribbonStatusBar
             // 
+            this.ribbonStatusBar.ItemLinks.Add(this.barStaticItemPeriodo);
             this.ribbonStatusBar.Location = new System.Drawing.Point(0, 595);
             this.ribbonStatusBar.Name = "ribbonStatusBar";
             this.ribbonStatusBar.Ribbon = this.ribbon;
@@ -162,10 +163,10 @@ namespace SistemaContable.UI.Forms
         private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage1;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
         private DevExpress.XtraBars.Ribbon.RibbonStatusBar ribbonStatusBar;
-        private DevExpress.XtraBars.BarStaticItem barStaticItem1;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private DevExpress.XtraBars.BarStaticItem UsuarioNombre;
         private System.Windows.Forms.Panel pnlMensajeRibbon;
         private System.Windows.Forms.Label lblMensajeRibbon;
         private DevExpress.XtraBars.BarButtonItem btnCerrarSesion;
+        private DevExpress.XtraBars.BarStaticItem barStaticItemPeriodo;
     }
 }

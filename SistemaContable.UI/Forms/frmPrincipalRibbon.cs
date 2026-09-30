@@ -31,6 +31,8 @@ namespace SistemaContable.UI.Forms
         {
             if (!MostrarLoginYCargarSesion())
                 Application.Exit();
+            barStaticItemPeriodo.Caption = "Período contable: " + Configuracion.PeriodoDescripcion;
+            barStaticItemPeriodo.Hint = "Haga click para cambiar el período contable";
         }
 
 
@@ -52,12 +54,12 @@ namespace SistemaContable.UI.Forms
 
                 // Solo agregar el item a la barra si aún no está
                 if (!ribbonStatusBar.ItemLinks.Cast<BarItemLink>()
-                        .Any(l => l.Item == barStaticItem1))
+                        .Any(l => l.Item == UsuarioNombre))
                 {
-                    ribbonStatusBar.ItemLinks.Add(barStaticItem1);
+                    ribbonStatusBar.ItemLinks.Add(UsuarioNombre);
                 }
 
-                barStaticItem1.Caption =
+                UsuarioNombre.Caption =
                     $"Usuario: {Configuracion.UsuarioActual} " +
                     $"| Nombre: {Configuracion.NombreUsuarioActual} " +
                     $"| Rol: {Configuracion.NombreRolActual}";
@@ -433,7 +435,14 @@ namespace SistemaContable.UI.Forms
                 pnlMensajeRibbon.Visible = false;
 
             // Limpiar caption de la barra de estado
-            barStaticItem1.Caption = "";
+            UsuarioNombre.Caption = "";
+        }
+
+        private void barStaticItemPeriodo_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            XtraMessageBox.Show(
+                               $"Aqui se modificara el periodo contable",
+                               "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
