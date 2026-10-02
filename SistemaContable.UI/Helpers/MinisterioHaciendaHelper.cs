@@ -17,6 +17,7 @@ namespace SistemaContable.UI.Helpers
         private readonly HttpClient _http;
         private readonly Control _ownerControl;
         private readonly string[] _tiposDtePermitidos; // Array de tipos DTE permitidos
+        public string UltimoJsonCrudo { get; private set; }
 
         // Delegados para actualizar controles específicos
         private readonly Action<string, Color> _actualizarEstado;
@@ -138,8 +139,11 @@ namespace SistemaContable.UI.Helpers
                 var response = await _http.GetAsync(urlFinal);
                 response.EnsureSuccessStatusCode();
                 string json = await response.Content.ReadAsStringAsync();
-                var data = JObject.Parse(json);
 
+                // Guardar JSON crudo en memoria y en disco (silencioso ante errores)
+                UltimoJsonCrudo = json;
+                GuardarJsonEnDisco(json);
+                var data = JObject.Parse(json);
                 _ownerControl.BeginInvoke(new Action(() => AsignarDatosMH(data)));
             }
             catch (TaskCanceledException)
@@ -230,34 +234,68 @@ namespace SistemaContable.UI.Helpers
                 var resumen = data["documento"]?["resumen"];
                 if (resumen != null)
                 {
-                    _actualizarGravada(resumen.Value<decimal?>("totalGravada") is decimal totalGravada && totalGravada != 0
-                         ? totalGravada.ToString("#,###,##0.00")
-                         : string.Empty);
-
-                    decimal totalNoGravada = 0;
-                    totalNoGravada += resumen.Value<decimal?>("totalNoGravado") ?? 0;
-                    totalNoGravada += resumen.Value<decimal?>("totalExenta") ?? 0;
-                    _actualizarExenta(totalNoGravada > 0 ? totalNoGravada.ToString("#,###,##0.00") : string.Empty);
-
-                    _actualizarIVAR?.Invoke(resumen.Value<decimal?>("ivaRete1") is decimal ivaRete1 && ivaRete1 != 0
-                        ? ivaRete1.ToString("#,###,##0.00")
+                    if (tipoDte != "01")
+                    {
+                        _actualizarGravada(resumen.Value<decimal?>("totalGravada") is decimal totalGravada && totalGravada != 0
+                        ? totalGravada.ToString("#,###,##0.00")
                         : string.Empty);
 
-                    var tributos = resumen["tributos"] as JArray;
-                    if (tributos != null && tributos.Count > 0)
-                    {
-                        for (int i = 0; i < tributos.Count; i++)
+                        decimal totalNoGravada = 0;
+                        totalNoGravada += resumen.Value<decimal?>("totalNoGravado") ?? 0;
+                        totalNoGravada += resumen.Value<decimal?>("totalExenta") ?? 0;
+                        _actualizarExenta(totalNoGravada > 0 ? totalNoGravada.ToString("#,###,##0.00") : string.Empty);
+
+                        _actualizarIVAR?.Invoke(resumen.Value<decimal?>("ivaRete1") is decimal ivaRete1 && ivaRete1 != 0
+                            ? ivaRete1.ToString("#,###,##0.00")
+                            : string.Empty);
+
+                        var tributos = resumen["tributos"] as JArray;
+                        if (tributos != null && tributos.Count > 0)
                         {
-                            if (tributos[i]["codigo"].ToString().Equals("C8"))  // CONTRANS
+                            for (int i = 0; i < tributos.Count; i++)
                             {
-                                _actualizarCOTRANS?.Invoke(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);                               
-                            }
-                            else if (tributos[i]["codigo"].ToString().Equals("D1"))  // FOVIAL
-                            {
-                                _actualizarFOVIAL?.Invoke(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);                                
+                                if (tributos[i]["codigo"].ToString().Equals("C8"))  // CONTRANS
+                                {
+                                    _actualizarCOTRANS?.Invoke(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);
+                                }
+                                else if (tributos[i]["codigo"].ToString().Equals("D1"))  // FOVIAL
+                                {
+                                    _actualizarFOVIAL?.Invoke(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);
+                                }
                             }
                         }
-                    }                    
+                    }
+                    else
+                    {
+                        decimal iva = 0;
+                        decimal totalGravada = 0;
+                        decimal totalNoGravada = 0;
+                        iva = resumen.Value<decimal?>("totalIva") ?? 0;
+                        totalGravada = Calculo.Redondear(iva / 0.13m, 2);
+                        totalNoGravada = resumen.Value<decimal?>("totalPagar") ?? 0;
+                        totalNoGravada = totalNoGravada - totalGravada - iva;
+
+                        _actualizarGravada(totalGravada > 0? totalGravada.ToString("#,###,##0.00") : string.Empty);
+                        _actualizarExenta(totalNoGravada > 0? totalNoGravada.ToString("#,###,##0.00") : string.Empty);
+                        _actualizarIVAR?.Invoke(resumen.Value<decimal?>("ivaRete1") is decimal ivaRete1 && ivaRete1 != 0
+                           ? ivaRete1.ToString("#,###,##0.00")
+                           : string.Empty);
+                        var tributos = resumen["tributos"] as JArray;
+                        if (tributos != null && tributos.Count > 0)
+                        {
+                            for (int i = 0; i < tributos.Count; i++)
+                            {
+                                if (tributos[i]["codigo"].ToString().Equals("C8"))  // CONTRANS
+                                {
+                                    _actualizarCOTRANS?.Invoke(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);
+                                }
+                                else if (tributos[i]["codigo"].ToString().Equals("D1"))  // FOVIAL
+                                {
+                                    _actualizarFOVIAL?.Invoke(tributos[i].Value<decimal?>("valor")?.ToString("#,###,##0.00") ?? string.Empty);
+                                }
+                            }
+                        }
+                    }                        
                 }
                 var cuerpo = data["documento"]?["cuerpoDocumento"] as JArray;
                 if (cuerpo != null && cuerpo.Count > 0 && _actualizarObservacion != null)
@@ -271,6 +309,42 @@ namespace SistemaContable.UI.Helpers
             catch (Exception ex)
             {
                 _actualizarEstado($"Error al procesar respuesta del MH: {ex.Message}", Color.Red);
+            }
+        }
+
+        /// <summary>
+        /// Guarda el JSON crudo en la ruta configurada por App.config.
+        /// Nombre del archivo: {codGen}.json (sobreescribe si existe).
+        /// Falla silenciosamente si no se puede escribir — no interrumpe el flujo.
+        /// </summary>
+        private void GuardarJsonEnDisco(string json)
+        {
+            try
+            {
+                // Obtener la ruta desde App.config
+                string rutaBase = ConfigurationManager.AppSettings["RutaJsonDTE_LeidosAPI"];
+                if (string.IsNullOrWhiteSpace(rutaBase)) return;
+
+                // Crear el directorio si no existe
+                if (!System.IO.Directory.Exists(rutaBase))
+                    System.IO.Directory.CreateDirectory(rutaBase);
+
+                // Extraer el codGen del JSON para nombrar el archivo
+                var data = JObject.Parse(json);
+                string codGen = data["codGen"]?.ToString();
+
+                // Fallback: si no viene codGen (raro), usar timestamp
+                if (string.IsNullOrWhiteSpace(codGen))
+                    codGen = "DTE_" + DateTime.Now.ToString("yyyyMMdd_HHmmss_fff");
+
+                string rutaCompleta = System.IO.Path.Combine(rutaBase, codGen + ".json");
+
+                // Escribir el archivo (sobreescribe si ya existe)
+                System.IO.File.WriteAllText(rutaCompleta, json, System.Text.Encoding.UTF8);
+            }
+            catch
+            {
+                // Fallo silencioso — no interrumpir el flujo principal
             }
         }
 

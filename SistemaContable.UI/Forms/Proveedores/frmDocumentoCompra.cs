@@ -346,7 +346,10 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void CargarCombos()
         {
-            CargarCombo("SP_TIPO_DTE", "BUSCAR_FISCAL_COMPRAS_CREDITO", "ID_TIPO_DTE", "ABREVIATURA", cbxTIPO_DTE);                          
+            if (EsContado) // Compras de contado
+                CargarCombo("SP_TIPO_DTE", "BUSCAR_FISCAL_COMPRAS_CONTADO", "ID_TIPO_DTE", "ABREVIATURA", cbxTIPO_DTE);
+            else           // Quedan
+                CargarCombo("SP_TIPO_DTE", "BUSCAR_FISCAL_COMPRAS_QUEDAN", "ID_TIPO_DTE", "ABREVIATURA", cbxTIPO_DTE);
             CargarCombo("SP_SUCURSAL", "BUSCAR", "ID_SUCURSAL", "NOMBRE", cbxSUCURSAL);         
         }
 
@@ -1216,7 +1219,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     mskFECHA_RECIBIDO.Focus();
                     RecalcularTotales();
                 },
-                "03" // CÓDIGO DE CCF ELECTRONICO
+                "01","03" // CÓDIGO DE CCF ELECTRONICO
             );
         }
 
