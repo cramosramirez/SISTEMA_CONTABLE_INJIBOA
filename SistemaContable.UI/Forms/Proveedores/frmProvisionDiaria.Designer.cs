@@ -113,6 +113,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.dateEdit1.EnterMoveNextControl = true;
             this.dateEdit1.Location = new System.Drawing.Point(159, 17);
             this.dateEdit1.Name = "dateEdit1";
+            this.dateEdit1.Properties.AllowMouseWheel = false;
             this.dateEdit1.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.dateEdit1.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateEdit1.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
@@ -127,6 +128,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.dateEdit1.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dateEdit1.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dateEdit1.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.dateEdit1.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.DateTimeAdvancingCaret;
             this.dateEdit1.Size = new System.Drawing.Size(123, 24);
             this.dateEdit1.TabIndex = 0;
             this.dateEdit1.Leave += new System.EventHandler(this.dateEdit1_Leave);

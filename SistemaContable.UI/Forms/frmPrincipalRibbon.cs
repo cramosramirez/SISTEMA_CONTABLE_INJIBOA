@@ -16,6 +16,7 @@ using SistemaContable.UI.Forms.Proveedores;
 using System.Reflection;
 using SistemaContable.UI.Forms.NotaRemision;
 using SistemaContable.UI.Interfaces;
+using SistemaContable.UI.Forms.Contabilidad;
 
 namespace SistemaContable.UI.Forms
 {
@@ -164,7 +165,7 @@ namespace SistemaContable.UI.Forms
             }
         }
 
-                    private static readonly System.Resources.ResourceManager[] ResourceManagers = new[]
+        private static readonly System.Resources.ResourceManager[] ResourceManagers = new[]
             {
                 Properties.Resources.ResourceManager,
                 Properties.Resource_Fredy.ResourceManager,
@@ -234,6 +235,46 @@ namespace SistemaContable.UI.Forms
             return tipo;
         }
 
+        /// <summary>
+        /// Separa el nombre del formulario de sus propiedades.
+        /// Entrada:  "Bancos.frmCheques{ModoCheque=false}"
+        /// Salida:   nombre = "Bancos.frmCheques"
+        ///           propiedades = { "ModoCheque": "false" }
+        /// </summary>
+        private (string nombre, Dictionary<string, string> propiedades) ParsearNombreFormulario(string nombreCompleto)
+        {
+            var propiedades = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            if (string.IsNullOrWhiteSpace(nombreCompleto))
+                return (nombreCompleto, propiedades);
+
+            int inicioLlave = nombreCompleto.IndexOf('{');
+            int finLlave = nombreCompleto.LastIndexOf('}');
+
+            // Si no hay llaves, retornar tal cual
+            if (inicioLlave < 0 || finLlave < 0 || finLlave <= inicioLlave)
+                return (nombreCompleto.Trim(), propiedades);
+
+            // Extraer nombre y bloque de propiedades
+            string nombre = nombreCompleto.Substring(0, inicioLlave).Trim();
+            string bloqueProps = nombreCompleto.Substring(inicioLlave + 1, finLlave - inicioLlave - 1);
+
+            // Parsear propiedades separadas por coma, con formato Clave=Valor
+            foreach (var par in bloqueProps.Split(','))
+            {
+                var partes = par.Split(new[] { '=' }, 2);
+                if (partes.Length == 2)
+                {
+                    string clave = partes[0].Trim();
+                    string valor = partes[1].Trim();
+                    if (!string.IsNullOrEmpty(clave))
+                        propiedades[clave] = valor;
+                }
+            }
+
+            return (nombre, propiedades);
+        }
+
         // ==================== MÉTODO PRINCIPAL ====================
         private void AbrirFormulario(string nombreFormulario)
         {
@@ -246,34 +287,36 @@ namespace SistemaContable.UI.Forms
 
             try
             {
-                Type tipo = ObtenerTipoFormulario(nombreFormulario);
+                // ✅ NUEVO: Parsear nombre + propiedades
+                var (nombreLimpio, propiedades) = ParsearNombreFormulario(nombreFormulario);
+
+                Type tipo = ObtenerTipoFormulario(nombreLimpio);
 
                 if (tipo == null)
                 {
-                    XtraMessageBox.Show($"Formulario '{nombreFormulario}' no encontrado.",
+                    XtraMessageBox.Show($"Formulario '{nombreLimpio}' no encontrado.",
                         "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 if (!typeof(Form).IsAssignableFrom(tipo))
                 {
-                    XtraMessageBox.Show($"El tipo '{nombreFormulario}' no es un formulario válido.",
+                    XtraMessageBox.Show($"El tipo '{nombreLimpio}' no es un formulario válido.",
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // ===== Verificar si ya hay una instancia abierta del mismo tipo =====
+                // ===== Verificar si ya hay una instancia abierta con las MISMAS propiedades =====
                 Form existente = Application.OpenForms
                     .OfType<Form>()
-                    .FirstOrDefault(f => f.GetType() == tipo);
+                    .FirstOrDefault(f => f.GetType() == tipo &&
+                                         CoincidenPropiedades(f, propiedades));
 
                 if (existente != null)
                 {
-                    // Si está minimizado, restaurar
                     if (existente.WindowState == FormWindowState.Minimized)
                         existente.WindowState = FormWindowState.Normal;
 
-                    // Si es formulario de consulta, restaurar posición y tamaño originales
                     bool esConsultaExistente = existente.Tag != null &&
                                                existente.Tag.ToString().ToUpper() == "CONSULTA";
 
@@ -283,7 +326,6 @@ namespace SistemaContable.UI.Forms
                     existente.BringToFront();
                     existente.Activate();
 
-                    // ✅ Si el formulario implementa IRefrescable, refrescarlo
                     if (existente is IRefrescable refrescable)
                     {
                         try
@@ -305,16 +347,16 @@ namespace SistemaContable.UI.Forms
                 Form frm = Activator.CreateInstance(tipo) as Form;
                 if (frm == null) return;
 
+                // ✅ NUEVO: Aplicar propiedades parseadas ANTES del Show
+                AplicarPropiedades(frm, propiedades);
+
                 bool esConsulta = frm.Tag != null &&
                                   frm.Tag.ToString().ToUpper() == "CONSULTA";
 
                 if (esConsulta)
                 {
                     AjustarFormularioConsulta(frm);
-
-                    // Se dispose automáticamente al cerrarse
                     frm.FormClosed += (s, e) => frm.Dispose();
-
                     frm.Show(this);
                 }
                 else
@@ -329,7 +371,7 @@ namespace SistemaContable.UI.Forms
             catch (Exception ex)
             {
                 XtraMessageBox.Show($"Error al abrir el formulario '{nombreFormulario}':\n{ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -440,9 +482,95 @@ namespace SistemaContable.UI.Forms
 
         private void barStaticItemPeriodo_ItemClick(object sender, ItemClickEventArgs e)
         {
-            XtraMessageBox.Show(
-                               $"Aqui se modificara el periodo contable",
-                               "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using (var frm = new frmPeriodoContable())
+            {
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    Configuracion.PeriodoAnio = frm.AnioSeleccionado;
+                    Configuracion.PeriodoMes = frm.MesSeleccionado;
+
+                    // Refrescar el caption de la barra de estado
+                    barStaticItemPeriodo.Caption = "Período: " + Configuracion.PeriodoDescripcion;
+
+                    Logger.Info(
+                        $"Período contable cambiado a {Configuracion.PeriodoDescripcion}",
+                        "PERIODO");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Verifica si un formulario abierto tiene los mismos valores de propiedades
+        /// que los indicados. Se usa para no duplicar instancias.
+        /// </summary>
+        private bool CoincidenPropiedades(Form frm, Dictionary<string, string> propiedadesEsperadas)
+        {
+            if (frm == null) return false;
+            if (propiedadesEsperadas == null || propiedadesEsperadas.Count == 0) return true;
+
+            Type tipo = frm.GetType();
+
+            foreach (var par in propiedadesEsperadas)
+            {
+                var prop = tipo.GetProperty(par.Key,
+                    BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+
+                if (prop == null) continue;   // ignorar si no existe
+
+                try
+                {
+                    object valorActual = prop.GetValue(frm);
+                    object valorEsperado = Convert.ChangeType(par.Value, prop.PropertyType,
+                        System.Globalization.CultureInfo.InvariantCulture);
+
+                    if (!Equals(valorActual, valorEsperado))
+                        return false;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Asigna las propiedades indicadas al form usando reflexión.
+        /// Convierte el string al tipo real de cada propiedad.
+        /// </summary>
+        private void AplicarPropiedades(Form frm, Dictionary<string, string> propiedades)
+        {
+            if (frm == null || propiedades == null || propiedades.Count == 0) return;
+
+            Type tipo = frm.GetType();
+
+            foreach (var par in propiedades)
+            {
+                var prop = tipo.GetProperty(par.Key,
+                    BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+
+                if (prop == null || !prop.CanWrite)
+                {
+                    // Propiedad no existe o es read-only — ignorar silenciosamente
+                    continue;
+                }
+
+                try
+                {
+                    // Convertir el string al tipo real de la propiedad
+                    object valor = Convert.ChangeType(par.Value, prop.PropertyType,
+                        System.Globalization.CultureInfo.InvariantCulture);
+
+                    prop.SetValue(frm, valor);
+                }
+                catch (Exception ex)
+                {
+                    // Loguear pero no bloquear
+                    System.Diagnostics.Debug.WriteLine(
+                        $"No se pudo asignar '{par.Key}={par.Value}' a {tipo.Name}: {ex.Message}");
+                }
+            }
         }
     }
 }

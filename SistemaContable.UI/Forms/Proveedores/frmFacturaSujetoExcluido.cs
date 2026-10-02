@@ -828,7 +828,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 var args = new XtraMessageBoxArgs
                 {
                     Caption = "Información de pago",
-                    Text = $"<b>N° Cheque: {r["NUM_CHEQUE"].ToString()}</b>" + Environment.NewLine +
+                    Text = $"<b>N° {r["TIPO_PARTIDA"].ToString()}: {r["NUM_CHEQUE"].ToString()}</b>" + Environment.NewLine +
                         $"<b>Fecha: {AsFecha(r["FECHA_CHEQUE"])}</b>",
                     Buttons = new[] { DialogResult.OK },
                     Icon = SystemIcons.Information,

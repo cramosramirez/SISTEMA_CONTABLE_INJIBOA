@@ -15,7 +15,7 @@ namespace SistemaContable.RP.Esquemas
             dt.Columns.Add("ID_CCF_COMPRA", typeof(int));
             dt.Columns.Add("CODIGO_ENTIDAD", typeof(string));
             dt.Columns.Add("NOMBRE_ENTIDAD", typeof(string));
-            dt.Columns.Add("NUM_CHEQUE", typeof(int));
+            dt.Columns.Add("NUM_CHEQUE", typeof(string));
             dt.Columns.Add("NUM_CUENTA", typeof(string));
             dt.Columns.Add("FECHA_CHEQUE", typeof(DateTime));
             dt.Columns.Add("TIPO_DTE", typeof(string));
@@ -30,7 +30,7 @@ namespace SistemaContable.RP.Esquemas
             1,
             "240681-4",            
             "RAMOS RAMIREZ CHRISTIAM EDUARDO",
-            95623362,
+            "95623362",
             "0965100135**70",
             "2026-07-24",
             "DTE3",
@@ -46,7 +46,7 @@ namespace SistemaContable.RP.Esquemas
             2,
             "240681-4",
             "RAMOS RAMIREZ CHRISTIAM EDUARDO",
-            95623362,
+            "95623362",
             "0965100135**70",
             "2026-07-24",
             "DTE3",

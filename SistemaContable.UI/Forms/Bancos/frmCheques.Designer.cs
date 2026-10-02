@@ -35,13 +35,13 @@ namespace SistemaContable.UI.Forms.Bancos
             this.label1 = new System.Windows.Forms.Label();
             this.txtNUMERO_CHEQUE = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.mskFECHA_CHEQUE = new System.Windows.Forms.MaskedTextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.txtPROVEEDOR = new System.Windows.Forms.TextBox();
             this.txtCANTIDAD = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.deFECHA_CHEQUE = new DevExpress.XtraEditors.DateEdit();
             this.panel1 = new System.Windows.Forms.Panel();
             this.chkEntregado = new System.Windows.Forms.CheckBox();
             this.chkListo = new System.Windows.Forms.CheckBox();
@@ -77,6 +77,8 @@ namespace SistemaContable.UI.Forms.Bancos
             this.lblCUADRE = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.deFECHA_CHEQUE.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deFECHA_CHEQUE.Properties)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
@@ -93,7 +95,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNOMBRE.Name = "txtNOMBRE";
             this.txtNOMBRE.ReadOnly = true;
             this.txtNOMBRE.Size = new System.Drawing.Size(453, 24);
-            this.txtNOMBRE.TabIndex = 4;
+            this.txtNOMBRE.TabIndex = 2;
             this.txtNOMBRE.TabStop = false;
             // 
             // txtNUM_CUENTA
@@ -102,14 +104,14 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNUM_CUENTA.Location = new System.Drawing.Point(249, 31);
             this.txtNUM_CUENTA.Name = "txtNUM_CUENTA";
             this.txtNUM_CUENTA.Size = new System.Drawing.Size(145, 24);
-            this.txtNUM_CUENTA.TabIndex = 3;
+            this.txtNUM_CUENTA.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(181, 32);
+            this.label2.Location = new System.Drawing.Point(189, 32);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 22);
+            this.label2.Size = new System.Drawing.Size(55, 22);
             this.label2.TabIndex = 2;
             this.label2.Text = "Cuenta";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -117,9 +119,9 @@ namespace SistemaContable.UI.Forms.Bancos
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(2, 34);
+            this.label1.Location = new System.Drawing.Point(3, 34);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 20);
+            this.label1.Size = new System.Drawing.Size(76, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "Operacion";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -127,41 +129,27 @@ namespace SistemaContable.UI.Forms.Bancos
             // txtNUMERO_CHEQUE
             // 
             this.txtNUMERO_CHEQUE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNUMERO_CHEQUE.Location = new System.Drawing.Point(87, 61);
+            this.txtNUMERO_CHEQUE.Location = new System.Drawing.Point(79, 61);
             this.txtNUMERO_CHEQUE.Name = "txtNUMERO_CHEQUE";
-            this.txtNUMERO_CHEQUE.ReadOnly = true;
-            this.txtNUMERO_CHEQUE.Size = new System.Drawing.Size(90, 24);
-            this.txtNUMERO_CHEQUE.TabIndex = 6;
-            this.txtNUMERO_CHEQUE.TabStop = false;
+            this.txtNUMERO_CHEQUE.Size = new System.Drawing.Size(108, 24);
+            this.txtNUMERO_CHEQUE.TabIndex = 3;
             // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(5, 65);
+            this.label3.Location = new System.Drawing.Point(6, 65);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(76, 20);
+            this.label3.Size = new System.Drawing.Size(73, 20);
             this.label3.TabIndex = 5;
             this.label3.Text = "Número";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // mskFECHA_CHEQUE
-            // 
-            this.mskFECHA_CHEQUE.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mskFECHA_CHEQUE.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
-            this.mskFECHA_CHEQUE.Location = new System.Drawing.Point(249, 63);
-            this.mskFECHA_CHEQUE.Mask = "00/00/0000";
-            this.mskFECHA_CHEQUE.Name = "mskFECHA_CHEQUE";
-            this.mskFECHA_CHEQUE.Size = new System.Drawing.Size(94, 24);
-            this.mskFECHA_CHEQUE.TabIndex = 8;
-            this.mskFECHA_CHEQUE.ValidatingType = typeof(System.DateTime);
-            this.mskFECHA_CHEQUE.Leave += new System.EventHandler(this.mskFECHA_CHEQUE_Leave);
-            // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(184, 64);
+            this.label4.Location = new System.Drawing.Point(191, 64);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(58, 21);
+            this.label4.Size = new System.Drawing.Size(53, 21);
             this.label4.TabIndex = 7;
             this.label4.Text = "Fecha";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -169,7 +157,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(349, 65);
+            this.label5.Location = new System.Drawing.Point(366, 64);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(52, 20);
             this.label5.TabIndex = 9;
@@ -179,10 +167,10 @@ namespace SistemaContable.UI.Forms.Bancos
             // txtPROVEEDOR
             // 
             this.txtPROVEEDOR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPROVEEDOR.Location = new System.Drawing.Point(400, 61);
+            this.txtPROVEEDOR.Location = new System.Drawing.Point(423, 61);
             this.txtPROVEEDOR.Name = "txtPROVEEDOR";
-            this.txtPROVEEDOR.Size = new System.Drawing.Size(155, 24);
-            this.txtPROVEEDOR.TabIndex = 10;
+            this.txtPROVEEDOR.Size = new System.Drawing.Size(132, 24);
+            this.txtPROVEEDOR.TabIndex = 5;
             this.txtPROVEEDOR.Leave += new System.EventHandler(this.txtPROVEEDOR_Leave);
             // 
             // txtCANTIDAD
@@ -191,7 +179,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtCANTIDAD.Location = new System.Drawing.Point(636, 61);
             this.txtCANTIDAD.Name = "txtCANTIDAD";
             this.txtCANTIDAD.Size = new System.Drawing.Size(124, 24);
-            this.txtCANTIDAD.TabIndex = 12;
+            this.txtCANTIDAD.TabIndex = 6;
             this.txtCANTIDAD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtCANTIDAD.Enter += new System.EventHandler(this.txtCANTIDAD_Enter);
             this.txtCANTIDAD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCANTIDAD_KeyPress);
@@ -214,6 +202,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.groupControl1.AppearanceCaption.Options.UseBackColor = true;
             this.groupControl1.AppearanceCaption.Options.UseTextOptions = true;
             this.groupControl1.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.groupControl1.Controls.Add(this.deFECHA_CHEQUE);
             this.groupControl1.Controls.Add(this.panel1);
             this.groupControl1.Controls.Add(this.txtOPERACION);
             this.groupControl1.Controls.Add(this.txtMONEDA);
@@ -229,13 +218,39 @@ namespace SistemaContable.UI.Forms.Bancos
             this.groupControl1.Controls.Add(this.txtNOMBRE);
             this.groupControl1.Controls.Add(this.label4);
             this.groupControl1.Controls.Add(this.txtNUM_CUENTA);
-            this.groupControl1.Controls.Add(this.mskFECHA_CHEQUE);
             this.groupControl1.Controls.Add(this.label2);
             this.groupControl1.Location = new System.Drawing.Point(12, 2);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.Size = new System.Drawing.Size(866, 149);
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "Datos de la operación";
+            // 
+            // deFECHA_CHEQUE
+            // 
+            this.deFECHA_CHEQUE.EditValue = null;
+            this.deFECHA_CHEQUE.EnterMoveNextControl = true;
+            this.deFECHA_CHEQUE.Location = new System.Drawing.Point(249, 63);
+            this.deFECHA_CHEQUE.Name = "deFECHA_CHEQUE";
+            this.deFECHA_CHEQUE.Properties.AllowMouseWheel = false;
+            this.deFECHA_CHEQUE.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
+            this.deFECHA_CHEQUE.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.deFECHA_CHEQUE.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
+            this.deFECHA_CHEQUE.Properties.Appearance.Options.UseFont = true;
+            this.deFECHA_CHEQUE.Properties.Appearance.Options.UseForeColor = true;
+            this.deFECHA_CHEQUE.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
+            this.deFECHA_CHEQUE.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.deFECHA_CHEQUE.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.deFECHA_CHEQUE.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
+            this.deFECHA_CHEQUE.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.deFECHA_CHEQUE.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            this.deFECHA_CHEQUE.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.deFECHA_CHEQUE.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.deFECHA_CHEQUE.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.DateTimeAdvancingCaret;
+            this.deFECHA_CHEQUE.Size = new System.Drawing.Size(111, 24);
+            this.deFECHA_CHEQUE.TabIndex = 4;
+            this.deFECHA_CHEQUE.Leave += new System.EventHandler(this.deFECHA_CHEQUE_Leave);
             // 
             // panel1
             // 
@@ -285,12 +300,14 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // txtOPERACION
             // 
+            this.txtOPERACION.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtOPERACION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOPERACION.Location = new System.Drawing.Point(87, 30);
+            this.txtOPERACION.Location = new System.Drawing.Point(79, 30);
             this.txtOPERACION.Name = "txtOPERACION";
             this.txtOPERACION.ReadOnly = true;
-            this.txtOPERACION.Size = new System.Drawing.Size(90, 24);
-            this.txtOPERACION.TabIndex = 1;
+            this.txtOPERACION.Size = new System.Drawing.Size(108, 24);
+            this.txtOPERACION.TabIndex = 0;
+            this.txtOPERACION.Leave += new System.EventHandler(this.txtOPERACION_Leave);
             // 
             // txtMONEDA
             // 
@@ -299,7 +316,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtMONEDA.Name = "txtMONEDA";
             this.txtMONEDA.ReadOnly = true;
             this.txtMONEDA.Size = new System.Drawing.Size(89, 24);
-            this.txtMONEDA.TabIndex = 13;
+            this.txtMONEDA.TabIndex = 7;
             this.txtMONEDA.TabStop = false;
             // 
             // txtNOMBRE_CHEQUE
@@ -308,7 +325,8 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNOMBRE_CHEQUE.Location = new System.Drawing.Point(249, 94);
             this.txtNOMBRE_CHEQUE.Name = "txtNOMBRE_CHEQUE";
             this.txtNOMBRE_CHEQUE.Size = new System.Drawing.Size(604, 24);
-            this.txtNOMBRE_CHEQUE.TabIndex = 15;
+            this.txtNOMBRE_CHEQUE.TabIndex = 8;
+            this.txtNOMBRE_CHEQUE.Leave += new System.EventHandler(this.txtNOMBRE_CHEQUE_Leave);
             // 
             // label7
             // 
@@ -342,7 +360,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.Size = new System.Drawing.Size(862, 287);
-            this.gridControl1.TabIndex = 4;
+            this.gridControl1.TabIndex = 2;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
             // 
@@ -358,7 +376,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtCONCEPTO.Multiline = true;
             this.txtCONCEPTO.Name = "txtCONCEPTO";
             this.txtCONCEPTO.Size = new System.Drawing.Size(534, 56);
-            this.txtCONCEPTO.TabIndex = 3;
+            this.txtCONCEPTO.TabIndex = 1;
             this.txtCONCEPTO.Leave += new System.EventHandler(this.txtCONCEPTO_Leave);
             // 
             // label9
@@ -378,7 +396,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.txtNUMERO_PARTIDA.Name = "txtNUMERO_PARTIDA";
             this.txtNUMERO_PARTIDA.ReadOnly = true;
             this.txtNUMERO_PARTIDA.Size = new System.Drawing.Size(90, 24);
-            this.txtNUMERO_PARTIDA.TabIndex = 1;
+            this.txtNUMERO_PARTIDA.TabIndex = 0;
             // 
             // label8
             // 
@@ -426,7 +444,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnDocumentos.Location = new System.Drawing.Point(626, 92);
             this.btnDocumentos.Name = "btnDocumentos";
             this.btnDocumentos.Size = new System.Drawing.Size(186, 33);
-            this.btnDocumentos.TabIndex = 27;
+            this.btnDocumentos.TabIndex = 11;
             this.btnDocumentos.Text = "Documentos";
             this.btnDocumentos.Click += new System.EventHandler(this.btnDocumentos_Click);
             // 
@@ -440,7 +458,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnSiguiente.Location = new System.Drawing.Point(626, 53);
             this.btnSiguiente.Name = "btnSiguiente";
             this.btnSiguiente.Size = new System.Drawing.Size(90, 33);
-            this.btnSiguiente.TabIndex = 26;
+            this.btnSiguiente.TabIndex = 6;
             this.btnSiguiente.Text = "Siguiente";
             this.btnSiguiente.Click += new System.EventHandler(this.btnSiguiente_Click);
             // 
@@ -454,7 +472,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAnterior.Location = new System.Drawing.Point(530, 53);
             this.btnAnterior.Name = "btnAnterior";
             this.btnAnterior.Size = new System.Drawing.Size(90, 33);
-            this.btnAnterior.TabIndex = 25;
+            this.btnAnterior.TabIndex = 5;
             this.btnAnterior.Text = "Anterior";
             this.btnAnterior.Click += new System.EventHandler(this.btnAnterior_Click);
             // 
@@ -468,7 +486,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnModificar.Location = new System.Drawing.Point(434, 53);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(90, 33);
-            this.btnModificar.TabIndex = 24;
+            this.btnModificar.TabIndex = 4;
             this.btnModificar.Text = "Modificar";
             this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
@@ -482,7 +500,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnIgnorar.Location = new System.Drawing.Point(338, 92);
             this.btnIgnorar.Name = "btnIgnorar";
             this.btnIgnorar.Size = new System.Drawing.Size(90, 33);
-            this.btnIgnorar.TabIndex = 23;
+            this.btnIgnorar.TabIndex = 10;
             this.btnIgnorar.Text = "Ignorar";
             this.btnIgnorar.Click += new System.EventHandler(this.btnIgnorar_Click);
             // 
@@ -496,7 +514,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAnular.Location = new System.Drawing.Point(146, 92);
             this.btnAnular.Name = "btnAnular";
             this.btnAnular.Size = new System.Drawing.Size(90, 33);
-            this.btnAnular.TabIndex = 22;
+            this.btnAnular.TabIndex = 8;
             this.btnAnular.Text = "Anular";
             this.btnAnular.Click += new System.EventHandler(this.btnAnular_Click);
             // 
@@ -510,7 +528,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnBuscar.Location = new System.Drawing.Point(242, 53);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(90, 33);
-            this.btnBuscar.TabIndex = 21;
+            this.btnBuscar.TabIndex = 2;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
@@ -524,7 +542,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAgregar.Location = new System.Drawing.Point(146, 53);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(90, 33);
-            this.btnAgregar.TabIndex = 3;
+            this.btnAgregar.TabIndex = 1;
             this.btnAgregar.Text = "Agregar";
             this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
             // 
@@ -538,7 +556,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnFinalizar.Location = new System.Drawing.Point(722, 53);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(90, 33);
-            this.btnFinalizar.TabIndex = 6;
+            this.btnFinalizar.TabIndex = 7;
             this.btnFinalizar.TabStop = false;
             this.btnFinalizar.Text = "Finalizar";
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
@@ -552,7 +570,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnBorrarFila.Location = new System.Drawing.Point(146, 0);
             this.btnBorrarFila.Name = "btnBorrarFila";
             this.btnBorrarFila.Size = new System.Drawing.Size(99, 33);
-            this.btnBorrarFila.TabIndex = 4;
+            this.btnBorrarFila.TabIndex = 0;
             this.btnBorrarFila.Text = "Borrar línea";
             this.btnBorrarFila.Click += new System.EventHandler(this.btnBorrarFila_Click);
             // 
@@ -566,7 +584,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnEliminar.Location = new System.Drawing.Point(338, 53);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(90, 33);
-            this.btnEliminar.TabIndex = 5;
+            this.btnEliminar.TabIndex = 3;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
@@ -580,7 +598,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnGuardar.Location = new System.Drawing.Point(242, 92);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(90, 33);
-            this.btnGuardar.TabIndex = 1;
+            this.btnGuardar.TabIndex = 9;
             this.btnGuardar.Text = "Grabar";
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
@@ -595,7 +613,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnImprimir.Location = new System.Drawing.Point(8, 87);
             this.btnImprimir.Name = "btnImprimir";
             this.btnImprimir.Size = new System.Drawing.Size(100, 33);
-            this.btnImprimir.TabIndex = 0;
+            this.btnImprimir.TabIndex = 12;
             this.btnImprimir.Text = "Imprimir";
             this.btnImprimir.Click += new System.EventHandler(this.btnImprimir_Click);
             // 
@@ -644,7 +662,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.Appearance.Options.UseFont = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(890, 697);
+            this.ClientSize = new System.Drawing.Size(888, 697);
             this.Controls.Add(this.groupControl3);
             this.Controls.Add(this.groupControl2);
             this.Controls.Add(this.groupControl1);
@@ -656,12 +674,14 @@ namespace SistemaContable.UI.Forms.Bancos
             this.Name = "frmCheques";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Cheques";
+            this.Text = "Movimientos de cuentas bancarias";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmCheques_FormClosed);
             this.Load += new System.EventHandler(this.frmCheques_Load);
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.deFECHA_CHEQUE.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deFECHA_CHEQUE.Properties)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
@@ -687,7 +707,6 @@ namespace SistemaContable.UI.Forms.Bancos
         private System.Windows.Forms.TextBox txtPROVEEDOR;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.MaskedTextBox mskFECHA_CHEQUE;
         private DevExpress.XtraEditors.GroupControl groupControl1;
         private System.Windows.Forms.TextBox txtNOMBRE_CHEQUE;
         private System.Windows.Forms.Label label7;
@@ -722,5 +741,6 @@ namespace SistemaContable.UI.Forms.Bancos
         private System.Windows.Forms.CheckBox chkEntregado;
         private System.Windows.Forms.CheckBox chkListo;
         private System.Windows.Forms.CheckBox chkImpreso;
+        private DevExpress.XtraEditors.DateEdit deFECHA_CHEQUE;
     }
 }

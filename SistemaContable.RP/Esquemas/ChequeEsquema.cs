@@ -21,7 +21,7 @@ namespace SistemaContable.RP.Esquemas
             dt.Columns.Add("DETALLE", typeof(string));
             dt.Columns.Add("CARGO", typeof(decimal));
             dt.Columns.Add("ABONO", typeof(decimal));
-            dt.Columns.Add("NUM_CHEQUE", typeof(int));
+            dt.Columns.Add("NUM_CHEQUE", typeof(string));
             dt.Columns.Add("CONCEPTO", typeof(string));
 
 
@@ -35,7 +35,7 @@ namespace SistemaContable.RP.Esquemas
             "CH # 9248825 RAMOS RAMIREZ CHRISTIAM EDUARDO",
             0.00,
             1600.00,
-            94586,
+            "94586",
             "PAGO DE HONORARIOS DE CHRISTIAM EDUARDO RAMOS RAMIREZ POR SERVICIO DE ASESORIA A SISTEMAS INFORMATICOS JUNIO 2026"
             );
 
@@ -50,7 +50,7 @@ namespace SistemaContable.RP.Esquemas
             "CH # 9248825 DTE#4 RAMOS RAMIREZ CHRISTIAM EDUARDO",
             1600.00,
             0.00,
-            94586,
+            "94586",
             "PAGO DE HONORARIOS DE CHRISTIAM EDUARDO RAMOS RAMIREZ POR SERVICIO DE ASESORIA A SISTEMAS INFORMATICOS JUNIO 2026"
             );
 
@@ -64,7 +64,7 @@ namespace SistemaContable.RP.Esquemas
             "CH # 9248825 PAGO DTE#1 RAMOS RAMIREZ CHRISTIAM EDUARDO",
             0.00,
             36.85,
-             94587,
+            "94587",
             "PAGO DE HONORARIOS DE CHRISTIAM EDUARDO RAMOS RAMIREZ POR SERVICIO DE ASESORIA A SISTEMAS INFORMATICOS JULIO 2026"
             );
 
