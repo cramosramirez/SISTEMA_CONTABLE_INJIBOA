@@ -339,18 +339,38 @@ namespace SistemaContable.UI.Forms.PartidasVentas
 
             string numPartida = Convert.ToString(gridView1.GetFocusedRowCellValue("NUM_PARTIDA"));
 
-            if (XtraMessageBox.Show($"¿Está seguro de eliminar la partida N° {numPartida}?\nEsta acción no se puede deshacer.",
-                    "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-                    MessageBoxDefaultButton.Button2) != DialogResult.Yes)
-                return;
+            
 
             try
             {
 
+                DialogResult respuesta = XtraMessageBox.Show(
+                  $"¿Está seguro que desea eliminar el comprobante {numPartida}?",
+                  "Confirmar eliminación",
+                  MessageBoxButtons.YesNo,
+                  MessageBoxIcon.Warning);
+
+                if (respuesta != DialogResult.Yes)
+                    return;
+
+                string codigo = XtraInputBox.Show(
+                    "Ingrese el código de autorización para eliminar la partida:",
+                    "Código de eliminación",
+                    "");
+
+                if (string.IsNullOrWhiteSpace(codigo))
+                {
+                    Alertas.Advertencia("Debe ingresar un código de eliminación.");
+                    return;
+                }
+
                 var parametros = new DynamicParameters();
 
-                parametros.Add("@NID_PARTIDA", (string)id);
+                parametros.Add("@NID_PARTIDA", numPartida.Trim());
                 parametros.Add("@USUARIO", Configuracion.UsuarioActual);
+                parametros.Add("@COD_ELIMINAR", codigo.Trim());
+
+              
 
                 parametros.Add("@pResCode",
                     dbType: DbType.Int32,

@@ -211,6 +211,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtIDSIAP.Text = r["IDSIAP"].ToString();
                 // ---------- Documento fiscal ----------
                 cbxTIPO_DTE.SelectedValue = Convert.ToInt32(r["ID_TIPO_DTE"]);
+                cbxTIPO_DTE_SelectionChangeCommitted(null, null);
                 txtNUM_CONTROL.Text = AsString(r["NUM_CONTROL"]);
                 txtCOD_GENERACION.Text = AsString(r["COD_GENERACION"]);
                 txtSELLO_RECIBIDO.Text = AsString(r["SELLO_RECIBIDO"]);

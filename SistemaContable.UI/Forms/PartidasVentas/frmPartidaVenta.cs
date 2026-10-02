@@ -221,15 +221,7 @@ namespace SistemaContable.UI.Forms.PartidasVentas
                     break;
             }
         }
-        private void deFecha_EditValueChanged(object sender, EventArgs e)
-        {
-            if (deFecha.EditValue == null)
-                return;
-
-            var infoPartida = NumeradorPartidaHelper.Consultar(txtPartida.Text);
-            txtNumero.Text = infoPartida.NumSiguienteFormateado;
-            ActualizarConcepto();
-        }
+       
 
         private void cbTipoPartida_TextChanged(object sender, EventArgs e)
         {
@@ -276,18 +268,27 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             if (deFecha.EditValue == null)
                 return;
 
-            var infoPartida = NumeradorPartidaHelper.Consultar(txtPartida.Text);
+            var infoPartida = NumeradorPartidaHelper.Consultar(txtPartida.Text, Convert.ToDateTime(deFecha.Text));
             txtNumero.Text = infoPartida.NumSiguienteFormateado;
             ActualizarConcepto();
         }
 
+        private void deFecha_EditValueChanged(object sender, EventArgs e)
+        {
+            if (deFecha.EditValue == null)
+                return;
+
+            var infoPartida = NumeradorPartidaHelper.Consultar(txtPartida.Text, Convert.ToDateTime(deFecha.Text));
+            txtNumero.Text = infoPartida.NumSiguienteFormateado;
+            ActualizarConcepto();
+        }
         private void deFecha_Leave(object sender, EventArgs e)
         {
 
             if (deFecha.EditValue == null)
                 return;
 
-            var infoPartida = NumeradorPartidaHelper.Consultar(txtPartida.Text);
+            var infoPartida = NumeradorPartidaHelper.Consultar(txtPartida.Text, Convert.ToDateTime(deFecha.Text));
             txtNumero.Text = infoPartida.NumSiguienteFormateado;
             ActualizarConcepto();
         }
