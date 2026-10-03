@@ -325,9 +325,9 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAdicionarFSE.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnAdicionarFSE.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
             this.btnAdicionarFSE.ImageOptions.ImageToTextIndent = 10;
-            this.btnAdicionarFSE.Location = new System.Drawing.Point(238, 42);
+            this.btnAdicionarFSE.Location = new System.Drawing.Point(305, 42);
             this.btnAdicionarFSE.Name = "btnAdicionarFSE";
-            this.btnAdicionarFSE.Size = new System.Drawing.Size(185, 47);
+            this.btnAdicionarFSE.Size = new System.Drawing.Size(209, 47);
             this.btnAdicionarFSE.TabIndex = 132;
             this.btnAdicionarFSE.Text = "Adicionar factura sujeto excluido";
             this.btnAdicionarFSE.Click += new System.EventHandler(this.btnAdicionarFSE_Click);
@@ -351,7 +351,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnRetornar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnRetornar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.retornar32x32;
             this.btnRetornar.ImageOptions.ImageToTextIndent = 10;
-            this.btnRetornar.Location = new System.Drawing.Point(609, 42);
+            this.btnRetornar.Location = new System.Drawing.Point(739, 42);
             this.btnRetornar.Name = "btnRetornar";
             this.btnRetornar.Size = new System.Drawing.Size(117, 47);
             this.btnRetornar.TabIndex = 130;
@@ -368,9 +368,9 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAdicionarCCF.ImageOptions.ImageToTextIndent = 10;
             this.btnAdicionarCCF.Location = new System.Drawing.Point(17, 42);
             this.btnAdicionarCCF.Name = "btnAdicionarCCF";
-            this.btnAdicionarCCF.Size = new System.Drawing.Size(204, 47);
+            this.btnAdicionarCCF.Size = new System.Drawing.Size(273, 47);
             this.btnAdicionarCCF.TabIndex = 6;
-            this.btnAdicionarCCF.Text = "Adicionar comprobante de crédito fiscal";
+            this.btnAdicionarCCF.Text = "Adicionar comprobante crédito fiscal / consumidor final";
             this.btnAdicionarCCF.Click += new System.EventHandler(this.btnAdicionarCCF_Click);
             // 
             // frmChequeDocumentosContado

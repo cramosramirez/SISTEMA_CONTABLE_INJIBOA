@@ -322,7 +322,7 @@ namespace SistemaContable.UI.Helpers
             try
             {
                 // Obtener la ruta desde App.config
-                string rutaBase = ConfigurationManager.AppSettings["RutaJsonDTE_LeidosAPI"];
+                string rutaBase = ConfigurationManager.AppSettings["RutaJsonDTE_LeidosHelper"];
                 if (string.IsNullOrWhiteSpace(rutaBase)) return;
 
                 // Crear el directorio si no existe
