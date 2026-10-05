@@ -12,10 +12,40 @@ namespace SistemaContable.RP.Partidas
         public string _NID_PARTIDA { get; set; }
         public string _ID_PARTIDA { get; set; }
         public string _Titulo { get; set; }
+
+        // acumulado de las filas ya impresas (cuentas de nivel 0)
+        private decimal _acumCargo, _acumAbono;
+
         public RptPartida_Parciales()
         {
             InitializeComponent();
+
+            this.BeforePrint += (s, e) => { _acumCargo = _acumAbono = 0; };
+
+            // acumula cada fila que trae cargo/abono
+            Detail.BeforePrint += (s, e) =>
+            {
+                object c = GetCurrentColumnValue("CARGO");
+                object a = GetCurrentColumnValue("ABONO");
+                if (c != null && c != DBNull.Value) _acumCargo += Convert.ToDecimal(c);
+                if (a != null && a != DBNull.Value) _acumAbono += Convert.ToDecimal(a);
+            };
+
+            // al llegar al pie de la página = PASAN
+            PageFooter.BeforePrint += (s, e) =>
+            {
+                xrTableCellPasanCargo.Text = _acumCargo.ToString("N2");
+                xrTableCellPasanAbono.Text = _acumAbono.ToString("N2");
+            };
+
+            // la página siguiente muestra ese mismo valor como VIENEN
+            PageHeader.BeforePrint += (s, e) =>
+            {
+                xrTableCellVienenCargo.Text = _acumCargo.ToString("N2");
+                xrTableCellVienenAbono.Text = _acumAbono.ToString("N2");
+            };
         }
+
         public override void CargarDatos()
         {
             lbTitulo.Text = _Titulo;
@@ -25,11 +55,10 @@ namespace SistemaContable.RP.Partidas
                 ID_PARTIDA = _ID_PARTIDA
             });
 
-
-
             this.DataSource = dt;
             this.DataMember = "";
         }
+
         private void xrLabelParciales_BeforePrint(object sender, PrintEventArgs e)
         {
             XRLabel lbl = (XRLabel)sender;

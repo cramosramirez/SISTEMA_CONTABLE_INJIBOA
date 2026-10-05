@@ -83,7 +83,7 @@
             this.btnImprimir.Name = "btnImprimir";
             this.btnImprimir.Size = new System.Drawing.Size(119, 41);
             this.btnImprimir.TabIndex = 11;
-            this.btnImprimir.Text = "Imprimir";
+            this.btnImprimir.Text = "Ver Partida";
             this.btnImprimir.Click += new System.EventHandler(this.btnImprimir_Click);
             // 
             // btnNuevo
