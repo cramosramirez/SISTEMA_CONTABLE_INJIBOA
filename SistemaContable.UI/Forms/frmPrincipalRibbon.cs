@@ -126,6 +126,11 @@ namespace SistemaContable.UI.Forms
                                 var subItem = new BarSubItem(this.ribbon.Manager, nombre);
                                 subItem.RibbonStyle = RibbonItemStyles.Large;
 
+                                // Los BarSubItem reservan menos ancho que los botones grandes.
+                                // Igualar "Reportes Diarios" al ancho visual de "Invalidación".
+                                if (string.Equals(nombre, "Reportes Diarios", StringComparison.OrdinalIgnoreCase))
+                                    subItem.LargeWidth = 82;
+
                                 AsignarIcono(subItem, row);                                
 
                                 groups[idPadre].ItemLinks.Add(subItem);

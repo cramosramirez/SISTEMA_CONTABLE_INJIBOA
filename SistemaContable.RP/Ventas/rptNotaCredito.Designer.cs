@@ -1078,7 +1078,7 @@
             this.xrLabel12.SizeF = new System.Drawing.SizeF(106.901F, 15F);
             this.xrLabel12.StylePriority.UseFont = false;
             this.xrLabel12.StylePriority.UseTextAlignment = false;
-            this.xrLabel12.Text = "Departamento:";
+            this.xrLabel12.Text = "Distrito:";
             this.xrLabel12.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrTable2

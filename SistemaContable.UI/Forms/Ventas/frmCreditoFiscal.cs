@@ -64,6 +64,14 @@ namespace SistemaContable.UI.Forms.Ventas
         public frmCreditoFiscal()
         {
             InitializeComponent();
+            txtRECIB_EFECTIVO.Leave += txtRECIB_EFECTIVO_Leave_FormaPago;   // vuelto (2026-10-01)
+            // N° Monto de remesa / cheque / nota de abono: solo lectura, siempre igual al monto de arriba
+            foreach (TextBox m in new[] { txtRECIB_REMESA_MONTO, txtRECIB_CHEQUE_MONTO, txtRECIB_NOTAABONO_MONTO })
+            {
+                m.ReadOnly = true;
+                m.TabStop = false;
+            }
+            txtRECIB_ANTICIPO.Leave += (s, e) => { LimitarPagoNoEfectivo(txtRECIB_ANTICIPO); ActualizarTotales(); };
             this.StartPosition = FormStartPosition.CenterScreen;
             chkPERCEPCION.CheckedChanged += chkPERCEPCION_CheckedChanged;
         }
@@ -230,7 +238,7 @@ namespace SistemaContable.UI.Forms.Ventas
                 cbxCONDPAGO.SelectedValue = Convert.ToInt32(r["ID_CONDPAGO"]);
                 mskFECHA.Text = AsFecha(r["FECHA"]);
                 mskFECHA_VENCE.Text = AsFecha(r["FECHA_VENCE"]);
-                txtNUMINTERNO.Text = AsString(r["NUMINTERNO"]);
+                txtNUMINTERNO.Text = FormatearNumInterno(AsString(r["NUMINTERNO"]));
                 txtNUM_CONTROL.Text = AsString(r["NUMCONTROL"]);
                 txtCOD_GENERACION.Text = AsString(r["CODGENERACION"]);
                 txtSELLO_RECIBIDO.Text = AsString(r["SELLORECEPCION"]);
@@ -303,6 +311,7 @@ namespace SistemaContable.UI.Forms.Ventas
                 _codigoSolicitudSeleccionada = ValorCodigo(r, "CODIGO");
                 _nombreProveedorSolicitud = ValorCodigo(r, "NOMBRE_PROVEEDOR");
                 _nombreZafraSolicitud = ValorCodigo(r, "NOMBRE_ZAFRA");
+                AplicarCentroCostoPorSolicitud(false);   // 2026-10-05 bloquear centro si hay solicitud
                 CargarCCFDetalleExistente(idCCFEnc);
                 AplicarEstadoCobroPorCondicion();
             }
@@ -422,10 +431,29 @@ namespace SistemaContable.UI.Forms.Ventas
                 !string.IsNullOrWhiteSpace(textBox1.Text);
 
             bool clienteCargado = _idEntidad > 0 && hayDatosVisiblesCliente;
-            btn_solicitudAgricola.Enabled = clienteCargado;
-            btn_solicitudAgricola.ToolTip = clienteCargado
-                ? "Consultar solicitudes agrícolas del cliente seleccionado."
-                : "Seleccione un cliente antes de consultar solicitudes agrícolas.";
+
+            // (2026-10-01) Solo se habilita si la condición es CRÉDITO y el cliente
+            // tiene código relacionado (Productor, Transportista, Roza o Querqueo).
+            bool tieneCodigoRelacionado =
+                !string.IsNullOrWhiteSpace(_codiProveedorCliente) ||
+                !string.IsNullOrWhiteSpace(_codigoTransportistaCliente) ||
+                !string.IsNullOrWhiteSpace(_codigoFrenteRozaCliente) ||
+                !string.IsNullOrWhiteSpace(_codigoFrenteQuerqueoCliente);
+            bool esCredito = EsCondicionCredito();
+
+            bool habilitar = clienteCargado && tieneCodigoRelacionado && esCredito;
+            btn_solicitudAgricola.Enabled = habilitar;
+            btn_solicitudAgricola.ToolTip =
+                !clienteCargado          ? "Seleccione un cliente antes de consultar solicitudes agrícolas."
+              : !tieneCodigoRelacionado  ? "El cliente no tiene código relacionado (Productor, Transportista, Roza o Querqueo)."
+              : !esCredito               ? "La solicitud agrícola solo aplica cuando la condición de pago es CRÉDITO."
+              :                            "Consultar solicitudes agrícolas del cliente seleccionado.";
+        }
+
+        // CRÉDITO = ID_CONDPAGO 2 (CONTADO = 1)
+        private bool EsCondicionCredito()
+        {
+            return ObtenerIdCombo(cbxCONDPAGO) == 2;
         }
         private string ObtenerCodiProveedorCliente(DataRow fila)
         {
@@ -644,6 +672,13 @@ namespace SistemaContable.UI.Forms.Ventas
             repoPrecio.Mask.UseMaskAsDisplayFormat = true;
             gridControl1.RepositoryItems.Add(repoPrecio);
             view.Columns["PRECIO"].ColumnEdit = repoPrecio;
+            // (2026-10-01) CANTIDAD se captura a 4 decimales (PRECIO a 6 decimales).
+            var repoCantidad = new RepositoryItemTextEdit();
+            repoCantidad.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+            repoCantidad.Mask.EditMask = "n4";
+            repoCantidad.Mask.UseMaskAsDisplayFormat = true;
+            gridControl1.RepositoryItems.Add(repoCantidad);
+            view.Columns["CANTIDAD"].ColumnEdit = repoCantidad;
             var colEliminar = view.Columns.AddField("ELIMINAR");
             colEliminar.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             colEliminar.Caption = " ";
@@ -729,6 +764,14 @@ namespace SistemaContable.UI.Forms.Ventas
                     RecalcularLinea(s as GridView, ev.RowHandle);
             };
             view.KeyDown += GridView_KeyDown;
+            // (2026-10-01) Con detalle de solicitud agrícola no se puede cambiar el producto.
+            view.ShowingEditor += (s, ev) =>
+            {
+                var gv = s as GridView;
+                string campo = gv?.FocusedColumn?.FieldName;
+                if ((campo == "COD_REF" || campo == "DESCRIPCION") && DetalleDesdeSolicitud())
+                    ev.Cancel = true;
+            };
             view.FocusedColumnChanged += GridView_FocusedColumnChanged;
             ActualizarTotales();
             ConfigurarBotonAgregarFila(view);
@@ -754,7 +797,7 @@ namespace SistemaContable.UI.Forms.Ventas
             };
             var toolTip = new ToolTip();
             toolTip.SetToolTip(_picAgregarFila, "Agregar fila");
-            _picAgregarFila.Click += (s, e) => AgregarFilaVacia();
+            _picAgregarFila.Click += (s, e) => { if (DetalleDesdeSolicitud()) AvisarSoloItemsSolicitud(); else AgregarFilaVacia(); };
             gridControl1.Parent.Controls.Add(_picAgregarFila);
             _picAgregarFila.Location = new Point(
                 gridControl1.Left,
@@ -788,8 +831,26 @@ namespace SistemaContable.UI.Forms.Ventas
             var col = view.Columns.ColumnByFieldName(field);
             if (col != null) col.Visible = false;
         }
+        // (2026-10-01) Cuando el detalle viene de una SOLICITUD AGRÍCOLA solo se permiten
+        // los ítems de la solicitud: no se agregan filas nuevas ni se cambia el producto.
+        private bool DetalleDesdeSolicitud()
+        {
+            if (_dtDetalle == null) return false;
+            return _dtDetalle.Rows.Cast<DataRow>().Any(r =>
+                r.RowState != DataRowState.Deleted &&
+                ((r.Table.Columns.Contains("ID_SOLIC_DETA") && r["ID_SOLIC_DETA"] != DBNull.Value) ||
+                 (r.Table.Columns.Contains("UID_SOLIC_DETA") && r["UID_SOLIC_DETA"] != DBNull.Value &&
+                  !string.IsNullOrWhiteSpace(r["UID_SOLIC_DETA"].ToString()))));
+        }
+        private void AvisarSoloItemsSolicitud()
+        {
+            XtraMessageBox.Show(
+                "El detalle viene de una solicitud agrícola.\n\nSolo se permiten los ítems de la solicitud; no se pueden agregar ni cambiar productos.",
+                "Solicitud agrícola", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
         private void AgregarFilaVacia()
         {
+            if (DetalleDesdeSolicitud()) return;   // 2026-10-01 solo ítems de la solicitud
             var fila = _dtDetalle.NewRow();
             fila["ID_PRODUCTO"] = 0;
             fila["COD_REF"] = "";
@@ -812,10 +873,12 @@ namespace SistemaContable.UI.Forms.Ventas
         private void RecalcularLinea(GridView view, int rowHandle)
         {
             if (view == null || rowHandle < 0) return;
-            decimal cantidad = ObtenerDecimal(view, rowHandle, "CANTIDAD");
-            decimal precio = ObtenerDecimal(view, rowHandle, "PRECIO");
+            // (2026-10-01) Cantidad a 4 decimales, precio a 6 decimales; los montos
+            // de la linea (subtotal, descuento, total) quedan a 2 decimales.
+            decimal cantidad = Math.Round(ObtenerDecimal(view, rowHandle, "CANTIDAD"), 4);
+            decimal precio = Math.Round(ObtenerDecimal(view, rowHandle, "PRECIO"), 6);
             decimal porcDesc = ObtenerDecimal(view, rowHandle, "PORC_DESC");
-            decimal subtotalLinea = cantidad * precio;
+            decimal subtotalLinea = Math.Round(cantidad * precio, 2, MidpointRounding.AwayFromZero);
             decimal descuento = porcDesc > 0 ? Math.Round(subtotalLinea * porcDesc / 100m, 2) : 0m;
             decimal total = subtotalLinea - descuento;
             var valExento = view.GetRowCellValue(rowHandle, "ES_EXENTO");
@@ -877,8 +940,16 @@ namespace SistemaContable.UI.Forms.Ventas
             txtTOTAL_VENTA.Text = totalFinal.ToString("N2");
             if (EsPagoContado())
             {
-                txtRECIB_EFECTIVO.Text = totalFinal > 0
-                    ? totalFinal.ToString("N2") : "0.00";
+                // FIX (2026-10-01): en CONTADO el efectivo es lo que FALTA despues de remesa, cheque,
+                // nota de abono y anticipo. Antes se ponia el total completo y, al consultar un
+                // documento guardado, el efectivo quedaba encima (ej. 81.56 en lugar de 1.56).
+                decimal otrosPagos = ObtenerTextBoxDecimal(txtRECIB_REMESA)
+                                   + ObtenerTextBoxDecimal(txtRECIB_CHEQUE)
+                                   + ObtenerTextBoxDecimal(txtRECIB_NOTAABONO)
+                                   + ObtenerTextBoxDecimal(txtRECIB_ANTICIPO);
+                decimal efectivoPendiente = Math.Max(0m, totalFinal - otrosPagos);
+                txtRECIB_EFECTIVO.Text = efectivoPendiente.ToString("N2");
+                txtRECIB_EFECTIVO_CAMBIO.Text = "0.00";
             }
             else
             {
@@ -902,7 +973,7 @@ namespace SistemaContable.UI.Forms.Ventas
                 // Flecha abajo parado en la última fila: agrega una fila vacía (lo mismo
                 // que hace el botón "Agregar fila") y no marca e.Handled, para que la
                 // navegación normal de flecha abajo baje a la fila recién creada.
-                if (view.FocusedRowHandle == _dtDetalle.Rows.Count - 1)
+                if (view.FocusedRowHandle == _dtDetalle.Rows.Count - 1 && !DetalleDesdeSolicitud())
                 {
                     view.CloseEditor();
                     AgregarFilaVacia();
@@ -927,7 +998,11 @@ namespace SistemaContable.UI.Forms.Ventas
             {
                 e.Handled = true;
                 int filaActual = view.FocusedRowHandle;
-                if (filaActual == _dtDetalle.Rows.Count - 1) AgregarFilaVacia();
+                if (filaActual == _dtDetalle.Rows.Count - 1)
+                {
+                    if (DetalleDesdeSolicitud()) { view.CloseEditor(); e.Handled = true; return; }
+                    AgregarFilaVacia();
+                }
                 view.FocusedRowHandle = filaActual + 1;
                 view.FocusedColumn = view.Columns["COD_REF"];
                 view.ShowEditor();
@@ -947,7 +1022,11 @@ namespace SistemaContable.UI.Forms.Ventas
             {
                 view.CloseEditor();
                 int filaActual = view.FocusedRowHandle;
-                if (filaActual == _dtDetalle.Rows.Count - 1) AgregarFilaVacia();
+                if (filaActual == _dtDetalle.Rows.Count - 1)
+                {
+                    if (DetalleDesdeSolicitud()) { view.CloseEditor(); e.Handled = true; return; }
+                    AgregarFilaVacia();
+                }
                 view.FocusedRowHandle = filaActual + 1;
                 view.FocusedColumn = view.Columns["COD_REF"];
                 view.ShowEditor();
@@ -975,6 +1054,7 @@ namespace SistemaContable.UI.Forms.Ventas
         #region BÚSQUEDA DE PRODUCTO
         private void AbrirBusquedaProducto(GridView view)
         {
+            if (DetalleDesdeSolicitud()) { AvisarSoloItemsSolicitud(); return; }
             // (2026-09-16) Filtrado por rol: si el rol del usuario tiene Roles de
             // Producto asignados en ESEGURIDAD.ROL_ROL_PROD (frmRol), solo se
             // muestran los productos que tengan asignado alguno de esos roles
@@ -1145,6 +1225,7 @@ namespace SistemaContable.UI.Forms.Ventas
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             if (!ValidarCampos()) return;
+            if (!ValidarFormaPagoContado()) return;   // 2026-10-01
             try
             {
                 var view = gridControl1.MainView as GridView;
@@ -1175,7 +1256,7 @@ namespace SistemaContable.UI.Forms.Ventas
                     FECHA = ParsearFecha(mskFECHA.Text),
                     SALFEC = FormHelper.ObtenerSalfec(mskFECHA),
                     NUMDOC = NUMDOC,
-                    NUMINTERNO = txtNUMINTERNO.Text,
+                    NUMINTERNO = FormatearNumInterno(txtNUMINTERNO.Text),
                     CODGENERACION = txtCOD_GENERACION.Text.Trim(),
                     NUMCONTROL = txtNUM_CONTROL.Text.Trim(),
                     SELLORECEPCION = txtSELLO_RECIBIDO.Text.Trim(),
@@ -1241,7 +1322,7 @@ namespace SistemaContable.UI.Forms.Ventas
                 if (dtVenta.Columns.Contains("NCONT") && dtVenta.Rows[0]["NCONT"] != DBNull.Value)
                     txtNUM_CONTROL.Text = Convert.ToString(dtVenta.Rows[0]["NCONT"]);
                 if (dtVenta.Columns.Contains("INTERN") && dtVenta.Rows[0]["INTERN"] != DBNull.Value)
-                    txtNUMINTERNO.Text = Convert.ToString(dtVenta.Rows[0]["INTERN"]);
+                    txtNUMINTERNO.Text = FormatearNumInterno(Convert.ToString(dtVenta.Rows[0]["INTERN"]));
                 // Limpiar y reinsertar detalle
                 _dal.EjecutarSinRetorno("[EDTE].[SP_CREDITOFISCAL_DET]", new
                 {
@@ -1267,10 +1348,10 @@ namespace SistemaContable.UI.Forms.Ventas
                         ID_PRODUCTO = Convert.ToInt32(fila["ID_PRODUCTO"]),
                         COD_REF = fila["COD_REF"].ToString(),
                         DESCRIPCION = fila["DESCRIPCION"].ToString(),
-                        CANTIDAD = Convert.ToDecimal(fila["CANTIDAD"]),
+                        CANTIDAD = Math.Round(Convert.ToDecimal(fila["CANTIDAD"]), 4),
                         ID_UNIDAD_MEDIDA = Convert.ToInt32(fila["ID_UNIDAD_MEDIDA"]),
                         UNIDAD_MEDIDA = fila["UM"].ToString(),
-                        PRECIO = Convert.ToDecimal(fila["PRECIO"]),
+                        PRECIO = Math.Round(Convert.ToDecimal(fila["PRECIO"]), 6),
                         DESCUENTO = Convert.ToInt32(fila["PORC_DESC"]),
                         DESCUENTO_VALOR = Convert.ToDecimal(fila["DESCUENTO"]),
                         ES_EXENTO = Convert.ToBoolean(fila["ES_EXENTO"]),
@@ -1303,7 +1384,22 @@ namespace SistemaContable.UI.Forms.Ventas
                 // un disparador de base de datos: son llamadas explícitas desde aquí, justo después
                 // del guardado exitoso del CCF. Si falla, no se revierte el CCF (ya quedó guardado) —
                 // solo se avisa, para no bloquear la operación principal.
-                if (esNuevoCCF && _idSolicitudSeleccionada.HasValue)
+                // (2026-10-02) Solicitud de TRANSPORTISTA -> CCF_ENCA_TRANS / CCF_DETA_TRANS.
+                if (esNuevoCCF && _idSolicitudSeleccionada.HasValue && EsSolicitudTransportista())
+                {
+                    try
+                    {
+                        GuardarSolicitudTransportista(1);   // ID_TIPO_COMPROB = 1 (CCF)
+                    }
+                    catch (Exception exTrans)
+                    {
+                        XtraMessageBox.Show(
+                            "El crédito fiscal se guardó correctamente, pero no se pudo generar " +
+                            "el registro CCF_ENCA_TRANS/CCF_DETA_TRANS/CREDITO_ENCA_TRANS del transportista:\n\n" + exTrans.Message,
+                            "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                else if (esNuevoCCF && _idSolicitudSeleccionada.HasValue)
                 {
                     try
                     {
@@ -1342,8 +1438,8 @@ namespace SistemaContable.UI.Forms.Ventas
                                     COD_REF = fila["COD_REF"].ToString(),
                                     NOMBRE_PRODUCTO = fila["DESCRIPCION"].ToString(),
                                     UNIDAD = fila["UM"].ToString(),
-                                    CANTIDAD = Convert.ToDecimal(fila["CANTIDAD"]),
-                                    PRECIO_UNITARIO = Convert.ToDecimal(fila["PRECIO"]),
+                                    CANTIDAD = Math.Round(Convert.ToDecimal(fila["CANTIDAD"]), 4),
+                                    PRECIO_UNITARIO = Math.Round(Convert.ToDecimal(fila["PRECIO"]), 6),
                                     TOTAL_LINEA = Convert.ToDecimal(fila["TOTAL"]),
                                 });
                             }
@@ -1376,6 +1472,112 @@ namespace SistemaContable.UI.Forms.Ventas
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        // ---------------------------------------------------------------------------
+        // (2026-10-02) Solicitud agrícola de TRANSPORTISTA (código = ENTIDAD.CODTRANSPORT):
+        // se guarda en [INJIBOA].[dbo].[CCF_ENCA_TRANS] / [CCF_DETA_TRANS] mediante
+        // [ESOLICITUD].[SP_CCF_ENCA_TRANS]. Cañeros (CODIPROVEEDOR) siguen igual.
+        // ---------------------------------------------------------------------------
+        // (2026-10-05) Centro de costo fijo según el tipo de solicitud agrícola:
+        //   PRODUCTOR     -> ID_CENTRO 3 (VENTAS A PRODUCTORES DE CAÑA)
+        //   TRANSPORTISTA -> ID_CENTRO 6 (VENTAS A TRANSPORTISTAS)
+        // El combo queda bloqueado mientras el documento tenga solicitud de esos tipos.
+        private const int CENTRO_PRODUCTORES = 3;
+        private const int CENTRO_TRANSPORTISTAS = 6;
+        private bool EsSolicitudProductor()
+        {
+            string tipo = (_tipoSolicitudSeleccionada ?? string.Empty).Trim().ToUpperInvariant();
+            if (tipo.Contains("PRODUCTOR")) return true;
+            if (tipo.Length > 0) return false;
+            string codigo = (_codigoSolicitudSeleccionada ?? string.Empty).Trim();
+            return codigo.Length > 0 && codigo == (_codiProveedorCliente ?? string.Empty).Trim();
+        }
+        private void AplicarCentroCostoPorSolicitud(bool asignar)
+        {
+            int? centroFijo = null;
+            if (_idSolicitudSeleccionada.HasValue)
+            {
+                if (EsSolicitudTransportista()) centroFijo = CENTRO_TRANSPORTISTAS;
+                else if (EsSolicitudProductor()) centroFijo = CENTRO_PRODUCTORES;
+            }
+            if (!centroFijo.HasValue)
+            {
+                cbxCENTRO_COSTO.Enabled = true;
+                return;
+            }
+            if (asignar)
+            {
+                cbxCENTRO_COSTO.SelectedValue = centroFijo.Value;
+                if (ObtenerIdCombo(cbxCENTRO_COSTO) != centroFijo.Value)
+                    XtraMessageBox.Show(
+                        $"El centro de costo {centroFijo.Value} no está disponible para su rol.\n\n" +
+                        "Solicite que se lo asignen en Roles (centros de costo).",
+                        "Centro de costo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            cbxCENTRO_COSTO.Enabled = false;
+        }
+        private bool EsSolicitudTransportista()
+        {
+            string tipo = (_tipoSolicitudSeleccionada ?? string.Empty).Trim().ToUpperInvariant();
+            if (tipo.Contains("TRANSPORT")) return true;
+            if (tipo.Length > 0) return false;   // PRODUCTOR, FRENTE ROZA, FRENTE QUERQUEO...
+            string codigo = (_codigoSolicitudSeleccionada ?? string.Empty).Trim();
+            string codTrans = (_codigoTransportistaCliente ?? string.Empty).Trim();
+            string codProv = (_codiProveedorCliente ?? string.Empty).Trim();
+            return codigo.Length > 0 && codigo == codTrans && codigo != codProv;
+        }
+
+        private void GuardarSolicitudTransportista(int idTipoComprob)
+        {
+            string codTransport = !string.IsNullOrWhiteSpace(_codigoSolicitudSeleccionada)
+                ? _codigoSolicitudSeleccionada.Trim()
+                : (_codigoTransportistaCliente ?? string.Empty).Trim();
+
+            var dtEnca = _dal.EjecutarConsulta("[ESOLICITUD].[SP_CCF_ENCA_TRANS]", new
+            {
+                ACCION = "GUARDAR_ENCA",
+                CODTRANSPORT = codTransport,
+                ID_ZAFRA = ObtenerIdCombo(cbxZAFRA),
+                ID_SOLICITUD = _idSolicitudSeleccionada,
+                ID_CUENTA_FINAN = _idCuentaFinanSolicitud,
+                ID_TIPO_COMPROB = idTipoComprob,           // 1 = CCF, 2 = Factura
+                NO_CCF = txtNUMINTERNO.Text.Trim(),
+                FECHA = ParsearFecha(mskFECHA.Text),
+                SUB_TOTAL = ObtenerTextBoxDecimal(txtSUBTOTAL),
+                DESCTO_MONTO = ObtenerTextBoxDecimal(txtDESCUENTO),
+                IVA = ObtenerTextBoxDecimal(txtIVA),
+                TOTAL = ObtenerTextBoxDecimal(txtTOTAL_VENTA),
+                USUARIO = Configuracion.UsuarioActual,
+            });
+            if (dtEnca == null || dtEnca.Rows.Count == 0)
+                throw new InvalidOperationException("SP_CCF_ENCA_TRANS no devolvió el ID generado.");
+
+            int idCcfTrans = Convert.ToInt32(dtEnca.Rows[0]["ID_GENERADO"]);
+            foreach (DataRow fila in _dtDetalle.Rows)
+            {
+                if (string.IsNullOrWhiteSpace(fila["COD_REF"].ToString())) continue;
+                _dal.EjecutarSinRetorno("[ESOLICITUD].[SP_CCF_ENCA_TRANS]", new
+                {
+                    ACCION = "GUARDAR_DETA",
+                    ID_CCF_TRANS = idCcfTrans,
+                    COD_REF = fila["COD_REF"].ToString(),   // el SP resuelve el ID_PRODUCTO de SIGESTA
+                    NOMBRE_PRODUCTO = fila["DESCRIPCION"].ToString(),
+                    CANTIDAD = Math.Round(Convert.ToDecimal(fila["CANTIDAD"]), 4),
+                    PRECIO_UNITARIO = Math.Round(Convert.ToDecimal(fila["PRECIO"]), 6),
+                    TOTAL_LINEA = Convert.ToDecimal(fila["TOTAL"]),
+                });
+            }
+
+            // Crédito agrícola del transportista en [INJIBOA].[dbo].[CREDITO_ENCA_TRANS]
+            // (igual que GUARDAR_DESDE_CCF para cañeros), leído de CCF_ENCA_TRANS por UID_CCF.
+            Guid uidCcf = (Guid)dtEnca.Rows[0]["UID_CCF"];
+            _dal.EjecutarSinRetorno("[ESOLICITUD].[SP_CCF_ENCA_TRANS]", new
+            {
+                ACCION = "GUARDAR_CREDITO",
+                UID_CCF = uidCcf,
+                USUARIO = Configuracion.UsuarioActual,
+            });
+        }
+
         private bool ValidarCampos()
         {
             if (!FormHelper.ValidarFecha(mskFECHA, "Fecha")) return false;
@@ -1399,6 +1601,21 @@ namespace SistemaContable.UI.Forms.Ventas
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+            // (2026-10-01) Si el detalle viene de una solicitud agrícola, todas las líneas
+            // deben ser de la solicitud.
+            if (DetalleDesdeSolicitud())
+            {
+                DataRow ajena = _dtDetalle.Rows.Cast<DataRow>().FirstOrDefault(r =>
+                    !string.IsNullOrWhiteSpace(r["COD_REF"].ToString()) &&
+                    r["ID_SOLIC_DETA"] == DBNull.Value &&
+                    (r["UID_SOLIC_DETA"] == DBNull.Value || string.IsNullOrWhiteSpace(r["UID_SOLIC_DETA"].ToString())));
+                if (ajena != null)
+                {
+                    XtraMessageBox.Show($"El producto '{ajena["DESCRIPCION"]}' no pertenece a la solicitud agrícola.\n\nSolo se permiten los ítems de la solicitud.",
+                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+            }
             foreach (DataRow fila in _dtDetalle.Rows)
             {
                 if (string.IsNullOrWhiteSpace(fila["COD_REF"].ToString())) continue;
@@ -1409,6 +1626,128 @@ namespace SistemaContable.UI.Forms.Ventas
                     return false;
                 }
             }
+            return true;
+        }
+        #endregion
+        #region FORMA DE PAGO (CONTADO) - 2026-10-01
+        // Suma de remesa + cheque + nota de abono + anticipo (lo que NO es efectivo).
+        private decimal OtrosPagosContado()
+        {
+            return ObtenerTextBoxDecimal(txtRECIB_REMESA)
+                 + ObtenerTextBoxDecimal(txtRECIB_CHEQUE)
+                 + ObtenerTextBoxDecimal(txtRECIB_NOTAABONO)
+                 + ObtenerTextBoxDecimal(txtRECIB_ANTICIPO);
+        }
+
+        // No pasarse del monto maximo: remesa + cheque + nota de abono + anticipo no pueden
+        // sumar mas que el total de la venta (solo el EFECTIVO puede exceder y genera vuelto).
+        private void LimitarPagoNoEfectivo(TextBox txt)
+        {
+            if (!EsPagoContado()) return;
+            decimal total = ObtenerTextBoxDecimal(txtTOTAL_VENTA);
+            decimal exceso = OtrosPagosContado() - total;
+            if (exceso <= 0) return;
+            decimal valor = ObtenerTextBoxDecimal(txt);
+            decimal permitido = Math.Max(0m, valor - exceso);
+            txt.Text = permitido.ToString("N2");
+            XtraMessageBox.Show(
+                $"Remesa + cheque + nota de abono + anticipo no pueden pasar del total de la venta ({total:N2}).\n" +
+                $"El monto se ajustó al máximo permitido: {permitido:N2}.",
+                "Forma de pago", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        // Al salir de Efectivo: si el cliente entrega mas de lo pendiente, se calcula el vuelto.
+        private void txtRECIB_EFECTIVO_Leave_FormaPago(object sender, EventArgs e)
+        {
+            if (!EsPagoContado()) return;
+            decimal total = ObtenerTextBoxDecimal(txtTOTAL_VENTA);
+            decimal efectivo = ObtenerTextBoxDecimal(txtRECIB_EFECTIVO);
+            decimal vuelto = Math.Max(0m, efectivo + OtrosPagosContado() - total);
+            txtRECIB_EFECTIVO.Text = efectivo.ToString("N2");
+            txtRECIB_EFECTIVO_CAMBIO.Text = vuelto.ToString("N2");
+        }
+
+        private bool ValidarDatosMovimiento(string forma, decimal monto, TextBox txtBanco, TextBox txtCuenta)
+        {
+            if (monto <= 0) return true;
+            if (string.IsNullOrWhiteSpace(txtBanco.Text))
+            {
+                XtraMessageBox.Show($"{forma}: ingrese el Banco (monto {monto:N2}).",
+                    "Forma de pago", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtBanco.Focus();
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(txtCuenta.Text))
+            {
+                XtraMessageBox.Show($"{forma}: ingrese el N° de Cuenta (monto {monto:N2}).",
+                    "Forma de pago", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCuenta.Focus();
+                return false;
+            }
+            return true;
+        }
+
+        // Validacion al guardar: en CONTADO la forma de pago debe cuadrar con el total.
+        //   Efectivo + Remesa + Cheque + Nota de abono + Anticipo - Vuelto = Total venta
+        private bool ValidarFormaPagoContado()
+        {
+            if (!EsPagoContado()) return true;
+
+            decimal total    = ObtenerTextBoxDecimal(txtTOTAL_VENTA);
+            decimal efectivo = ObtenerTextBoxDecimal(txtRECIB_EFECTIVO);
+            decimal remesa   = ObtenerTextBoxDecimal(txtRECIB_REMESA);
+            decimal cheque   = ObtenerTextBoxDecimal(txtRECIB_CHEQUE);
+            decimal nota     = ObtenerTextBoxDecimal(txtRECIB_NOTAABONO);
+            decimal vuelto   = ObtenerTextBoxDecimal(txtRECIB_EFECTIVO_CAMBIO);
+            decimal pagado   = efectivo + OtrosPagosContado() - vuelto;
+
+            if (efectivo < 0 || remesa < 0 || cheque < 0 || nota < 0 || vuelto < 0)
+            {
+                XtraMessageBox.Show("La forma de pago no puede tener montos negativos.",
+                    "Forma de pago", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            if (OtrosPagosContado() > total)
+            {
+                XtraMessageBox.Show($"Remesa + cheque + nota de abono + anticipo ({OtrosPagosContado():N2}) " +
+                    $"no pueden pasar del total de la venta ({total:N2}).",
+                    "Forma de pago", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            if (vuelto > efectivo)
+            {
+                XtraMessageBox.Show("El vuelto no puede ser mayor que el efectivo recibido.",
+                    "Forma de pago", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            if (Math.Abs(pagado - total) > 0.005m)
+            {
+                XtraMessageBox.Show(
+                    "La forma de pago no cuadra con el total de la venta (condición CONTADO).\n\n" +
+                    $"Efectivo:        {efectivo,12:N2}\n" +
+                    $"Remesa:          {remesa,12:N2}\n" +
+                    $"Cheque:          {cheque,12:N2}\n" +
+                    $"Nota de abono:   {nota,12:N2}\n" +
+                    $"Anticipo:        {ObtenerTextBoxDecimal(txtRECIB_ANTICIPO),12:N2}\n" +
+                    $"(-) Vuelto:      {vuelto,12:N2}\n" +
+                    $"Total pagado:    {pagado,12:N2}\n" +
+                    $"Total venta:     {total,12:N2}\n" +
+                    $"Diferencia:      {total - pagado,12:N2}",
+                    "Forma de pago", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            // Si hay monto en remesa / cheque / nota de abono, los datos del movimiento son obligatorios
+            if (!ValidarDatosMovimiento("Remesa", remesa, txtRECIB_REMESA_BANCO, txtRECIB_REMESA_CUENTA)) return false;
+            if (!ValidarDatosMovimiento("Cheque", cheque, txtRECIB_CHEQUE_BANCO, txtRECIB_CHEQUE_CUENTA)) return false;
+            if (!ValidarDatosMovimiento("Nota de abono", nota, txtRECIB_NOTAABONO_BANCO, txtRECIB_NOTAABONO_CUENTA)) return false;
+
+            // El monto de cada bloque (remesa / cheque / nota de abono) debe ser el mismo de arriba
+            if (remesa != ObtenerTextBoxDecimal(txtRECIB_REMESA_MONTO))
+                txtRECIB_REMESA_MONTO.Text = remesa.ToString("N2");
+            if (cheque != ObtenerTextBoxDecimal(txtRECIB_CHEQUE_MONTO))
+                txtRECIB_CHEQUE_MONTO.Text = cheque.ToString("N2");
+            if (nota != ObtenerTextBoxDecimal(txtRECIB_NOTAABONO_MONTO))
+                txtRECIB_NOTAABONO_MONTO.Text = nota.ToString("N2");
             return true;
         }
         #endregion
@@ -1511,6 +1850,12 @@ namespace SistemaContable.UI.Forms.Ventas
         }
         private static string NullIfEmpty(string texto)
             => string.IsNullOrWhiteSpace(texto) ? null : texto.Trim();
+        // (2026-10-05) N° Interno siempre a 15 dígitos (el SP devolvía INTERN sin ceros).
+        private static string FormatearNumInterno(string valor)
+        {
+            string v = (valor ?? string.Empty).Trim();
+            return v.Length > 0 && v.Length < 15 && v.All(char.IsDigit) ? v.PadLeft(15, '0') : v;
+        }
         private static string AsString(object valor)
             => valor == null || valor == DBNull.Value ? "" : valor.ToString();
         private static string AsFecha(object valor)
@@ -1579,6 +1924,7 @@ namespace SistemaContable.UI.Forms.Ventas
                     // historial de lo importado desde SIGESTA (N.º solicitud, cuenta, referencia).
                     _idSolicitudSeleccionada = idSolicitud;
                     AsignarDatosHistorialSolicitud(frm.SolicitudSeleccionada);
+                    AplicarCentroCostoPorSolicitud(true);   // 2026-10-05 centro fijo
                 }
                 catch (Exception ex)
                 {
@@ -1618,6 +1964,7 @@ namespace SistemaContable.UI.Forms.Ventas
                 _codigoSolicitudSeleccionada = string.Empty;
                 _nombreProveedorSolicitud = string.Empty;
                 _nombreZafraSolicitud = string.Empty;
+                cbxCENTRO_COSTO.Enabled = true;   // 2026-10-05 sin solicitud: centro libre
                 return;
             }
             txtNUM_SOLICITUD.Text = encabezadoSolicitud.Table.Columns.Contains("NUM_SOLICITUD") &&
@@ -1748,6 +2095,7 @@ namespace SistemaContable.UI.Forms.Ventas
         {
             CalcularDiasVenceDefault();
             AplicarEstadoCobroPorCondicion();
+            ActualizarEstadoBotonSolicitudAgricola();   // 2026-10-01 solo en CRÉDITO
 
             if (_dtDetalle != null)
                 ActualizarTotales();
@@ -1863,27 +2211,33 @@ namespace SistemaContable.UI.Forms.Ventas
         #region FORMAS DE PAGO - DETALLE
         private void txtRECIB_REMESA_Leave(object sender, EventArgs e)
         {
-            if (decimal.TryParse(txtRECIB_REMESA.Text.Replace(",", ""), out decimal val) && val > 0)
-            {
-                txtRECIB_REMESA_MONTO.Text = val.ToString("N2");
+            LimitarPagoNoEfectivo(txtRECIB_REMESA);   // no pasarse del total
+            ActualizarTotales();   // recalcula el efectivo pendiente (2026-10-01)
+            decimal.TryParse(txtRECIB_REMESA.Text.Replace(",", ""), out decimal val);
+            txtRECIB_REMESA.Text = val.ToString("N2");
+            txtRECIB_REMESA_MONTO.Text = val.ToString("N2");   // el monto del bloque siempre = monto de arriba
+            if (val > 0 && string.IsNullOrWhiteSpace(txtRECIB_REMESA_BANCO.Text))
                 txtRECIB_REMESA_BANCO.Focus();
-            }
         }
         private void txtRECIB_CHEQUE_Leave(object sender, EventArgs e)
         {
-            if (decimal.TryParse(txtRECIB_CHEQUE.Text.Replace(",", ""), out decimal val) && val > 0)
-            {
-                txtRECIB_CHEQUE_MONTO.Text = val.ToString("N2");
+            LimitarPagoNoEfectivo(txtRECIB_CHEQUE);   // no pasarse del total
+            ActualizarTotales();   // recalcula el efectivo pendiente (2026-10-01)
+            decimal.TryParse(txtRECIB_CHEQUE.Text.Replace(",", ""), out decimal val);
+            txtRECIB_CHEQUE.Text = val.ToString("N2");
+            txtRECIB_CHEQUE_MONTO.Text = val.ToString("N2");   // el monto del bloque siempre = monto de arriba
+            if (val > 0 && string.IsNullOrWhiteSpace(txtRECIB_CHEQUE_BANCO.Text))
                 txtRECIB_CHEQUE_BANCO.Focus();
-            }
         }
         private void txtRECIB_NOTAABONO_Leave(object sender, EventArgs e)
         {
-            if (decimal.TryParse(txtRECIB_NOTAABONO.Text.Replace(",", ""), out decimal val) && val > 0)
-            {
-                txtRECIB_NOTAABONO_MONTO.Text = val.ToString("N2");
+            LimitarPagoNoEfectivo(txtRECIB_NOTAABONO);   // no pasarse del total
+            ActualizarTotales();   // recalcula el efectivo pendiente (2026-10-01)
+            decimal.TryParse(txtRECIB_NOTAABONO.Text.Replace(",", ""), out decimal val);
+            txtRECIB_NOTAABONO.Text = val.ToString("N2");
+            txtRECIB_NOTAABONO_MONTO.Text = val.ToString("N2");   // el monto del bloque siempre = monto de arriba
+            if (val > 0 && string.IsNullOrWhiteSpace(txtRECIB_NOTAABONO_BANCO.Text))
                 txtRECIB_NOTAABONO_BANCO.Focus();
-            }
         }
         #endregion
         private void cbxTIPO_DTE_SelectedIndexChanged(object sender, EventArgs e)

@@ -1,8 +1,10 @@
 using SistemaContable.DAL;
 using SistemaContable.UI.Forms.Ventas; // frmCreditoFiscal vive en Ventas
+using SistemaContable.UI.Helpers;
 using System;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Columns;
@@ -21,7 +23,13 @@ namespace SistemaContable.UI.Forms.Planilla
     // La Factura (ID_TIPO_DTE = 1) se maneja en frmFacturaCorte.
     public partial class frmCreditoFiscalCorte : Form
     {
-        private const string SP_PLANILLA = "[ECOMPROB].[SP_GENERAR_COMPROB_PLANILLA_CANIERO]";
+        // Tipo Planilla = 2 (TRANSPORTISTAS) usa sus propias tablas y SPs (PLANILLA_TRAS_ENCA / _DETA);
+        // el resto de planillas usa los de caneros (PLANILLA_CANIERO_ENCA / _DETA). 2026-09-30
+        private const int TIPO_PLANILLA_TRANSPORTISTAS = 2;
+        private const string SP_PLANILLA_CANIERO = "[ECOMPROB].[SP_GENERAR_COMPROB_PLANILLA_CANIERO]";
+        private const string SP_PLANILLA_TRAS    = "[ECOMPROB].[SP_GENERAR_COMPROB_PLANILLA_TRAS]";
+        private bool EsTransportistas => ValorCombo(cbxTIPO_PLANILLA) == TIPO_PLANILLA_TRANSPORTISTAS;
+        private string SP_PLANILLA => EsTransportistas ? SP_PLANILLA_TRAS : SP_PLANILLA_CANIERO;
         private const string RELACION_DETALLE = "Detalle";
         // Esta pantalla trabaja siempre con contribuyentes (Crédito Fiscal). Definido por Roberto 2026-09-29.
         private const int ES_CONTRIBUYENTE = 1;
@@ -319,6 +327,7 @@ namespace SistemaContable.UI.Forms.Planilla
                 filtros.ES_CONTRIBUYENTE
             });
 
+            _planillaConsultada = ValorCombo(cbxTIPO_PLANILLA);
             dtEnc.TableName = "ENCABEZADO";
             dtDet.TableName = "DETALLE";
 
@@ -464,7 +473,7 @@ namespace SistemaContable.UI.Forms.Planilla
         private int? ObtenerIdDocumentoFilaActiva()
         {
             if (gvDocumentos.FocusedRowHandle < 0) return null;
-            object val = gvDocumentos.GetRowCellValue(gvDocumentos.FocusedRowHandle, "ID_DTEENC");
+            object val = gvDocumentos.GetRowCellValue(gvDocumentos.FocusedRowHandle, "ID_CCFENC");
             if (val == null || val == DBNull.Value) return null;
             return Convert.ToInt32(val);
         }
@@ -576,13 +585,24 @@ namespace SistemaContable.UI.Forms.Planilla
         // Generar CCF = SP_EMITIR_DTE_CANIERO_CCF por cada fila seleccionada arriba.
         // Solo procesa las pendientes (ESTADO <> '1') con cliente y productos relacionados.
         // Cada CCF va en su propia transacción: si uno falla, los demás siguen.
-        private const string SP_EMITIR = "[ECOMPROB].[SP_EMITIR_DTE_CANIERO_CCF]";
+        private const string SP_EMITIR_CANIERO = "[ECOMPROB].[SP_EMITIR_DTE_CANIERO_CCF]";
+        private const string SP_EMITIR_TRAS    = "[ECOMPROB].[SP_EMITIR_DTE_TRAS_CCF]";
+        // La emision usa el tipo de planilla con que se CONSULTO el grid (los Id son de esa tabla)
+        private int? _planillaConsultada;
+        private string SP_EMITIR => _planillaConsultada == TIPO_PLANILLA_TRANSPORTISTAS ? SP_EMITIR_TRAS : SP_EMITIR_CANIERO;
 
         private void btnGenerar_Click(object sender, EventArgs e)
         {
             if (_dsCandidatos == null || gvCandidatos.RowCount == 0)
             {
                 XtraMessageBox.Show("Primero consulte la planilla.", "Generar CCF",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (_planillaConsultada != ValorCombo(cbxTIPO_PLANILLA))
+            {
+                XtraMessageBox.Show("Cambió el Tipo de Planilla. Presione Consultar antes de generar.", "Generar CCF",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -618,6 +638,38 @@ namespace SistemaContable.UI.Forms.Planilla
                     int foco = gvCandidatos.FocusedRowHandle;
                     if (foco >= 0) handles.Add(foco);
                 }
+            }
+
+            var clientesAValidar = new System.Collections.Generic.List<ClientePlanillaValidacion>();
+            foreach (int h in handles)
+            {
+                if (Convert.ToString(gvCandidatos.GetRowCellValue(h, "ESTADO")) == "1") continue;
+
+                object idEntidad = gvCandidatos.GetRowCellValue(h, "ID_ENTIDAD");
+                clientesAValidar.Add(new ClientePlanillaValidacion
+                {
+                    IdComprobante = Convert.ToInt32(gvCandidatos.GetRowCellValue(h, "ID_COMPROB_ENCA")),
+                    IdEntidad = idEntidad == null || idEntidad == DBNull.Value
+                        ? (int?)null
+                        : Convert.ToInt32(idEntidad),
+                    CodigoImportado = Convert.ToString(gvCandidatos.GetRowCellValue(h, "CODIPROVEEDOR_TRANSPORTISTA")),
+                    Nombre = Convert.ToString(gvCandidatos.GetRowCellValue(h, "NOMBRE_CLIENTE"))
+                });
+            }
+
+            var problemasClientes = ValidadorClientesPlanilla.Validar(
+                _dal, clientesAValidar, _planillaConsultada == TIPO_PLANILLA_TRANSPORTISTAS);
+            if (problemasClientes.Count > 0)
+            {
+                string detalle = string.Join("\n", problemasClientes.Take(25).Select(x => "• " + x));
+                if (problemasClientes.Count > 25)
+                    detalle += $"\n• ... y {problemasClientes.Count - 25} problema(s) adicional(es).";
+
+                XtraMessageBox.Show(
+                    "No se puede generar porque existen problemas en los datos de clientes:\n\n" + detalle +
+                    "\n\nCorrija los datos, vuelva a consultar y genere nuevamente.",
+                    "Validación de clientes", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
             var pendientes = new System.Collections.Generic.List<(int Id, string Proveedor)>();
@@ -670,7 +722,9 @@ namespace SistemaContable.UI.Forms.Planilla
 
                     try
                     {
-                        DataTable r = _dal.EjecutarConsulta(SP_EMITIR, new
+                        // El SP ya no usa INSERT-EXEC: los SP internos (ENC/DET) devuelven sus
+                        // propios result sets y el resultado de la emision es el ULTIMO.
+                        DataSet ds = _dal.EjecutarMultiple(SP_EMITIR, new
                         {
                             ID_COMPROB_ENCA = p.Id,
                             ID_ZAFRA = ValorCombo(cbxZAFRA),
@@ -679,6 +733,12 @@ namespace SistemaContable.UI.Forms.Planilla
                             ID_CAJERO = Configuracion.Id_Cajero,
                             USUARIO = Configuracion.UsuarioActual
                         });
+
+                        DataTable r = null;
+                        if (ds != null)
+                            for (int t = ds.Tables.Count - 1; t >= 0; t--)
+                                if (ds.Tables[t].Columns.Contains("RESULTADO") && ds.Tables[t].Columns.Contains("MENSAJE"))
+                                { r = ds.Tables[t]; break; }
 
                         string resultado = r != null && r.Rows.Count > 0 ? Convert.ToString(r.Rows[0]["RESULTADO"]) : "ERROR";
                         string mensaje = r != null && r.Rows.Count > 0 ? Convert.ToString(r.Rows[0]["MENSAJE"]) : "Sin respuesta del SP.";
@@ -758,7 +818,8 @@ namespace SistemaContable.UI.Forms.Planilla
                 {
                     DataRow x = r.Rows[0];
                     msg = $"CCF eliminados: {x["CCF_ELIMINADOS"]}  (líneas de detalle: {x["CCF_DETALLE_ELIMINADOS"]})" +
-                          $"\nComprobantes de planilla eliminados: {x["COMPROBANTES_IMPORTACION_ELIMINADOS"]}  (líneas: {x["DETALLE_IMPORTACION_ELIMINADOS"]})";
+                          $"\nComprobantes de planilla eliminados: {x["COMPROBANTES_IMPORTACION_ELIMINADOS"]}  (líneas: {x["DETALLE_IMPORTACION_ELIMINADOS"]})" +
+                          (r.Columns.Contains("LIBRO_VENTAS_ELIMINADOS") ? $"\nLibro de ventas (EIVA.LBVENTACCF) eliminados: {x["LIBRO_VENTAS_ELIMINADOS"]}" : "");
                     msg += x["NUMERACION_NUEVA"] == DBNull.Value
                         ? "\n\nLa numeración de CCF no se movió (hay CCF emitidos después de las pruebas)."
                         : $"\n\nNumeración de CCF regresada de {x["NUMERACION_ANTERIOR"]} a {x["NUMERACION_NUEVA"]}.";

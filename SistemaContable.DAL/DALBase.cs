@@ -52,6 +52,30 @@ namespace SistemaContable.DAL
             }
         }
 
+        // Ejecuta una consulta SQL fija que no requiere parámetros ni procedimiento almacenado.
+        public DataTable EjecutarConsultaSql(string consulta)
+        {
+            try
+            {
+                using (var cn = new SqlConnection(CadenaConexion))
+                using (var cmd = new SqlCommand(consulta, cn))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    var dt = new DataTable();
+                    cn.Open();
+                    da.Fill(dt);
+                    return dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message, ex,
+                    modulo: "DALBase.EjecutarConsultaSql",
+                    spNombre: "CONSULTA_SQL");
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         public DynamicParameters EjecutarConSalida(string sp, DynamicParameters parametros)
         {
             try

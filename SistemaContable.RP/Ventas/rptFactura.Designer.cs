@@ -1073,7 +1073,7 @@ namespace SistemaContable.RP.Ventas
             this.xrLabel12.SizeF = new System.Drawing.SizeF(106.901F, 15F);
             this.xrLabel12.StylePriority.UseFont = false;
             this.xrLabel12.StylePriority.UseTextAlignment = false;
-            this.xrLabel12.Text = "Departamento:";
+            this.xrLabel12.Text = "Distrito:";
             this.xrLabel12.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrTable2
@@ -1548,7 +1548,7 @@ namespace SistemaContable.RP.Ventas
             // 
             this.xrLabel63.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[valortot]")});
-            this.xrLabel63.LocationFloat = new DevExpress.Utils.PointFloat(676.3588F, 171.0001F);
+            this.xrLabel63.LocationFloat = new DevExpress.Utils.PointFloat(676.3588F, 148.0001F);
             this.xrLabel63.Multiline = true;
             this.xrLabel63.Name = "xrLabel63";
             this.xrLabel63.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 5, 0, 0, 100F);
@@ -1563,7 +1563,7 @@ namespace SistemaContable.RP.Ventas
             // 
             this.xrLabel62.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[percepcion]")});
-            this.xrLabel62.LocationFloat = new DevExpress.Utils.PointFloat(676.3588F, 148F);
+            this.xrLabel62.LocationFloat = new DevExpress.Utils.PointFloat(676.3588F, 125F);
             this.xrLabel62.Multiline = true;
             this.xrLabel62.Name = "xrLabel62";
             this.xrLabel62.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 5, 0, 0, 100F);
@@ -1578,7 +1578,7 @@ namespace SistemaContable.RP.Ventas
             // 
             this.xrLabel61.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[retencion]")});
-            this.xrLabel61.LocationFloat = new DevExpress.Utils.PointFloat(676.3588F, 125F);
+            this.xrLabel61.LocationFloat = new DevExpress.Utils.PointFloat(676.3588F, 102F);
             this.xrLabel61.Multiline = true;
             this.xrLabel61.Name = "xrLabel61";
             this.xrLabel61.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 5, 0, 0, 100F);
@@ -1594,6 +1594,7 @@ namespace SistemaContable.RP.Ventas
             this.xrLabel60.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[iva]")});
             this.xrLabel60.LocationFloat = new DevExpress.Utils.PointFloat(676.3588F, 102F);
+            this.xrLabel60.Visible = false; // 2026-10-01 Factura: IVA incluido en el precio, no se muestra
             this.xrLabel60.Multiline = true;
             this.xrLabel60.Name = "xrLabel60";
             this.xrLabel60.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 5, 0, 0, 100F);
@@ -1680,7 +1681,7 @@ namespace SistemaContable.RP.Ventas
             // 
             // xrLabel54
             // 
-            this.xrLabel54.LocationFloat = new DevExpress.Utils.PointFloat(596.1505F, 170.9999F);
+            this.xrLabel54.LocationFloat = new DevExpress.Utils.PointFloat(596.1505F, 147.9999F);
             this.xrLabel54.Multiline = true;
             this.xrLabel54.Name = "xrLabel54";
             this.xrLabel54.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -1691,7 +1692,7 @@ namespace SistemaContable.RP.Ventas
             // 
             // xrLabel53
             // 
-            this.xrLabel53.LocationFloat = new DevExpress.Utils.PointFloat(596.1505F, 148F);
+            this.xrLabel53.LocationFloat = new DevExpress.Utils.PointFloat(596.1505F, 125F);
             this.xrLabel53.Multiline = true;
             this.xrLabel53.Name = "xrLabel53";
             this.xrLabel53.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -1702,7 +1703,7 @@ namespace SistemaContable.RP.Ventas
             // 
             // xrLabel52
             // 
-            this.xrLabel52.LocationFloat = new DevExpress.Utils.PointFloat(596.1505F, 125F);
+            this.xrLabel52.LocationFloat = new DevExpress.Utils.PointFloat(596.1505F, 102F);
             this.xrLabel52.Multiline = true;
             this.xrLabel52.Name = "xrLabel52";
             this.xrLabel52.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -1714,6 +1715,7 @@ namespace SistemaContable.RP.Ventas
             // xrLabel49
             // 
             this.xrLabel49.LocationFloat = new DevExpress.Utils.PointFloat(596.1505F, 102F);
+            this.xrLabel49.Visible = false; // 2026-10-01 Factura: IVA incluido en el precio, no se muestra
             this.xrLabel49.Multiline = true;
             this.xrLabel49.Name = "xrLabel49";
             this.xrLabel49.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);

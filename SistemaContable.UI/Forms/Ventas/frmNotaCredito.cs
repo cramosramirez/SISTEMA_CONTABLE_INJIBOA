@@ -26,6 +26,8 @@ namespace SistemaContable.UI.Forms.Ventas
         private string _columnaAnteriorGrid = string.Empty;
         // Referencia al CCF origen
         private int _idCCFEncOrigen = 0;
+        // (2026-10-01) Ítems que vinieron del CCF origen: en la NC no se agregan ni se quitan.
+        private int _itemsCCFOrigen = 0;
         private string _codGenDocOrigen = string.Empty;   // CODGENERACIONCCF
         private string _numControlCCF = string.Empty;   // NUMCONTROLCCF
         private string _selloRecepCCF = string.Empty;   // SELLORECEPCIONCC
@@ -192,12 +194,37 @@ namespace SistemaContable.UI.Forms.Ventas
                 txtDIRECCION.Text = AsString(r["COMPLEMENTO"]);
                 txtTIPO_CONTRIBUYENTE.Text = AsString(r["TIPO_CONTRIBUYENTE"]);
 
+                if (Col(r, "ID_ENTIDAD") != DBNull.Value)
+                    _idEntidad = Convert.ToInt32(r["ID_ENTIDAD"]);
+                if (Col(r, "TPCONTRIBUYENTEEMISOR") != DBNull.Value)
+                    _idTipoContribEMISOR = Convert.ToInt32(r["TPCONTRIBUYENTEEMISOR"]);
+
                 // Condición de pago y fechas
                 if (r["ID_CONDPAGO"] != DBNull.Value)
                     cbxCONDPAGO.SelectedValue = Convert.ToInt32(r["ID_CONDPAGO"]);
 
-                // Cargar detalle del CCF
+                // FIX (2026-10-01): traer la forma de pago y la percepcion del CCF origen.
+                chkPERCEPCION.Checked = Col(r, "AP_PERCEPCION") != DBNull.Value && Convert.ToBoolean(r["AP_PERCEPCION"]);
+                AsignarDecimal(txtRECIB_REMESA, ToDecimal(Col(r, "RECIB_REMESA")));
+                AsignarDecimal(txtRECIB_CHEQUE, ToDecimal(Col(r, "RECIB_CHEQUE")));
+                AsignarDecimal(txtRECIB_NOTAABONO, ToDecimal(Col(r, "RECIB_NOTAABONO")));
+                AsignarDecimal(txtRECIB_ANTICIPO, ToDecimal(Col(r, "RECIB_ANTICIPO")));
+                txtRECIB_REMESA_BANCO.Text = AsString(Col(r, "RECIB_REMESA_BANCO"));
+                txtRECIB_REMESA_CUENTA.Text = AsString(Col(r, "RECIB_REMESA_CUENTA"));
+                AsignarDecimal(txtRECIB_REMESA_MONTO, ToDecimal(Col(r, "RECIB_REMESA_MONTO")));
+                txtRECIB_CHEQUE_BANCO.Text = AsString(Col(r, "RECIB_CHEQUE_BANCO"));
+                txtRECIB_CHEQUE_CUENTA.Text = AsString(Col(r, "RECIB_CHEQUE_CUENTA"));
+                AsignarDecimal(txtRECIB_CHEQUE_MONTO, ToDecimal(Col(r, "RECIB_CHEQUE_MONTO")));
+                txtRECIB_NOTAABONO_BANCO.Text = AsString(Col(r, "RECIB_NOTAABONO_BANCO"));
+                txtRECIB_NOTAABONO_CUENTA.Text = AsString(Col(r, "RECIB_NOTAABONO_CUENTA"));
+                AsignarDecimal(txtRECIB_NOTAABONO_MONTO, ToDecimal(Col(r, "RECIB_NOTAABONO_MONTO")));
+
+                // Cargar detalle del CCF (recalcula totales con las tasas correctas)
                 CargarDetalleDesdeCCF(idCCFEnc);
+
+                // Efectivo y vuelto tal como se guardaron en el CCF
+                AsignarDecimal(txtRECIB_EFECTIVO, ToDecimal(Col(r, "RECIB_EFECTIVO")));
+                AsignarDecimal(txtRECIB_EFECTIVO_CAMBIO, ToDecimal(Col(r, "RECIB_EFECTIVO_CAMBIO")));
 
                 XtraMessageBox.Show(
                     $"CCF #{txtDOC_ORIGEN_NUM.Text} cargado correctamente.\n\nRevise y ajuste el detalle según corresponda, luego ingrese el motivo de la nota de crédito.",
@@ -244,6 +271,7 @@ namespace SistemaContable.UI.Forms.Ventas
                     _dtDetalle.Rows.Add(f);
                 }
             }
+            _itemsCCFOrigen = ContarItemsDetalle();   // 2026-10-01 solo ítems del CCF
             AgregarFilaVacia();
             ActualizarTotales();
         }
@@ -297,7 +325,7 @@ namespace SistemaContable.UI.Forms.Ventas
                 cbxCONDPAGO.SelectedValue = Convert.ToInt32(r["ID_CONDPAGO"]);
                 mskFECHA.Text = AsFecha(r["FECHA"]);
                 mskFECHA_VENCE.Text = AsFecha(r["FECHA_VENCE"]);
-                txtNUMINTERNO.Text = AsString(r["NUMINTERNO"]);
+                txtNUMINTERNO.Text = FormatearNumInterno(AsString(r["NUMINTERNO"]));
                 txtNUM_CONTROL.Text = AsString(r["NUMCONTROL"]);
                 txtCOD_GENERACION.Text = AsString(r["CODGENERACION"]);
                 txtSELLO_RECIBIDO.Text = AsString(r["SELLORECEPCION"]);
@@ -361,6 +389,7 @@ namespace SistemaContable.UI.Forms.Ventas
                     _dtDetalle.Rows.Add(f);
                 }
             }
+            _itemsCCFOrigen = ContarItemsDetalle();   // 2026-10-01 solo ítems del CCF
             AgregarFilaVacia();
             ActualizarTotales();
         }
@@ -399,9 +428,11 @@ namespace SistemaContable.UI.Forms.Ventas
                 new { ACCION = "OBTENER", ID_DTRETENCION = 1 });
             if (dt == null || dt.Rows.Count == 0) return;
             DataRow r = dt.Rows[0];
-            _porcIVA = r["IVA"] == DBNull.Value ? 0.13m : Convert.ToDecimal(r["IVA"]) / 100m;
-            _porcIVARET = r["IVARET"] == DBNull.Value ? 0.01m : Convert.ToDecimal(r["IVARET"]) / 100m;
-            _porcIVAPER = r["IVAPER"] == DBNull.Value ? 0.01m : Convert.ToDecimal(r["IVAPER"]) / 100m;
+            // FIX (2026-10-01): igual que frmCreditoFiscal. Antes se dividia siempre entre 100;
+            // como la tabla guarda 0.13, el IVA salia 0.0013 (ej. 1.20 en lugar de 120.13).
+            _porcIVA = NormalizarTasa(r["IVA"], 0.13m);
+            _porcIVARET = NormalizarTasa(r["IVARET"], 0.01m);
+            _porcIVAPER = NormalizarTasa(r["IVAPER"], 0.01m);
             _extraerIVA = r["EXTRAER_IVA"] == DBNull.Value ? 0m : Convert.ToDecimal(r["EXTRAER_IVA"]);
             _extraerRENTA = r["EXTRAER_RENTA"] == DBNull.Value ? 0m : Convert.ToDecimal(r["EXTRAER_RENTA"]);
         }
@@ -482,7 +513,7 @@ namespace SistemaContable.UI.Forms.Ventas
             ConfigurarColumna(view, "DESCRIPCION", "Descripción", 250, true);
             ConfigurarColumna(view, "UM", "U.M.", 55, false);
             ConfigurarColumna(view, "CANTIDAD", "Cantidad", 75, true);
-            ConfigurarColumna(view, "PRECIO", "Precio", 85, true);
+            ConfigurarColumna(view, "PRECIO", "Precio", 105, true);
             ConfigurarColumna(view, "PORC_DESC", "%Desc.", 55, true);
             ConfigurarColumna(view, "GRAVADO", "Gravado", 85, false);
             ConfigurarColumnaCheckBox(view, "ES_EXENTO", "Exento", 55);
@@ -500,6 +531,19 @@ namespace SistemaContable.UI.Forms.Ventas
             view.Columns["ES_EXENTO"].VisibleIndex = 7;
             view.Columns["EXENTO"].VisibleIndex = 8;
             view.Columns["TOTAL"].VisibleIndex = 9;
+            // (2026-10-01) Cantidad a 4 decimales y precio unitario a 6, igual que CCF/Factura.
+            var repoCantidad = new RepositoryItemTextEdit();
+            repoCantidad.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+            repoCantidad.Mask.EditMask = "n4";
+            repoCantidad.Mask.UseMaskAsDisplayFormat = true;
+            gridControl1.RepositoryItems.Add(repoCantidad);
+            view.Columns["CANTIDAD"].ColumnEdit = repoCantidad;
+            var repoPrecio = new RepositoryItemTextEdit();
+            repoPrecio.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+            repoPrecio.Mask.EditMask = "n6";
+            repoPrecio.Mask.UseMaskAsDisplayFormat = true;
+            gridControl1.RepositoryItems.Add(repoPrecio);
+            view.Columns["PRECIO"].ColumnEdit = repoPrecio;
             var colEliminar = view.Columns.AddField("ELIMINAR");
             colEliminar.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             colEliminar.Caption = " ";
@@ -543,8 +587,16 @@ namespace SistemaContable.UI.Forms.Ventas
             view.Appearance.HeaderPanel.Options.UseFont = true;
             view.CustomColumnDisplayText += (s, ev) =>
             {
-                if (ev.Column.FieldName == "CANTIDAD" || ev.Column.FieldName == "PORC_DESC" ||
-                    ev.Column.FieldName == "PRECIO" || ev.Column.FieldName == "DESCUENTO" ||
+                // (2026-10-01) Cantidad a 4 decimales y precio a 6, igual que CCF/Factura.
+                if (ev.Column.FieldName == "CANTIDAD" || ev.Column.FieldName == "PRECIO")
+                {
+                    string fmt = ev.Column.FieldName == "CANTIDAD" ? "N4" : "N6";
+                    decimal v = 0m;
+                    if (ev.Value != null && ev.Value != DBNull.Value) decimal.TryParse(ev.Value.ToString(), out v);
+                    ev.DisplayText = v.ToString(fmt);
+                    return;
+                }
+                if (ev.Column.FieldName == "PORC_DESC" || ev.Column.FieldName == "DESCUENTO" ||
                     ev.Column.FieldName == "EXENTO" || ev.Column.FieldName == "GRAVADO" ||
                     ev.Column.FieldName == "TOTAL")
                 {
@@ -562,6 +614,14 @@ namespace SistemaContable.UI.Forms.Ventas
                     RecalcularLinea(s as GridView, ev.RowHandle);
             };
             view.KeyDown += GridView_KeyDown;
+            // (2026-10-01) Con CCF origen no se puede cambiar el producto de la línea.
+            view.ShowingEditor += (s, ev) =>
+            {
+                var gv = s as GridView;
+                string campo = gv?.FocusedColumn?.FieldName;
+                if ((campo == "COD_REF" || campo == "DESCRIPCION") && ItemsBloqueadosPorCCF())
+                    ev.Cancel = true;
+            };
             view.FocusedColumnChanged += GridView_FocusedColumnChanged;
             ActualizarTotales();
         }
@@ -596,8 +656,22 @@ namespace SistemaContable.UI.Forms.Ventas
             if (col != null) col.Visible = false;
         }
 
+        // (2026-10-01) Con CCF origen seleccionado, el detalle son SOLO los ítems del CCF:
+        // no se agregan filas, no se eliminan y no se cambia el producto.
+        private bool ItemsBloqueadosPorCCF() => _idCCFEncOrigen > 0;
+        private int ContarItemsDetalle()
+            => _dtDetalle == null ? 0 : _dtDetalle.Rows.Cast<DataRow>()
+                .Count(r => r.RowState != DataRowState.Deleted &&
+                            !string.IsNullOrWhiteSpace(r["COD_REF"].ToString()));
+        private void AvisarSoloItemsCCF()
+        {
+            XtraMessageBox.Show(
+                "La nota de crédito solo puede llevar los ítems del Crédito Fiscal de origen.\n\nNo se pueden agregar, quitar ni cambiar productos; solo ajustar cantidad o precio.",
+                "Nota de crédito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
         private void AgregarFilaVacia()
         {
+            if (ItemsBloqueadosPorCCF()) return;   // 2026-10-01 solo ítems del CCF
             var fila = _dtDetalle.NewRow();
             fila["ID_PRODUCTO"] = 0;
             fila["COD_REF"] = "";
@@ -618,10 +692,10 @@ namespace SistemaContable.UI.Forms.Ventas
         private void RecalcularLinea(GridView view, int rowHandle)
         {
             if (view == null || rowHandle < 0) return;
-            decimal cantidad = ObtenerDecimal(view, rowHandle, "CANTIDAD");
-            decimal precio = ObtenerDecimal(view, rowHandle, "PRECIO");
+            decimal cantidad = Math.Round(ObtenerDecimal(view, rowHandle, "CANTIDAD"), 4);
+            decimal precio = Math.Round(ObtenerDecimal(view, rowHandle, "PRECIO"), 6);
             decimal porcDesc = ObtenerDecimal(view, rowHandle, "PORC_DESC");
-            decimal subtotalLinea = cantidad * precio;
+            decimal subtotalLinea = Math.Round(cantidad * precio, 2, MidpointRounding.AwayFromZero);
             decimal descuento = porcDesc > 0 ? Math.Round(subtotalLinea * porcDesc / 100m, 2) : 0m;
             decimal total = subtotalLinea - descuento;
             var valExento = view.GetRowCellValue(rowHandle, "ES_EXENTO");
@@ -660,24 +734,20 @@ namespace SistemaContable.UI.Forms.Ventas
                 totalDescuento += fila["DESCUENTO"] == DBNull.Value ? 0 : Convert.ToDecimal(fila["DESCUENTO"]);
             }
 
-            decimal subTotal = (totalGravado + totalExento) - totalDescuento;
-            decimal iva = Math.Round(subTotal * _porcIVA, 2);
+            // FIX (2026-10-01): mismo calculo que frmCreditoFiscal, para que la NC cuadre con el CCF.
+            //  - GRAVADO/EXENTO ya vienen netos de descuento (no se resta otra vez).
+            //  - IVA solo sobre lo gravado.
+            //  - Sin retencion automatica del 1% (el CCF ya no la aplica); solo percepcion con el check.
+            decimal subTotal = totalGravado + totalExento;
+            decimal iva = Math.Round(totalGravado * _porcIVA, 2);
             decimal retencion = 0m;
             decimal percepcion = 0m;
 
             if (_idTipoContribEMISOR == 3 &&
-               (_idTipoContribCliente == 1 || _idTipoContribCliente == 2))
+               (_idTipoContribCliente == 1 || _idTipoContribCliente == 2) &&
+               chkPERCEPCION.Checked)
             {
-                if (chkPERCEPCION.Checked)
-                {
-                    percepcion = subTotal >= 100 ? Math.Round(subTotal * _porcIVAPER, 2) : 0m;
-                    retencion = 0m;
-                }
-                else
-                {
-                    retencion = subTotal >= 100 ? Math.Round(subTotal * _porcIVARET, 2) : 0m;
-                    percepcion = 0m;
-                }
+                percepcion = Math.Round(totalGravado * _porcIVAPER, 2);
             }
 
             decimal totalFinal = subTotal + iva - retencion + percepcion;
@@ -692,8 +762,17 @@ namespace SistemaContable.UI.Forms.Ventas
             txtTOTAL_VENTA.Text = totalFinal.ToString("N2");
 
             string condicion = cbxCONDPAGO.Text?.Trim().ToUpper() ?? "";
-            txtRECIB_EFECTIVO.Text = condicion == "CONTADO" && totalFinal > 0
-                ? totalFinal.ToString("N2") : "0.00";
+            if (condicion == "CONTADO" && totalFinal > 0)
+            {
+                // Efectivo = lo que falta despues de remesa, cheque, nota de abono y anticipo.
+                decimal otrosPagos = ObtenerTextBoxDecimal(txtRECIB_REMESA)
+                                   + ObtenerTextBoxDecimal(txtRECIB_CHEQUE)
+                                   + ObtenerTextBoxDecimal(txtRECIB_NOTAABONO)
+                                   + ObtenerTextBoxDecimal(txtRECIB_ANTICIPO);
+                txtRECIB_EFECTIVO.Text = Math.Max(0m, totalFinal - otrosPagos).ToString("N2");
+            }
+            else
+                txtRECIB_EFECTIVO.Text = "0.00";
         }
 
         private decimal ObtenerTextBoxDecimal(TextBox txt)
@@ -727,7 +806,11 @@ namespace SistemaContable.UI.Forms.Ventas
             {
                 e.Handled = true;
                 int filaActual = view.FocusedRowHandle;
-                if (filaActual == _dtDetalle.Rows.Count - 1) AgregarFilaVacia();
+                if (filaActual == _dtDetalle.Rows.Count - 1)
+                {
+                    if (ItemsBloqueadosPorCCF()) { view.CloseEditor(); e.Handled = true; return; }
+                    AgregarFilaVacia();
+                }
                 view.FocusedRowHandle = filaActual + 1;
                 view.FocusedColumn = view.Columns["COD_REF"];
                 view.ShowEditor();
@@ -747,7 +830,11 @@ namespace SistemaContable.UI.Forms.Ventas
             {
                 view.CloseEditor();
                 int filaActual = view.FocusedRowHandle;
-                if (filaActual == _dtDetalle.Rows.Count - 1) AgregarFilaVacia();
+                if (filaActual == _dtDetalle.Rows.Count - 1)
+                {
+                    if (ItemsBloqueadosPorCCF()) { view.CloseEditor(); e.Handled = true; return; }
+                    AgregarFilaVacia();
+                }
                 view.FocusedRowHandle = filaActual + 1;
                 view.FocusedColumn = view.Columns["COD_REF"];
                 view.ShowEditor();
@@ -782,6 +869,7 @@ namespace SistemaContable.UI.Forms.Ventas
         #region BÚSQUEDA DE PRODUCTO
         private void AbrirBusquedaProducto(GridView view)
         {
+            if (ItemsBloqueadosPorCCF()) { AvisarSoloItemsCCF(); return; }
             var config = new BusquedaConfig
             {
                 StoredProcedure = "[EINVENTARIO].[SP_PRODUCTO]",
@@ -842,6 +930,7 @@ namespace SistemaContable.UI.Forms.Ventas
         #region ELIMINAR FILA
         private void EliminarFilaDetalle()
         {
+            if (ItemsBloqueadosPorCCF()) { AvisarSoloItemsCCF(); return; }
             var view = gridControl1.MainView as GridView;
             if (view == null) return;
             int fila = view.FocusedRowHandle;
@@ -910,7 +999,7 @@ namespace SistemaContable.UI.Forms.Ventas
                     FECHA = ParsearFecha(mskFECHA.Text),
                     SALFEC = FormHelper.ObtenerSalfec(mskFECHA),
                     NUMDOC = NullIfEmpty(txtNUMINTERNO.Text),
-                    NUMINTERNO = txtNUMINTERNO.Text,
+                    NUMINTERNO = FormatearNumInterno(txtNUMINTERNO.Text),
                     CODGENERACION = txtCOD_GENERACION.Text.Trim(),
                     NUMCONTROL = txtNUM_CONTROL.Text.Trim(),
                     SELLORECEPCION = txtSELLO_RECIBIDO.Text.Trim(),
@@ -960,7 +1049,7 @@ namespace SistemaContable.UI.Forms.Ventas
                 if (dtVenta.Columns.Contains("NCONT") && dtVenta.Rows[0]["NCONT"] != DBNull.Value)
                     txtNUM_CONTROL.Text = Convert.ToString(dtVenta.Rows[0]["NCONT"]);
                 if (dtVenta.Columns.Contains("INTERN") && dtVenta.Rows[0]["INTERN"] != DBNull.Value)
-                    txtNUMINTERNO.Text = Convert.ToString(dtVenta.Rows[0]["INTERN"]);
+                    txtNUMINTERNO.Text = FormatearNumInterno(Convert.ToString(dtVenta.Rows[0]["INTERN"]));
 
                 // Limpiar y reinsertar detalle
                 _dal.EjecutarSinRetorno("[EDTE].[SP_NOTACREDITO_DET]", new
@@ -987,10 +1076,10 @@ namespace SistemaContable.UI.Forms.Ventas
                         ID_PRODUCTO = Convert.ToInt32(filaDetalle["ID_PRODUCTO"]),
                         COD_REF = filaDetalle["COD_REF"].ToString(),
                         DESCRIPCION = filaDetalle["DESCRIPCION"].ToString(),
-                        CANTIDAD = Convert.ToDecimal(filaDetalle["CANTIDAD"]),
+                        CANTIDAD = Math.Round(Convert.ToDecimal(filaDetalle["CANTIDAD"]), 4),
                         ID_UNIDAD_MEDIDA = Convert.ToInt32(filaDetalle["ID_UNIDAD_MEDIDA"]),
                         UNIDAD_MEDIDA = filaDetalle["UM"].ToString(),
-                        PRECIO = Convert.ToDecimal(filaDetalle["PRECIO"]),
+                        PRECIO = Math.Round(Convert.ToDecimal(filaDetalle["PRECIO"]), 6),
                         DESCUENTO = Convert.ToInt32(filaDetalle["PORC_DESC"]),
                         DESCUENTO_VALOR = Convert.ToDecimal(filaDetalle["DESCUENTO"]),
                         ES_EXENTO = Convert.ToBoolean(filaDetalle["ES_EXENTO"]),
@@ -1053,6 +1142,13 @@ namespace SistemaContable.UI.Forms.Ventas
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+            // (2026-10-01) Deben ir exactamente los ítems del CCF origen.
+            if (_itemsCCFOrigen > 0 && ContarItemsDetalle() != _itemsCCFOrigen)
+            {
+                XtraMessageBox.Show($"La nota de crédito debe llevar los {_itemsCCFOrigen} ítems del Crédito Fiscal de origen.\n\nVuelva a seleccionar el CCF para recuperar el detalle.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
             foreach (DataRow fila in _dtDetalle.Rows)
             {
                 if (string.IsNullOrWhiteSpace(fila["COD_REF"].ToString())) continue;
@@ -1074,6 +1170,7 @@ namespace SistemaContable.UI.Forms.Ventas
             _codigoEntidad = string.Empty;
             IdNTCEnc = 0;
             _idCCFEncOrigen = 0;
+            _itemsCCFOrigen = 0;
             _codGenDocOrigen = string.Empty;
             _numControlCCF = string.Empty;
             _selloRecepCCF = string.Empty;
@@ -1147,8 +1244,23 @@ namespace SistemaContable.UI.Forms.Ventas
         }
         private static string NullIfEmpty(string texto)
             => string.IsNullOrWhiteSpace(texto) ? null : texto.Trim();
+        // (2026-10-05) N° Interno siempre a 15 dígitos (el SP devolvía INTERN sin ceros).
+        private static string FormatearNumInterno(string valor)
+        {
+            string v = (valor ?? string.Empty).Trim();
+            return v.Length > 0 && v.Length < 15 && v.All(char.IsDigit) ? v.PadLeft(15, '0') : v;
+        }
         private static string AsString(object valor)
             => valor == null || valor == DBNull.Value ? "" : valor.ToString();
+        private static decimal NormalizarTasa(object valor, decimal porDefecto)
+        {
+            if (valor == null || valor == DBNull.Value) return porDefecto;
+            if (!decimal.TryParse(valor.ToString(), out decimal v) || v <= 0) return porDefecto;
+            return v > 1m ? v / 100m : v;   // 13 -> 0.13 ; 0.13 -> 0.13
+        }
+        // Valor de una columna si existe en el resultado (evita errores si el SP no la trae).
+        private static object Col(DataRow r, string columna)
+            => r != null && r.Table.Columns.Contains(columna) ? r[columna] : DBNull.Value;
         private static string AsFecha(object valor)
         {
             if (valor == null || valor == DBNull.Value) return "";

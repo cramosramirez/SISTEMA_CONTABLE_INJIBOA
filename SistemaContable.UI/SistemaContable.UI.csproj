@@ -128,7 +128,9 @@
   <ItemGroup>
     <Folder Include="Forms\Catalogos\" />
     <Folder Include="Forms\CxP\" />
-    <Folder Include="Forms\Planilla\" />
+    <Folder Include="Forms\PartidasInventario\" />
+    <Folder Include="Forms\PartidasCatorcenaPag\" />
+    <Folder Include="Forms\NotaRemision\NewFolder\" />
     <Folder Include="Forms\Vendedor\" />
   </ItemGroup>
   <ItemGroup>

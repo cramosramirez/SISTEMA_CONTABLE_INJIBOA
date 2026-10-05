@@ -764,10 +764,10 @@ namespace SistemaContable.UI.Forms.Ventas
             // mskFECHA
             // 
             this.mskFECHA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mskFECHA.Location = new System.Drawing.Point(656, 17);
+            this.mskFECHA.Location = new System.Drawing.Point(682, 17);
             this.mskFECHA.Mask = "00/00/0000";
             this.mskFECHA.Name = "mskFECHA";
-            this.mskFECHA.Size = new System.Drawing.Size(154, 22);
+            this.mskFECHA.Size = new System.Drawing.Size(128, 22);
             this.mskFECHA.TabIndex = 156;
             // 
             // cbxTIPO_DTE

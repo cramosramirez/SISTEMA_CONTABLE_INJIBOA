@@ -149,6 +149,7 @@
     <Compile Include="Esquemas\NotaRemisionEsquema.cs" />
     <Compile Include="Esquemas\OrdDespachoEsquema.cs" />
     <Compile Include="Esquemas\QuedanEsquema.cs" />
+    <Compile Include="Esquemas\VentaDiariaEsquema.cs" />
     <Compile Include="Iva\Rpt_lbCcfResumen.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -261,6 +262,12 @@
     <Compile Include="Ventas\rptNotaCredito.Designer.cs">
       <DependentUpon>rptNotaCredito.cs</DependentUpon>
     </Compile>
+    <Compile Include="Ventas\Movimientos\RptDetalleVentasDiarasdtResumen.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ventas\Movimientos\RptDetalleVentasDiarasdtResumen.Designer.cs">
+      <DependentUpon>RptDetalleVentasDiarasdtResumen.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Bancos\Proveedores\rptChequeAnexo.resx">
@@ -336,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ventas\rptNotaCredito.resx">
       <DependentUpon>rptNotaCredito.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ventas\Movimientos\RptDetalleVentasDiarasdtResumen.resx">
+      <DependentUpon>RptDetalleVentasDiarasdtResumen.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
