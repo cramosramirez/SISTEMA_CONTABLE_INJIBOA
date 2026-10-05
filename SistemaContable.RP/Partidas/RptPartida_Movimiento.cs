@@ -10,6 +10,7 @@ namespace SistemaContable.RP.Partidas
     public partial class RptPartida_Movimiento : SistemaContable.RP.ReporteBase
     {
         public string _NID_PARTIDA { get; set; }
+        public int _ID_PARTIDA { get; set; }
         public string _Titulo { get; set; }
         public RptPartida_Movimiento()
         {
@@ -20,7 +21,8 @@ namespace SistemaContable.RP.Partidas
             lbTitulo.Text = _Titulo;
             DataTable dt = EjecutarSP("[CONTA].RPT_PARTIDA_MOVIMIENTO", new
             {
-                NID_PARTIDA = _NID_PARTIDA
+                NID_PARTIDA = _NID_PARTIDA,
+                ID_PARTIDA = _ID_PARTIDA
             });
 
 
