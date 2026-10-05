@@ -1979,10 +1979,11 @@ namespace SistemaContable.UI.Forms.Bancos
             ConfigurarOperacion();
             ActualizarCuadre();
             ConfigurarCRUD(EstadoFormulario.Agregar);
-            if (!VerificarDocumentosHuerfanos())
-            {
-                _uidEnlaceCheque = FormHelper.ObtenerUUID();               
-            }
+            //if (!VerificarDocumentosHuerfanos())
+            //{
+            //    _uidEnlaceCheque = FormHelper.ObtenerUUID();               
+            //}
+            _uidEnlaceCheque = FormHelper.ObtenerUUID();
 
             // Abrir automáticamente la búsqueda de Tipo de Operación
             this.BeginInvoke(new Action(() =>

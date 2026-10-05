@@ -31,9 +31,7 @@ namespace SistemaContable.UI.Forms.Bancos
         }
 
         private void frmChequeDocumentosContado_Load(object sender, EventArgs e)
-        {
-            //FormHelper.Inicializar(this);
-
+        {  
             if (string.IsNullOrWhiteSpace(UidEnlaceCheque))
             {
                 XtraMessageBox.Show(
