@@ -125,7 +125,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
                          siguiente: false,
                          modificar: false,
                          eliminar: false,
-                         grabar: false,
+                         grabar: true,
                          ignorar: true);
                     HabilitarControlesEncabezado(true);
                     HabilitarControlesPartida(true);
@@ -190,7 +190,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
                     _modoBusqueda = false;
 
                     HabilitarBotones(
-                         nuevo: false,
+                         nuevo: true,
                          buscar: false,
                          supender: false,
                          imprimir: true,
@@ -788,6 +788,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
             _dtPartida.RowDeleted += (s, ev) => ActualizarCuadre();
 
             gridView1.ShownEditor += GridView1_ShownEditor;
+            gridView1.CellValueChanged += GridView1_CellValueChanged;
 
             // Actualiza el label de cuenta contable en cuanto cambia el valor de la columna
             _dtPartida.ColumnChanged += (s, ev) =>
@@ -870,6 +871,39 @@ namespace SistemaContable.UI.Forms.Contabilidad
             gridView1.FocusedRowChanged += GridView_FocusedRowChanged;
         }
 
+        private bool _actualizandoCargoAbono = false;
+
+        private void GridView1_CellValueChanged(object sender,
+    DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            if (_actualizandoCargoAbono)
+                return;
+
+            try
+            {
+                _actualizandoCargoAbono = true;
+
+                decimal valor = 0;
+
+                if (e.Value != null && e.Value != DBNull.Value)
+                    decimal.TryParse(e.Value.ToString(), out valor);
+
+                if (e.Column.FieldName == "CARGO")
+                {
+                    if (valor > 0)
+                        gridView1.SetRowCellValue(e.RowHandle, "ABONO", 0m);
+                }
+                else if (e.Column.FieldName == "ABONO")
+                {
+                    if (valor > 0)
+                        gridView1.SetRowCellValue(e.RowHandle, "CARGO", 0m);
+                }
+            }
+            finally
+            {
+                _actualizandoCargoAbono = false;
+            }
+        }
         private void ConfigurarColumna(GridView view, string fieldName,
             string caption, int width, bool visible = true)
         {
