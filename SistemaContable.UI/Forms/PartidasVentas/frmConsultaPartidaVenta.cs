@@ -209,10 +209,20 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             Configurar("ANIO", "Año", 60);
             Configurar("MES", "Mes", 50);
             Configurar("NUM_PARTIDA", "N° Partida", 90);
+            Configurar("NUM_PARTIDA_FORMATO", "N° Partida", 90);
             Configurar("FECHA_PARTIDA", "Fecha", 90, "dd/MM/yyyy", FormatType.DateTime);
             Configurar("CONCEPTO", "Concepto", 350);
             Configurar("TOTAL_CARGO", "Total Cargo", 110, "n2", FormatType.Numeric, true);
             Configurar("TOTAL_ABONO", "Total Abono", 110, "n2", FormatType.Numeric, true);
+
+            if (gridView1.Columns["ANIO"] != null)
+                gridView1.Columns["ANIO"].Visible = false;
+
+            if (gridView1.Columns["MES"] != null)
+                gridView1.Columns["MES"].Visible = false;
+
+            if (gridView1.Columns["NUM_PARTIDA"] != null)
+                gridView1.Columns["NUM_PARTIDA"].Visible = false;
 
             if (gridView1.Columns["NID_PARTIDA"] != null)
                 gridView1.Columns["NID_PARTIDA"].Visible = false;
@@ -283,11 +293,12 @@ namespace SistemaContable.UI.Forms.PartidasVentas
         private void btnVerPartida_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             object id = ObtenerIdPartidaSeleccionada();
+            string numPartida = Convert.ToString(gridView1.GetFocusedRowCellValue("NUM_PARTIDA_FORMATO"));
             if (id == null) return;
             try
             {
                 Cursor = Cursors.WaitCursor;
-                var reporte = new RptPartida_Movimiento { _NID_PARTIDA = (string)id, _Titulo = "DETALLE DE PARTIDA CONTABLE" };
+                var reporte = new RptPartida_Movimiento { _NID_PARTIDA = (string)id, _Titulo = "COMPROBANTE DE INGRESO N°."+ numPartida };
                 reporte.MostrarPreview();
             }
             catch (Exception ex)
@@ -303,11 +314,12 @@ namespace SistemaContable.UI.Forms.PartidasVentas
         private void btnVerParcial_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             object id = ObtenerIdPartidaSeleccionada();
+            string numPartida = Convert.ToString(gridView1.GetFocusedRowCellValue("NUM_PARTIDA_FORMATO"));
             if (id == null) return;
             try
             {
                 Cursor = Cursors.WaitCursor;
-                var reporte = new RptPartida_Parciales { _NID_PARTIDA = (string)id, _Titulo = "DETALLE DE PARTIDA CONTABLE" };
+                var reporte = new RptPartida_Parciales { _NID_PARTIDA = (string)id, _Titulo = "COMPROBANTE DE INGRESO N°."+ numPartida };
                 reporte.MostrarPreview();
             }
             catch (Exception ex)

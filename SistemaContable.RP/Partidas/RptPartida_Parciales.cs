@@ -2,7 +2,6 @@
 using DevExpress.XtraReports.UI;
 using System;
 using System.Data;
-using System.Drawing;
 using System.Drawing.Printing;
 
 namespace SistemaContable.RP.Partidas
@@ -13,66 +12,147 @@ namespace SistemaContable.RP.Partidas
         public string _ID_PARTIDA { get; set; }
         public string _Titulo { get; set; }
 
-        // acumulado de las filas ya impresas (cuentas de nivel 0)
-        private decimal _acumCargo, _acumAbono;
+        // Valores mostrados en PASAN y VIENEN
+        private decimal _vienenCargo = 0;
+        private decimal _vienenAbono = 0;
+
+        private decimal _pasanCargo = 0;
+        private decimal _pasanAbono = 0;
 
         public RptPartida_Parciales()
         {
             InitializeComponent();
 
-            this.BeforePrint += (s, e) => { _acumCargo = _acumAbono = 0; };
+            this.BeforePrint += (s, e) =>
+            {
+                _vienenCargo = 0;
+                _vienenAbono = 0;
+                _pasanCargo = 0;
+                _pasanAbono = 0;
+            };
 
-            // acumula cada fila que trae cargo/abono
+            // Guarda el último acumulado impreso
             Detail.BeforePrint += (s, e) =>
             {
-                object c = GetCurrentColumnValue("CARGO");
-                object a = GetCurrentColumnValue("ABONO");
-                if (c != null && c != DBNull.Value) _acumCargo += Convert.ToDecimal(c);
-                if (a != null && a != DBNull.Value) _acumAbono += Convert.ToDecimal(a);
+                object cargo = GetCurrentColumnValue("CARGO_ACUM");
+                object abono = GetCurrentColumnValue("ABONO_ACUM");
+
+                _pasanCargo = cargo == DBNull.Value || cargo == null
+                    ? 0
+                    : Convert.ToDecimal(cargo);
+
+                _pasanAbono = abono == DBNull.Value || abono == null
+                    ? 0
+                    : Convert.ToDecimal(abono);
             };
 
-            // al llegar al pie de la página = PASAN
-            PageFooter.BeforePrint += (s, e) =>
-            {
-                xrTableCellPasanCargo.Text = _acumCargo.ToString("N2");
-                xrTableCellPasanAbono.Text = _acumAbono.ToString("N2");
-            };
-
-            // la página siguiente muestra ese mismo valor como VIENEN
+            // Muestra VIENEN
             PageHeader.BeforePrint += (s, e) =>
             {
-                xrTableCellVienenCargo.Text = _acumCargo.ToString("N2");
-                xrTableCellVienenAbono.Text = _acumAbono.ToString("N2");
+                bool mostrarVienen = _vienenCargo != 0 || _vienenAbono != 0;
+
+                xrTableCellVienenTitulo.Text = mostrarVienen ? "VIENEN..." : "";
+                xrTableCellVienenCargo.Text =
+                    _vienenCargo == 0 ? "" : _vienenCargo.ToString("N2");
+
+                xrTableCellVienenAbono.Text =
+                    _vienenAbono == 0 ? "" : _vienenAbono.ToString("N2");
+            };
+
+            // Muestra PASAN
+            PageFooter.BeforePrint += (s, e) =>
+            {
+                xrTableCellPasanCargo.Text = _pasanCargo.ToString("N2");
+                xrTableCellPasanAbono.Text = _pasanAbono.ToString("N2");
+
+                // El PASAN actual será el VIENEN de la siguiente página
+                _vienenCargo = _pasanCargo;
+                _vienenAbono = _pasanAbono;
             };
         }
 
         public override void CargarDatos()
         {
             lbTitulo.Text = _Titulo;
+
             DataTable dt = EjecutarSP("[CONTA].RPT_PARTIDA_PARCIALES", new
             {
                 NID_PARTIDA = _NID_PARTIDA,
                 ID_PARTIDA = _ID_PARTIDA
             });
 
-            this.DataSource = dt;
-            this.DataMember = "";
+            if (dt != null)
+            {
+                if (!dt.Columns.Contains("CARGO_ACUM"))
+                    dt.Columns.Add("CARGO_ACUM", typeof(decimal));
+
+                if (!dt.Columns.Contains("ABONO_ACUM"))
+                    dt.Columns.Add("ABONO_ACUM", typeof(decimal));
+
+                decimal cargoAcum = 0;
+                decimal abonoAcum = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    decimal cargo = row["CARGO"] == DBNull.Value
+                        ? 0
+                        : Convert.ToDecimal(row["CARGO"]);
+
+                    decimal abono = row["ABONO"] == DBNull.Value
+                        ? 0
+                        : Convert.ToDecimal(row["ABONO"]);
+
+                    cargoAcum += cargo;
+                    abonoAcum += abono;
+
+                    row["CARGO_ACUM"] = cargoAcum;
+                    row["ABONO_ACUM"] = abonoAcum;
+                }
+            }
+
+            DataSource = dt;
+            DataMember = "";
         }
 
-        private void xrLabelParciales_BeforePrint(object sender, PrintEventArgs e)
+        private void xrTableCell3_BeforePrint(object sender, PrintEventArgs e)
         {
-            XRLabel lbl = (XRLabel)sender;
+            XRTableCell celda = (XRTableCell)sender;
 
-            int nivel = 0;
+            int nivel = 1;
 
             object v = GetCurrentColumnValue("NIVEL");
 
-            if (v != null)
+            if (v != null && v != DBNull.Value)
                 nivel = Convert.ToInt32(v);
 
-            float rightEdge = 608.0F; // límite derecho de la columna PARCIALES
+            int rightPadding = 10;
 
-            lbl.LeftF = rightEdge - lbl.WidthF - (nivel * 15F);
+            switch (nivel)
+            {
+                case 2:
+                    rightPadding = 25;
+                    break;
+                case 3:
+                    rightPadding = 40;
+                    break;
+                case 4:
+                    rightPadding = 55;
+                    break;
+            }
+
+            celda.Padding = new PaddingInfo(
+                0,
+                rightPadding,
+                0,
+                0,
+                100F);
+        }
+
+        private void xrLabel11_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+            XRLabel lbl = sender as XRLabel;
+
+            lbl.BorderDashStyle = DevExpress.XtraPrinting.BorderDashStyle.Solid;
         }
     }
 }
