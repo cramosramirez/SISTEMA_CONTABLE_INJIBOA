@@ -47,6 +47,7 @@ namespace SistemaContable.UI.Forms.Bancos
         private bool _asignandoCuentaPorCodigo = false;
         private bool _procesandoLeaveOperacion = false;
         private bool _habilitaFlujoProveedor = true;   // default: CH
+        public int CantidadDocumentosVinculados { get; private set; } = 0;
 
         public frmCheques()
         {            
@@ -755,6 +756,7 @@ namespace SistemaContable.UI.Forms.Bancos
             {
                 using (var frm = new frmChequeDocumentosContado())
                 {
+                    frm.numeroChequeSugerido = txtNUMERO_CHEQUE.Text;  
                     frm.UidEnlaceCheque = _uidEnlaceCheque;
                     frm.IdCheque = _idCheque;
                     var principal = Application.OpenForms["frmPrincipalRibbon"];
@@ -773,7 +775,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
                     if (frm.ShowDialog(principal ?? (Form)this) == DialogResult.OK)
                     {
-                        // ... lógica ...
+                        CantidadDocumentosVinculados = frm.CantidadDocumentosVinculados; 
                     }
                 }
             }
@@ -1361,6 +1363,14 @@ namespace SistemaContable.UI.Forms.Bancos
                     $"Total Abono: {totalAbono:N2}\n" +
                     $"Diferencia: {diferencia:N2}",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);                
+                return false;
+            }     
+            
+            if(CantidadDocumentosVinculados == 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                   "No se han adicionado documentos",
+                   "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 

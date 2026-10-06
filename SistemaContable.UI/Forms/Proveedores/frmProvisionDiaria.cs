@@ -1,6 +1,8 @@
-﻿using DevExpress.XtraGrid;
+﻿using DevExpress.XtraEditors;
+using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
 using SistemaContable.DAL;
+using SistemaContable.RP.Partidas;
 using SistemaContable.UI.Helpers;
 using SistemaContable.UI.Interfaces;
 using System;
@@ -19,6 +21,7 @@ namespace SistemaContable.UI.Forms.Proveedores
     public partial class frmProvisionDiaria : Form, IRefrescable
     {
         private readonly DALBase _dal = new DALBase();
+        private int _IdPartidaExistente = 0;
         public frmProvisionDiaria()
         {
             InitializeComponent();
@@ -149,12 +152,14 @@ namespace SistemaContable.UI.Forms.Proveedores
                         CODIGO_HIBRONSA = Configuracion.CodigoHIBRONSA
                     });
 
-                gridControl2.DataSource = dtConProvision;      
-                
+                gridControl2.DataSource = dtConProvision;
+
+                VerificarPartidaExistente();
+
+
                 if (cbxTIPO_PROVEEDOR.SelectedIndex == 0 && dtSinProvision.Rows.Count == 0)
-                {
                     btnGenerarPartida.Enabled = true;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -164,6 +169,53 @@ namespace SistemaContable.UI.Forms.Proveedores
             finally
             {
                 Cursor = Cursors.Default;
+            }
+        }
+
+        /// <summary>
+        /// Verifica si ya existe una partida generada para la fecha y tipo actuales.
+        /// Si existe, asigna el número formateado al txtNUMERO_PARTIDA y habilita el
+        /// botón de imprimir. Si no existe, deja el número sugerido (siguiente correlativo).
+        /// </summary>
+        private void VerificarPartidaExistente()
+        {
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta(
+                    "SP_CREDITO_FISCAL_PROVISION",
+                    new
+                    {
+                        ACCION = "OBTENER_PARTIDA_POR_FECHA",
+                        FECHA_PARTIDA = dateEdit1.DateTime,
+                        TIPO_PARTIDA = txtTIPO_PARTIDA.Text.Trim()
+                    });
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    // Ya existe partida generada
+                    var fila = dt.Rows[0];
+                    string numeroFormateado = fila["NID_PARTIDA"]?.ToString() ?? "";
+
+                    _IdPartidaExistente = Convert.ToInt32(fila["ID_PARTIDA"]);
+                    txtNUMERO_PARTIDA.Text = numeroFormateado;
+                    btnImprimirPartida.Enabled = true;
+                }
+                else
+                {
+                    // No existe aún: sugerir el siguiente correlativo
+                    _IdPartidaExistente = 0;
+                    AsignarNumeroPartida();
+                    btnImprimirPartida.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // No bloqueamos la carga por un error acá
+                AsignarNumeroPartida();
+                btnImprimirPartida.Enabled = false;
+
+                System.Diagnostics.Debug.WriteLine(
+                    $"Error al verificar partida existente: {ex.Message}");
             }
         }
 
@@ -191,6 +243,132 @@ namespace SistemaContable.UI.Forms.Proveedores
         public void Refrescar()
         {
             CargarGrids();
+        }
+
+        private void btnGenerarPartida_Click(object sender, EventArgs e)
+        {
+            // ============================================================
+            // Validaciones
+            // ============================================================
+            if (dateEdit1.EditValue == null || dateEdit1.EditValue == DBNull.Value)
+            {
+                XtraMessageBox.Show(
+                    "Debe seleccionar una fecha.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dateEdit1.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtTIPO_PARTIDA.Text))
+            {
+                XtraMessageBox.Show(
+                    "Debe indicar el tipo de partida.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTIPO_PARTIDA.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtCONCEPTO_PARTIDA.Text))
+            {
+                XtraMessageBox.Show(
+                    "Debe indicar el concepto de la partida.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCONCEPTO_PARTIDA.Focus();
+                return;
+            }
+
+            // ============================================================
+            // Confirmación
+            // ============================================================
+            var resp = XtraMessageBox.Show(
+                $"¿Está seguro de enviar la provisión a contabilidad para la fecha " +
+                $"{dateEdit1.DateTime:dd/MM/yyyy}?\n\n" +
+                "Esta acción generará la partida contable correspondiente.",
+                "Confirmar envío",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2);
+
+            if (resp != DialogResult.Yes) return;
+
+            // ============================================================
+            // Ejecutar el SP
+            // ============================================================
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                btnGenerarPartida.Enabled = false;
+
+                object resultado = _dal.EjecutarEscalar("SP_CREDITO_FISCAL_PROVISION", new
+                {
+                    ACCION = "ENVIAR_PROVISION_CONTABILIDAD",
+                    USUARIO = Configuracion.UsuarioActual,
+                    TIPO_PARTIDA = txtTIPO_PARTIDA.Text.Trim(),
+                    FECHA_PARTIDA = dateEdit1.DateTime,
+                    CONCEPTO_PARTIDA = txtCONCEPTO_PARTIDA.Text.Trim()
+                });
+
+                int idPartidaGenerada = 0;
+                if (resultado != null && resultado != DBNull.Value)
+                    int.TryParse(resultado.ToString(), out idPartidaGenerada);
+
+                if (idPartidaGenerada > 0)
+                {
+                    XtraMessageBox.Show(
+                   "Provisión enviada a contabilidad.",
+                   "Enviado",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Information);
+
+
+                   
+                   btnImprimirPartida.Enabled = true;                   
+                   
+
+                    // Recargar los grids para reflejar el cambio de estado
+                    CargarGrids();
+                }
+                else
+                {
+                    XtraMessageBox.Show(
+                      "Error al enviar partida a contabilidad.",
+                      "Enviado",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
+                }
+
+               
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    "Error al enviar la provisión:\n\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void btnImprimirPartida_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var reporte = new RptPartida_Movimiento { _ID_PARTIDA = _IdPartidaExistente };
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
     }
 }

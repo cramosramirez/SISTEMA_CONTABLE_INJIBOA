@@ -49,10 +49,12 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colRETENCION_IVA = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colSALDO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnAdicionarRetenciones = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdicionarFSE = new DevExpress.XtraEditors.SimpleButton();
             this.label1 = new System.Windows.Forms.Label();
             this.btnRetornar = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdicionarCCF = new DevExpress.XtraEditors.SimpleButton();
+            this.colTIPO_FORMULARIO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -97,7 +99,8 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colTOTAL,
             this.colRENTA,
             this.colRETENCION_IVA,
-            this.colSALDO});
+            this.colSALDO,
+            this.colTIPO_FORMULARIO});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             // 
@@ -307,6 +310,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnAdicionarRetenciones);
             this.panel2.Controls.Add(this.btnAdicionarFSE);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.btnRetornar);
@@ -316,6 +320,25 @@ namespace SistemaContable.UI.Forms.Bancos
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1216, 104);
             this.panel2.TabIndex = 1;
+            // 
+            // btnAdicionarRetenciones
+            // 
+            this.btnAdicionarRetenciones.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdicionarRetenciones.Appearance.Options.UseFont = true;
+            this.btnAdicionarRetenciones.Appearance.Options.UseTextOptions = true;
+            this.btnAdicionarRetenciones.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnAdicionarRetenciones.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.agregarDoc2_32x32;
+            this.btnAdicionarRetenciones.ImageOptions.ImageToTextIndent = 10;
+            this.btnAdicionarRetenciones.Location = new System.Drawing.Point(537, 42);
+            this.btnAdicionarRetenciones.Name = "btnAdicionarRetenciones";
+            this.btnAdicionarRetenciones.Size = new System.Drawing.Size(202, 47);
+            this.btnAdicionarRetenciones.TabIndex = 133;
+            this.btnAdicionarRetenciones.Text = "Adicionar Retenciones de Renta";
+            this.btnAdicionarRetenciones.ToolTip = "Adicione Dividendos, Intereses, Indemnizaciones, Invoice, transferencias enviadas" +
+    "";
+            this.btnAdicionarRetenciones.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.btnAdicionarRetenciones.ToolTipTitle = "Tipos de documentos ";
+            this.btnAdicionarRetenciones.Click += new System.EventHandler(this.btnAdicionarRetenciones_Click);
             // 
             // btnAdicionarFSE
             // 
@@ -330,6 +353,9 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAdicionarFSE.Size = new System.Drawing.Size(209, 47);
             this.btnAdicionarFSE.TabIndex = 132;
             this.btnAdicionarFSE.Text = "Adicionar factura sujeto excluido";
+            this.btnAdicionarFSE.ToolTip = "Adicione Factura de Sujeto Ecluido";
+            this.btnAdicionarFSE.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.btnAdicionarFSE.ToolTipTitle = "Tipos de documentos ";
             this.btnAdicionarFSE.Click += new System.EventHandler(this.btnAdicionarFSE_Click);
             // 
             // label1
@@ -351,7 +377,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnRetornar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnRetornar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.retornar32x32;
             this.btnRetornar.ImageOptions.ImageToTextIndent = 10;
-            this.btnRetornar.Location = new System.Drawing.Point(739, 42);
+            this.btnRetornar.Location = new System.Drawing.Point(1034, 42);
             this.btnRetornar.Name = "btnRetornar";
             this.btnRetornar.Size = new System.Drawing.Size(117, 47);
             this.btnRetornar.TabIndex = 130;
@@ -371,7 +397,18 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAdicionarCCF.Size = new System.Drawing.Size(273, 47);
             this.btnAdicionarCCF.TabIndex = 6;
             this.btnAdicionarCCF.Text = "Adicionar comprobante crédito fiscal / consumidor final";
+            this.btnAdicionarCCF.ToolTip = "Adicione créditos fiscales y facturas de caja chica";
+            this.btnAdicionarCCF.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.btnAdicionarCCF.ToolTipTitle = "Tipos de documentos ";
             this.btnAdicionarCCF.Click += new System.EventHandler(this.btnAdicionarCCF_Click);
+            // 
+            // colTIPO_FORMULARIO
+            // 
+            this.colTIPO_FORMULARIO.Caption = "TIPO_FORMULARIO";
+            this.colTIPO_FORMULARIO.FieldName = "TIPO_FORMULARIO";
+            this.colTIPO_FORMULARIO.MinWidth = 24;
+            this.colTIPO_FORMULARIO.Name = "colTIPO_FORMULARIO";
+            this.colTIPO_FORMULARIO.Width = 90;
             // 
             // frmChequeDocumentosContado
             // 
@@ -423,5 +460,7 @@ namespace SistemaContable.UI.Forms.Bancos
         private DevExpress.XtraGrid.Columns.GridColumn colSALDO;
         private System.Windows.Forms.Label label1;
         private DevExpress.XtraEditors.SimpleButton btnAdicionarFSE;
+        private DevExpress.XtraEditors.SimpleButton btnAdicionarRetenciones;
+        private DevExpress.XtraGrid.Columns.GridColumn colTIPO_FORMULARIO;
     }
 }

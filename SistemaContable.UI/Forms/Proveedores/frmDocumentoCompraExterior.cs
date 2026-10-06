@@ -42,9 +42,11 @@ namespace SistemaContable.UI.Forms.Proveedores
         private string _idTipoPersona = "";
         private bool _validarCompIVAR = false;
 
-        public int IdCompraExterior { get; set; } = 0;
-        public bool EsContado { get; set; } = false;
+        public int IdCompraExterior { get; set; } = 0;        
         public string UidEnlaceCheque { get; set; } = string.Empty;
+        public string numeroChequeSugerido { get; set; } = string.Empty;
+
+        private readonly ParametrosCcfBusqueda _parametrosCcf = new ParametrosCcfBusqueda();
 
         #endregion
         public frmDocumentoCompraExterior()
@@ -55,12 +57,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void frmDocumentoCompra_Load(object sender, EventArgs e)
         {
-            FormHelper.Inicializar(this);
-            if (EsContado)
-            {
-                Text = "Compras al Contado";
-                panelQUEDAN.Visible = false;
-            }
+            FormHelper.Inicializar(this);           
             InicializarHelperMinisterioHacienda();
             CargarCombos();
             cbxSUCURSAL.SelectedValue = 1;
@@ -97,6 +94,38 @@ namespace SistemaContable.UI.Forms.Proveedores
                 },
                 fila => AsignarProveedor(fila)
             );
+
+           
+            FormHelper.RegistrarBusqueda(
+            txtCOD_GENERACION,
+            new BusquedaConfig
+            {
+                StoredProcedure = "EPROVEEDOR.SP_COMPRA_EXTERIOR",
+                Accion = "LISTAR_COMPRA_EXTERIOR_PENDIENTE_PAGO",
+                Columnas = new Dictionary<string, string>
+                    {
+                        { "TIPO_DTE",       "TIPO" },
+                        { "COD_GENERACION", "COD. GENERACIÓN" },
+                        { "FECHA_VENCE",    "VENCE" },
+                        { "SALDO",      "SALDO" }
+                    },
+                Anchos = new Dictionary<string, int>
+                    {
+                        { "TIPO_DTE",        60 },
+                        { "COD_GENERACION", 350 },
+                        { "FECHA_VENCE",     90 },
+                        { "SALDO",      100 }
+                    },
+                ParametrosExtra = _parametrosCcf   // ← objeto mutable, no anónimo
+            },
+                fila =>
+                {
+                    IdCompraExterior = Convert.ToInt32(fila["ID_COMPRA_EXTERIOR"]);
+                    CargarCompraExteriorExistente(IdCompraExterior);
+                    ConfigurarCRUD(EstadoFormulario.Guardado);
+                }
+            );
+            
             txtPROVEEDOR.Leave += txtPROVEEDOR_Leave;
             txtCONSULTA_MH.Leave += txtCONSULTA_MH_Leave;
 
@@ -127,9 +156,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             }
             else
-            {
-                if (!EsContado)
-                    CargarSiguienteNumQuedan();
+            {               
                 ConfigurarCRUD(EstadoFormulario.Nuevo);
             }
 
@@ -142,33 +169,15 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 case EstadoFormulario.Nuevo:
                     txtPROVEEDOR.Enabled = true;
-                    btnGuardar.Enabled = true;
-                    btnValidar.Enabled = false;
-                    btnAdicionar.Enabled = false;
-                    btnImprimirQuedan.Enabled = false;
-                    btnImprimirRetencion.Enabled = false;
-                    btnCorreo.Enabled = false;
-                    btnProvision.Enabled = false;
+                    btnGuardar.Enabled = true;                   
                     break;
                 case EstadoFormulario.Guardado:
                     txtPROVEEDOR.Enabled = false;
-                    btnGuardar.Enabled = true;
-                    btnValidar.Enabled = _validarCompIVAR;
-                    btnAdicionar.Enabled = !EsContado && _codigoEntidad.Equals(Configuracion.CodigoCCJIBOA);
-                    btnImprimirQuedan.Enabled = !EsContado;
-                    btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
-                    btnCorreo.Enabled = false;
-                    btnProvision.Enabled = !EsContado;
+                    btnGuardar.Enabled = true;                            
                     break;
                 case EstadoFormulario.Validado:
                     txtPROVEEDOR.Enabled = false;
-                    btnGuardar.Enabled = true;
-                    btnValidar.Enabled = false;
-                    btnAdicionar.Enabled = false;
-                    btnImprimirQuedan.Enabled = true;
-                    btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
-                    btnCorreo.Enabled = (ObtenerDecimal(txtIVAR) > 0);
-                    btnProvision.Enabled = !EsContado;
+                    btnGuardar.Enabled = true;                                              
                     break;
             }
         }
@@ -194,13 +203,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     return;
                 }
 
-                DataRow r = dt.Rows[0];
-                if (!EsContado)
-                {
-                    // ---------- Quedan ----------
-                    _idQuedanActual = Convert.ToInt32(r["ID_QUEDAN"]);
-                    lblNUM_QUEDAN.Text = r["NUM_QUEDAN"].ToString();
-                }
+                DataRow r = dt.Rows[0];                
                 // ---------- Proveedor ----------
                 _idEntidad = Convert.ToInt32(r["ID_ENTIDAD"]);
                 _idTipoPersona = r["ID_TIPO_ENTIDAD"].ToString();
@@ -289,35 +292,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 Cursor = Cursors.Default;
             }
-        }
-        private void CargarSiguienteNumQuedan()
-        {
-            var num = _dal.ObtenerNumeracionPrevia("CEX", null);   // correlativo exclusivo de Compra Exterior
-            if (num == null)
-            {
-                MessageBox.Show(
-                    "No existe numeración activa para Compra Exterior (CEX).\n" +
-                    "Configúrela en DOCUMENTO_NUMERACION antes de continuar.",
-                    "Numeración no encontrada",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                lblNUM_QUEDAN.Text = "";
-                return;
-            }
-
-            if (num.IdTipoDte != 28 ||
-                !string.Equals(num.Abreviatura, "CEX", StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show(
-                    "La numeración de Compra Exterior debe corresponder a " +
-                    "ID_TIPO_DTE = 28 y TIPODTE = CEX.",
-                    "Numeración incorrecta",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                lblNUM_QUEDAN.Text = "";
-                return;
-            }
-
-            lblNUM_QUEDAN.Text = num.SiguienteNumeroFormateado();
-        }
+        }        
 
         #region Carga de combos
 
@@ -516,6 +491,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             _idEntidad = Convert.ToInt32(fila["ID_ENTIDAD"]);
             _codigoEntidad = fila["CODIGO_ENTIDAD"].ToString();
+            _parametrosCcf.CODIGO_ENTIDAD = _codigoEntidad;
             txtPROVEEDOR.Text = fila["CODIGO_ENTIDAD"].ToString();
             txtNOMBRE_PROVEEDOR.Text = fila["NOMBRE"].ToString();
             txtNRC.Text = fila["NRC"].ToString();
@@ -793,6 +769,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             txtSELLO_RECIBIDO.Text = referencia;
             txtNUM_CONTROL.Text = referencia;
+            txtCOD_GENERACION.Text = usaReferenciaCheque ? numeroChequeSugerido : string.Empty;
 
             SeleccionarRentaPorTipoDocumento();
             txtBaseRenta_Leave(sender, e);
@@ -891,11 +868,10 @@ namespace SistemaContable.UI.Forms.Proveedores
                     return;
                 }
             }
-            if (EsContado)
-            {
-                // En modo contado, retornar OK para que el padre refresque
-                DialogResult = DialogResult.OK;
-            }
+           
+            // En modo contado, retornar OK para que el padre refresque
+            DialogResult = DialogResult.OK;
+           
             Close();
         }
 
@@ -910,18 +886,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         //  El front se reduce a UNA sola llamada. Ya no hay rollback manual.
         // ================================================================
 
-
-        #region === VARIABLES DE ESTADO ===
-
-        // ID del Quedan al que pertenece la operación actual.
-        //   0  = el SP lo creará al guardar el primer CCF
-        //  > 0 = ya existe (se reutiliza para CCFs adicionales del mismo proveedor)
-        private int _idQuedanActual = 0;
-
-        #endregion
-
-
-
+               
         #region === VALIDACIONES ===
 
         private bool ValidarCampos()
@@ -1007,9 +972,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 var parametros = new
                 {
                     ACCION = "GUARDAR",
-                    ID_COMPRA_EXTERIOR = IdCompraExterior,
-                    ID_QUEDAN_CEX = EsContado ? 0 : _idQuedanActual,
-                    NUM_QUEDAN = EsContado || string.IsNullOrWhiteSpace(lblNUM_QUEDAN.Text) ? (int?)null : (int?)Convert.ToInt32(lblNUM_QUEDAN.Text),
+                    ID_COMPRA_EXTERIOR = IdCompraExterior,                                        
                     ID_TIPO_DTE = ObtenerIdCombo(cbxTIPO_DTE),
                     NUM_CONTROL = NullIfEmpty(txtNUM_CONTROL.Text),
                     COD_GENERACION = NullIfEmpty(txtCOD_GENERACION.Text),
@@ -1044,7 +1007,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     USUARIO = Configuracion.UsuarioActual,
                     ID_TIPO_RENTA = ObtenerIdCombo(cbxTIPO_RENTA),
                     APLICABLE_RENTA = ObtenerDecimal(txtAPLICABLE_RENTA),
-                    UID_ENLACE_CHEQUE = EsContado ? UidEnlaceCheque : string.Empty
+                    UID_ENLACE_CHEQUE = UidEnlaceCheque
                 };
 
                 DataTable dt = _dal.EjecutarConsulta("[EPROVEEDOR].[SP_COMPRA_EXTERIOR]", parametros);
@@ -1055,13 +1018,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 // El SP devuelve siempre los tres campos:
                 DataRow row = dt.Rows[0];
                 IdCompraExterior = Convert.ToInt32(row["ID_GENERADO"]);
-                _validarCompIVAR = ObtenerDecimal(txtIVAR) > 0 ? true : false;
-                if (!EsContado)
-                {
-                    _idQuedanActual = Convert.ToInt32(row["ID_QUEDAN_GENERADO"]);
-                    int numQuedan = Convert.ToInt32(row["NUM_QUEDAN_GENERADO"]);
-                    lblNUM_QUEDAN.Text = numQuedan.ToString();
-                }
+                _validarCompIVAR = ObtenerDecimal(txtIVAR) > 0 ? true : false;                
                 ConfigurarCRUD(EstadoFormulario.Guardado);
                 XtraMessageBox.Show("Documento guardado correctamente.",
                     "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1087,23 +1044,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         #region === BOTÓN "NUEVO CCF MISMO QUEDAN" ===
 
-        private void btnADICIONAR_Click(object sender, EventArgs e)
-        {
-            if (_idQuedanActual == 0)
-            {
-                XtraMessageBox.Show(
-                    "Aún no se ha guardado ningún documento. Primero guarde uno para crear el Quedan.",
-                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (XtraMessageBox.Show(
-                    "¿Agregar otro documento al mismo Quedan y proveedor?",
-                    "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-                != DialogResult.Yes) return;
-
-            LimpiarParaNuevoCcf();
-        }
+       
 
         private void LimpiarParaNuevoCcf()
         {
@@ -1259,29 +1200,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 frm.ShowDialog(this);
             }
         }
-
-        private void btnImprimirQuedan_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Cursor = Cursors.WaitCursor;
-                var reporte = new rptQuedan
-                {
-                    IdQuedan = _idQuedanActual,
-                    NombreProcedimiento = "[EPROVEEDOR].[SP_QUEDAN_RPT]"
-                };
-                reporte.MostrarPreview();
-            }
-            catch (Exception ex)
-            {
-                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
-            }
-        }
-
+        
         private void btnImprimirRetencion_Click(object sender, EventArgs e)
         {
             try
@@ -1325,15 +1244,14 @@ namespace SistemaContable.UI.Forms.Proveedores
                 var args = new XtraMessageBoxArgs
                 {
                     Caption = "Información de pago",
-                    Text = $"<b>N° Cheque: {r["NUM_CHEQUE"].ToString()}</b>" + Environment.NewLine + $"<b>Fecha: {AsFecha(r["FECHA_CHEQUE"])}</b>",
+                    Text = $"<b>N° {r["TIPO_PARTIDA"].ToString()}: {r["NUM_CHEQUE"].ToString()}</b>" + Environment.NewLine +
+                        $"<b>Fecha: {AsFecha(r["FECHA_CHEQUE"])}</b>",
                     Buttons = new[] { DialogResult.OK },
                     Icon = SystemIcons.Information,
                     AllowHtmlText = DefaultBoolean.True
                 };
                 XtraMessageBox.Show(args);
             }
-
-
         }
 
     }

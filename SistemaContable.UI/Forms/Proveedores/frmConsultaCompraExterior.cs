@@ -20,12 +20,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         public frmConsultaCompraExterior()
         {
-            InitializeComponent();
-            riVerRVacio = new RepositoryItemButtonEdit();
-            riVerRVacio.Buttons.Clear(); // sin botón visible
-            riVerRVacio.TextEditStyle = TextEditStyles.DisableTextEditor;
-            riVerRVacio.ReadOnly = true;
-            gridControl1.RepositoryItems.Add(riVerRVacio);
+            InitializeComponent();          
         }
 
 
@@ -46,9 +41,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             gvDetalle.OptionsBehavior.AutoPopulateColumns = false; // solo usar las columnas definidas en el diseñador
             gvDetalle.OptionsView.ShowGroupPanel = false;   // panel de agrupación visible
             gvDetalle.OptionsView.ShowAutoFilterRow = true;
-            gvDetalle.OptionsBehavior.Editable = true;   // necesario para los botones por fila
-            colVER_R.Visible = false; // "Ver R" oculto a pedido de Roberto (2026-08-25)
-            colVER_Q.Visible = false; // "Ver Q" oculto a pedido de Roberto (2026-08-25)
+            gvDetalle.OptionsBehavior.Editable = true;   // necesario para los botones por fila           
 
             // --- Buscador global ---
             gvDetalle.OptionsFind.AlwaysVisible = true;
@@ -80,22 +73,10 @@ namespace SistemaContable.UI.Forms.Proveedores
             nav.Buttons.Remove.Visible = false;
             nav.Buttons.Edit.Visible = false;
             nav.Buttons.EndEdit.Visible = false;
-            nav.Buttons.CancelEdit.Visible = false;
-
-            gvDetalle.CustomRowCellEdit += GvDetalle_CustomRowCellEdit;
+            nav.Buttons.CancelEdit.Visible = false;            
         }
 
-        private void GvDetalle_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
-        {
-            if (e.Column == colVER_R)
-            {
-                object val = gvDetalle.GetRowCellValue(e.RowHandle, "ID_COMPROBANTE_RET");
-                bool tieneRetencion = val != null && val != DBNull.Value;
-
-                e.RepositoryItem = tieneRetencion ? riVerR : riVerRVacio;
-            }
-        }
-
+       
         #endregion
 
 
@@ -105,12 +86,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             _dtDetalle = _dal.EjecutarConsulta("[EPROVEEDOR].[SP_COMPRA_EXTERIOR]",
                 new { ACCION = "COMPRA_EXTERIOR_LISTAR", ULTIMOS_3_MESES = chkUltimos3Meses.Checked });
             gridControl1.DataSource = _dtDetalle;
-
-            // Forzado explícito: se reafirma oculta después del binding porque al asignar
-            // el DataSource, DevExpress puede repoblar/recalcular columnas y revertir
-            // el Visible=false definido en el diseñador.
-            colVER_R.Visible = false;
-            colVER_Q.Visible = false;
+               
 
             // Distribuye el ancho de las columnas según su contenido (a pedido de Roberto,
             // 2026-09-28): evita que "Sistema(id)" quede desproporcionadamente ancha y que

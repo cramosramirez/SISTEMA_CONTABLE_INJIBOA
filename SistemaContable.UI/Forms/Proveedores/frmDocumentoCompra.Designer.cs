@@ -31,6 +31,9 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDocumentoCompra));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkLicencia = new System.Windows.Forms.CheckBox();
+            this.txtUNICO = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
             this.btnConsultaCheque = new DevExpress.XtraEditors.SimpleButton();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
             this.btnProvision = new DevExpress.XtraEditors.SimpleButton();
@@ -122,9 +125,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtNRC = new System.Windows.Forms.TextBox();
             this.txtPROVEEDOR = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtUNICO = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.chkLicencia = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.panelQUEDAN.SuspendLayout();
             this.SuspendLayout();
@@ -231,6 +231,37 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.groupBox1.Size = new System.Drawing.Size(1296, 673);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // chkLicencia
+            // 
+            this.chkLicencia.AutoSize = true;
+            this.chkLicencia.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkLicencia.Location = new System.Drawing.Point(676, 289);
+            this.chkLicencia.Name = "chkLicencia";
+            this.chkLicencia.Size = new System.Drawing.Size(76, 22);
+            this.chkLicencia.TabIndex = 15;
+            this.chkLicencia.Text = "Licencia";
+            this.chkLicencia.UseVisualStyleBackColor = true;
+            this.chkLicencia.CheckedChanged += new System.EventHandler(this.chkLicencia_CheckedChanged);
+            // 
+            // txtUNICO
+            // 
+            this.txtUNICO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUNICO.Location = new System.Drawing.Point(155, 286);
+            this.txtUNICO.Name = "txtUNICO";
+            this.txtUNICO.ReadOnly = true;
+            this.txtUNICO.Size = new System.Drawing.Size(385, 24);
+            this.txtUNICO.TabIndex = 14;
+            // 
+            // label25
+            // 
+            this.label25.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Location = new System.Drawing.Point(24, 288);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(121, 20);
+            this.label25.TabIndex = 116;
+            this.label25.Text = "Unico";
+            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnConsultaCheque
             // 
@@ -1187,37 +1218,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label1.TabIndex = 16;
             this.label1.Text = "Proveedor";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtUNICO
-            // 
-            this.txtUNICO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUNICO.Location = new System.Drawing.Point(155, 286);
-            this.txtUNICO.Name = "txtUNICO";
-            this.txtUNICO.ReadOnly = true;
-            this.txtUNICO.Size = new System.Drawing.Size(385, 24);
-            this.txtUNICO.TabIndex = 14;
-            // 
-            // label25
-            // 
-            this.label25.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(24, 288);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(121, 20);
-            this.label25.TabIndex = 116;
-            this.label25.Text = "Unico";
-            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // chkLicencia
-            // 
-            this.chkLicencia.AutoSize = true;
-            this.chkLicencia.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkLicencia.Location = new System.Drawing.Point(676, 289);
-            this.chkLicencia.Name = "chkLicencia";
-            this.chkLicencia.Size = new System.Drawing.Size(76, 22);
-            this.chkLicencia.TabIndex = 15;
-            this.chkLicencia.Text = "Licencia";
-            this.chkLicencia.UseVisualStyleBackColor = true;
-            this.chkLicencia.CheckedChanged += new System.EventHandler(this.chkLicencia_CheckedChanged);
             // 
             // frmDocumentoCompra
             // 

@@ -29,6 +29,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmProvisionDiaria));
             this.panel1 = new System.Windows.Forms.Panel();
             this.dateEdit1 = new DevExpress.XtraEditors.DateEdit();
             this.btnFinalizar = new DevExpress.XtraEditors.SimpleButton();
@@ -72,6 +73,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panel5 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnImprimirPartida = new DevExpress.XtraEditors.SimpleButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).BeginInit();
@@ -89,6 +91,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnImprimirPartida);
             this.panel1.Controls.Add(this.dateEdit1);
             this.panel1.Controls.Add(this.btnFinalizar);
             this.panel1.Controls.Add(this.btnGenerarPartida);
@@ -140,7 +143,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnFinalizar.Appearance.Options.UseTextOptions = true;
             this.btnFinalizar.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnFinalizar.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnFinalizar.Location = new System.Drawing.Point(919, 32);
+            this.btnFinalizar.Location = new System.Drawing.Point(1060, 32);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(104, 47);
             this.btnFinalizar.TabIndex = 6;
@@ -161,6 +164,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnGenerarPartida.Size = new System.Drawing.Size(107, 47);
             this.btnGenerarPartida.TabIndex = 5;
             this.btnGenerarPartida.Text = "Generar partida";
+            this.btnGenerarPartida.Click += new System.EventHandler(this.btnGenerarPartida_Click);
             // 
             // txtCONCEPTO_PARTIDA
             // 
@@ -634,6 +638,21 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label3.Text = "Comprobantes a provisionar";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnImprimirPartida
+            // 
+            this.btnImprimirPartida.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnImprimirPartida.Appearance.Options.UseFont = true;
+            this.btnImprimirPartida.Appearance.Options.UseTextOptions = true;
+            this.btnImprimirPartida.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnImprimirPartida.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimirRetencion.ImageOptions.Image")));
+            this.btnImprimirPartida.ImageOptions.ImageToTextIndent = 10;
+            this.btnImprimirPartida.Location = new System.Drawing.Point(913, 32);
+            this.btnImprimirPartida.Name = "btnImprimirPartida";
+            this.btnImprimirPartida.Size = new System.Drawing.Size(119, 47);
+            this.btnImprimirPartida.TabIndex = 112;
+            this.btnImprimirPartida.Text = "Imprimir Partida";
+            this.btnImprimirPartida.Click += new System.EventHandler(this.btnImprimirPartida_Click);
+            // 
             // frmProvisionDiaria
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -714,5 +733,6 @@ namespace SistemaContable.UI.Forms.Proveedores
         private DevExpress.XtraGrid.Columns.GridColumn colQuedan;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
         private DevExpress.XtraEditors.DateEdit dateEdit1;
+        private DevExpress.XtraEditors.SimpleButton btnImprimirPartida;
     }
 }

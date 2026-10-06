@@ -14,17 +14,11 @@ namespace SistemaContable.UI.Helpers
         // DTO con el resultado del numerador
         // ============================================================
         public class InfoNumerador
-        {
-            public string   TipoPartida         { get; set; }
-            public string   Descripcion         { get; set; }
-            public short    Anio                { get; set; }
-            public byte     Mes                 { get; set; }
+        {           
             public int      NumUltimo           { get; set; }
             public string   NumUltimoFormateado { get; set; }
             public int?     NumSiguiente        { get; set; }   // solo en Consultar
-            public string   NumSiguienteFormateado  { get; set; }   // solo en Consultar          
-            public DateTime? FechaUltimo        { get; set; }
-            public string   UserUltimo          { get; set; }
+            public string   NumSiguienteFormateado  { get; set; }   // solo en Consultar            
             
         }
 
@@ -131,17 +125,9 @@ namespace SistemaContable.UI.Helpers
         private static InfoNumerador MapearFilaConsulta(DataRow r)
         {
             return new InfoNumerador
-            {
-                TipoPartida        = SafeStr(r,   "TIPO_PARTIDA"),
-                Descripcion        = SafeStr(r,   "DESCRIPCION"),
-                Anio               = SafeShort(r, "ANIO"),
-                Mes                = SafeByte(r,  "MES"),
-                NumUltimo          = SafeInt(r,   "NUM_ULTIMO"),
-                NumUltimoFormateado         = SafeStr(r,   "NUM_ULTIMO_FORMATEADO"),
+            {  
                 NumSiguiente                = SafeIntNull(r, "NUM_SIGUIENTE"),
-                NumSiguienteFormateado      = SafeStr(r,   "NUM_SIGUIENTE_FORMATEADO"),               
-                FechaUltimo        = SafeDate(r,  "FECHA_ULTIMO"),
-                UserUltimo         = SafeStr(r,   "USER_ULTIMO")
+                NumSiguienteFormateado      = SafeStr(r,   "NUM_SIGUIENTE_FORMATEADO")               
             };
         }
 

@@ -24,6 +24,8 @@ namespace SistemaContable.UI.Forms.Bancos
         public int IdCheque { get; set; }
         public DataTable TotalesAcumulados { get; private set; }
         public decimal TotalNetoAPagar { get; private set; }
+        public int CantidadDocumentosVinculados { get; private set; } = 0;
+        public string numeroChequeSugerido { get; set; } = string.Empty;
 
         public frmChequeDocumentosContado()
         {
@@ -160,15 +162,18 @@ namespace SistemaContable.UI.Forms.Bancos
             if (gridView1.FocusedRowHandle < 0) return;
 
             string tipoDoc = gridView1.GetFocusedRowCellValue("TIPO_DOC")?.ToString();
+            // tipoFormulario: Define que tipo de formulario debe abrirse para el documento seleccionado
+            string tipoFormulario = gridView1.GetFocusedRowCellValue("TIPO_FORMULARIO")?.ToString();
             var idDocObj = gridView1.GetFocusedRowCellValue("ID_DOCUMENTO");
             if (string.IsNullOrEmpty(tipoDoc) || idDocObj == null || idDocObj == DBNull.Value)
                 return;
 
             int idDocumento = Convert.ToInt32(idDocObj);
+            
 
             try
             {
-                if (tipoDoc != "FSE")
+                if (tipoFormulario == "frmDocumentoCompra")
                 {
                     using (var frm = new frmDocumentoCompra())
                     {
@@ -179,13 +184,23 @@ namespace SistemaContable.UI.Forms.Bancos
                             CargarDocumentos();
                     }
                 }
-                else if (tipoDoc == "FSE")
+                else if (tipoFormulario == "frmFacturaSujetoExcluido")
                 {
                     using (var frm = new frmFacturaSujetoExcluido())
                     {
                         frm.EsContado = true;
                         frm.UidEnlaceCheque = UidEnlaceCheque;
                         frm.IdFse = idDocumento;
+                        if (frm.ShowDialog(this) == DialogResult.OK)
+                            CargarDocumentos();
+                    }
+                }
+                else if (tipoFormulario == "frmDocumentoCompraExterior")
+                {
+                    using (var frm = new frmDocumentoCompraExterior())
+                    {                        
+                        frm.UidEnlaceCheque = UidEnlaceCheque;
+                        frm.IdCompraExterior = idDocumento;
                         if (frm.ShowDialog(this) == DialogResult.OK)
                             CargarDocumentos();
                     }
@@ -222,6 +237,11 @@ namespace SistemaContable.UI.Forms.Bancos
                     });
 
                 gridControl1.DataSource = _dtDocumentos;
+                if(_dtDocumentos != null) 
+                    CantidadDocumentosVinculados = _dtDocumentos.Rows.Count;
+                else
+                    CantidadDocumentosVinculados = 0;
+
                 this.BeginInvoke(new Action(() => gridView1.BestFitColumns()));
             }
             catch (Exception ex)
@@ -325,6 +345,29 @@ namespace SistemaContable.UI.Forms.Bancos
             {
                 XtraMessageBox.Show(
                     "Error al abrir el formulario de factura sujeto excluido:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnAdicionarRetenciones_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var frm = new frmDocumentoCompraExterior())
+                {
+                    frm.numeroChequeSugerido = numeroChequeSugerido;
+                    frm.UidEnlaceCheque = UidEnlaceCheque;
+                    if (frm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        // Refrescar el grid para que aparezca el documento recién creado
+                        CargarDocumentos();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    "Error al abrir el formulario de retenciones:\n\n" + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
