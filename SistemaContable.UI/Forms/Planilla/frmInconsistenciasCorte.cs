@@ -14,7 +14,8 @@ namespace SistemaContable.UI.Forms.Planilla
 {
     // ---------------------------------------------------------------------------
     // Inconsistencias de planilla (2026-10-05).
-    // Revisión PREVIA a generar en frmCreditoFiscalCorte / frmFacturaCorte, con los
+    // Revisión PREVIA a generar en frmCreditoFiscalCorte, frmFacturaCorte o
+    // frmSujectoExcCorte, con los
     // mismos filtros (Zafra, Catorcena, Tipo Planilla) + Tipo de documento.
     // Reúne las validaciones que hoy se hacen al generar:
     //   - Cliente: código vacío, sin cliente en ENTIDAD, ENTIDAD sin CODIPROVEEDOR
@@ -156,8 +157,7 @@ namespace SistemaContable.UI.Forms.Planilla
             cbxTIPO_PLANILLA.DisplayMember = "NOMBRE_TIPO_PLANILLA";
         }
 
-        // 1 = Crédito Fiscal (contribuyentes, frmCreditoFiscalCorte)
-        // 0 = Factura (no contribuyentes, frmFacturaCorte)
+        // 1 = Crédito Fiscal, 0 = Factura, 10 = Factura de Sujeto Excluido.
         private void CargarTipoDocumento()
         {
             var dt = new DataTable();
@@ -165,6 +165,7 @@ namespace SistemaContable.UI.Forms.Planilla
             dt.Columns.Add("NOMBRE", typeof(string));
             dt.Rows.Add(1, "Crédito Fiscal");
             dt.Rows.Add(0, "Factura");
+            dt.Rows.Add(10, "Sujeto Excluido");
             cbxTIPO_DOCUMENTO.DataSource = dt;
             cbxTIPO_DOCUMENTO.ValueMember = "ES_CONTRIBUYENTE";
             cbxTIPO_DOCUMENTO.DisplayMember = "NOMBRE";
