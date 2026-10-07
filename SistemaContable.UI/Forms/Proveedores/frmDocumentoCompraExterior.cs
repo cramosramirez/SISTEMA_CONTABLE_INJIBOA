@@ -58,7 +58,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void frmDocumentoCompra_Load(object sender, EventArgs e)
         {
             FormHelper.Inicializar(this);           
-            InicializarHelperMinisterioHacienda();
+           
             CargarCombos();
             cbxSUCURSAL.SelectedValue = 1;
             mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");
@@ -127,13 +127,13 @@ namespace SistemaContable.UI.Forms.Proveedores
             );
             
             txtPROVEEDOR.Leave += txtPROVEEDOR_Leave;
-            txtCONSULTA_MH.Leave += txtCONSULTA_MH_Leave;
+           
 
             ConfigurarTextBoxDecimal(
                 txtGRAVADA, txtEXENTA, txtEXCLUIDO,
-                txtIVA, txtFOVIAL, txtCONTRANS, txtTOTAL,
+                txtIVA,   txtTOTAL,
                 txtCARGO, txtABONO, txtAPLICABLE_RENTA, txtRENTA,
-                txtIVAR, txtSALDO
+                 txtSALDO
             );
 
 
@@ -143,7 +143,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtAPLICABLE_RENTA.Leave += txtAplicableRenta_Leave;
 
             EngancharRecalculo(
-                txtEXCLUIDO, txtFOVIAL, txtCONTRANS,
+                txtEXCLUIDO,  
                 txtCARGO, txtABONO
             );
 
@@ -224,14 +224,15 @@ namespace SistemaContable.UI.Forms.Proveedores
 
                 // ---------- Documento fiscal ----------
                 cbxTIPO_DTE.SelectedValue = Convert.ToInt32(r["ID_TIPO_DTE"]);
+                cbxTIPO_DTE_SelectionChangeCommitted(null, null);
                 txtNUM_CONTROL.Text = AsString(r["NUM_CONTROL"]);
                 txtCOD_GENERACION.Text = AsString(r["COD_GENERACION"]);
                 txtSELLO_RECIBIDO.Text = AsString(r["SELLO_RECIBIDO"]);
                 mskFECHA_EMISION.Text = AsFecha(r["FECHA_EMISION"]);
                 mskFECHA_RECIBIDO.Text = AsFecha(r["FECHA_RECIBIDO"]);
-                mskFECHA_VENCE.Text = AsFecha(r["FECHA_VENCE"]);
+                
                 txtORDEN.Text = AsString(r["ORDEN"]);
-
+                txtIDSIAP.Text = AsString(r["IDSIAP"]);
                 cbxSUCURSAL.SelectedValue = Convert.ToInt32(r["ID_SUCURSAL"]);
 
                 // ---------- Cascada de clasificación ----------
@@ -270,14 +271,14 @@ namespace SistemaContable.UI.Forms.Proveedores
                 AsignarDecimal(txtEXENTA, ToDecimal(r["EXENTA"]));
                 AsignarDecimal(txtEXCLUIDO, ToDecimal(r["NO_SUJETA"]));
                 AsignarDecimal(txtIVA, 0);
-                AsignarDecimal(txtFOVIAL, ToDecimal(r["FOVIAL"]));
-                AsignarDecimal(txtCONTRANS, ToDecimal(r["COTRANS"]));
+               
+                
                 AsignarDecimal(txtTOTAL, ToDecimal(r["TOTAL"]));
                 AsignarDecimal(txtCARGO, ToDecimal(r["CARGO"]));
                 AsignarDecimal(txtABONO, ToDecimal(r["ABONO"]));
                 AsignarDecimal(txtAPLICABLE_RENTA, ToDecimal(r["APLICABLE_RENTA"]));
                 AsignarDecimal(txtRENTA, ToDecimal(r["RENTA"]));
-                AsignarDecimal(txtIVAR, ToDecimal(r["IVAR"]));
+                
                 AsignarDecimal(txtSALDO, ToDecimal(r["SALDO"]));
 
                 // ---------- Observación ----------
@@ -519,10 +520,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtDIRECCION.Text = string.Empty;
         }
 
-        private void txtCONSULTA_MH_Leave(object sender, EventArgs e)
-        {
-            _mhHelper.OnTxtConsultaLeave(txtCONSULTA_MH.Text);
-        }
+       
 
         private void CargarComboFiltrado(int idClasifica)
         {
@@ -706,8 +704,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             decimal gravada = ObtenerDecimal(txtGRAVADA);
             decimal exenta = ObtenerDecimal(txtEXENTA);
             decimal excluido = ObtenerDecimal(txtEXCLUIDO);
-            decimal fovial = ObtenerDecimal(txtFOVIAL);
-            decimal contrans = ObtenerDecimal(txtCONTRANS);
+            decimal fovial = 0;
+            decimal contrans = 0;
             decimal cargo = ObtenerDecimal(txtCARGO);
             decimal abono = ObtenerDecimal(txtABONO);
             decimal renta = ObtenerDecimal(txtRENTA);   // lee, no calcula
@@ -737,18 +735,18 @@ namespace SistemaContable.UI.Forms.Proveedores
             decimal saldo = total - cargo - abono - renta - ivar;
 
             AsignarDecimal(txtIVA, iva);
-            AsignarDecimal(txtIVAR, ivar);
+           
             AsignarDecimal(txtTOTAL, total);
             AsignarDecimal(txtSALDO, saldo);
         }
 
         private void mskFECHA_RECIBIDO_Leave(object sender, EventArgs e)
         {
-            if (DateTime.TryParseExact(mskFECHA_RECIBIDO.Text, "dd/MM/yyyy",
-            CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fecha))
-            {
-                mskFECHA_VENCE.Text = fecha.AddDays(30).ToString("dd/MM/yyyy");
-            }
+            //if (DateTime.TryParseExact(mskFECHA_RECIBIDO.Text, "dd/MM/yyyy",
+            //CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fecha))
+            //{
+            //    mskFECHA_VENCE.Text = fecha.AddDays(30).ToString("dd/MM/yyyy");
+            //}
         }
 
         private void cbxTIPO_IMPORTACION_SelectionChangeCommitted(object sender, EventArgs e)
@@ -760,20 +758,177 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void cbxTIPO_DTE_SelectionChangeCommitted(object sender, EventArgs e)
         {
             string codigoDocumento = ObtenerCodigoTipoDocumentoSeleccionado();
-            if (string.IsNullOrWhiteSpace(codigoDocumento)) return;
 
-            bool usaReferenciaCheque = codigoDocumento == "INT"
-                                        || codigoDocumento == "DIV"
-                                        || codigoDocumento == "IND";
-            string referencia = usaReferenciaCheque ? "CH" : "INV";
+            if (string.IsNullOrWhiteSpace(codigoDocumento))
+                return;
 
-            txtSELLO_RECIBIDO.Text = referencia;
-            txtNUM_CONTROL.Text = referencia;
-            txtCOD_GENERACION.Text = usaReferenciaCheque ? numeroChequeSugerido : string.Empty;
+            if (codigoDocumento == "POL")
+            {
+                txtSELLO_RECIBIDO.Text = "DM";
+                txtNUM_CONTROL.Text = "0";
+                cbxTIPO_SERVICIO.SelectedValue = 1;
+                cbxTIPO_OPERACION.SelectedValue = 1;
+                cbxTIPO_OPERACION_SelectionChangeCommitted(null, null);
+                cbxCLASIFICACION.SelectedValue = 1;
+                cbxCLASIFICACION_SelectionChangeCommitted(null, null);
+                cbxSECTOR.SelectedValue = 1;
+                cbxSECTOR_SelectionChangeCommitted(null, null);
+                cbxTIPO_COSTO.SelectedValue = 4;
+                cbxTIPO_IMPORTACION.SelectedValue = 0;
+                lbSIAP.Visible = true;
+                txtIDSIAP.Visible = true;
+                bt_CosultarSAIP.Visible = true;
+            }
+            else if (codigoDocumento == "RBI")
+            {
+                txtSELLO_RECIBIDO.Text = "MI";
+                txtNUM_CONTROL.Text = "0";
+                SeleccionarRentaPorTipoDocumento();
+                txtBaseRenta_Leave(sender, e);
+                cbxTIPO_SERVICIO.SelectedValue = 2;
+                cbxTIPO_OPERACION.SelectedIndex = 0;
+                cbxCLASIFICACION.SelectedIndex = 0;
+                cbxSECTOR.SelectedIndex = 0;
+                cbxTIPO_COSTO.SelectedIndex = 0;
+                cbxTIPO_IMPORTACION.SelectedValue = 0;
+                lbSIAP.Visible = false;
+                txtIDSIAP.Visible = false;
+                bt_CosultarSAIP.Visible = false;
+            }
+            else if (codigoDocumento == "DIV")
+            {
+                txtSELLO_RECIBIDO.Text = "CH";
+                txtNUM_CONTROL.Text = "CH";
+                SeleccionarRentaPorTipoDocumento();
+                txtBaseRenta_Leave(sender, e);
+                cbxTIPO_SERVICIO.SelectedValue = 2;
+                cbxTIPO_OPERACION.SelectedIndex = 2;
+                cbxTIPO_OPERACION_SelectionChangeCommitted(null, null);
+                cbxCLASIFICACION.SelectedIndex = 2;
+                cbxCLASIFICACION_SelectionChangeCommitted(null, null);
+                cbxSECTOR.SelectedIndex = 1;
+                cbxSECTOR_SelectionChangeCommitted(null, null);
+                cbxTIPO_COSTO.SelectedIndex = 2;
+                cbxTIPO_IMPORTACION.SelectedValue = 0;
+                lbSIAP.Visible = false;
+                txtIDSIAP.Visible = false;
+                bt_CosultarSAIP.Visible = false;
+            }
+            else if (codigoDocumento == "IND")
+            {
+                txtSELLO_RECIBIDO.Text = "CH";
+                txtNUM_CONTROL.Text = "CH";
+                SeleccionarRentaPorTipoDocumento();
+                txtBaseRenta_Leave(sender, e);
+                cbxTIPO_SERVICIO.SelectedValue = 2;
+                cbxTIPO_OPERACION.SelectedIndex = 3;
+                cbxTIPO_OPERACION_SelectionChangeCommitted(null, null);
+                cbxCLASIFICACION.SelectedIndex = 2;
+                cbxCLASIFICACION_SelectionChangeCommitted(null, null);
+                cbxSECTOR.SelectedIndex = 1;
+                cbxSECTOR_SelectionChangeCommitted(null, null);
+                cbxTIPO_COSTO.SelectedIndex = 2;
+                cbxTIPO_IMPORTACION.SelectedValue = 0;
+                lbSIAP.Visible = false;
+                txtIDSIAP.Visible = false;
+                bt_CosultarSAIP.Visible = false;
+            }
+            else if (codigoDocumento == "INT")
+            {
+                txtSELLO_RECIBIDO.Text = "CH";
+                txtNUM_CONTROL.Text = "CH";
+                SeleccionarRentaPorTipoDocumento();
+                txtBaseRenta_Leave(sender, e);
+                cbxTIPO_SERVICIO.SelectedValue = 2;
+                cbxTIPO_OPERACION.SelectedIndex = 2;
+                cbxTIPO_OPERACION_SelectionChangeCommitted(null, null);
+                cbxCLASIFICACION.SelectedIndex = 2;
+                cbxCLASIFICACION_SelectionChangeCommitted(null, null);
+                cbxSECTOR.SelectedIndex = 1;
+                cbxSECTOR_SelectionChangeCommitted(null, null);
+                cbxTIPO_COSTO.SelectedIndex = 2;
+                cbxTIPO_IMPORTACION.SelectedValue = 0;
+                lbSIAP.Visible = false;
+                txtIDSIAP.Visible = false;
+                bt_CosultarSAIP.Visible = false;
+            }
+            else if (codigoDocumento == "INV")
+            {
+                txtSELLO_RECIBIDO.Text = "INV";
+                txtNUM_CONTROL.Text = "INV";
+                SeleccionarRentaPorTipoDocumento();
+                txtBaseRenta_Leave(sender, e);
+                cbxTIPO_SERVICIO.SelectedValue = 2;
+                cbxTIPO_OPERACION.SelectedIndex = 2;
+                cbxTIPO_OPERACION_SelectionChangeCommitted(null, null);
+                cbxCLASIFICACION.SelectedIndex = 1;
+                cbxCLASIFICACION_SelectionChangeCommitted(null, null);
+                cbxSECTOR.SelectedIndex = 1;
+                cbxSECTOR_SelectionChangeCommitted(null, null);
+                cbxTIPO_COSTO.SelectedIndex = 1;
+                cbxTIPO_IMPORTACION.SelectedValue = 0;
+                lbSIAP.Visible = false;
+                txtIDSIAP.Visible = false;
+                bt_CosultarSAIP.Visible = false;
+            }
+            else if (codigoDocumento == "TEI")
+            {
+                txtSELLO_RECIBIDO.Text = "INV";
+                txtNUM_CONTROL.Text = "INV";
+                SeleccionarRentaPorTipoDocumento();
+                txtBaseRenta_Leave(sender, e);
+                cbxTIPO_SERVICIO.SelectedValue = 2;
+                cbxTIPO_OPERACION.SelectedIndex = 2;
+                cbxTIPO_OPERACION_SelectionChangeCommitted(null, null);
+                cbxCLASIFICACION.SelectedIndex = 1;
+                cbxCLASIFICACION_SelectionChangeCommitted(null, null);
+                cbxSECTOR.SelectedIndex = 1;
+                cbxSECTOR_SelectionChangeCommitted(null, null);
+                cbxTIPO_COSTO.SelectedIndex = 1;
+                cbxTIPO_IMPORTACION.SelectedValue = 0;
+                lbSIAP.Visible = false;
+                txtIDSIAP.Visible = false;
+                bt_CosultarSAIP.Visible = false;
+            }
+            else if (codigoDocumento == "TE")
+            {
+                txtSELLO_RECIBIDO.Text = "INV";
+                txtNUM_CONTROL.Text = "INV";
+                SeleccionarRentaPorTipoDocumento();
+                txtBaseRenta_Leave(sender, e);
+                cbxTIPO_SERVICIO.SelectedIndex = 0;
+                cbxTIPO_OPERACION.SelectedIndex = 0;
+                cbxCLASIFICACION.SelectedIndex = 0;
+                cbxSECTOR.SelectedIndex = 0;
+                cbxTIPO_COSTO.SelectedIndex = 0;
+                cbxTIPO_IMPORTACION.SelectedValue = 0;
+                lbSIAP.Visible = false;
+                txtIDSIAP.Visible = false;
+                bt_CosultarSAIP.Visible = false;
+            }
+            else
+            {
+                // Si el valor fue asignado automáticamente por POL o RBI, limpiar
+                if (txtSELLO_RECIBIDO.Text == "DM" ||
+                    txtSELLO_RECIBIDO.Text == "MI")
+                {
+                    txtSELLO_RECIBIDO.Clear();
+                    txtNUM_CONTROL.Clear();
+                }
+                cbxTIPO_SERVICIO.SelectedIndex = 0;
+                cbxTIPO_OPERACION.SelectedIndex = 0;
+                cbxCLASIFICACION.SelectedIndex = 0;
+                cbxSECTOR.SelectedIndex = 0;
+                cbxTIPO_COSTO.SelectedIndex = 0;
+                cbxTIPO_IMPORTACION.SelectedValue = 0;
+                lbSIAP.Visible = false;
+                txtIDSIAP.Visible = false;
+                bt_CosultarSAIP.Visible = false;
+            }
 
-            SeleccionarRentaPorTipoDocumento();
-            txtBaseRenta_Leave(sender, e);
             txtCOD_GENERACION.Focus();
+
+            
         }
 
         private string ObtenerCodigoTipoDocumentoSeleccionado()
@@ -811,6 +966,9 @@ namespace SistemaContable.UI.Forms.Proveedores
                     break;
                 case "IND":
                     codigoRenta = "70";
+                    break;
+                case "RBI":
+                    codigoRenta = "33";
                     break;
                 default:
                     codigoRenta = "0";
@@ -982,7 +1140,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     ID_ENTIDAD = _idEntidad,
                     CODIGO_ENTIDAD = _codigoEntidad,
                     FECHA_RECIBIDO = ParsearFecha(mskFECHA_RECIBIDO.Text),
-                    FECHA_VENCE = ParsearFechaOpcional(mskFECHA_VENCE.Text),
+                    
                     ORDEN = NullIfEmpty(txtORDEN.Text),
                     ID_SUCURSAL = Convert.ToInt32(cbxSUCURSAL.SelectedValue),
                     ID_TIPO_SERVI = ObtenerIdCombo(cbxTIPO_SERVICIO),
@@ -995,19 +1153,20 @@ namespace SistemaContable.UI.Forms.Proveedores
                     EXENTA = ObtenerDecimal(txtEXENTA),
                     GRAVADA = ObtenerDecimal(txtGRAVADA),
                     IVA = 0m,
-                    FOVIAL = ObtenerDecimal(txtFOVIAL),
-                    COTRANS = ObtenerDecimal(txtCONTRANS),
+                    FOVIAL = 0,
+                    COTRANS = 0,
                     TOTAL = ObtenerDecimal(txtTOTAL),
                     CARGO = ObtenerDecimal(txtCARGO),
                     ABONO = ObtenerDecimal(txtABONO),
                     RENTA = ObtenerDecimal(txtRENTA),
-                    IVAR = ObtenerDecimal(txtIVAR),
+                    IVAR = 0,
                     SALDO = ObtenerDecimal(txtSALDO),
                     OBSERVACION = NullIfEmpty(txtOBSERVACION.Text),
                     USUARIO = Configuracion.UsuarioActual,
                     ID_TIPO_RENTA = ObtenerIdCombo(cbxTIPO_RENTA),
                     APLICABLE_RENTA = ObtenerDecimal(txtAPLICABLE_RENTA),
-                    UID_ENLACE_CHEQUE = UidEnlaceCheque
+                    UID_ENLACE_CHEQUE = UidEnlaceCheque,
+                    IDSIAP = NullIfEmpty(txtIDSIAP.Text)
                 };
 
                 DataTable dt = _dal.EjecutarConsulta("[EPROVEEDOR].[SP_COMPRA_EXTERIOR]", parametros);
@@ -1018,7 +1177,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 // El SP devuelve siempre los tres campos:
                 DataRow row = dt.Rows[0];
                 IdCompraExterior = Convert.ToInt32(row["ID_GENERADO"]);
-                _validarCompIVAR = ObtenerDecimal(txtIVAR) > 0 ? true : false;                
+                _validarCompIVAR =  false;                
                 ConfigurarCRUD(EstadoFormulario.Guardado);
                 XtraMessageBox.Show("Documento guardado correctamente.",
                     "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1057,7 +1216,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtSELLO_RECIBIDO.Text = "";
             mskFECHA_EMISION.Text = "";
             mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");
-            mskFECHA_VENCE.Text = "";
+            
             txtORDEN.Text = "";
 
             cbxTIPO_IMPORTACION.SelectedValue = -1;
@@ -1070,9 +1229,9 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             foreach (var tb in new[] {
                 txtGRAVADA, txtEXENTA, txtEXCLUIDO,
-                txtIVA,     txtFOVIAL, txtCONTRANS, txtTOTAL,
+                txtIVA,       txtTOTAL,
                 txtCARGO,   txtABONO,  txtAPLICABLE_RENTA, txtRENTA,
-                txtIVAR,    txtSALDO, txtOBSERVACION })
+                txtSALDO, txtOBSERVACION })
             {
                 tb.Text = "";
             }
@@ -1142,38 +1301,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             ConfigurarCRUD(EstadoFormulario.Guardado);
         }
 
-        private void InicializarHelperMinisterioHacienda()
-        {
-            _mhHelper = new MinisterioHaciendaHelper(
-                ownerControl: this,
-                actualizarEstado: (texto, color) =>
-                {
-                    lblESTADO_MH.Text = texto;
-                    lblESTADO_MH.ForeColor = color;
-                },
-                actualizarSelloRecibido: (texto) => txtSELLO_RECIBIDO.Text = texto,
-                actualizarCodGeneracion: (texto) => txtCOD_GENERACION.Text = texto,
-                actualizarNumControl: (texto) => txtNUM_CONTROL.Text = texto,
-                actualizarFechaEmision: (fecha) => mskFECHA_EMISION.Text = fecha,
-                actualizarGravada: (texto) => txtGRAVADA.Text = texto,
-                actualizarExenta: (texto) => txtEXENTA.Text = texto,
-                actualizarFOVIAL: (texto) => txtFOVIAL.Text = texto,
-                actualizarCOTRANS: (texto) => txtCONTRANS.Text = texto,
-                actualizarIVAR: (texto) => txtIVAR.Text = texto,
-                actualizarComboTipoDte: (campo, codigo) =>
-                {
-                    SeleccionarComboPorCodigo(cbxTIPO_DTE, campo, codigo);
-                },
-                null,
-                onConsultaExitosa: () =>
-                {
-                    mskFECHA_RECIBIDO.Focus();
-                    RecalcularTotales();
-                },
-                "03" // CÓDIGO DE CCF ELECTRONICO
-            );
-        }
-
+        
         void SeleccionarComboPorCodigo(ComboBox combo, string campoCodigo, string valor)
         {
             try

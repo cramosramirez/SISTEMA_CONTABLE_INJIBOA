@@ -118,6 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="bt_CosultarSAIP.ImageOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
+        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAbdEVYdFRpdGxlAE1hcnF1ZWVab29tLnBuZztab29t
+        O77oSrMAAAM1SURBVDhPdZN5UMxhGMe/yn39acaVPxlHxmArm9hRLV02JuNWm6wOR40ux9Zu7ew2laiG
+        yVLMWBoNaa0NbXROSMYRE4k/kMhR29gwma95V8MwPDPPzG+eed/P93m+z+/FspA4/sxY5h1vhCwkhrLg
+        aMqCoplzrA5Lg7ZzSaCKPgEqGo7WwHDkBkj+SueF3OMNyDXWI8dYDwBDALgCGDaYQwG4eC+PpK7ABu2h
+        q+LM7xAK2UW1vy7uM5z3z8y/atUXVnfqCmydmrxKa6LmjFzqF54qznz/zj8BWc62asSnq+agRVNQUs9H
+        T7to7/vCXns/H7Z1MqfoBhPSzmgGOxJCv0PqrxRIl0SNSZ5fXMeevn6WXnnKaH0tYwy1PHutne97HDQU
+        Vg5sjs6VC6FLUR4wR3mgXCkBvJZtEYCh+7PMTfcfd9J0uY1Jh2+z8vZHKk++YXheM01V7Wxq6aByd1ET
+        gBHCPGvcElhifACJbKMADE/RVfT22Pu5LeM6a1sdvPtigDsqHIy32Blb0MCu7j6uU+XbAYxmqw6WmMUw
+        q7yBpMxyMcmIePU5+/tPn7kts4aRpz9wx0UHE6scTKnqZdyRRr56a6diU9ZnAGN4Nw0VKm9ciJIC86Rh
+        zg5Ue0puNTQ/58nLbQw/3MIESy9TbHZuL77H4mtPaK1+QPnqA7cAjOLNVFzYKkVZhBSY67VaAFxDN2mD
+        kjPLBp69/ESj5bGzbaFsvNLG1o53VO4sZIIisATAOLGJsohFKN3sBcyRKDhboqC7x8o9IRv0euUuI822
+        +3zY/pYPnnTxvLWFayJzWFqoZnOWgtmBs9TCB7E500YPIEyZj1URh4QPYr8jF8t3hviGqqv8VqV1+4aq
+        u2XBydUqf7/TdemBZGM8m7QrqPOdrhVeCAiC12cjYK0eHa+FwU6I+HVHARg7mEJtfLKnm9aWLCNtW1m/
+        V0ZDgHu6MP/ng/grnA+lVQfeSQNvpoiSi1CMmzsxwxzrya/lYTwRtqDP6ce/ACJMGxZC7zMNGVI3pHu6
+        iZKAjI2cMUGd5z/zW3aA+ylnd/8DnFo7H+meU7FfMgWp8ycjad4kURaQkWKkwdFcfwCK3qlfGGvFqQAA
+        AABJRU5ErkJggg==
+</value>
+  </data>
   <data name="btnGuardar.ImageOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
