@@ -48,13 +48,13 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colRENTA = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colRETENCION_IVA = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colSALDO = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colTIPO_FORMULARIO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnAdicionarRetenciones = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdicionarFSE = new DevExpress.XtraEditors.SimpleButton();
             this.label1 = new System.Windows.Forms.Label();
             this.btnRetornar = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdicionarCCF = new DevExpress.XtraEditors.SimpleButton();
-            this.colTIPO_FORMULARIO = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -308,6 +308,14 @@ namespace SistemaContable.UI.Forms.Bancos
             this.colSALDO.VisibleIndex = 14;
             this.colSALDO.Width = 79;
             // 
+            // colTIPO_FORMULARIO
+            // 
+            this.colTIPO_FORMULARIO.Caption = "TIPO_FORMULARIO";
+            this.colTIPO_FORMULARIO.FieldName = "TIPO_FORMULARIO";
+            this.colTIPO_FORMULARIO.MinWidth = 24;
+            this.colTIPO_FORMULARIO.Name = "colTIPO_FORMULARIO";
+            this.colTIPO_FORMULARIO.Width = 90;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.btnAdicionarRetenciones);
@@ -333,7 +341,7 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAdicionarRetenciones.Name = "btnAdicionarRetenciones";
             this.btnAdicionarRetenciones.Size = new System.Drawing.Size(202, 47);
             this.btnAdicionarRetenciones.TabIndex = 133;
-            this.btnAdicionarRetenciones.Text = "Adicionar Retenciones de Renta";
+            this.btnAdicionarRetenciones.Text = "Adicionar retenciones de renta";
             this.btnAdicionarRetenciones.ToolTip = "Adicione Dividendos, Intereses, Indemnizaciones, Invoice, transferencias enviadas" +
     "";
             this.btnAdicionarRetenciones.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
@@ -401,14 +409,6 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAdicionarCCF.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.btnAdicionarCCF.ToolTipTitle = "Tipos de documentos ";
             this.btnAdicionarCCF.Click += new System.EventHandler(this.btnAdicionarCCF_Click);
-            // 
-            // colTIPO_FORMULARIO
-            // 
-            this.colTIPO_FORMULARIO.Caption = "TIPO_FORMULARIO";
-            this.colTIPO_FORMULARIO.FieldName = "TIPO_FORMULARIO";
-            this.colTIPO_FORMULARIO.MinWidth = 24;
-            this.colTIPO_FORMULARIO.Name = "colTIPO_FORMULARIO";
-            this.colTIPO_FORMULARIO.Width = 90;
             // 
             // frmChequeDocumentosContado
             // 

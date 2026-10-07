@@ -11,6 +11,7 @@ using DevExpress.Utils;
 using SistemaContable.RP.Bancos.Proveedores;
 using DevExpress.XtraEditors.Repository;
 using System.ComponentModel;
+using SistemaContable.RP.Partidas;
 
 namespace SistemaContable.UI.Forms.Bancos
 {
@@ -36,6 +37,7 @@ namespace SistemaContable.UI.Forms.Bancos
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtPartida;  // DataTable que alimenta el grid
         private int _idCheque = 0;     // 0 = nuevo, >0 = edición
+        private long _idPartidaCheque = 0;    
         private string _columnaAnteriorGrid = string.Empty;
         private DataTable _documentosPago; // Documentos a pagar mediante Quedan
         private string _uidEnlaceCheque = string.Empty;
@@ -291,7 +293,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 txtNOMBRE_CHEQUE.Text = SafeStr(r["NOMBRE_CHEQUE"]);
                 txtCONCEPTO.Text = SafeStr(r["CONCEPTO"]);
                 txtPROVEEDOR.Text = SafeStr(r["CODIGO_ENTIDAD"]);
-                chkImpreso.Checked = r["IMPRESO"] != DBNull.Value && Convert.ToBoolean(r["IMPRESO"]); ; 
+                chkImpreso.Checked = r["IMPRESO"] != DBNull.Value && Convert.ToBoolean(r["IMPRESO"]); 
                 decimal monto = r["MONTO"] == DBNull.Value ? 0m : Convert.ToDecimal(r["MONTO"]);
                 txtCANTIDAD.Text = monto.ToString("N2");
                 bool estaAnulado = r.Table.Columns.Contains("ANULADO")
@@ -301,6 +303,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 if (r.Table.Columns.Contains("ES_CARGO") && r["ES_CARGO"] != DBNull.Value)
                     esCargo = Convert.ToBoolean(r["ES_CARGO"]);
                 _operacionEsCargoAlaCuenta = esCargo;
+                _idPartidaCheque = r["ID_PARTIDA"] == DBNull.Value ? 0 : Convert.ToInt64(r["ID_PARTIDA"]);
 
                 AplicarReglasOperacion();
                 _asignandoCuentaPorCodigo = true;
@@ -326,7 +329,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
                 ActualizarCuadre();
 
-                // ---------- Result set 3: CCFs VINCULADOS ----------
+                // ---------- Result set 3: Documentos VINCULADOS ----------
                 if (_documentosPago == null)
                 {
                     _documentosPago = ds.Tables[2].Copy();
@@ -347,7 +350,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 else
                 {
                     ConfigurarCRUD(EstadoFormulario.Guardar);
-                    btnImprimir.Enabled = !chkImpreso.Checked;
+                    //btnImprimir.Enabled = !chkImpreso.Checked;
                 }
                     
             }
@@ -1859,14 +1862,25 @@ namespace SistemaContable.UI.Forms.Bancos
             {
                 Cursor = Cursors.WaitCursor;
 
-                var reporte = new rptCheque { IdCheque = _idCheque };
-                bool seImprimio = reporte.ImprimirConDialogo();
+                bool marcadoImpreso = chkImpreso.Checked;
+                if (!marcadoImpreso)
+                {
+                    marcadoImpreso = MarcarChequeComoImpreso(_idCheque);
+                }
 
-               // if (seImprimio)
-               //{
-                    MarcarChequeComoImpreso(_idCheque);
-                    // Si la impresión fué correcta habilitar la opción de anulación del cheque
-                    btnAnular.Enabled = true;
+                if (txtOPERACION.Text == "CH" && marcadoImpreso)
+                {                    
+                    var reporte = new rptCheque { IdCheque = _idCheque };
+                    reporte.ImprimirConDialogo();                       
+                }
+                else 
+                {
+                    Cursor = Cursors.WaitCursor;
+                    var reporte = new RptPartida_Movimiento { _ID_PARTIDA = _idPartidaCheque};
+                    reporte.MostrarPreview();
+                }
+                // Si la impresión fué correcta habilitar la opción de anulación del cheque
+                btnAnular.Enabled = true;
 
                 // Mostrar en pantalla el anexo del cheque después de imprimir
                 if (_flujoEsQuedan || (_documentosPago != null && _documentosPago.Rows.Count > 0))
@@ -1877,9 +1891,8 @@ namespace SistemaContable.UI.Forms.Bancos
                         var reporteAnexo = new rptChequeAnexo { IdCheque = _idCheque };
                         reporteAnexo.MostrarPreview();
                     }
-                }
-                                   
-                //}
+                }                                  
+                
             }
             catch (Exception ex)
             {
@@ -1896,17 +1909,22 @@ namespace SistemaContable.UI.Forms.Bancos
         /// <summary>
         /// Marca el cheque como impreso en la base de datos.
         /// </summary>
-        private void MarcarChequeComoImpreso(int idCheque)
+        private bool MarcarChequeComoImpreso(int idCheque)
         {
             try
             {
-                _dal.EjecutarConsulta("SP_CHEQUE", new
+                DataTable dt = _dal.EjecutarConsulta("SP_CHEQUE", new
                 {
                     ACCION = "MARCAR_IMPRESO",
                     ID_CHEQUE = idCheque,
                     USUARIO = Configuracion.UsuarioActual
                 });
-                chkImpreso.Checked = true; 
+                if(dt.Rows.Count > 0)
+                {
+                    _idPartidaCheque = dt.Rows[0]["ID_PARTIDA_GENERADA"] == DBNull.Value ? 0 : Convert.ToInt64(dt.Rows[0]["ID_PARTIDA_GENERADA"]);
+                }
+                chkImpreso.Checked = true;
+                return true;
             }
             catch (Exception ex)
             {
@@ -1914,6 +1932,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 XtraMessageBox.Show(
                     "El documento se imprimió, pero no se pudo marcar como impreso:\n\n" + ex.Message,
                     "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
         }
 

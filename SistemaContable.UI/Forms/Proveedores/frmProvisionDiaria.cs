@@ -21,7 +21,7 @@ namespace SistemaContable.UI.Forms.Proveedores
     public partial class frmProvisionDiaria : Form, IRefrescable
     {
         private readonly DALBase _dal = new DALBase();
-        private int _IdPartidaExistente = 0;
+        private long _IdPartidaExistente = 0;
         public frmProvisionDiaria()
         {
             InitializeComponent();
@@ -196,7 +196,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     var fila = dt.Rows[0];
                     string numeroFormateado = fila["NID_PARTIDA"]?.ToString() ?? "";
 
-                    _IdPartidaExistente = Convert.ToInt32(fila["ID_PARTIDA"]);
+                    _IdPartidaExistente = Convert.ToInt64(fila["ID_PARTIDA"]);
                     txtNUMERO_PARTIDA.Text = numeroFormateado;
                     btnImprimirPartida.Enabled = true;
                 }

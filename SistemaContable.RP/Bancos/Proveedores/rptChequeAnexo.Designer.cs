@@ -238,7 +238,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.xrLabel8.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FECHA_CHEQUE]")});
             this.xrLabel8.Font = new System.Drawing.Font("Arial", 8.765218F);
-            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(604.2609F, 125.913F);
+            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(658.913F, 125.913F);
             this.xrLabel8.Multiline = true;
             this.xrLabel8.Name = "xrLabel8";
             this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -251,7 +251,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             // xrLabel7
             // 
             this.xrLabel7.Font = new System.Drawing.Font("Arial", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(538.9131F, 125.913F);
+            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(593.5651F, 125.913F);
             this.xrLabel7.Multiline = true;
             this.xrLabel7.Name = "xrLabel7";
             this.xrLabel7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -266,7 +266,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.xrLabel6.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NUM_CUENTA]")});
             this.xrLabel6.Font = new System.Drawing.Font("Arial", 8.765218F);
-            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(317.7391F, 125.913F);
+            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(377.7167F, 125.913F);
             this.xrLabel6.Multiline = true;
             this.xrLabel6.Name = "xrLabel6";
             this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -278,7 +278,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             // xrLabel5
             // 
             this.xrLabel5.Font = new System.Drawing.Font("Arial", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(252.3914F, 125.913F);
+            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(312.369F, 125.913F);
             this.xrLabel5.Multiline = true;
             this.xrLabel5.Name = "xrLabel5";
             this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -293,7 +293,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.xrLabel4.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NUM_CHEQUE]")});
             this.xrLabel4.Font = new System.Drawing.Font("Arial", 8.765218F);
-            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(90.34786F, 125.913F);
+            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(150.3479F, 125.913F);
             this.xrLabel4.Multiline = true;
             this.xrLabel4.Name = "xrLabel4";
             this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -305,15 +305,16 @@ namespace SistemaContable.RP.Bancos.Proveedores
             // xrLabel3
             // 
             this.xrLabel3.Font = new System.Drawing.Font("Arial", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(25.00006F, 125.913F);
+            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(25.00007F, 125.913F);
             this.xrLabel3.Multiline = true;
             this.xrLabel3.Name = "xrLabel3";
-            this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel3.SizeF = new System.Drawing.SizeF(65.34779F, 19.99999F);
+            this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 2, 0, 100F);
+            this.xrLabel3.SizeF = new System.Drawing.SizeF(125.3478F, 32.1739F);
             this.xrLabel3.StylePriority.UseFont = false;
+            this.xrLabel3.StylePriority.UsePadding = false;
             this.xrLabel3.StylePriority.UseTextAlignment = false;
-            this.xrLabel3.Text = "CHEQUE: ";
-            this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrLabel3.Text = "[DOCUMENTO]:";
+            this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
             // 
             // xrLabel2
             // 
