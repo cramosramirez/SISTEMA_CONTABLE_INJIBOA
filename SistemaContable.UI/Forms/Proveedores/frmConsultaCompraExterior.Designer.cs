@@ -130,7 +130,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(1229, 38);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Ingreso de (TE, Intereses, Dividendos, Indemnizacion)";
+            this.label1.Text = "Otros documentos";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel2
@@ -315,7 +315,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.Name = "frmConsultaCompraExterior";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Tag = "CONSULTA";
-            this.Text = "Consulta de Compra Exterior";
+            this.Text = "Ingreso de otros documentos";
             this.Load += new System.EventHandler(this.frmConsultaQuedan_Load);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkUltimos3Meses.Properties)).EndInit();

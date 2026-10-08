@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -41,6 +42,22 @@ namespace SistemaContable.UI.Helpers
                 }
             };
             timer.Start();
+        }
+
+        public static void AbrirUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url)) return;
+
+            try
+            {
+                Process.Start(url);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    $"No se pudo abrir el sitio web:\n\n{ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>

@@ -1382,5 +1382,21 @@ namespace SistemaContable.UI.Forms.Proveedores
             }
         }
 
+        private void bt_CosultarSAIP_Click(object sender, EventArgs e)
+        {
+            string url = ConfigurationManager.AppSettings["UrlAduanaDeclaraciones"];
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                XtraMessageBox.Show(
+                    "La URL del sitio de Aduana no está configurada.\n\n" +
+                    "Contacte al administrador del sistema para configurar la key " +
+                    "'UrlAduanaDeclaraciones' en el archivo App.config.",
+                    "Configuración faltante",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+            FormHelper.AbrirUrl(url);
+        }
     }
 }

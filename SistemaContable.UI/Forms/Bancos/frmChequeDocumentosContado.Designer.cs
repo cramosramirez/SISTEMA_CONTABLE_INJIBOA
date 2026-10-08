@@ -341,9 +341,9 @@ namespace SistemaContable.UI.Forms.Bancos
             this.btnAdicionarRetenciones.Name = "btnAdicionarRetenciones";
             this.btnAdicionarRetenciones.Size = new System.Drawing.Size(202, 47);
             this.btnAdicionarRetenciones.TabIndex = 133;
-            this.btnAdicionarRetenciones.Text = "Adicionar retenciones de renta";
+            this.btnAdicionarRetenciones.Text = "Adicionar otros documentos";
             this.btnAdicionarRetenciones.ToolTip = "Adicione Dividendos, Intereses, Indemnizaciones, Invoice, transferencias enviadas" +
-    "";
+    ", RBI, Pólizas";
             this.btnAdicionarRetenciones.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.btnAdicionarRetenciones.ToolTipTitle = "Tipos de documentos ";
             this.btnAdicionarRetenciones.Click += new System.EventHandler(this.btnAdicionarRetenciones_Click);
