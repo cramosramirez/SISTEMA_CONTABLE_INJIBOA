@@ -1096,8 +1096,14 @@ namespace SistemaContable.UI.Forms.NotaRemision
                 return false;
             }
 
-            if (!FormHelper.ValidarFecha(mskFECHA_EMISION, "Fecha de la Nota Remision"))
+            if (string.IsNullOrWhiteSpace(mskFECHA_EMISION.Text))
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Fecha de la Nota Remision.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPROVEEDOR.Focus();
                 return false;
+            }
 
 
             if (cbxID_ZAFRA.SelectedIndex == 0)
@@ -1191,8 +1197,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
                     ID_CLIENTE = _idEntidad,
                     COD_REF = _codigoEntidad,
                     TPDOC = "OD",
-                    FECHA = FormHelper.ObtenerFecha(mskFECHA_EMISION),
-                    SALFEC = FormHelper.ObtenerSalfec(mskFECHA_EMISION),
+                    FECHA = mskFECHA_EMISION.Text,
+                    SALFEC = mskFECHA_EMISION.DateTime.ToString("yyyyMM"),
                     NUMDOC = txtNumero_NR.Text,
                     CODGENERACION_OD = txtCOD_GENERACION.Text,                    
                     OBSERVACIONES = txtObservacion.Text,

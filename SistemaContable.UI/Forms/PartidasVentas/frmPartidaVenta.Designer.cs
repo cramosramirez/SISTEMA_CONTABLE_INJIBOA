@@ -196,6 +196,8 @@
             this.deFecha.EditValue = null;
             this.deFecha.Location = new System.Drawing.Point(235, 71);
             this.deFecha.Name = "deFecha";
+            this.deFecha.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.deFecha.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.DateTimeAdvancingCaret;
             this.deFecha.Size = new System.Drawing.Size(143, 20);
             this.deFecha.TabIndex = 3;
             this.deFecha.EditValueChanged += new System.EventHandler(this.deFecha_EditValueChanged);

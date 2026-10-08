@@ -36,6 +36,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
         
         private bool _modoBusqueda = false;
         private bool _cargandoPartida = false;
+        private bool NavegacionHabilitada => _modoBusqueda;
 
         private enum EstadoFormulario
         {
@@ -87,8 +88,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
                          buscar : true,
                          supender : false,
                          imprimir : false,
-                         anterior : false,
-                         siguiente : false,
+                         anterior : NavegacionHabilitada,
+                         siguiente : NavegacionHabilitada,
                          modificar : false,
                          eliminar :false,
                          grabar : false,
@@ -104,8 +105,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
                          buscar: false,
                          supender: false,
                          imprimir: false,
-                         anterior: false,
-                         siguiente: false,
+                         anterior: NavegacionHabilitada,
+                         siguiente: NavegacionHabilitada,
                          modificar: false,
                          eliminar: false,
                          grabar: false,
@@ -121,8 +122,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
                          buscar: true,
                          supender: false,
                          imprimir: false,
-                         anterior: false,
-                         siguiente: false,
+                         anterior: NavegacionHabilitada,
+                         siguiente: NavegacionHabilitada,
                          modificar: false,
                          eliminar: false,
                          grabar: true,
@@ -138,8 +139,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
                          buscar: true,
                          supender: false,
                          imprimir: false,
-                         anterior: true,
-                         siguiente: true,
+                         anterior: NavegacionHabilitada,
+                         siguiente: NavegacionHabilitada,
                          modificar: true,
                          eliminar: false,
                          grabar: false,
@@ -156,8 +157,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
                          buscar: false,
                          supender: false,
                          imprimir: true,
-                         anterior: false,
-                         siguiente: false,
+                         anterior: NavegacionHabilitada,
+                         siguiente: NavegacionHabilitada,
                          modificar: false,
                          eliminar: true,
                          grabar: true,
@@ -175,8 +176,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
                          buscar: false,
                          supender: false,
                          imprimir: true,
-                         anterior: false,
-                         siguiente: false,
+                         anterior: NavegacionHabilitada,
+                         siguiente: NavegacionHabilitada,
                          modificar: false,
                          eliminar: false,
                          grabar: false,
@@ -194,8 +195,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
                          buscar: false,
                          supender: false,
                          imprimir: true,
-                         anterior: false,
-                         siguiente: false,
+                         anterior: NavegacionHabilitada,
+                         siguiente: NavegacionHabilitada,
                          modificar: false,
                          eliminar: false,
                          grabar: false,
@@ -732,8 +733,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
 
                 if (fila["FECHA_PARTIDA"] != DBNull.Value)
                 {
-                    deFecha.Text = Convert.ToDateTime(fila["FECHA_PARTIDA"])
-                        .ToString("dd/MM/yyyy");
+                    deFecha.DateTime = Convert.ToDateTime(fila["FECHA_PARTIDA"]);
                 }
 
                 lblTOTAL_CARGO.Text = fila["TOTAL_CARGO"]?.ToString();
@@ -1633,6 +1633,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
 
                     Alertas.Exito($"Partida {nidPartida} guardada correctamente.");
                     ConfigurarCRUD(EstadoFormulario.Success);
+                    CargarListaPartidas();
                 }
                 catch (SqlException ex)
                 {

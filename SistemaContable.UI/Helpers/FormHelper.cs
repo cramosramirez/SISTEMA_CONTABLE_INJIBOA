@@ -378,6 +378,7 @@ namespace SistemaContable.UI.Helpers
             return null;
         }
 
+
         public static DialogResult MostrarMensajeHtml(
             string mensaje,
             string titulo = "Información",

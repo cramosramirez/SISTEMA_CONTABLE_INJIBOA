@@ -141,6 +141,8 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             this.deFecha.EditValue = null;
             this.deFecha.Location = new System.Drawing.Point(488, 68);
             this.deFecha.Name = "deFecha";
+            this.deFecha.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.deFecha.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.DateTimeAdvancingCaret;
             this.deFecha.Size = new System.Drawing.Size(143, 20);
             this.deFecha.TabIndex = 194;
             // 
@@ -191,11 +193,11 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             // 
             // lblCentroCosto
             // 
-            this.lblCentroCosto.Location = new System.Drawing.Point(32, 68);
+            this.lblCentroCosto.Location = new System.Drawing.Point(17, 68);
             this.lblCentroCosto.Name = "lblCentroCosto";
-            this.lblCentroCosto.Size = new System.Drawing.Size(67, 13);
+            this.lblCentroCosto.Size = new System.Drawing.Size(82, 13);
             this.lblCentroCosto.TabIndex = 8;
-            this.lblCentroCosto.Text = "Tipo Partida:*";
+            this.lblCentroCosto.Text = "Tipo de Partida:*";
             // 
             // groupControl1
             // 

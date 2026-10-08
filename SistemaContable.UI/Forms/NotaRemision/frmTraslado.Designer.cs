@@ -30,6 +30,7 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtKilogramos = new System.Windows.Forms.TextBox();
             this.txtOrdenDespacho = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.txtCodGenera_OrdenDespacho = new System.Windows.Forms.TextBox();
@@ -60,7 +61,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.label17 = new System.Windows.Forms.Label();
-            this.mskFECHA_EMISION = new System.Windows.Forms.MaskedTextBox();
             this.txtTOTAL = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
             this.txtGRAVADA = new System.Windows.Forms.TextBox();
@@ -92,14 +92,17 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.txtNRC = new System.Windows.Forms.TextBox();
             this.txtPROVEEDOR = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtKilogramos = new System.Windows.Forms.TextBox();
+            this.mskFECHA_EMISION = new DevExpress.XtraEditors.DateEdit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mskFECHA_EMISION.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mskFECHA_EMISION.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.mskFECHA_EMISION);
             this.panel1.Controls.Add(this.txtKilogramos);
             this.panel1.Controls.Add(this.txtOrdenDespacho);
             this.panel1.Controls.Add(this.label8);
@@ -130,7 +133,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Controls.Add(this.btnGuardar);
             this.panel1.Controls.Add(this.gridControl1);
             this.panel1.Controls.Add(this.label17);
-            this.panel1.Controls.Add(this.mskFECHA_EMISION);
             this.panel1.Controls.Add(this.txtTOTAL);
             this.panel1.Controls.Add(this.label26);
             this.panel1.Controls.Add(this.txtGRAVADA);
@@ -167,6 +169,16 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1171, 730);
             this.panel1.TabIndex = 0;
+            // 
+            // txtKilogramos
+            // 
+            this.txtKilogramos.BackColor = System.Drawing.SystemColors.Window;
+            this.txtKilogramos.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtKilogramos.Location = new System.Drawing.Point(978, 189);
+            this.txtKilogramos.Name = "txtKilogramos";
+            this.txtKilogramos.Size = new System.Drawing.Size(147, 22);
+            this.txtKilogramos.TabIndex = 220;
+            this.txtKilogramos.Visible = false;
             // 
             // txtOrdenDespacho
             // 
@@ -486,15 +498,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label17.Size = new System.Drawing.Size(39, 14);
             this.label17.TabIndex = 151;
             this.label17.Text = "Fecha";
-            // 
-            // mskFECHA_EMISION
-            // 
-            this.mskFECHA_EMISION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mskFECHA_EMISION.Location = new System.Drawing.Point(161, 189);
-            this.mskFECHA_EMISION.Mask = "00/00/0000";
-            this.mskFECHA_EMISION.Name = "mskFECHA_EMISION";
-            this.mskFECHA_EMISION.Size = new System.Drawing.Size(145, 22);
-            this.mskFECHA_EMISION.TabIndex = 150;
             // 
             // txtTOTAL
             // 
@@ -816,15 +819,15 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.label1.TabIndex = 119;
             this.label1.Text = "Cliente";
             // 
-            // txtKilogramos
+            // mskFECHA_EMISION
             // 
-            this.txtKilogramos.BackColor = System.Drawing.SystemColors.Window;
-            this.txtKilogramos.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtKilogramos.Location = new System.Drawing.Point(978, 189);
-            this.txtKilogramos.Name = "txtKilogramos";
-            this.txtKilogramos.Size = new System.Drawing.Size(147, 22);
-            this.txtKilogramos.TabIndex = 220;
-            this.txtKilogramos.Visible = false;
+            this.mskFECHA_EMISION.EditValue = null;
+            this.mskFECHA_EMISION.Location = new System.Drawing.Point(161, 188);
+            this.mskFECHA_EMISION.Name = "mskFECHA_EMISION";
+            this.mskFECHA_EMISION.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.mskFECHA_EMISION.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.DateTimeAdvancingCaret;
+            this.mskFECHA_EMISION.Size = new System.Drawing.Size(145, 20);
+            this.mskFECHA_EMISION.TabIndex = 226;
             // 
             // frmTraslado
             // 
@@ -843,6 +846,8 @@ namespace SistemaContable.UI.Forms.NotaRemision
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mskFECHA_EMISION.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mskFECHA_EMISION.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -882,7 +887,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private System.Windows.Forms.TextBox txtTOTAL;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.MaskedTextBox mskFECHA_EMISION;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraEditors.SimpleButton btnCorreo;
@@ -913,5 +917,6 @@ namespace SistemaContable.UI.Forms.NotaRemision
         private System.Windows.Forms.Label label7;
         private DevExpress.XtraEditors.SimpleButton btOrdenDespacho;
         private System.Windows.Forms.TextBox txtKilogramos;
+        private DevExpress.XtraEditors.DateEdit mskFECHA_EMISION;
     }
 }

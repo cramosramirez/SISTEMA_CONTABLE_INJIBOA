@@ -1161,7 +1161,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     NO_SUJETA = ObtenerDecimal(txtEXCLUIDO),
                     EXENTA = ObtenerDecimal(txtEXENTA),
                     GRAVADA = ObtenerDecimal(txtGRAVADA),
-                    IVA = 0m,
+                    IVA = ObtenerDecimal(txtIVA),
                     FOVIAL = 0,
                     COTRANS = 0,
                     TOTAL = ObtenerDecimal(txtTOTAL),

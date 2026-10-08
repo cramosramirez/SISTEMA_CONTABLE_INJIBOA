@@ -174,7 +174,7 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             if (cbTipoPartida.SelectedIndex < 0 ||
                 !int.TryParse(cbTipoPartida.SelectedValue?.ToString(), out idTipo))
             {
-                XtraMessageBox.Show("Seleccione un centro de costo.", "Validación",
+                XtraMessageBox.Show("Seleccione un Tipo de partida.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cbTipoPartida.Focus();
                 return false;
@@ -440,6 +440,14 @@ namespace SistemaContable.UI.Forms.PartidasVentas
         #endregion
 
         // Handler enlazado en el Designer; se deja vacío para no romper la compilación
-        private void cbTipoPartida_TextChanged(object sender, EventArgs e) { }
+        private void cbTipoPartida_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txt_Anio.Text) &&
+                !string.IsNullOrWhiteSpace(cb_Mes.Text) &&
+                !string.IsNullOrWhiteSpace(cbTipoPartida.Text))
+            {
+                btnProcesar_Click(null, null);
+            }
+        }
     }
 }

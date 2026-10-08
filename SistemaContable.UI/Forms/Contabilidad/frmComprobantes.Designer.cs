@@ -370,7 +370,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
             this.deFecha.EditValue = null;
             this.deFecha.Location = new System.Drawing.Point(265, 74);
             this.deFecha.Name = "deFecha";
-            this.deFecha.Properties.Mask.EditMask = "dd/mm/yyyy";
+            this.deFecha.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.deFecha.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.DateTimeAdvancingCaret;
             this.deFecha.Size = new System.Drawing.Size(118, 20);
             this.deFecha.TabIndex = 13;
             this.deFecha.EditValueChanged += new System.EventHandler(this.deFecha_EditValueChanged);
