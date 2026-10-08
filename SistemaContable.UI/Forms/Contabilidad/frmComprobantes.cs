@@ -82,7 +82,9 @@ namespace SistemaContable.UI.Forms.Contabilidad
             switch (estado)
             {
                 case EstadoFormulario.Inicializar:
-                    _modoBusqueda = false;
+                    if (!_modoBusqueda)
+                        _modoBusqueda = false;
+                    // Si ya era true, se mantiene true
                     HabilitarBotones(
                          nuevo : true,
                          buscar : true,
@@ -99,7 +101,9 @@ namespace SistemaContable.UI.Forms.Contabilidad
                     break;
 
                 case EstadoFormulario.Pendiente:
-                    _modoBusqueda = false;
+                    if (!_modoBusqueda)
+                        _modoBusqueda = false;
+                    // Si ya era true, se mantiene true
                     HabilitarBotones(
                         nuevo: false,
                          buscar: false,
@@ -116,7 +120,6 @@ namespace SistemaContable.UI.Forms.Contabilidad
                     break;
 
                 case EstadoFormulario.Nuevo:
-                    _modoBusqueda = false;
                     HabilitarBotones(
                          nuevo: false,
                          buscar: true,
@@ -128,8 +131,10 @@ namespace SistemaContable.UI.Forms.Contabilidad
                          eliminar: false,
                          grabar: true,
                          ignorar: true);
+                    LimpiarControles();
                     HabilitarControlesEncabezado(true);
                     HabilitarControlesPartida(true);
+                   
                     break;
 
                 case EstadoFormulario.Buscar:
@@ -169,7 +174,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
                     break;
 
                 case EstadoFormulario.Grabar:
-                    _modoBusqueda = false;
+                    _modoBusqueda = true;
 
                     HabilitarBotones(
                          nuevo: true,
@@ -188,7 +193,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
 
 
                 case EstadoFormulario.Success:
-                    _modoBusqueda = false;
+                    _modoBusqueda = true;
 
                     HabilitarBotones(
                          nuevo: true,
@@ -213,16 +218,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
         // ============================================================
         // Habilita/deshabilita los controles del encabezado del cheque
         // ============================================================
-        //private void HabilitarControlesEncabezado(bool habilitar)
-        //{
-
-        //    txtTipo.Enabled = habilitar;   // tipo de partida
-        //    txtConcepto.Enabled = habilitar;
-        //    txtNumero.Enabled = habilitar;
-        //    deFecha.Enabled = habilitar;            
-        //}
-
-
+       
         private void HabilitarControlesEncabezado(bool habilitar)
         {
             txtTipo.ReadOnly = !habilitar;
@@ -262,28 +258,40 @@ namespace SistemaContable.UI.Forms.Contabilidad
                 ? Color.FromArgb(255, 255, 192)
                 : Color.FromArgb(245, 245, 245);
         }
-       
+
         private void LimpiarControles()
         {
-              IdComprobante  = 0;
+            IdComprobante = 0;
             _dtPartida.Clear();
-         _columnaAnteriorGrid = string.Empty;
-         _asignandoCuentaPorCodigo = false;
-        _dtPartidas.Clear();
-         _indiceActual = -1;
-       _modoBusqueda = false;
-         _cargandoPartida = false;
+            _columnaAnteriorGrid = string.Empty;
+            _asignandoCuentaPorCodigo = false;
+            _dtPartidas.Clear();
+            _indiceActual = -1;
+            _cargandoPartida = false;
+
             txtId.Text = string.Empty;
             txtNID_PARTIDA.Text = string.Empty;
             txtNumero.Text = string.Empty;
-            txtTipo.Text = string.Empty;
-            txtTipoNombre.Text = string.Empty;
             txtConcepto.Text = string.Empty;
-            deFecha.Text = string.Empty;
+
             lblTOTAL_CARGO.Text = "0";
             lblTOTAL_ABONO.Text = "0";
             lblDIFERENCIA.Text = "0";
-            ConfigurarCRUD(EstadoFormulario.Inicializar);
+
+            if (!_modoBusqueda)
+            {
+                txtTipo.Text = string.Empty;
+                txtTipoNombre.Text = string.Empty;
+                deFecha.EditValue = null;                
+                ConfigurarCRUD(EstadoFormulario.Inicializar);
+            }
+            else
+            { // Mantener tipo y nombre de tipo
+                deFecha.EditValue = null;
+                btAdiconarItem_Click(null, null);
+            }
+
+           
         }
         private void ConfigurarToolTips()
         {
@@ -527,6 +535,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
             finally
             {
                 FormHelper.OcultarMensajeRibbon(this);
+                btImprimir.Enabled = true;
             }
         }
         private void txtTipo_Leave(object sender, EventArgs e)
@@ -584,6 +593,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
         {
             if (string.IsNullOrWhiteSpace(txtTipo.Text))
                 return;
+            if (string.IsNullOrWhiteSpace(deFecha.Text))
+                return;
             if (deFecha.EditValue == null)
                 return;
 
@@ -594,6 +605,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
         private void deFecha_TextChanged(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtTipo.Text))
+                return;
+            if (string.IsNullOrWhiteSpace(deFecha.Text))
                 return;
             if (deFecha.EditValue == null)
                 return;
@@ -610,7 +623,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
                 Alertas.Advertencia("Seleccione un tipo de comprobante.");
                               return;
             }
-
+            if (string.IsNullOrWhiteSpace(deFecha.Text))
+                return;
             if (deFecha.EditValue == null)
                 return;
 
@@ -650,7 +664,8 @@ namespace SistemaContable.UI.Forms.Contabilidad
                 Alertas.Advertencia("Seleccione un tipo de comprobante.");
                 return;
             }
-
+            if (string.IsNullOrWhiteSpace(deFecha.Text))
+                return;
             if (string.IsNullOrWhiteSpace(txtNumero.Text))
                 return;
 
@@ -1631,7 +1646,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
                     txtId.Text = idPartida.ToString();
                     txtNID_PARTIDA.Text = nidPartida;
 
-                    Alertas.Exito($"Partida {nidPartida} guardada correctamente.");
+                    Alertas.Exito($"Partida {txtNumero.Text} guardada correctamente.");
                     ConfigurarCRUD(EstadoFormulario.Success);
                     CargarListaPartidas();
                 }
@@ -1671,7 +1686,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
                     txtId.Text = idPartida.ToString();
                     txtNID_PARTIDA.Text = nidPartida;
                     //MostrarMensaje("Éxito", $"Partida {txtNidPartida.Text} actualizada correctamente.", "success");
-                    Alertas.Exito($"Partida {nidPartida} actualizada correctamente.");
+                    Alertas.Exito($"Partida {txtNumero.Text} actualizada correctamente.");
                     ConfigurarCRUD(EstadoFormulario.Success);
                     // NO se limpia la sesión ni el grid: queda visible lo recién actualizado.
                 }
@@ -1691,7 +1706,24 @@ namespace SistemaContable.UI.Forms.Contabilidad
         {
 
         }
-
+        private void AbrirImpresion(string tipo, string TipoNombre, string numero)
+        {
+            using (var frm = new frmImpresion())
+            {
+                frm._tipo = tipo;
+                frm._TipoNombre = TipoNombre;
+                frm._numero = numero;
+                if (int.TryParse(Configuracion.PeriodoAnio.ToString(), out int anio) &&
+                 int.TryParse(Configuracion.PeriodoMes.ToString(), out int mes))
+                {
+                    frm._anio = anio;
+                    frm._mes = mes;
+                }
+                    
+                frm.ShowDialog(this);
+            }
+           
+        }
         private void btImprimir_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtNID_PARTIDA.Text) || txtNID_PARTIDA.Text.Trim() == "-1")
@@ -1705,25 +1737,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
                 return;
             }
 
-            try
-            {
-                Cursor = Cursors.WaitCursor;
-
-                var reporte = new RptPartida_Movimiento
-                {
-                    _NID_PARTIDA = txtNID_PARTIDA.Text.Trim()
-                };
-
-                reporte.MostrarPreview();
-            }
-            catch (Exception ex)
-            {
-                Alertas.Error(ex.Message);
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
-            }
+            AbrirImpresion(txtTipo.Text,txtTipoNombre.Text,txtNumero.Text);
         }
         private void ActualizarBotones()
         {
