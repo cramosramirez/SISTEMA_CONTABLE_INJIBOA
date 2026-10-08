@@ -567,7 +567,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             // 
             // txtIVA
             // 
-            this.txtIVA.Enabled = false;
             this.txtIVA.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtIVA.Location = new System.Drawing.Point(673, 385);
             this.txtIVA.Name = "txtIVA";

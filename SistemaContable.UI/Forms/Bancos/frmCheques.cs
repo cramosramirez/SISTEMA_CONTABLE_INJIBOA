@@ -166,7 +166,7 @@ namespace SistemaContable.UI.Forms.Bancos
                     },
                     Anchos = new Dictionary<string, int>
                     {
-                        { "NUM_CHEQUE", 50 },                                                
+                        { "NUM_CHEQUE", 100 },                                                
                         { "CONCEPTO", 350 },
                         { "FECHA", 20 },
                         { "MONTO", 80 }
@@ -280,8 +280,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
                 _idCheque = Convert.ToInt32(r["ID_CHEQUE"]);
                 _uidEnlaceCheque = FormHelper.ObtenerUUID();   // regenerar UID por si edita
-                _flujoEsQuedan = r["CODIGO_ENTIDAD"] != DBNull.Value
-                                    && !string.IsNullOrWhiteSpace(r["CODIGO_ENTIDAD"].ToString());
+                _flujoEsQuedan = r["ES_QUEDAN"] == DBNull.Value ? false : Convert.ToBoolean(r["ES_QUEDAN"]);
                 txtOPERACION.Text = SafeStr(r["TIPO_PARTIDA"]);
                 txtNUM_CUENTA.Tag = SafeStr(r["ID_CTA_BANCO"]);
                 txtNUM_CUENTA.Text = SafeStr(r["NUM_CUENTA"]);
@@ -292,7 +291,8 @@ namespace SistemaContable.UI.Forms.Bancos
                 deFECHA_CHEQUE.DateTime = Convert.ToDateTime(r["FECHA_CHEQUE"]);
                 txtNOMBRE_CHEQUE.Text = SafeStr(r["NOMBRE_CHEQUE"]);
                 txtCONCEPTO.Text = SafeStr(r["CONCEPTO"]);
-                txtPROVEEDOR.Text = SafeStr(r["CODIGO_ENTIDAD"]);
+                txtPROVEEDOR.Tag = _flujoEsQuedan ? SafeStr(r["ID_ENTIDAD"]) : null;
+                txtPROVEEDOR.Text = SafeStr(r["CODIGO_ENTIDAD"]);                
                 chkImpreso.Checked = r["IMPRESO"] != DBNull.Value && Convert.ToBoolean(r["IMPRESO"]); 
                 decimal monto = r["MONTO"] == DBNull.Value ? 0m : Convert.ToDecimal(r["MONTO"]);
                 txtCANTIDAD.Text = monto.ToString("N2");
@@ -340,9 +340,10 @@ namespace SistemaContable.UI.Forms.Bancos
                     foreach (DataRow rc in ds.Tables[2].Rows)
                         _documentosPago.ImportRow(rc);
                 }
+                CantidadDocumentosVinculados = _documentosPago == null ? 0 : _documentosPago.Rows.Count;
 
                 // ---------- Estado final ----------
-                if (estaAnulado)
+                if (estaAnulado)    
                 {
                     ConfigurarCRUD(EstadoFormulario.Guardar, chequeAnulado: true);
                     btnImprimir.Enabled = false;
@@ -414,6 +415,7 @@ namespace SistemaContable.UI.Forms.Bancos
                     DevExpress.XtraEditors.XtraMessageBox.Show(
                         "Debe seleccionar primero la cuenta bancaria.",
                         "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPROVEEDOR.Tag = null;
                     txtPROVEEDOR.Text = string.Empty;
                     txtNUM_CUENTA.Focus();
                     return;
@@ -480,7 +482,8 @@ namespace SistemaContable.UI.Forms.Bancos
         }
 
         private void AsignarProveedor(DataRow fila)
-        {            
+        {
+            txtPROVEEDOR.Tag = fila["ID_ENTIDAD"].ToString();
             txtPROVEEDOR.Text = fila["CODIGO_ENTIDAD"].ToString();
             txtNOMBRE_CHEQUE.Text = fila["NOMBRE"].ToString();            
         }
@@ -492,6 +495,7 @@ namespace SistemaContable.UI.Forms.Bancos
         {
             _documentosPago = null;            
             txtCANTIDAD.Text = "";
+            txtPROVEEDOR.Tag = null;
             txtPROVEEDOR.Text = "";
             txtNOMBRE_CHEQUE.Text = "";
             btnDocumentos.Enabled = true; 
@@ -1297,14 +1301,14 @@ namespace SistemaContable.UI.Forms.Bancos
                     deFECHA_CHEQUE.Focus();
                     return false;
                 }
-                else if (fecha < DateTime.Today.AddDays(-5))
-                {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        "La fecha no puede ser menor a 5 días.",
-                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    deFECHA_CHEQUE.Focus();
-                    return false;
-                }
+                //else if (fecha < DateTime.Today.AddDays(-5))
+                //{
+                //    DevExpress.XtraEditors.XtraMessageBox.Show(
+                //        "La fecha no puede ser menor a 5 días.",
+                //        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    deFECHA_CHEQUE.Focus();
+                //    return false;
+                //}
             }
 
             if (string.IsNullOrWhiteSpace(txtNOMBRE_CHEQUE.Text))
@@ -1369,7 +1373,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 return false;
             }     
             
-            if(CantidadDocumentosVinculados == 0)
+            if(!_flujoEsQuedan && CantidadDocumentosVinculados == 0)
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
                    "No se han adicionado documentos",
@@ -1584,14 +1588,15 @@ namespace SistemaContable.UI.Forms.Bancos
                     NUM_CHEQUE = txtNUMERO_CHEQUE.Text.Trim(),
                     FECHA_CHEQUE = deFECHA_CHEQUE.DateTime,
                     MONTO = ObtenerDecimal(txtCANTIDAD),
-                    NOMBRE_CHEQUE = NullIfEmpty(txtNOMBRE_CHEQUE.Text),                  
+                    NOMBRE_CHEQUE = NullIfEmpty(txtNOMBRE_CHEQUE.Text),
                     CONCEPTO = NullIfEmpty(txtCONCEPTO.Text),
-                    ID_ENTIDAD = (int?)null,
+                    ID_ENTIDAD = (_flujoEsQuedan && txtPROVEEDOR.Tag != null) ? Convert.ToInt32(txtPROVEEDOR.Tag) : (int?)null,
                     CODIGO_ENTIDAD = NullIfEmpty(txtPROVEEDOR.Text),
                     UID_ENLACE_CHEQUE = _uidEnlaceCheque,
                     USUARIO = Configuracion.UsuarioActual,
                     IMPRESO = 0,
-                    TIPO_PARTIDA = NullIfEmpty(txtOPERACION.Text)
+                    TIPO_PARTIDA = NullIfEmpty(txtOPERACION.Text),
+                    ES_QUEDAN = _flujoEsQuedan
                 };
 
                 // Llamada al SP con dos TVPs
@@ -2001,6 +2006,7 @@ namespace SistemaContable.UI.Forms.Bancos
             _dtPartida.Clear();
             _documentosPago?.Clear(); 
             _flujoEsQuedan = false;
+            txtPROVEEDOR.Tag = null; 
             txtNUM_CUENTA.Tag = null;
             FormHelper.LimpiarControles(this);            
             AgregarFilaVacia();            
@@ -2108,6 +2114,7 @@ namespace SistemaContable.UI.Forms.Bancos
             _dtPartida.Clear();
             _documentosPago?.Clear();
             _flujoEsQuedan = false;
+            txtPROVEEDOR.Tag = null; 
             txtNUM_CUENTA.Tag = null;
             txtPROVEEDOR.ReadOnly = false;
             txtCANTIDAD.ReadOnly = false; 
@@ -2124,6 +2131,7 @@ namespace SistemaContable.UI.Forms.Bancos
             _dtPartida.Clear();
             _documentosPago?.Clear();
             _flujoEsQuedan = false;
+            txtPROVEEDOR.Tag = null;
             txtNUM_CUENTA.Tag = null;
             FormHelper.LimpiarControles(this);
             AgregarFilaVacia();            
@@ -2460,7 +2468,7 @@ namespace SistemaContable.UI.Forms.Bancos
             string codOp = txtOPERACION.Text?.Trim().ToUpper() ?? "";
             bool esCheque = codOp == "CH";
             bool esNotaCargo = codOp == "NC";
-            bool habilitaDocumentos = esCheque || esNotaCargo;
+            //bool habilitaDocumentos = esCheque || esNotaCargo;
             bool habilitaFlujoProveedor = esCheque || esNotaCargo;
 
             // ============================================================
@@ -2477,7 +2485,7 @@ namespace SistemaContable.UI.Forms.Bancos
             // ============================================================
             // Botón DOCUMENTOS (abre contado): solo CH y NC
             // ============================================================
-            btnDocumentos.Enabled = habilitaDocumentos;
+            //btnDocumentos.Enabled = habilitaDocumentos;
 
             // ============================================================
             // Flag de flujo proveedor

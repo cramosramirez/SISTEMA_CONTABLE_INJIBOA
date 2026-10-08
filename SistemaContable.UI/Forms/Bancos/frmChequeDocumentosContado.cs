@@ -19,13 +19,14 @@ namespace SistemaContable.UI.Forms.Bancos
         private readonly DALBase _dal = new DALBase();
 
         private DataTable _dtDocumentos;
-        public string UidEnlaceCheque { get; set; }
-
+        public string UidEnlaceCheque { get; set; }               
         public int IdCheque { get; set; }
         public DataTable TotalesAcumulados { get; private set; }
         public decimal TotalNetoAPagar { get; private set; }
         public int CantidadDocumentosVinculados { get; private set; } = 0;
         public string numeroChequeSugerido { get; set; } = string.Empty;
+
+
 
         public frmChequeDocumentosContado()
         {
