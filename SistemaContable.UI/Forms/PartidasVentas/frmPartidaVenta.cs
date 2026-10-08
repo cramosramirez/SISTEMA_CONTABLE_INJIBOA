@@ -247,8 +247,7 @@ namespace SistemaContable.UI.Forms.PartidasVentas
 
                 var reporte = new RptPartida_Movimiento
                 {
-                    _NID_PARTIDA = txtNID_PARTIDA.Text.Trim(),
-                    _Titulo = "DETALLE DE PARTIDA CONTABLE"
+                    _NID_PARTIDA = txtNID_PARTIDA.Text.Trim()
                 };
 
                 reporte.MostrarPreview();

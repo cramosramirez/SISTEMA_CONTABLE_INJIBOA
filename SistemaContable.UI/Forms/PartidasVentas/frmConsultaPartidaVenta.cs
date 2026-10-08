@@ -75,8 +75,8 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             gridView1.OptionsView.ShowFooter = true;
             gridView1.OptionsView.ColumnAutoWidth = false;
 
-            _btnVerPartida = CrearBotonRepo(Properties.Resource_Fredy.verpartida16x16, "Ver partida");
-            _btnVerParcial = CrearBotonRepo(Properties.Resource_Fredy.verpartida16x16, "Ver parcial");
+            _btnVerPartida = CrearBotonRepo(Properties.Resource_Fredy.verpartida16x16, "Ver Borrador");
+            _btnVerParcial = CrearBotonRepo(Properties.Resource_Fredy.verpartida16x16, "Ver Formal");
             _btnEditar = CrearBotonRepo(Properties.Resource_Fredy.editargv2_16x16, "Editar partida");
             _btnEliminar = CrearBotonRepo(Properties.Resource_Fredy.eliminar16x16, "Eliminar partida");
 
@@ -232,8 +232,8 @@ namespace SistemaContable.UI.Forms.PartidasVentas
                 c.OptionsColumn.AllowEdit = false;
 
             // Columnas de botones
-            AgregarColumnaBoton("colVerPartida", "Ver partida", _btnVerPartida, 80);
-            AgregarColumnaBoton("colVerParcial", "Ver parcial", _btnVerParcial, 80);
+            AgregarColumnaBoton("colVerPartida", "Ver Borrador", _btnVerPartida, 80);
+            AgregarColumnaBoton("colVerParcial", "Ver Formal", _btnVerParcial, 80);
             AgregarColumnaBoton("colEditar", "Editar", _btnEditar, 55);
             AgregarColumnaBoton("colEliminar", "Eliminar", _btnEliminar, 60);
         }
@@ -298,7 +298,7 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             try
             {
                 Cursor = Cursors.WaitCursor;
-                var reporte = new RptPartida_Movimiento { _NID_PARTIDA = (string)id, _Titulo = "COMPROBANTE DE INGRESO N°."+ numPartida };
+                var reporte = new RptPartida_Movimiento { _NID_PARTIDA = (string)id};
                 reporte.MostrarPreview();
             }
             catch (Exception ex)

@@ -1710,8 +1710,7 @@ namespace SistemaContable.UI.Forms.Contabilidad
 
                 var reporte = new RptPartida_Movimiento
                 {
-                    _NID_PARTIDA = txtNID_PARTIDA.Text.Trim(),
-                    _Titulo = "DETALLE DE PARTIDA CONTABLE"
+                    _NID_PARTIDA = txtNID_PARTIDA.Text.Trim()
                 };
 
                 reporte.MostrarPreview();

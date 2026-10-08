@@ -11,14 +11,14 @@ namespace SistemaContable.RP.Partidas
     {
         public string _NID_PARTIDA { get; set; }
         public long _ID_PARTIDA { get; set; }
-        public string _Titulo { get; set; }
+        
         public RptPartida_Movimiento()
         {
             InitializeComponent();
         }
         public override void CargarDatos()
         {
-            lbTitulo.Text = _Titulo;
+           
             DataTable dt = EjecutarSP("[CONTA].RPT_PARTIDA_MOVIMIENTO", new
             {
                 NID_PARTIDA = _NID_PARTIDA,

@@ -270,7 +270,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 AsignarDecimal(txtGRAVADA, ToDecimal(r["GRAVADA"]));
                 AsignarDecimal(txtEXENTA, ToDecimal(r["EXENTA"]));
                 AsignarDecimal(txtEXCLUIDO, ToDecimal(r["NO_SUJETA"]));
-                AsignarDecimal(txtIVA, 0);
+                AsignarDecimal(txtIVA, ToDecimal(r["IVA"]));
                
                 
                 AsignarDecimal(txtTOTAL, ToDecimal(r["TOTAL"]));
@@ -701,33 +701,41 @@ namespace SistemaContable.UI.Forms.Proveedores
         }
         private void RecalcularTotales()
         {
+            
+           
             decimal gravada = ObtenerDecimal(txtGRAVADA);
             decimal exenta = ObtenerDecimal(txtEXENTA);
             decimal excluido = ObtenerDecimal(txtEXCLUIDO);
             decimal fovial = 0;
             decimal contrans = 0;
+            decimal iva = 0;
             decimal cargo = ObtenerDecimal(txtCARGO);
             decimal abono = ObtenerDecimal(txtABONO);
-            decimal renta = ObtenerDecimal(txtRENTA);   // lee, no calcula
-            // IVA = 13% de la base gravada
-            decimal iva = 0m; // Las compras exteriores no calculan IVA.
-            // IVAR (1%): solo si gravada >= 100 y proveedor NO es Gran Contribuyente.
-            // Excepción (2026-09-28, confirmada por Roberto contra el sistema legacy
-            // "Ingreso de (TE, Intereses, Dividendos, Indemnizacion)"): los documentos
-            // de esa categoría (INV, INT, DIV, TE, TEI, IND — Tipo Documento) nunca
-            // retienen IVA, sin importar el monto ni el tipo de contribuyente; solo
-            // aplican su % de renta específico (ver SeleccionarRentaPorTipoDocumento).
-            // Los 5 ejemplos compartidos (Afecta desde 530 hasta 245,972.22) confirman
-            // IVAR=0.00 en todos los casos de esta categoría.
+            decimal renta = ObtenerDecimal(txtRENTA);
+
             string codigoDocumento = ObtenerCodigoTipoDocumentoSeleccionado();
-            bool esCategoriaSinIvar = codigoDocumento == "INV" || codigoDocumento == "INT"
-                                    || codigoDocumento == "DIV" || codigoDocumento == "TE"
-                                    || codigoDocumento == "TEI" || codigoDocumento == "IND";
-            decimal ivar = 0;
+            
+            // IVA solo para documentos 24 y 25
+
+            if (codigoDocumento == "POL" || codigoDocumento == "RBI")
+            {
+                iva = Calculo.Redondear(gravada * 0.13m, 2);
+            }
+
+            bool esCategoriaSinIvar = codigoDocumento == "INV"
+                                   || codigoDocumento == "INT"
+                                   || codigoDocumento == "DIV"
+                                   || codigoDocumento == "TE"
+                                   || codigoDocumento == "TEI"
+                                   || codigoDocumento == "IND";
+
+            decimal ivar = 0m;
+
             bool retieneIva = !esCategoriaSinIvar
                               && gravada >= 100m
                               && _idTipoContribProveedor != "3"
                               && _idTipoContribProveedor != "0";
+
             if (retieneIva)
                 ivar = Calculo.Redondear(gravada * 0.01m, 2);
 
@@ -735,7 +743,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             decimal saldo = total - cargo - abono - renta - ivar;
 
             AsignarDecimal(txtIVA, iva);
-           
             AsignarDecimal(txtTOTAL, total);
             AsignarDecimal(txtSALDO, saldo);
         }
@@ -766,6 +773,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 txtSELLO_RECIBIDO.Text = "DM";
                 txtNUM_CONTROL.Text = "0";
+                SeleccionarRentaPorTipoDocumento();
+                txtBaseRenta_Leave(sender, e);
                 cbxTIPO_SERVICIO.SelectedValue = 1;
                 cbxTIPO_OPERACION.SelectedValue = 1;
                 cbxTIPO_OPERACION_SelectionChangeCommitted(null, null);
