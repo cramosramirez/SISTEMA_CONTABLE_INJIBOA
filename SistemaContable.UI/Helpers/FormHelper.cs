@@ -177,16 +177,32 @@ namespace SistemaContable.UI.Helpers
             if (e.KeyCode == Keys.Enter)
             {
                 var ctrl = sender as Control;
+                if (ctrl == null) return;
 
                 // Si el campo tiene búsqueda registrada y contiene *
                 // dejar que Campo_AsteriscoBusqueda_KeyDown lo maneje
-                if (ctrl != null &&
-                    _lookups.ContainsKey(ctrl) &&
+                if (_lookups.ContainsKey(ctrl) &&
                     ctrl.Text?.Trim() == "*")
                     return;
 
+                e.Handled = true;
                 e.SuppressKeyPress = true;
-                SendKeys.Send("{TAB}");
+
+                // ============================================================
+                // Caso especial: DateEdit (DevExpress)
+                // Si el popup está abierto, cerrarlo primero
+                // ============================================================
+                if (ctrl is DateEdit de && de.IsPopupOpen)
+                {
+                    de.ClosePopup();
+                }
+
+                // Mover al siguiente control usando el TabIndex real
+                var form = ctrl.FindForm();
+                if (form != null)
+                {
+                    form.SelectNextControl(ctrl, true, true, true, true);
+                }
             }
         }
 
