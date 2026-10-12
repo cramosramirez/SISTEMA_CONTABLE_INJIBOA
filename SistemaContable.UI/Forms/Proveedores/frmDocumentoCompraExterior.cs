@@ -834,7 +834,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             else if (codigoDocumento == "RBI")
             {
                 // ****** Configurar etiquetas *******
-                lblCOD_GENERACION.Text = "Mandamiento";
+                lblCOD_GENERACION.Text = "N° Mandamiento";
                 lblCOD_GENERACION.Visible = true;
                 txtCOD_GENERACION.Text = "";
                 txtCOD_GENERACION.Visible = true;
