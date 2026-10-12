@@ -214,6 +214,24 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ReporteUtils.cs" />
+    <Compile Include="Planilla\RptComprobLQProv.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Planilla\RptComprobLQProv.Designer.cs">
+      <DependentUpon>RptComprobLQProv.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Planilla\RptComprobLQProvVip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Planilla\RptComprobLQProvVip.Designer.cs">
+      <DependentUpon>RptComprobLQProvVip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Planilla\RptComprobLQTrans.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Planilla\RptComprobLQTrans.Designer.cs">
+      <DependentUpon>RptComprobLQTrans.cs</DependentUpon>
+    </Compile>
     <Compile Include="Traslados\NotaRemision\RptNotaRemision.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -270,6 +288,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Planilla\RptComprobLQProv.resx">
+      <DependentUpon>RptComprobLQProv.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Planilla\RptComprobLQProvVip.resx">
+      <DependentUpon>RptComprobLQProvVip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Planilla\RptComprobLQTrans.resx">
+      <DependentUpon>RptComprobLQTrans.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Bancos\Proveedores\rptChequeAnexo.resx">
       <DependentUpon>rptChequeAnexo.cs</DependentUpon>
     </EmbeddedResource>
