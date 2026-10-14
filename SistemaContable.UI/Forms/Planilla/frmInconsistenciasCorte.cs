@@ -157,7 +157,7 @@ namespace SistemaContable.UI.Forms.Planilla
             cbxTIPO_PLANILLA.DisplayMember = "NOMBRE_TIPO_PLANILLA";
         }
 
-        // 1 = Crédito Fiscal, 0 = Factura, 10 = Factura de Sujeto Excluido.
+        // 1 = Crédito Fiscal, 0 = Factura, 10 = Sujeto Excluido, 6 = Retención.
         private void CargarTipoDocumento()
         {
             var dt = new DataTable();
@@ -166,6 +166,7 @@ namespace SistemaContable.UI.Forms.Planilla
             dt.Rows.Add(1, "Crédito Fiscal");
             dt.Rows.Add(0, "Factura");
             dt.Rows.Add(10, "Sujeto Excluido");
+            dt.Rows.Add(6, "Comprobante de Retención");
             cbxTIPO_DOCUMENTO.DataSource = dt;
             cbxTIPO_DOCUMENTO.ValueMember = "ES_CONTRIBUYENTE";
             cbxTIPO_DOCUMENTO.DisplayMember = "NOMBRE";

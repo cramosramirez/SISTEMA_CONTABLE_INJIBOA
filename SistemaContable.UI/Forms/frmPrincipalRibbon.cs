@@ -142,6 +142,12 @@ namespace SistemaContable.UI.Forms
                                 var btn = new BarButtonItem(this.ribbon.Manager, nombre);
                                 btn.RibbonStyle = RibbonItemStyles.Large;
 
+                                // Dar suficiente espacio al grupo "Comprobante" para que
+                                // su título no aparezca recortado como "Comproba...".
+                                if (string.Equals(nombre, "Liquidacion Corte", StringComparison.OrdinalIgnoreCase) ||
+                                    string.Equals(nombre, "Liquidación Corte", StringComparison.OrdinalIgnoreCase))
+                                    btn.LargeWidth = 100;
+
                                 AsignarIcono(btn, row);                                
 
                                 btn.Tag = row["FORMULARIO_WIN"].ToString();
