@@ -320,6 +320,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.cbxTIPO_SERVICIO.Name = "cbxTIPO_SERVICIO";
             this.cbxTIPO_SERVICIO.Size = new System.Drawing.Size(460, 25);
             this.cbxTIPO_SERVICIO.TabIndex = 18;
+            this.cbxTIPO_SERVICIO.SelectionChangeCommitted += new System.EventHandler(this.cbxTIPO_SERVICIO_SelectionChangeCommitted);
             // 
             // label25
             // 

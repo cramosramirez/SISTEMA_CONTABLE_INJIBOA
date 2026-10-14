@@ -1281,6 +1281,15 @@ namespace SistemaContable.UI.Forms.Bancos
                 return false;
             }
 
+            if (string.IsNullOrWhiteSpace(txtNUMERO_CHEQUE.Text))
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Ingrese el numero de documento.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNUMERO_CHEQUE.Focus();
+                return false;
+            }
+
             if (deFECHA_CHEQUE.EditValue == null)
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
@@ -1317,6 +1326,15 @@ namespace SistemaContable.UI.Forms.Bancos
                     "El nombre del documento es requerido.",
                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNOMBRE_CHEQUE.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtCONCEPTO.Text))
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "El concepto del documento es requerido.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCONCEPTO.Focus();
                 return false;
             }
 
@@ -2013,11 +2031,7 @@ namespace SistemaContable.UI.Forms.Bancos
             deFECHA_CHEQUE.DateTime = DateTime.Today;
             ConfigurarOperacion();
             ActualizarCuadre();
-            ConfigurarCRUD(EstadoFormulario.Agregar);
-            //if (!VerificarDocumentosHuerfanos())
-            //{
-            //    _uidEnlaceCheque = FormHelper.ObtenerUUID();               
-            //}
+            ConfigurarCRUD(EstadoFormulario.Agregar);            
             _uidEnlaceCheque = FormHelper.ObtenerUUID();
 
             // Abrir automáticamente la búsqueda de Tipo de Operación
