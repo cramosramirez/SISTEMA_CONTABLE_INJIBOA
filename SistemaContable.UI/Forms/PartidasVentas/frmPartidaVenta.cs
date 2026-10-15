@@ -133,7 +133,7 @@ namespace SistemaContable.UI.Forms.PartidasVentas
                     Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA", centroCostoNombre);
                     break;
                 case "4":
-                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA", centroCostoNombre);
+                    Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_CORTE", centroCostoNombre);
                     break;
                 case "5":
                     Procesar_Partidad("[CONTA].CRE_PARTIDA_DIARIA_VENTA_DISTRIBUIDORA", centroCostoNombre);

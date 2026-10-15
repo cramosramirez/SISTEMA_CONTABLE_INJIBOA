@@ -1,4 +1,5 @@
-﻿namespace SistemaContable.RP.Partidas
+﻿
+namespace SistemaContable.RP.Partidas
 {
     partial class RptPartida_Parciales
     {
@@ -76,6 +77,7 @@
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
+            this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTableVienen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTablePasan)).BeginInit();
@@ -353,6 +355,7 @@
             // PageHeader
             // 
             this.PageHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel2,
             this.xrLabel11,
             this.xrLabel4,
             this.xrTableVienen,
@@ -397,6 +400,8 @@
             // 
             // lbTitulo
             // 
+            this.lbTitulo.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TITULO]")});
             this.lbTitulo.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold);
             this.lbTitulo.LocationFloat = new DevExpress.Utils.PointFloat(88.33332F, 23F);
             this.lbTitulo.Multiline = true;
@@ -649,6 +654,22 @@
             this.ReportFooter.KeepTogether = true;
             this.ReportFooter.Name = "ReportFooter";
             // 
+            // xrLabel2
+            // 
+            this.xrLabel2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NUM_PARTIDA]")});
+            this.xrLabel2.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold);
+            this.xrLabel2.ForeColor = System.Drawing.Color.White;
+            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(697.3474F, 50.16673F);
+            this.xrLabel2.Multiline = true;
+            this.xrLabel2.Name = "xrLabel2";
+            this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel2.SizeF = new System.Drawing.SizeF(102.6527F, 23F);
+            this.xrLabel2.StylePriority.UseFont = false;
+            this.xrLabel2.StylePriority.UseForeColor = false;
+            this.xrLabel2.StylePriority.UseTextAlignment = false;
+            this.xrLabel2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
             // RptPartida_Parciales
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -720,5 +741,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel1;
         private DevExpress.XtraReports.UI.XRLabel xrLabel3;
         private DevExpress.XtraReports.UI.ReportFooterBand ReportFooter;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel2;
     }
 }

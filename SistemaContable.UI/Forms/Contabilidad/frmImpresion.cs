@@ -56,11 +56,11 @@ namespace SistemaContable.UI.Forms.Contabilidad
                 {
                     var reporte = new RptPartida_Parciales
                     {
-                        //_TIPO = txtTipo.Text,
-                        //_ANIO = Convert.ToInt32(txtAnio.Text),
-                        //_MES = Convert.ToInt32(txtMes.Text),
-                        //_NDESDE = txtNumeroInicio.Text,
-                        //_NHASTA = txtNumeroFinal.Text
+                        _TIPO = txtTipo.Text,
+                        _ANIO = Convert.ToInt32(txtAnio.Text),
+                        _MES = Convert.ToInt32(txtMes.Text),
+                        _NDESDE = txtNumeroInicio.Text,
+                        _NHASTA = txtNumeroFinal.Text
                     };
 
                     reporte.MostrarPreview();

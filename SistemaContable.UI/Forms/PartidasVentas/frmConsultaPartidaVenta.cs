@@ -204,7 +204,7 @@ namespace SistemaContable.UI.Forms.PartidasVentas
         private void FormatearColumnas()
         {
             gridView1.PopulateColumns();
-
+            //Configurar("ID_PARTIDA", "Id", 10);
             Configurar("TIPO_PARTIDA", "Tipo", 70);
             Configurar("ANIO", "Año", 60);
             Configurar("MES", "Mes", 50);
@@ -226,6 +226,9 @@ namespace SistemaContable.UI.Forms.PartidasVentas
 
             if (gridView1.Columns["NID_PARTIDA"] != null)
                 gridView1.Columns["NID_PARTIDA"].Visible = false;
+
+            if (gridView1.Columns["ID_PARTIDA"] != null)
+                gridView1.Columns["ID_PARTIDA"].Visible = false;
 
             // Bloquear edición de las columnas de datos
             foreach (GridColumn c in gridView1.Columns)
@@ -319,7 +322,7 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             try
             {
                 Cursor = Cursors.WaitCursor;
-                var reporte = new RptPartida_Parciales { _NID_PARTIDA = (string)id, _Titulo = "COMPROBANTE DE INGRESO N°."+ numPartida };
+                var reporte = new RptPartida_Parciales { _NID_PARTIDA = (string)id };
                 reporte.MostrarPreview();
             }
             catch (Exception ex)
@@ -349,7 +352,8 @@ namespace SistemaContable.UI.Forms.PartidasVentas
             object id = ObtenerIdPartidaSeleccionada();
             if (id == null) return;
 
-            string numPartida = Convert.ToString(gridView1.GetFocusedRowCellValue("NUM_PARTIDA"));
+            string numPartida = Convert.ToString(gridView1.GetFocusedRowCellValue("NUM_PARTIDA_FORMATO"));
+            string IdPartida = Convert.ToString(gridView1.GetFocusedRowCellValue("ID_PARTIDA"));
 
             
 
@@ -378,7 +382,7 @@ namespace SistemaContable.UI.Forms.PartidasVentas
 
                 var parametros = new DynamicParameters();
 
-                parametros.Add("@NID_PARTIDA", numPartida.Trim());
+                parametros.Add("@ID_PARTIDA", Convert.ToInt32(IdPartida));
                 parametros.Add("@USUARIO", Configuracion.UsuarioActual);
                 parametros.Add("@COD_ELIMINAR", codigo.Trim());
 
