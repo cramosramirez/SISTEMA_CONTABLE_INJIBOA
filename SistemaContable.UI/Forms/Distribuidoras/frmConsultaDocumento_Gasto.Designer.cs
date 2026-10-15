@@ -259,6 +259,8 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             this.colNUM_CONTROL.MaxWidth = 300;
             this.colNUM_CONTROL.MinWidth = 300;
             this.colNUM_CONTROL.Name = "colNUM_CONTROL";
+            this.colNUM_CONTROL.OptionsColumn.AllowEdit = false;
+            this.colNUM_CONTROL.OptionsColumn.FixedWidth = true;
             this.colNUM_CONTROL.Visible = true;
             this.colNUM_CONTROL.VisibleIndex = 5;
             this.colNUM_CONTROL.Width = 300;

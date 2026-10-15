@@ -98,7 +98,7 @@ namespace SistemaContable.UI.Forms.Distribuidoras
             );                       
 
             EngancharRecalculo(
-                txtEXCLUIDO, txtCARGO, txtABONO
+               txtGRAVADA, txtEXCLUIDO, txtEXENTA,  txtCARGO, txtABONO
             );
 
             FormHelper.ResaltarCombosEnFoco(this);
