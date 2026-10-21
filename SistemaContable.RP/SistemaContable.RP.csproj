@@ -145,13 +145,12 @@
     <Compile Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.Designer.cs">
       <DependentUpon>rptListadoDocumentosRecibidos.cs</DependentUpon>
     </Compile>
-<<<<<<< Updated upstream
     <Compile Include="Bancos\Proveedores\rptListadoSaldoPorProveedor.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Bancos\Proveedores\rptListadoSaldoPorProveedor.Designer.cs">
       <DependentUpon>rptListadoSaldoPorProveedor.cs</DependentUpon>
-=======
+    </Compile>
     <Compile Include="Bancos\Proveedores\rptListadoPagosPorVencer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -181,7 +180,6 @@
     </Compile>
     <Compile Include="Bancos\Proveedores\rptListadoPagosVencidosProveedor.Designer.cs">
       <DependentUpon>rptListadoPagosVencidosProveedor.cs</DependentUpon>
->>>>>>> Stashed changes
     </Compile>
     <Compile Include="Bancos\Proveedores\rptQuedan.cs">
       <SubType>Component</SubType>
@@ -382,11 +380,6 @@
     <EmbeddedResource Include="Bancos\Proveedores\rptCompRetencion.resx">
       <DependentUpon>rptCompRetencion.cs</DependentUpon>
     </EmbeddedResource>
-<<<<<<< Updated upstream
-=======
-    <EmbeddedResource Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.resx">
-      <DependentUpon>rptListadoDocumentosRecibidos.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Bancos\Proveedores\rptListadoPagosPorVencer.resx">
       <DependentUpon>rptListadoPagosPorVencer.cs</DependentUpon>
     </EmbeddedResource>
@@ -402,7 +395,6 @@
     <EmbeddedResource Include="Bancos\Proveedores\rptListadoPagosVencidosProveedor.resx">
       <DependentUpon>rptListadoPagosVencidosProveedor.cs</DependentUpon>
     </EmbeddedResource>
->>>>>>> Stashed changes
     <EmbeddedResource Include="Bancos\Proveedores\rptQuedan.resx">
       <DependentUpon>rptQuedan.cs</DependentUpon>
     </EmbeddedResource>
