@@ -339,6 +339,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnImprimirRetencion.Size = new System.Drawing.Size(130, 47);
             this.btnImprimirRetencion.TabIndex = 47;
             this.btnImprimirRetencion.Text = "Imprimir Retención";
+            this.btnImprimirRetencion.Click += new System.EventHandler(this.btnImprimirRetencion_Click);
             // 
             // btnValidar
             // 
@@ -934,9 +935,9 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label5.ForeColor = System.Drawing.Color.Blue;
             this.label5.Location = new System.Drawing.Point(10, 337);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(154, 18);
+            this.label5.Size = new System.Drawing.Size(481, 20);
             this.label5.TabIndex = 151;
-            this.label5.Text = "Datos de (NC/ND) :";
+            this.label5.Text = "Datos de (Nota de Crédito / Nota de Débito)";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtORDEN

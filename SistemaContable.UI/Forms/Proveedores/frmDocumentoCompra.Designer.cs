@@ -1205,6 +1205,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtPROVEEDOR.BackColor = System.Drawing.SystemColors.Window;
             this.txtPROVEEDOR.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPROVEEDOR.Location = new System.Drawing.Point(98, 45);
+            this.txtPROVEEDOR.MaxLength = 20;
             this.txtPROVEEDOR.Name = "txtPROVEEDOR";
             this.txtPROVEEDOR.Size = new System.Drawing.Size(153, 24);
             this.txtPROVEEDOR.TabIndex = 0;

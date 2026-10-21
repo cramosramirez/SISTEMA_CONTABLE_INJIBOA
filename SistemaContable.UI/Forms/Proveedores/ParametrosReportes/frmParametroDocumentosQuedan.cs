@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using SistemaContable.RP;
 using SistemaContable.RP.Bancos.Proveedores;
 using System;
 using System.Windows.Forms;
@@ -22,20 +23,35 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
             dteFECHA_INICIO.DateTime = DateTime.Today;
             dteFECHA_FIN.DateTime = DateTime.Today;
         }
-
+               
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
-            Close(); 
+            Close();
         }
 
-        private void btnImprimir_Click(object sender, EventArgs e)
+        private void btnProceder_Click(object sender, EventArgs e)
         {
+            if (dteFECHA_INICIO.EditValue == null || dteFECHA_FIN.EditValue == null)
+            {
+                XtraMessageBox.Show("Debe seleccionar las fechas.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
             try
             {
                 Cursor = Cursors.WaitCursor;
-                var reporte = new rptListadoDocumentosRecibidos { FechaInicial = dteFECHA_INICIO.DateTime, FechaFinal = dteFECHA_FIN.DateTime, ClasificarPorOrden = false };
-                reporte.MostrarPreview();
-              
+
+                var rpt = new rptListadoComprobantesRecibidos
+                {
+                    FechaInicial = dteFECHA_INICIO.DateTime,
+                    FechaFinal = dteFECHA_FIN.DateTime,                    
+                    Salida = ObtenerSalidaSeleccionada()
+                };
+
+                rpt.Ejecutar();
+
             }
             catch (Exception ex)
             {
@@ -47,6 +63,15 @@ namespace SistemaContable.UI.Forms.Proveedores.ParametrosReportes
                 Cursor = Cursors.Default;
             }
         }
-        
+
+        /// <summary>
+        /// Devuelve la salida seleccionada por el usuario según los radio buttons / combo.
+        /// </summary>
+        private SalidaReporte ObtenerSalidaSeleccionada()
+        {
+            if (rbPDF.Checked) return SalidaReporte.PDF;
+            if (rbEXCEL.Checked) return SalidaReporte.Excel;
+            return SalidaReporte.Pantalla;   // default
+        }
     }
 }

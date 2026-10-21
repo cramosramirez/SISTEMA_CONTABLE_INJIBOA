@@ -9,6 +9,7 @@ using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using SistemaContable.UI.Helpers;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
@@ -28,6 +29,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void frmConsultaCompraDirecta_Load(object sender, EventArgs e)
         {
+            FormHelper.Inicializar(this);
             ConfigurarGrid();
             CargarDatos();
         }

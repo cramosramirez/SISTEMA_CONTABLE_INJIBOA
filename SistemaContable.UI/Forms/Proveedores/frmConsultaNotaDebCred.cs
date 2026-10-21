@@ -13,6 +13,7 @@ namespace SistemaContable.UI.Forms.Proveedores
     {
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtDetalle;
+        public bool EsContado { get; set; } = false;
         public frmConsultaNotaDebCred()
         {
             InitializeComponent();
@@ -23,6 +24,10 @@ namespace SistemaContable.UI.Forms.Proveedores
         #region === CARGA INICIAL ===
         private void frmConsultaNotaDebCred_Load(object sender, EventArgs e)
         {
+            if (EsContado)
+                lblTitulo.Text = "Notas de débito y crédito - CAJA CHICA";
+           else
+                lblTitulo.Text = "Notas de débito y crédito - QUEDAN";
             ConfigurarGrid();
             CargarDatos();
         }
@@ -76,7 +81,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         private void CargarDatos()
         {
             _dtDetalle = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",
-                new { ACCION = "NOTA_CRED_DEB_DETALLE_LISTAR" });
+                new { ACCION = EsContado ? "NOTA_CRED_DEB_DETALLE_LISTAR_CONTADO" : "NOTA_CRED_DEB_DETALLE_LISTAR_QUEDAN" });
             gridControl1.DataSource = _dtDetalle;
         }
         #endregion
@@ -96,6 +101,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {
             using (var frm = new frmNotaDebCred())
             {
+                frm.EsContado = EsContado;
                 frm.IdCcfCompra = idCcfCompra;
                 if (frm.ShowDialog(this) == DialogResult.OK)
                 {

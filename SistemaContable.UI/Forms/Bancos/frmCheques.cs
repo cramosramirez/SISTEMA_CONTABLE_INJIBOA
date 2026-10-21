@@ -49,7 +49,7 @@ namespace SistemaContable.UI.Forms.Bancos
         private bool _asignandoCuentaPorCodigo = false;
         private bool _procesandoLeaveOperacion = false;
         private bool _habilitaFlujoProveedor = true;   // default: CH
-        public int CantidadDocumentosVinculados { get; private set; } = 0;
+       
 
         public frmCheques()
         {            
@@ -339,8 +339,7 @@ namespace SistemaContable.UI.Forms.Bancos
                     _documentosPago.Clear();
                     foreach (DataRow rc in ds.Tables[2].Rows)
                         _documentosPago.ImportRow(rc);
-                }
-                CantidadDocumentosVinculados = _documentosPago == null ? 0 : _documentosPago.Rows.Count;
+                }               
 
                 // ---------- Estado final ----------
                 if (estaAnulado)    
@@ -404,7 +403,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
                 if ((codigo == "*") || (string.IsNullOrWhiteSpace(codigo)))
                 {
-                    _documentosPago?.Clear();  
+                    _documentosPago?.Clear();                    
                     return;
                 }
                 
@@ -441,7 +440,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
                             if (frm.ShowDialog(this) == DialogResult.OK)
                             {
-                                _documentosPago = frm.DocumentosAPagar;
+                                _documentosPago = frm.DocumentosAPagar;                                
                                 txtCANTIDAD.Text = frm.TotalAPagar.ToString("N2");
                                 txtCANTIDAD.ReadOnly = true;
                                 txtPROVEEDOR.ReadOnly = true;
@@ -782,7 +781,7 @@ namespace SistemaContable.UI.Forms.Bancos
 
                     if (frm.ShowDialog(principal ?? (Form)this) == DialogResult.OK)
                     {
-                        CantidadDocumentosVinculados = frm.CantidadDocumentosVinculados; 
+                         
                     }
                 }
             }
@@ -886,7 +885,7 @@ namespace SistemaContable.UI.Forms.Bancos
             view.Appearance.HideSelectionRow.BackColor = Color.FromArgb(204, 229, 255);            
             view.Appearance.HideSelectionRow.Options.UseBackColor = true;            
             view.Appearance.Row.ForeColor = Color.Black;
-            view.Appearance.Row.Font = new Font("Segoe UI", 9f);
+            view.Appearance.Row.Font = new Font("Segoe UI", 10f);
             view.Appearance.Row.Options.UseFont = true;
             view.Appearance.Row.Options.UseForeColor = true;            
             view.Appearance.HeaderPanel.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
@@ -1391,7 +1390,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 return false;
             }     
             
-            if(!_flujoEsQuedan && CantidadDocumentosVinculados == 0)
+            if(!_flujoEsQuedan && !HayDocumentosContadoVinculados())
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
                    "No se han adicionado documentos",
@@ -1889,24 +1888,25 @@ namespace SistemaContable.UI.Forms.Bancos
                 if (!marcadoImpreso)
                 {
                     marcadoImpreso = MarcarChequeComoImpreso(_idCheque);
+                    if (txtOPERACION.Text == "CH")
+                    {
+                        var reporte = new rptCheque { IdCheque = _idCheque };
+                        reporte.ImprimirConDialogo();
+                    }
                 }
 
-                if (txtOPERACION.Text == "CH" && marcadoImpreso)
-                {                    
-                    var reporte = new rptCheque { IdCheque = _idCheque };
-                    reporte.ImprimirConDialogo();                       
-                }
-                else 
+                if (txtOPERACION.Text != "CH")               
                 {
                     Cursor = Cursors.WaitCursor;
                     var reporte = new RptPartida_Movimiento { _ID_PARTIDA = _idPartidaCheque};
                     reporte.MostrarPreview();
                 }
+
                 // Si la impresión fué correcta habilitar la opción de anulación del cheque
                 btnAnular.Enabled = true;
 
                 // Mostrar en pantalla el anexo del cheque después de imprimir
-                if (_flujoEsQuedan || (_documentosPago != null && _documentosPago.Rows.Count > 0))
+                if (_flujoEsQuedan || HayDocumentosContadoVinculados())
                 {
                     if ((XtraMessageBox.Show("¿Desea emitir anexo de documentos cancelados?",
                         "Validación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes))
@@ -2022,7 +2022,7 @@ namespace SistemaContable.UI.Forms.Bancos
             _modoBusqueda = false;
             _ultimoDetalleAutoGenerado = string.Empty;
             _dtPartida.Clear();
-            _documentosPago?.Clear(); 
+            _documentosPago?.Clear();            
             _flujoEsQuedan = false;
             txtPROVEEDOR.Tag = null; 
             txtNUM_CUENTA.Tag = null;
@@ -2032,7 +2032,7 @@ namespace SistemaContable.UI.Forms.Bancos
             ConfigurarOperacion();
             ActualizarCuadre();
             ConfigurarCRUD(EstadoFormulario.Agregar);            
-            _uidEnlaceCheque = FormHelper.ObtenerUUID();
+            _uidEnlaceCheque = FormHelper.ObtenerUUID();            
 
             // Abrir automáticamente la búsqueda de Tipo de Operación
             this.BeginInvoke(new Action(() =>
@@ -2126,7 +2126,7 @@ namespace SistemaContable.UI.Forms.Bancos
             _idCheque = 0;
             _ultimoDetalleAutoGenerado = string.Empty;
             _dtPartida.Clear();
-            _documentosPago?.Clear();
+            _documentosPago?.Clear();            
             _flujoEsQuedan = false;
             txtPROVEEDOR.Tag = null; 
             txtNUM_CUENTA.Tag = null;
@@ -2143,7 +2143,7 @@ namespace SistemaContable.UI.Forms.Bancos
             _modoBusqueda = true;                        // ← activar modo búsqueda
             _ultimoDetalleAutoGenerado = string.Empty;
             _dtPartida.Clear();
-            _documentosPago?.Clear();
+            _documentosPago?.Clear();            
             _flujoEsQuedan = false;
             txtPROVEEDOR.Tag = null;
             txtNUM_CUENTA.Tag = null;
@@ -2530,6 +2530,31 @@ namespace SistemaContable.UI.Forms.Bancos
 
             // Pisa el valor existente del concepto con lo tipeado en NOMBRE
             txtCONCEPTO.Text = txtNOMBRE_CHEQUE.Text?.Trim() ?? "";
+        }
+
+        private  bool HayDocumentosContadoVinculados()
+        {
+            try
+            {
+                DataTable dt;
+                dt = _dal.EjecutarConsulta("SP_CHEQUE_CONTADO",
+                    new
+                    {
+                        ACCION = "LISTAR_POR_UID",
+                        ID_CHEQUE = _idCheque,
+                        UID_ENLACE_CHEQUE = _uidEnlaceCheque
+                    });
+
+                if (dt != null && dt.Rows.Count > 0)
+                    return true;
+                else
+                    return false;
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }            
         }
     }
 

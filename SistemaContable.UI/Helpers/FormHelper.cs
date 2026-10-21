@@ -88,7 +88,11 @@ namespace SistemaContable.UI.Helpers
         {
             //AplicarPropiedadesEstandar(formulario);
             AplicarEnterComoTab(formulario);
-            AplicarMayusculas(formulario);            
+            AplicarMayusculas(formulario);
+            if (formulario is IRefrescable)
+            {
+                HabilitarF5Refrescar(formulario);
+            }
         }
 
         /// <summary>
@@ -133,6 +137,7 @@ namespace SistemaContable.UI.Helpers
                     ctrl is RichTextBox ||
                     ctrl is NumericUpDown ||
                     ctrl is MaskedTextBox  ||
+                    ctrl is RadioButton ||
                     ctrl is ComboBox)
                 {
                     ctrl.KeyDown -= Control_EnterComoTab;
@@ -556,7 +561,49 @@ namespace SistemaContable.UI.Helpers
                 .OfType<Form>()
                 .OfType<IContenedorMensajeRibbon>()
                 .FirstOrDefault();
-        }       
+        }
+
+        public static void HabilitarF5Refrescar(Form form)
+        {
+            if (form == null) return;
+
+            form.KeyPreview = true;
+            form.KeyDown -= Form_F5_RefrescarHandler;   // evita duplicados
+            form.KeyDown += Form_F5_RefrescarHandler;
+        }
+
+        private static void Form_F5_RefrescarHandler(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.F5) return;
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+
+            var form = sender as Form;
+            if (form is IRefrescable refrescable)
+            {
+                try
+                {
+                    refrescable.Refrescar();
+                    FormHelper.MostrarMensajeRibbon(form, "Datos actualizados");
+
+                    // Opcional: ocultar el mensaje después de 2 segundos
+                    var timer = new Timer { Interval = 2000 };
+                    timer.Tick += (s, ev) =>
+                    {
+                        timer.Stop();
+                        timer.Dispose();
+                        FormHelper.OcultarMensajeRibbon(form);
+                    };
+                    timer.Start();
+                }
+                catch (Exception ex)
+                {
+                    XtraMessageBox.Show(
+                        $"Error al refrescar el formulario:\n\n{ex.Message}",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 
     public class MesItem

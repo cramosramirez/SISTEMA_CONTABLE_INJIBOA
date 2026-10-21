@@ -190,8 +190,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                 case EstadoFormulario.Guardado:
                     txtPROVEEDOR.Enabled = false;
                     btnGuardar.Enabled = true;
-                    btnValidar.Enabled = _validarCompIVAR;                    
-                    btnAdicionar.Enabled = !EsContado && _codigoEntidad.Equals(Configuracion.CodigoCCJIBOA);
+                    btnValidar.Enabled = _validarCompIVAR;
+                    btnAdicionar.Enabled = !EsContado; // && _codigoEntidad.Equals(Configuracion.CodigoCCJIBOA);
                     btnImprimirQuedan.Enabled = !EsContado;
                     btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
                     btnCorreo.Enabled = false;
@@ -1082,7 +1082,7 @@ namespace SistemaContable.UI.Forms.Proveedores
         {            
 
             IdCcfCompra = 0;
-
+            txtCONSULTA_MH.Text = ""; 
             cbxTIPO_DTE.SelectedValue = -1;
             txtNUM_CONTROL.Text = "";
             txtCOD_GENERACION.Text = "";

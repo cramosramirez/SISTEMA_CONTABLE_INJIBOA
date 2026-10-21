@@ -121,6 +121,12 @@
     <Compile Include="Bancos\Proveedores\rptCompRetencion.designer.cs">
       <DependentUpon>rptCompRetencion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Bancos\Proveedores\rptListadoComprobantesRecibidos.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptListadoComprobantesRecibidos.Designer.cs">
+      <DependentUpon>rptListadoComprobantesRecibidos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -145,11 +151,14 @@
     <Compile Include="Esquemas\CreditoFiscalEsquema.cs" />
     <Compile Include="Esquemas\FacturaEsquema.cs" />
     <Compile Include="Esquemas\FacturaSujetoExcluidoEsquema.cs" />
+    <Compile Include="Esquemas\ListadoComprobantesRecibidosEsquema.cs" />
     <Compile Include="Esquemas\ListadoDocumentosRecibidosEsquema.cs" />
     <Compile Include="Esquemas\NotaRemisionEsquema.cs" />
     <Compile Include="Esquemas\OrdDespachoEsquema.cs" />
     <Compile Include="Esquemas\QuedanEsquema.cs" />
     <Compile Include="Esquemas\VentaDiariaEsquema.cs" />
+    <Compile Include="Helpers\DataRowHelper.cs" />
+    <Compile Include="Helpers\ExcelHelper.cs" />
     <Compile Include="Iva\Rpt_lbCcfResumen.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -288,6 +297,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Bancos\Proveedores\rptListadoComprobantesRecibidos.resx">
+      <DependentUpon>rptListadoComprobantesRecibidos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.resx">
+      <DependentUpon>rptListadoDocumentosRecibidos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Planilla\RptComprobLQProv.resx">
       <DependentUpon>RptComprobLQProv.cs</DependentUpon>
     </EmbeddedResource>
@@ -302,9 +317,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Bancos\Proveedores\rptCompRetencion.resx">
       <DependentUpon>rptCompRetencion.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.resx">
-      <DependentUpon>rptListadoDocumentosRecibidos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Bancos\Proveedores\rptQuedan.resx">
       <DependentUpon>rptQuedan.cs</DependentUpon>

@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using System.Globalization;
 using DevExpress.XtraEditors;
 using ComboBox = System.Windows.Forms.ComboBox;
+using SistemaContable.RP.Bancos.Proveedores;
 
 namespace SistemaContable.UI.Forms.Proveedores
 {
@@ -28,13 +29,14 @@ namespace SistemaContable.UI.Forms.Proveedores
         private readonly DALBase _dal = new DALBase();
         private MinisterioHaciendaHelper _mhHelper;
         private int _idEntidad = 0;
-        private int _idQuedanActual = 0;
+        private int? _idQuedanActual = null;        
         private int _idCCFAsociado = 0;
         private string _codigoEntidad = string.Empty;
         private string _idTipoContribProveedor = "";
         private string _idTipoPersona = "";
         private bool _validarCompIVAR = false;
         public int IdCcfCompra { get; set; } = 0;
+        public bool EsContado { get; set; } = false;
         private bool _guardado = false;
         private readonly ParametrosCcfBusqueda _parametrosCcf = new ParametrosCcfBusqueda();
 
@@ -109,8 +111,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtCOD_GENERACION_CCF,
                 new BusquedaConfig
                 {
-                    StoredProcedure = "SP_QUEDAN",
-                    Accion = "LISTAR_CCF_PENDIENTES_PAGO",
+                    StoredProcedure = "SP_CREDITO_FISCAL_COMPRA",
+                    Accion = EsContado ? "LISTAR_CCF_PENDIENTES_PAGO_CONTADO" : "LISTAR_CCF_PENDIENTES_PAGO_QUEDAN",
                     Columnas = new Dictionary<string, string>
                     {                        
                         { "TIPO_DTE",       "TIPO" },                        
@@ -140,7 +142,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             if (IdCcfCompra > 0)
             {
-                CargarCcfExistente(IdCcfCompra);
+                CargarNotaExistente(IdCcfCompra);
                 ConfigurarCRUD(EstadoFormulario.Guardado);
 
             }
@@ -149,7 +151,11 @@ namespace SistemaContable.UI.Forms.Proveedores
                 ConfigurarCRUD(EstadoFormulario.Nuevo);
             }
             FormHelper.ResaltarCombosEnFoco(this);
-            mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");            
+            mskFECHA_RECIBIDO.Text = DateTime.Today.ToString("dd/MM/yyyy");         
+            
+            // Ocultar campos relacionado al Quedan si No es Contado
+            lblNUM_QUEDAN.Visible = !EsContado;
+            txtNUM_QUEDAN.Visible = !EsContado;
         }
 
         private void txtPROVEEDOR_Leave(object sender, EventArgs e)
@@ -206,7 +212,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtTIPO_CONTRIBUYENTE.Text = fila["TIPO_CONTRIBUYENTE"].ToString();
             txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
 
-            // Al cambiar de proveedor, cualquier CCF que ya estuviera cargado deja de ser válido
+            // Al cambiar de proveedor, cualquier CCF que ya estuviera cargado deja de ser válido            
             LimpiarSeleccionCcf();
         }
 
@@ -218,7 +224,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
                 DataTable dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA", new
                 {
-                    ACCION = "OBTENER",
+                    ACCION = "OBTENER_NC_ND",
                     ID_CCF_COMPRA = idCcfCompra
                 });
 
@@ -231,8 +237,11 @@ namespace SistemaContable.UI.Forms.Proveedores
 
                 DataRow r = dt.Rows[0];
 
-                _idQuedanActual = Convert.ToInt32(r["ID_QUEDAN"]);
-                _idCCFAsociado = idCcfCompra;
+                if (AsString(r["ID_QUEDAN"]) == "")
+                    _idQuedanActual = null;
+                else
+                    _idQuedanActual = Convert.ToInt32(r["ID_QUEDAN"]);                
+                _idCCFAsociado = idCcfCompra;                
                 txtNUM_QUEDAN.Text = AsString(r["NUM_QUEDAN"]);
                 txtNUM_QUEDAN.ReadOnly = true;
 
@@ -287,7 +296,7 @@ namespace SistemaContable.UI.Forms.Proveedores
 
         private void LimpiarSeleccionCcf()
         {
-            _idQuedanActual = 0;
+            _idQuedanActual = null;
             _idCCFAsociado = 0;
             txtNUM_QUEDAN.Text = string.Empty;
             txtNUM_QUEDAN.ReadOnly = false;
@@ -332,7 +341,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             RecalcularTotales();
         }
 
-        private void CargarCcfExistente(int idCcfCompra)
+        private void CargarNotaExistente(int idCcfCompra)
         {
             try
             {
@@ -341,7 +350,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 DataTable dt = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",
                     new
                     {
-                        ACCION = "OBTENER",
+                        ACCION = "OBTENER_NC_ND",
                         ID_CCF_COMPRA = idCcfCompra
                     });
 
@@ -353,9 +362,14 @@ namespace SistemaContable.UI.Forms.Proveedores
                     return;
                 }
 
-                DataRow r = dt.Rows[0];                              
+                DataRow r = dt.Rows[0];
 
                 // ---------- Quedan ----------
+
+                if (AsString(r["ID_QUEDAN"]) == "")
+                    _idQuedanActual = null;
+                else
+                    _idQuedanActual = Convert.ToInt32(r["ID_QUEDAN"]);
                 txtNUM_QUEDAN.Text = r["NUM_QUEDAN"].ToString();
 
                 // ---------- Proveedor ----------
@@ -522,14 +536,16 @@ namespace SistemaContable.UI.Forms.Proveedores
 
             switch (estado)
             {
-                case EstadoFormulario.Nuevo:                                          
+                case EstadoFormulario.Nuevo:
+                    txtPROVEEDOR.Enabled = true;
                     btnGuardar.Enabled = true;
                     btnValidar.Enabled = false;                   
                     btnImprimirRetencion.Enabled = false;
                     btnCorreo.Enabled = false;
                     btnProvision.Enabled = false;
                     break;
-                case EstadoFormulario.Guardado:                         
+                case EstadoFormulario.Guardado:
+                    txtPROVEEDOR.Enabled = false; 
                     btnGuardar.Enabled = true;
                     btnValidar.Enabled = _validarCompIVAR;                    
                     btnImprimirRetencion.Enabled = (ObtenerDecimal(txtIVAR) > 0);
@@ -862,6 +878,14 @@ namespace SistemaContable.UI.Forms.Proveedores
                 return false;
             }
 
+            if (txtCOD_GENERACION_CCF.Text == "" )
+            {
+                XtraMessageBox.Show("Debe ingresar el comprobante al que aplica la nota de débito/crédito.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCOD_GENERACION_CCF.Focus();
+                return false;
+            }
+
             if (!ComboHelper.TieneSeleccion(cbxTIPO_DTE))
             {
                 XtraMessageBox.Show("Debe seleccionar el tipo de documento.", "Validación",
@@ -910,7 +934,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     ACCION = "GUARDAR_NC_ND",
                     ID_CCF_COMPRA = IdCcfCompra,
                     ID_QUEDAN = _idQuedanActual,
-                    NUM_QUEDAN = (int?)Convert.ToInt32(txtNUM_QUEDAN.Text),
+                    NUM_QUEDAN = _idQuedanActual == null ? null : (int?)Convert.ToInt32(txtNUM_QUEDAN.Text),
                     ID_TIPO_DTE = ObtenerIdCombo(cbxTIPO_DTE),
                     NUM_CONTROL = NullIfEmpty(txtNUM_CONTROL.Text),
                     COD_GENERACION = NullIfEmpty(txtCOD_GENERACION.Text),
@@ -1006,6 +1030,24 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtSELLO_RECIBIDO.Text = "";
             txtCOD_GENERACION.Text = "";
             txtNUM_CONTROL.Text = "";
+        }
+
+        private void btnImprimirRetencion_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var reporte = new rptCompRetencion { IdCcfCompra = IdCcfCompra };
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
     }
 }
