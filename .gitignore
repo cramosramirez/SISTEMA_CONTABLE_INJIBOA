@@ -436,3 +436,6 @@ SistemaContable.UI/App.config
 
 # Database scripts are maintained outside this repository
 Database/
+
+# Carpeta de trabajo de Claude (scripts SQL), fuera del control de versiones
+Claude outputs/
