@@ -127,11 +127,29 @@
     <Compile Include="Bancos\Proveedores\rptListadoComprobantesRecibidos.Designer.cs">
       <DependentUpon>rptListadoComprobantesRecibidos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Bancos\Proveedores\rptListadoDocumentosCanceladosPorProveedor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptListadoDocumentosCanceladosPorProveedor.Designer.cs">
+      <DependentUpon>rptListadoDocumentosCanceladosPorProveedor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptListadoDocumentosPendientesProvicionar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptListadoDocumentosPendientesProvicionar.Designer.cs">
+      <DependentUpon>rptListadoDocumentosPendientesProvicionar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.Designer.cs">
       <DependentUpon>rptListadoDocumentosRecibidos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptListadoSaldoPorProveedor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptListadoSaldoPorProveedor.Designer.cs">
+      <DependentUpon>rptListadoSaldoPorProveedor.cs</DependentUpon>
     </Compile>
     <Compile Include="Bancos\Proveedores\rptQuedan.cs">
       <SubType>Component</SubType>
@@ -300,8 +318,17 @@
     <EmbeddedResource Include="Bancos\Proveedores\rptListadoComprobantesRecibidos.resx">
       <DependentUpon>rptListadoComprobantesRecibidos.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Bancos\Proveedores\rptListadoDocumentosCanceladosPorProveedor.resx">
+      <DependentUpon>rptListadoDocumentosCanceladosPorProveedor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Bancos\Proveedores\rptListadoDocumentosPendientesProvicionar.resx">
+      <DependentUpon>rptListadoDocumentosPendientesProvicionar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Bancos\Proveedores\rptListadoDocumentosRecibidos.resx">
       <DependentUpon>rptListadoDocumentosRecibidos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Bancos\Proveedores\rptListadoSaldoPorProveedor.resx">
+      <DependentUpon>rptListadoSaldoPorProveedor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Planilla\RptComprobLQProv.resx">
       <DependentUpon>RptComprobLQProv.cs</DependentUpon>
