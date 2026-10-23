@@ -15,7 +15,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
         {
             InitializeComponent();
             NombreArchivoSugerido =
-               "COMPROBANTES_RECIBIDOS_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
+               "COMPROBANTES_RECIBIDOS_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");            
         }
 
         // ============================================================
@@ -24,6 +24,14 @@ namespace SistemaContable.RP.Bancos.Proveedores
         // ============================================================
         public override void CargarDatos()
         {
+            if (FechaInicial == FechaFinal)
+            {
+                xrTITULO.Text = "Listado de Documentos Recibidos el Día " + FechaInicial.ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                xrTITULO.Text = "Listado de Documentos Recibidos del Día " + FechaInicial.ToString("dd/MM/yyyy") + " al " + FechaFinal.ToString("dd/MM/yyyy");
+            }
             DataTable dt = ObtenerDatos();
             this.DataSource = dt;
             this.DataMember = "";

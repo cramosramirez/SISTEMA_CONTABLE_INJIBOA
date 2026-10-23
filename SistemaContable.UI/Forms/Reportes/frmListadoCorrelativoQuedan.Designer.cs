@@ -30,33 +30,33 @@ namespace SistemaContable.UI.Forms.Reportes
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
-            this.label11 = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.rbPorCorrelativoQuedan = new System.Windows.Forms.RadioButton();
-            this.rbPorProveedor = new System.Windows.Forms.RadioButton();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.rbRango = new System.Windows.Forms.RadioButton();
-            this.rbTodos = new System.Windows.Forms.RadioButton();
-            this.separatorControl2 = new DevExpress.XtraEditors.SeparatorControl();
             this.txtHASTA_DESCRIPCION = new System.Windows.Forms.TextBox();
             this.txtHASTA = new System.Windows.Forms.TextBox();
             this.txtDESDE_DESCRIPCION = new System.Windows.Forms.TextBox();
             this.txtDESDE = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.separatorControl2 = new DevExpress.XtraEditors.SeparatorControl();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.rbRango = new System.Windows.Forms.RadioButton();
+            this.rbTodos = new System.Windows.Forms.RadioButton();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.rbPorCorrelativoQuedan = new System.Windows.Forms.RadioButton();
+            this.rbPorProveedor = new System.Windows.Forms.RadioButton();
+            this.label11 = new System.Windows.Forms.Label();
+            this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
             this.btnFinalizar = new System.Windows.Forms.Button();
             this.btnProceder = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkIncluirYaPagados = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rbPANTALLA = new System.Windows.Forms.RadioButton();
             this.rbEXCEL = new System.Windows.Forms.RadioButton();
             this.rbPDF = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).BeginInit();
-            this.panel5.SuspendLayout();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.separatorControl2)).BeginInit();
+            this.panel1.SuspendLayout();
+            this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,103 +79,6 @@ namespace SistemaContable.UI.Forms.Reportes
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
-            // separatorControl1
-            // 
-            this.separatorControl1.LineThickness = 2;
-            this.separatorControl1.Location = new System.Drawing.Point(2, 59);
-            this.separatorControl1.Name = "separatorControl1";
-            this.separatorControl1.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.separatorControl1.Size = new System.Drawing.Size(684, 24);
-            this.separatorControl1.TabIndex = 0;
-            // 
-            // label11
-            // 
-            this.label11.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(80, 28);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(137, 24);
-            this.label11.TabIndex = 43;
-            this.label11.Text = "Ordenado por:";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.rbPorCorrelativoQuedan);
-            this.panel5.Controls.Add(this.rbPorProveedor);
-            this.panel5.Location = new System.Drawing.Point(235, 24);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(372, 34);
-            this.panel5.TabIndex = 58;
-            // 
-            // rbPorCorrelativoQuedan
-            // 
-            this.rbPorCorrelativoQuedan.AutoSize = true;
-            this.rbPorCorrelativoQuedan.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbPorCorrelativoQuedan.Location = new System.Drawing.Point(175, 5);
-            this.rbPorCorrelativoQuedan.Name = "rbPorCorrelativoQuedan";
-            this.rbPorCorrelativoQuedan.Size = new System.Drawing.Size(181, 21);
-            this.rbPorCorrelativoQuedan.TabIndex = 1;
-            this.rbPorCorrelativoQuedan.Text = "Correlativo de Quedan";
-            this.rbPorCorrelativoQuedan.UseVisualStyleBackColor = true;
-            // 
-            // rbPorProveedor
-            // 
-            this.rbPorProveedor.AutoSize = true;
-            this.rbPorProveedor.Checked = true;
-            this.rbPorProveedor.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbPorProveedor.Location = new System.Drawing.Point(15, 5);
-            this.rbPorProveedor.Name = "rbPorProveedor";
-            this.rbPorProveedor.Size = new System.Drawing.Size(126, 21);
-            this.rbPorProveedor.TabIndex = 0;
-            this.rbPorProveedor.TabStop = true;
-            this.rbPorProveedor.Text = "Por Proveedor";
-            this.rbPorProveedor.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.rbRango);
-            this.panel1.Controls.Add(this.rbTodos);
-            this.panel1.Location = new System.Drawing.Point(19, 86);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(133, 60);
-            this.panel1.TabIndex = 59;
-            // 
-            // rbRango
-            // 
-            this.rbRango.AutoSize = true;
-            this.rbRango.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbRango.Location = new System.Drawing.Point(15, 32);
-            this.rbRango.Name = "rbRango";
-            this.rbRango.Size = new System.Drawing.Size(94, 21);
-            this.rbRango.TabIndex = 1;
-            this.rbRango.Text = "Un Rango";
-            this.rbRango.UseVisualStyleBackColor = true;
-            this.rbRango.CheckedChanged += new System.EventHandler(this.rbRango_CheckedChanged);
-            // 
-            // rbTodos
-            // 
-            this.rbTodos.AutoSize = true;
-            this.rbTodos.Checked = true;
-            this.rbTodos.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbTodos.Location = new System.Drawing.Point(15, 5);
-            this.rbTodos.Name = "rbTodos";
-            this.rbTodos.Size = new System.Drawing.Size(69, 21);
-            this.rbTodos.TabIndex = 0;
-            this.rbTodos.TabStop = true;
-            this.rbTodos.Text = "Todos";
-            this.rbTodos.UseVisualStyleBackColor = true;
-            this.rbTodos.CheckedChanged += new System.EventHandler(this.rbTodos_CheckedChanged);
-            // 
-            // separatorControl2
-            // 
-            this.separatorControl2.LineOrientation = System.Windows.Forms.Orientation.Vertical;
-            this.separatorControl2.LineThickness = 2;
-            this.separatorControl2.Location = new System.Drawing.Point(161, 73);
-            this.separatorControl2.Name = "separatorControl2";
-            this.separatorControl2.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
-            this.separatorControl2.Size = new System.Drawing.Size(20, 83);
-            this.separatorControl2.TabIndex = 60;
-            // 
             // txtHASTA_DESCRIPCION
             // 
             this.txtHASTA_DESCRIPCION.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -183,7 +86,8 @@ namespace SistemaContable.UI.Forms.Reportes
             this.txtHASTA_DESCRIPCION.Name = "txtHASTA_DESCRIPCION";
             this.txtHASTA_DESCRIPCION.ReadOnly = true;
             this.txtHASTA_DESCRIPCION.Size = new System.Drawing.Size(306, 24);
-            this.txtHASTA_DESCRIPCION.TabIndex = 66;
+            this.txtHASTA_DESCRIPCION.TabIndex = 6;
+            this.txtHASTA_DESCRIPCION.TabStop = false;
             // 
             // txtHASTA
             // 
@@ -193,7 +97,8 @@ namespace SistemaContable.UI.Forms.Reportes
             this.txtHASTA.Name = "txtHASTA";
             this.txtHASTA.ReadOnly = true;
             this.txtHASTA.Size = new System.Drawing.Size(105, 24);
-            this.txtHASTA.TabIndex = 62;
+            this.txtHASTA.TabIndex = 5;
+            this.txtHASTA.Leave += new System.EventHandler(this.txtHASTA_Leave);
             // 
             // txtDESDE_DESCRIPCION
             // 
@@ -202,7 +107,8 @@ namespace SistemaContable.UI.Forms.Reportes
             this.txtDESDE_DESCRIPCION.Name = "txtDESDE_DESCRIPCION";
             this.txtDESDE_DESCRIPCION.ReadOnly = true;
             this.txtDESDE_DESCRIPCION.Size = new System.Drawing.Size(306, 24);
-            this.txtDESDE_DESCRIPCION.TabIndex = 65;
+            this.txtDESDE_DESCRIPCION.TabIndex = 4;
+            this.txtDESDE_DESCRIPCION.TabStop = false;
             // 
             // txtDESDE
             // 
@@ -212,7 +118,8 @@ namespace SistemaContable.UI.Forms.Reportes
             this.txtDESDE.Name = "txtDESDE";
             this.txtDESDE.ReadOnly = true;
             this.txtDESDE.Size = new System.Drawing.Size(105, 24);
-            this.txtDESDE.TabIndex = 61;
+            this.txtDESDE.TabIndex = 3;
+            this.txtDESDE.Leave += new System.EventHandler(this.txtDESDE_Leave);
             // 
             // label5
             // 
@@ -234,12 +141,109 @@ namespace SistemaContable.UI.Forms.Reportes
             this.label4.Text = "Desde";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // separatorControl2
+            // 
+            this.separatorControl2.LineOrientation = System.Windows.Forms.Orientation.Vertical;
+            this.separatorControl2.LineThickness = 2;
+            this.separatorControl2.Location = new System.Drawing.Point(161, 73);
+            this.separatorControl2.Name = "separatorControl2";
+            this.separatorControl2.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
+            this.separatorControl2.Size = new System.Drawing.Size(20, 83);
+            this.separatorControl2.TabIndex = 2;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.rbRango);
+            this.panel1.Controls.Add(this.rbTodos);
+            this.panel1.Location = new System.Drawing.Point(19, 86);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(133, 60);
+            this.panel1.TabIndex = 1;
+            // 
+            // rbRango
+            // 
+            this.rbRango.AutoSize = true;
+            this.rbRango.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbRango.Location = new System.Drawing.Point(15, 32);
+            this.rbRango.Name = "rbRango";
+            this.rbRango.Size = new System.Drawing.Size(97, 22);
+            this.rbRango.TabIndex = 1;
+            this.rbRango.Text = "Un Rango";
+            this.rbRango.UseVisualStyleBackColor = true;
+            this.rbRango.CheckedChanged += new System.EventHandler(this.rbRango_CheckedChanged);
+            // 
+            // rbTodos
+            // 
+            this.rbTodos.AutoSize = true;
+            this.rbTodos.Checked = true;
+            this.rbTodos.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbTodos.Location = new System.Drawing.Point(15, 5);
+            this.rbTodos.Name = "rbTodos";
+            this.rbTodos.Size = new System.Drawing.Size(70, 22);
+            this.rbTodos.TabIndex = 0;
+            this.rbTodos.TabStop = true;
+            this.rbTodos.Text = "Todos";
+            this.rbTodos.UseVisualStyleBackColor = true;
+            this.rbTodos.CheckedChanged += new System.EventHandler(this.rbTodos_CheckedChanged);
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.rbPorCorrelativoQuedan);
+            this.panel5.Controls.Add(this.rbPorProveedor);
+            this.panel5.Location = new System.Drawing.Point(235, 24);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(372, 34);
+            this.panel5.TabIndex = 0;
+            // 
+            // rbPorCorrelativoQuedan
+            // 
+            this.rbPorCorrelativoQuedan.AutoSize = true;
+            this.rbPorCorrelativoQuedan.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbPorCorrelativoQuedan.Location = new System.Drawing.Point(175, 5);
+            this.rbPorCorrelativoQuedan.Name = "rbPorCorrelativoQuedan";
+            this.rbPorCorrelativoQuedan.Size = new System.Drawing.Size(194, 22);
+            this.rbPorCorrelativoQuedan.TabIndex = 1;
+            this.rbPorCorrelativoQuedan.Text = "Correlativo de Quedan";
+            this.rbPorCorrelativoQuedan.UseVisualStyleBackColor = true;
+            // 
+            // rbPorProveedor
+            // 
+            this.rbPorProveedor.AutoSize = true;
+            this.rbPorProveedor.Checked = true;
+            this.rbPorProveedor.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbPorProveedor.Location = new System.Drawing.Point(15, 5);
+            this.rbPorProveedor.Name = "rbPorProveedor";
+            this.rbPorProveedor.Size = new System.Drawing.Size(134, 22);
+            this.rbPorProveedor.TabIndex = 0;
+            this.rbPorProveedor.TabStop = true;
+            this.rbPorProveedor.Text = "Por Proveedor";
+            this.rbPorProveedor.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(80, 28);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(137, 24);
+            this.label11.TabIndex = 43;
+            this.label11.Text = "Ordenado por:";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // separatorControl1
+            // 
+            this.separatorControl1.LineThickness = 2;
+            this.separatorControl1.Location = new System.Drawing.Point(2, 59);
+            this.separatorControl1.Name = "separatorControl1";
+            this.separatorControl1.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
+            this.separatorControl1.Size = new System.Drawing.Size(684, 24);
+            this.separatorControl1.TabIndex = 0;
+            // 
             // btnFinalizar
             // 
             this.btnFinalizar.Location = new System.Drawing.Point(386, 308);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(124, 38);
-            this.btnFinalizar.TabIndex = 11;
+            this.btnFinalizar.TabIndex = 3;
             this.btnFinalizar.Text = "Finalizar";
             this.btnFinalizar.UseVisualStyleBackColor = true;
             this.btnFinalizar.Click += new System.EventHandler(this.btnFinalizar_Click);
@@ -249,20 +253,21 @@ namespace SistemaContable.UI.Forms.Reportes
             this.btnProceder.Location = new System.Drawing.Point(225, 308);
             this.btnProceder.Name = "btnProceder";
             this.btnProceder.Size = new System.Drawing.Size(124, 38);
-            this.btnProceder.TabIndex = 10;
+            this.btnProceder.TabIndex = 2;
             this.btnProceder.Text = "Proceder";
             this.btnProceder.UseVisualStyleBackColor = true;
+            this.btnProceder.Click += new System.EventHandler(this.btnProceder_Click);
             // 
-            // checkBox1
+            // chkIncluirYaPagados
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(234, 191);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(267, 22);
-            this.checkBox1.TabIndex = 12;
-            this.checkBox1.Text = "Incluir los que ya estan pagados";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkIncluirYaPagados.AutoSize = true;
+            this.chkIncluirYaPagados.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkIncluirYaPagados.Location = new System.Drawing.Point(272, 191);
+            this.chkIncluirYaPagados.Name = "chkIncluirYaPagados";
+            this.chkIncluirYaPagados.Size = new System.Drawing.Size(191, 22);
+            this.chkIncluirYaPagados.TabIndex = 0;
+            this.chkIncluirYaPagados.Text = "Incluir los ya pagados";
+            this.chkIncluirYaPagados.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -273,7 +278,7 @@ namespace SistemaContable.UI.Forms.Reportes
             this.groupBox2.Location = new System.Drawing.Point(206, 230);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(322, 60);
-            this.groupBox2.TabIndex = 59;
+            this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tipo de formato";
             // 
@@ -315,7 +320,7 @@ namespace SistemaContable.UI.Forms.Reportes
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(735, 367);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.chkIncluirYaPagados);
             this.Controls.Add(this.btnFinalizar);
             this.Controls.Add(this.btnProceder);
             this.Controls.Add(this.groupBox1);
@@ -329,12 +334,12 @@ namespace SistemaContable.UI.Forms.Reportes
             this.Load += new System.EventHandler(this.frmListadoCorrelativoQuedan_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).EndInit();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.separatorControl2)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.separatorControl2)).EndInit();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -362,7 +367,7 @@ namespace SistemaContable.UI.Forms.Reportes
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnFinalizar;
         private System.Windows.Forms.Button btnProceder;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chkIncluirYaPagados;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rbPANTALLA;
         private System.Windows.Forms.RadioButton rbEXCEL;

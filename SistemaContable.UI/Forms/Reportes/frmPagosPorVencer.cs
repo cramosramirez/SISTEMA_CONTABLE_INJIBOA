@@ -1,4 +1,7 @@
-﻿using SistemaContable.DAL;
+﻿using DevExpress.XtraEditors;
+using SistemaContable.DAL;
+using SistemaContable.RP;
+using SistemaContable.RP.Bancos.Proveedores;
 using SistemaContable.UI.Helpers;
 using System;
 using System.Collections.Generic;
@@ -18,7 +21,7 @@ namespace SistemaContable.UI.Forms.Reportes
         private readonly DALBase _dal = new DALBase();
         public frmPagosPorVencer()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         private void frmPagosPorVencer_Load(object sender, EventArgs e)
@@ -149,7 +152,47 @@ namespace SistemaContable.UI.Forms.Reportes
 
         private void btnProceder_Click(object sender, EventArgs e)
         {
+            if (dteFECHA.EditValue == null)
+            {
+                XtraMessageBox.Show("Debe seleccionar la fecha.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                var rpt = new rptListadoPagosPorVencer 
+                {
+                    Fecha = dteFECHA.DateTime,
+                    IncluirVencidos = rbtINCLUIR_VENCIDOS_S.Checked ? true : false,
+                    EsResumen  = rbtRESUMEN.Checked ? true : false,
+                    Desde = txtDESDE.Text,
+                    Hasta = txtHASTA.Text,
+                    Salida = ObtenerSalidaSeleccionada()
+                };
+
+                rpt.Ejecutar();
+
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private SalidaReporte ObtenerSalidaSeleccionada()
+        {
+            if (rbPDF.Checked) return SalidaReporte.PDF;
+            if (rbEXCEL.Checked) return SalidaReporte.Excel;
+            return SalidaReporte.Pantalla;   // default
         }
     }
 }

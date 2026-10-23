@@ -42,16 +42,12 @@
             DevExpress.XtraReports.UI.XRSummary xrSummary11 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary12 = new DevExpress.XtraReports.UI.XRSummary();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
-            this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
             this.lblEmpresa = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTITULO = new DevExpress.XtraReports.UI.XRLabel();
             this.xrFECHA = new DevExpress.XtraReports.UI.XRLabel();
-            this.tSinVencer = new DevExpress.XtraReports.UI.XRLabel();
-            this.tD1_30 = new DevExpress.XtraReports.UI.XRLabel();
-            this.tD31_60 = new DevExpress.XtraReports.UI.XRLabel();
-            this.tD61_90 = new DevExpress.XtraReports.UI.XRLabel();
-            this.tD91_Mas = new DevExpress.XtraReports.UI.XRLabel();
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
+            this.pageInfoNumero = new DevExpress.XtraReports.UI.XRPageInfo();
+            this.pageInfoFecha = new DevExpress.XtraReports.UI.XRPageInfo();
             this.lineEncabezadoArriba = new DevExpress.XtraReports.UI.XRLine();
             this.hTipo = new DevExpress.XtraReports.UI.XRLabel();
             this.hComprobante = new DevExpress.XtraReports.UI.XRLabel();
@@ -80,7 +76,6 @@
             this.dD91_Mas = new DevExpress.XtraReports.UI.XRLabel();
             this.dDias = new DevExpress.XtraReports.UI.XRLabel();
             this.GroupFooter1 = new DevExpress.XtraReports.UI.GroupFooterBand();
-            this.lblTotalCategoria = new DevExpress.XtraReports.UI.XRLabel();
             this.gfSaldo = new DevExpress.XtraReports.UI.XRLabel();
             this.gfSinVencer = new DevExpress.XtraReports.UI.XRLabel();
             this.gfD1_30 = new DevExpress.XtraReports.UI.XRLabel();
@@ -96,8 +91,6 @@
             this.rfD61_90 = new DevExpress.XtraReports.UI.XRLabel();
             this.rfD91_Mas = new DevExpress.XtraReports.UI.XRLabel();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
-            this.pageInfoFecha = new DevExpress.XtraReports.UI.XRPageInfo();
-            this.pageInfoNumero = new DevExpress.XtraReports.UI.XRPageInfo();
             this.DsPagosVencidos = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             this.prmFechaCorte = new DevExpress.XtraReports.Parameters.Parameter();
             ((System.ComponentModel.ISupportInitialize)(this.DsPagosVencidos)).BeginInit();
@@ -108,20 +101,11 @@
             this.TopMargin.HeightF = 30F;
             this.TopMargin.Name = "TopMargin";
             // 
-            // ReportHeader
-            // 
-            this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.lblEmpresa,
-            this.xrTITULO,
-            this.xrFECHA});
-            this.ReportHeader.HeightF = 68F;
-            this.ReportHeader.Name = "ReportHeader";
-            // 
             // lblEmpresa
             // 
             this.lblEmpresa.CanGrow = false;
             this.lblEmpresa.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
-            this.lblEmpresa.LocationFloat = new DevExpress.Utils.PointFloat(0F, 5F);
+            this.lblEmpresa.LocationFloat = new DevExpress.Utils.PointFloat(0F, 61.6087F);
             this.lblEmpresa.Name = "lblEmpresa";
             this.lblEmpresa.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.lblEmpresa.SizeF = new System.Drawing.SizeF(800F, 28F);
@@ -133,7 +117,7 @@
             // 
             this.xrTITULO.CanGrow = false;
             this.xrTITULO.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrTITULO.LocationFloat = new DevExpress.Utils.PointFloat(220F, 36F);
+            this.xrTITULO.LocationFloat = new DevExpress.Utils.PointFloat(220F, 92.6087F);
             this.xrTITULO.Name = "xrTITULO";
             this.xrTITULO.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrTITULO.SizeF = new System.Drawing.SizeF(265F, 24F);
@@ -146,10 +130,8 @@
             // xrFECHA
             // 
             this.xrFECHA.CanGrow = false;
-            this.xrFECHA.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "?prmFechaCorte")});
             this.xrFECHA.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrFECHA.LocationFloat = new DevExpress.Utils.PointFloat(485F, 36F);
+            this.xrFECHA.LocationFloat = new DevExpress.Utils.PointFloat(485F, 92.6087F);
             this.xrFECHA.Name = "xrFECHA";
             this.xrFECHA.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrFECHA.SizeF = new System.Drawing.SizeF(100F, 24F);
@@ -159,94 +141,14 @@
             this.xrFECHA.TextFormatString = "{0:dd/MM/yyyy}";
             this.xrFECHA.WordWrap = false;
             // 
-            // tSinVencer
-            // 
-            this.tSinVencer.CanGrow = false;
-            this.tSinVencer.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.tSinVencer.LocationFloat = new DevExpress.Utils.PointFloat(405F, 33F);
-            this.tSinVencer.Name = "tSinVencer";
-            this.tSinVencer.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.tSinVencer.SizeF = new System.Drawing.SizeF(70F, 20F);
-            this.tSinVencer.StylePriority.UseFont = false;
-            this.tSinVencer.StylePriority.UseTextAlignment = false;
-            this.tSinVencer.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([SIN_VENCER])")});
-            this.tSinVencer.Summary = new DevExpress.XtraReports.UI.XRSummary(DevExpress.XtraReports.UI.SummaryRunning.Report);
-            this.tSinVencer.TextFormatString = "{0:#,##0.00;-#,##0.00;0.00}";
-            this.tSinVencer.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.tSinVencer.WordWrap = false;
-            // 
-            // tD1_30
-            // 
-            this.tD1_30.CanGrow = false;
-            this.tD1_30.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.tD1_30.LocationFloat = new DevExpress.Utils.PointFloat(475F, 33F);
-            this.tD1_30.Name = "tD1_30";
-            this.tD1_30.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.tD1_30.SizeF = new System.Drawing.SizeF(70F, 20F);
-            this.tD1_30.StylePriority.UseFont = false;
-            this.tD1_30.StylePriority.UseTextAlignment = false;
-            this.tD1_30.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D1_30])")});
-            this.tD1_30.Summary = new DevExpress.XtraReports.UI.XRSummary(DevExpress.XtraReports.UI.SummaryRunning.Report);
-            this.tD1_30.TextFormatString = "{0:#,##0.00;-#,##0.00;0.00}";
-            this.tD1_30.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.tD1_30.WordWrap = false;
-            // 
-            // tD31_60
-            // 
-            this.tD31_60.CanGrow = false;
-            this.tD31_60.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.tD31_60.LocationFloat = new DevExpress.Utils.PointFloat(545F, 33F);
-            this.tD31_60.Name = "tD31_60";
-            this.tD31_60.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.tD31_60.SizeF = new System.Drawing.SizeF(70F, 20F);
-            this.tD31_60.StylePriority.UseFont = false;
-            this.tD31_60.StylePriority.UseTextAlignment = false;
-            this.tD31_60.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D31_60])")});
-            this.tD31_60.Summary = new DevExpress.XtraReports.UI.XRSummary(DevExpress.XtraReports.UI.SummaryRunning.Report);
-            this.tD31_60.TextFormatString = "{0:#,##0.00;-#,##0.00;0.00}";
-            this.tD31_60.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.tD31_60.WordWrap = false;
-            // 
-            // tD61_90
-            // 
-            this.tD61_90.CanGrow = false;
-            this.tD61_90.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.tD61_90.LocationFloat = new DevExpress.Utils.PointFloat(615F, 33F);
-            this.tD61_90.Name = "tD61_90";
-            this.tD61_90.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.tD61_90.SizeF = new System.Drawing.SizeF(70F, 20F);
-            this.tD61_90.StylePriority.UseFont = false;
-            this.tD61_90.StylePriority.UseTextAlignment = false;
-            this.tD61_90.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D61_90])")});
-            this.tD61_90.Summary = new DevExpress.XtraReports.UI.XRSummary(DevExpress.XtraReports.UI.SummaryRunning.Report);
-            this.tD61_90.TextFormatString = "{0:#,##0.00;-#,##0.00;0.00}";
-            this.tD61_90.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.tD61_90.WordWrap = false;
-            // 
-            // tD91_Mas
-            // 
-            this.tD91_Mas.CanGrow = false;
-            this.tD91_Mas.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.tD91_Mas.LocationFloat = new DevExpress.Utils.PointFloat(685F, 33F);
-            this.tD91_Mas.Name = "tD91_Mas";
-            this.tD91_Mas.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.tD91_Mas.SizeF = new System.Drawing.SizeF(70F, 20F);
-            this.tD91_Mas.StylePriority.UseFont = false;
-            this.tD91_Mas.StylePriority.UseTextAlignment = false;
-            this.tD91_Mas.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D91_MAS])")});
-            this.tD91_Mas.Summary = new DevExpress.XtraReports.UI.XRSummary(DevExpress.XtraReports.UI.SummaryRunning.Report);
-            this.tD91_Mas.TextFormatString = "{0:#,##0.00;-#,##0.00;0.00}";
-            this.tD91_Mas.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.tD91_Mas.WordWrap = false;
-            // 
             // PageHeader
             // 
             this.PageHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.pageInfoNumero,
+            this.pageInfoFecha,
+            this.xrFECHA,
+            this.xrTITULO,
+            this.lblEmpresa,
             this.lineEncabezadoArriba,
             this.hTipo,
             this.hComprobante,
@@ -259,19 +161,34 @@
             this.hD61_90,
             this.hD91_Mas,
             this.hDias,
-            this.lineEncabezadoAbajo,
-            this.tSinVencer,
-            this.tD1_30,
-            this.tD31_60,
-            this.tD61_90,
-            this.tD91_Mas});
-            this.PageHeader.HeightF = 56F;
+            this.lineEncabezadoAbajo});
+            this.PageHeader.HeightF = 157.0435F;
             this.PageHeader.Name = "PageHeader";
+            // 
+            // pageInfoNumero
+            // 
+            this.pageInfoNumero.Font = new System.Drawing.Font("Arial", 7F);
+            this.pageInfoNumero.LocationFloat = new DevExpress.Utils.PointFloat(600F, 38.60872F);
+            this.pageInfoNumero.Name = "pageInfoNumero";
+            this.pageInfoNumero.SizeF = new System.Drawing.SizeF(200F, 18F);
+            this.pageInfoNumero.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
+            this.pageInfoNumero.TextFormatString = "Página {0} de {1}";
+            // 
+            // pageInfoFecha
+            // 
+            this.pageInfoFecha.Font = new System.Drawing.Font("Arial", 7F);
+            this.pageInfoFecha.LocationFloat = new DevExpress.Utils.PointFloat(500F, 20.60871F);
+            this.pageInfoFecha.Name = "pageInfoFecha";
+            this.pageInfoFecha.PageInfo = DevExpress.XtraPrinting.PageInfo.DateTime;
+            this.pageInfoFecha.SizeF = new System.Drawing.SizeF(300F, 18F);
+            this.pageInfoFecha.StylePriority.UseTextAlignment = false;
+            this.pageInfoFecha.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
+            this.pageInfoFecha.TextFormatString = "Impreso: {0:dd/MM/yyyy hh:mm tt}";
             // 
             // lineEncabezadoArriba
             // 
             this.lineEncabezadoArriba.LineWidth = 2F;
-            this.lineEncabezadoArriba.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.lineEncabezadoArriba.LocationFloat = new DevExpress.Utils.PointFloat(0F, 126.0435F);
             this.lineEncabezadoArriba.Name = "lineEncabezadoArriba";
             this.lineEncabezadoArriba.SizeF = new System.Drawing.SizeF(800F, 4F);
             // 
@@ -279,7 +196,7 @@
             // 
             this.hTipo.CanGrow = false;
             this.hTipo.Font = new System.Drawing.Font("Arial", 8F);
-            this.hTipo.LocationFloat = new DevExpress.Utils.PointFloat(0F, 6F);
+            this.hTipo.LocationFloat = new DevExpress.Utils.PointFloat(0F, 132.0434F);
             this.hTipo.Name = "hTipo";
             this.hTipo.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.hTipo.SizeF = new System.Drawing.SizeF(55F, 20F);
@@ -291,7 +208,7 @@
             // 
             this.hComprobante.CanGrow = false;
             this.hComprobante.Font = new System.Drawing.Font("Arial", 8F);
-            this.hComprobante.LocationFloat = new DevExpress.Utils.PointFloat(55F, 6F);
+            this.hComprobante.LocationFloat = new DevExpress.Utils.PointFloat(55F, 132.0434F);
             this.hComprobante.Name = "hComprobante";
             this.hComprobante.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.hComprobante.SizeF = new System.Drawing.SizeF(135F, 20F);
@@ -303,31 +220,33 @@
             // 
             this.hQuedan.CanGrow = false;
             this.hQuedan.Font = new System.Drawing.Font("Arial", 8F);
-            this.hQuedan.LocationFloat = new DevExpress.Utils.PointFloat(190F, 6F);
+            this.hQuedan.LocationFloat = new DevExpress.Utils.PointFloat(190F, 132.0434F);
             this.hQuedan.Name = "hQuedan";
             this.hQuedan.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.hQuedan.SizeF = new System.Drawing.SizeF(65F, 20F);
+            this.hQuedan.StylePriority.UseTextAlignment = false;
             this.hQuedan.Text = "QUEDAN";
-            this.hQuedan.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.hQuedan.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.hQuedan.WordWrap = false;
             // 
             // hVence
             // 
             this.hVence.CanGrow = false;
             this.hVence.Font = new System.Drawing.Font("Arial", 8F);
-            this.hVence.LocationFloat = new DevExpress.Utils.PointFloat(255F, 6F);
+            this.hVence.LocationFloat = new DevExpress.Utils.PointFloat(255F, 132.0434F);
             this.hVence.Name = "hVence";
             this.hVence.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.hVence.SizeF = new System.Drawing.SizeF(75F, 20F);
+            this.hVence.StylePriority.UseTextAlignment = false;
             this.hVence.Text = "VENCE";
-            this.hVence.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.hVence.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.hVence.WordWrap = false;
             // 
             // hSaldo
             // 
             this.hSaldo.CanGrow = false;
             this.hSaldo.Font = new System.Drawing.Font("Arial", 8F);
-            this.hSaldo.LocationFloat = new DevExpress.Utils.PointFloat(330F, 6F);
+            this.hSaldo.LocationFloat = new DevExpress.Utils.PointFloat(330F, 132.0434F);
             this.hSaldo.Name = "hSaldo";
             this.hSaldo.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.hSaldo.SizeF = new System.Drawing.SizeF(75F, 20F);
@@ -339,10 +258,11 @@
             // 
             this.hSinVencer.CanGrow = false;
             this.hSinVencer.Font = new System.Drawing.Font("Arial", 8F);
-            this.hSinVencer.LocationFloat = new DevExpress.Utils.PointFloat(405F, 6F);
+            this.hSinVencer.LocationFloat = new DevExpress.Utils.PointFloat(405F, 132.0434F);
             this.hSinVencer.Name = "hSinVencer";
             this.hSinVencer.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.hSinVencer.SizeF = new System.Drawing.SizeF(70F, 20F);
+            this.hSinVencer.SizeF = new System.Drawing.SizeF(80F, 20F);
+            this.hSinVencer.StylePriority.UseTextAlignment = false;
             this.hSinVencer.Text = "SIN VENCER";
             this.hSinVencer.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.hSinVencer.WordWrap = false;
@@ -351,10 +271,10 @@
             // 
             this.hD1_30.CanGrow = false;
             this.hD1_30.Font = new System.Drawing.Font("Arial", 8F);
-            this.hD1_30.LocationFloat = new DevExpress.Utils.PointFloat(475F, 6F);
+            this.hD1_30.LocationFloat = new DevExpress.Utils.PointFloat(485F, 132.0434F);
             this.hD1_30.Name = "hD1_30";
             this.hD1_30.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.hD1_30.SizeF = new System.Drawing.SizeF(70F, 20F);
+            this.hD1_30.SizeF = new System.Drawing.SizeF(60F, 20F);
             this.hD1_30.Text = "1 <=> 30";
             this.hD1_30.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.hD1_30.WordWrap = false;
@@ -363,7 +283,7 @@
             // 
             this.hD31_60.CanGrow = false;
             this.hD31_60.Font = new System.Drawing.Font("Arial", 8F);
-            this.hD31_60.LocationFloat = new DevExpress.Utils.PointFloat(545F, 6F);
+            this.hD31_60.LocationFloat = new DevExpress.Utils.PointFloat(545F, 132.0434F);
             this.hD31_60.Name = "hD31_60";
             this.hD31_60.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.hD31_60.SizeF = new System.Drawing.SizeF(70F, 20F);
@@ -375,7 +295,7 @@
             // 
             this.hD61_90.CanGrow = false;
             this.hD61_90.Font = new System.Drawing.Font("Arial", 8F);
-            this.hD61_90.LocationFloat = new DevExpress.Utils.PointFloat(615F, 6F);
+            this.hD61_90.LocationFloat = new DevExpress.Utils.PointFloat(615F, 132.0434F);
             this.hD61_90.Name = "hD61_90";
             this.hD61_90.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.hD61_90.SizeF = new System.Drawing.SizeF(70F, 20F);
@@ -387,7 +307,7 @@
             // 
             this.hD91_Mas.CanGrow = false;
             this.hD91_Mas.Font = new System.Drawing.Font("Arial", 8F);
-            this.hD91_Mas.LocationFloat = new DevExpress.Utils.PointFloat(685F, 6F);
+            this.hD91_Mas.LocationFloat = new DevExpress.Utils.PointFloat(685F, 132.0434F);
             this.hD91_Mas.Name = "hD91_Mas";
             this.hD91_Mas.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.hD91_Mas.SizeF = new System.Drawing.SizeF(70F, 20F);
@@ -399,17 +319,18 @@
             // 
             this.hDias.CanGrow = false;
             this.hDias.Font = new System.Drawing.Font("Arial", 8F);
-            this.hDias.LocationFloat = new DevExpress.Utils.PointFloat(755F, 6F);
+            this.hDias.LocationFloat = new DevExpress.Utils.PointFloat(755F, 132.0434F);
             this.hDias.Name = "hDias";
             this.hDias.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.hDias.SizeF = new System.Drawing.SizeF(45F, 20F);
+            this.hDias.StylePriority.UseTextAlignment = false;
             this.hDias.Text = "DIAS";
-            this.hDias.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
+            this.hDias.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.hDias.WordWrap = false;
             // 
             // lineEncabezadoAbajo
             // 
-            this.lineEncabezadoAbajo.LocationFloat = new DevExpress.Utils.PointFloat(0F, 27F);
+            this.lineEncabezadoAbajo.LocationFloat = new DevExpress.Utils.PointFloat(0F, 153.0435F);
             this.lineEncabezadoAbajo.Name = "lineEncabezadoAbajo";
             this.lineEncabezadoAbajo.SizeF = new System.Drawing.SizeF(800F, 4F);
             // 
@@ -418,17 +339,17 @@
             this.GroupHeader1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.lblCategoria});
             this.GroupHeader1.GroupFields.AddRange(new DevExpress.XtraReports.UI.GroupField[] {
-            new DevExpress.XtraReports.UI.GroupField("CATEGORIA", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending)});
-            this.GroupHeader1.HeightF = 28F;
+            new DevExpress.XtraReports.UI.GroupField("PROVEEDOR", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending)});
+            this.GroupHeader1.HeightF = 22F;
             this.GroupHeader1.Name = "GroupHeader1";
             // 
             // lblCategoria
             // 
             this.lblCategoria.CanGrow = false;
             this.lblCategoria.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CATEGORIA]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PROVEEDOR]")});
             this.lblCategoria.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
-            this.lblCategoria.LocationFloat = new DevExpress.Utils.PointFloat(0F, 4F);
+            this.lblCategoria.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.lblCategoria.Name = "lblCategoria";
             this.lblCategoria.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.lblCategoria.SizeF = new System.Drawing.SizeF(800F, 22F);
@@ -490,7 +411,8 @@
             this.dQuedan.Name = "dQuedan";
             this.dQuedan.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.dQuedan.SizeF = new System.Drawing.SizeF(65F, 18F);
-            this.dQuedan.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.dQuedan.StylePriority.UseTextAlignment = false;
+            this.dQuedan.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.dQuedan.WordWrap = false;
             // 
             // dVence
@@ -503,7 +425,8 @@
             this.dVence.Name = "dVence";
             this.dVence.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.dVence.SizeF = new System.Drawing.SizeF(75F, 18F);
-            this.dVence.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.dVence.StylePriority.UseTextAlignment = false;
+            this.dVence.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.dVence.TextFormatString = "{0:dd/MM/yyyy}";
             this.dVence.WordWrap = false;
             // 
@@ -525,7 +448,7 @@
             // 
             this.dSinVencer.CanGrow = false;
             this.dSinVencer.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[SIN_VENCER]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[SIN VENCER]")});
             this.dSinVencer.Font = new System.Drawing.Font("Arial", 8F);
             this.dSinVencer.LocationFloat = new DevExpress.Utils.PointFloat(405F, 0F);
             this.dSinVencer.Name = "dSinVencer";
@@ -539,7 +462,7 @@
             // 
             this.dD1_30.CanGrow = false;
             this.dD1_30.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[D1_30]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[1 A 30 DIAS]")});
             this.dD1_30.Font = new System.Drawing.Font("Arial", 8F);
             this.dD1_30.LocationFloat = new DevExpress.Utils.PointFloat(475F, 0F);
             this.dD1_30.Name = "dD1_30";
@@ -553,7 +476,7 @@
             // 
             this.dD31_60.CanGrow = false;
             this.dD31_60.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[D31_60]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[31 A 60 DIAS]")});
             this.dD31_60.Font = new System.Drawing.Font("Arial", 8F);
             this.dD31_60.LocationFloat = new DevExpress.Utils.PointFloat(545F, 0F);
             this.dD31_60.Name = "dD31_60";
@@ -567,7 +490,7 @@
             // 
             this.dD61_90.CanGrow = false;
             this.dD61_90.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[D61_90]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[61 A 90 DIAS]")});
             this.dD61_90.Font = new System.Drawing.Font("Arial", 8F);
             this.dD61_90.LocationFloat = new DevExpress.Utils.PointFloat(615F, 0F);
             this.dD61_90.Name = "dD61_90";
@@ -581,7 +504,7 @@
             // 
             this.dD91_Mas.CanGrow = false;
             this.dD91_Mas.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[D91_MAS]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[91 Y MAS]")});
             this.dD91_Mas.Font = new System.Drawing.Font("Arial", 8F);
             this.dD91_Mas.LocationFloat = new DevExpress.Utils.PointFloat(685F, 0F);
             this.dD91_Mas.Name = "dD91_Mas";
@@ -601,14 +524,14 @@
             this.dDias.Name = "dDias";
             this.dDias.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.dDias.SizeF = new System.Drawing.SizeF(45F, 18F);
-            this.dDias.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
+            this.dDias.StylePriority.UseTextAlignment = false;
+            this.dDias.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.dDias.TextFormatString = "{0:#,##0;(#,##0);0}";
             this.dDias.WordWrap = false;
             // 
             // GroupFooter1
             // 
             this.GroupFooter1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.lblTotalCategoria,
             this.gfSaldo,
             this.gfSinVencer,
             this.gfD1_30,
@@ -618,18 +541,7 @@
             this.GroupFooter1.HeightF = 30F;
             this.GroupFooter1.KeepTogether = true;
             this.GroupFooter1.Name = "GroupFooter1";
-            // 
-            // lblTotalCategoria
-            // 
-            this.lblTotalCategoria.CanGrow = false;
-            this.lblTotalCategoria.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.lblTotalCategoria.LocationFloat = new DevExpress.Utils.PointFloat(0F, 4F);
-            this.lblTotalCategoria.Name = "lblTotalCategoria";
-            this.lblTotalCategoria.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.lblTotalCategoria.SizeF = new System.Drawing.SizeF(330F, 20F);
-            this.lblTotalCategoria.Text = "Total categoría";
-            this.lblTotalCategoria.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.lblTotalCategoria.WordWrap = false;
+            this.GroupFooter1.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.GroupFooter1_BeforePrint);
             // 
             // gfSaldo
             // 
@@ -638,7 +550,7 @@
             this.gfSaldo.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([SALDO])")});
             this.gfSaldo.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.gfSaldo.LocationFloat = new DevExpress.Utils.PointFloat(330F, 4F);
+            this.gfSaldo.LocationFloat = new DevExpress.Utils.PointFloat(330F, 0F);
             this.gfSaldo.Name = "gfSaldo";
             this.gfSaldo.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.gfSaldo.SizeF = new System.Drawing.SizeF(75F, 20F);
@@ -653,9 +565,9 @@
             this.gfSinVencer.Borders = DevExpress.XtraPrinting.BorderSide.Top;
             this.gfSinVencer.CanGrow = false;
             this.gfSinVencer.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([SIN_VENCER])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([SIN VENCER])")});
             this.gfSinVencer.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.gfSinVencer.LocationFloat = new DevExpress.Utils.PointFloat(405F, 4F);
+            this.gfSinVencer.LocationFloat = new DevExpress.Utils.PointFloat(405F, 0F);
             this.gfSinVencer.Name = "gfSinVencer";
             this.gfSinVencer.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.gfSinVencer.SizeF = new System.Drawing.SizeF(70F, 20F);
@@ -670,9 +582,9 @@
             this.gfD1_30.Borders = DevExpress.XtraPrinting.BorderSide.Top;
             this.gfD1_30.CanGrow = false;
             this.gfD1_30.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D1_30])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([1 A 30 DIAS])")});
             this.gfD1_30.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.gfD1_30.LocationFloat = new DevExpress.Utils.PointFloat(475F, 4F);
+            this.gfD1_30.LocationFloat = new DevExpress.Utils.PointFloat(475F, 0F);
             this.gfD1_30.Name = "gfD1_30";
             this.gfD1_30.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.gfD1_30.SizeF = new System.Drawing.SizeF(70F, 20F);
@@ -687,9 +599,9 @@
             this.gfD31_60.Borders = DevExpress.XtraPrinting.BorderSide.Top;
             this.gfD31_60.CanGrow = false;
             this.gfD31_60.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D31_60])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([31 A 60 DIAS])")});
             this.gfD31_60.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.gfD31_60.LocationFloat = new DevExpress.Utils.PointFloat(545F, 4F);
+            this.gfD31_60.LocationFloat = new DevExpress.Utils.PointFloat(545F, 0F);
             this.gfD31_60.Name = "gfD31_60";
             this.gfD31_60.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.gfD31_60.SizeF = new System.Drawing.SizeF(70F, 20F);
@@ -704,9 +616,9 @@
             this.gfD61_90.Borders = DevExpress.XtraPrinting.BorderSide.Top;
             this.gfD61_90.CanGrow = false;
             this.gfD61_90.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D61_90])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([61 A 90 DIAS])")});
             this.gfD61_90.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.gfD61_90.LocationFloat = new DevExpress.Utils.PointFloat(615F, 4F);
+            this.gfD61_90.LocationFloat = new DevExpress.Utils.PointFloat(615F, 0F);
             this.gfD61_90.Name = "gfD61_90";
             this.gfD61_90.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.gfD61_90.SizeF = new System.Drawing.SizeF(70F, 20F);
@@ -721,9 +633,9 @@
             this.gfD91_Mas.Borders = DevExpress.XtraPrinting.BorderSide.Top;
             this.gfD91_Mas.CanGrow = false;
             this.gfD91_Mas.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D91_MAS])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([91 Y MAS])")});
             this.gfD91_Mas.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.gfD91_Mas.LocationFloat = new DevExpress.Utils.PointFloat(685F, 4F);
+            this.gfD91_Mas.LocationFloat = new DevExpress.Utils.PointFloat(685F, 0F);
             this.gfD91_Mas.Name = "gfD91_Mas";
             this.gfD91_Mas.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.gfD91_Mas.SizeF = new System.Drawing.SizeF(70F, 20F);
@@ -780,7 +692,7 @@
             this.rfSinVencer.Borders = DevExpress.XtraPrinting.BorderSide.Top;
             this.rfSinVencer.CanGrow = false;
             this.rfSinVencer.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([SIN_VENCER])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([SIN VENCER])")});
             this.rfSinVencer.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.rfSinVencer.LocationFloat = new DevExpress.Utils.PointFloat(405F, 6F);
             this.rfSinVencer.Name = "rfSinVencer";
@@ -797,7 +709,7 @@
             this.rfD1_30.Borders = DevExpress.XtraPrinting.BorderSide.Top;
             this.rfD1_30.CanGrow = false;
             this.rfD1_30.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D1_30])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([1 A 30 DIAS])")});
             this.rfD1_30.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.rfD1_30.LocationFloat = new DevExpress.Utils.PointFloat(475F, 6F);
             this.rfD1_30.Name = "rfD1_30";
@@ -814,7 +726,7 @@
             this.rfD31_60.Borders = DevExpress.XtraPrinting.BorderSide.Top;
             this.rfD31_60.CanGrow = false;
             this.rfD31_60.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D31_60])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([31 A 60 DIAS])")});
             this.rfD31_60.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.rfD31_60.LocationFloat = new DevExpress.Utils.PointFloat(545F, 6F);
             this.rfD31_60.Name = "rfD31_60";
@@ -831,7 +743,7 @@
             this.rfD61_90.Borders = DevExpress.XtraPrinting.BorderSide.Top;
             this.rfD61_90.CanGrow = false;
             this.rfD61_90.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D61_90])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([61 A 90 DIAS])")});
             this.rfD61_90.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.rfD61_90.LocationFloat = new DevExpress.Utils.PointFloat(615F, 6F);
             this.rfD61_90.Name = "rfD61_90";
@@ -848,7 +760,7 @@
             this.rfD91_Mas.Borders = DevExpress.XtraPrinting.BorderSide.Top;
             this.rfD91_Mas.CanGrow = false;
             this.rfD91_Mas.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([D91_MAS])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([91 Y MAS])")});
             this.rfD91_Mas.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.rfD91_Mas.LocationFloat = new DevExpress.Utils.PointFloat(685F, 6F);
             this.rfD91_Mas.Name = "rfD91_Mas";
@@ -862,29 +774,8 @@
             // 
             // BottomMargin
             // 
-            this.BottomMargin.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.pageInfoFecha,
-            this.pageInfoNumero});
             this.BottomMargin.HeightF = 40F;
             this.BottomMargin.Name = "BottomMargin";
-            // 
-            // pageInfoFecha
-            // 
-            this.pageInfoFecha.Font = new System.Drawing.Font("Arial", 7F);
-            this.pageInfoFecha.LocationFloat = new DevExpress.Utils.PointFloat(0F, 8F);
-            this.pageInfoFecha.Name = "pageInfoFecha";
-            this.pageInfoFecha.PageInfo = DevExpress.XtraPrinting.PageInfo.DateTime;
-            this.pageInfoFecha.SizeF = new System.Drawing.SizeF(300F, 18F);
-            this.pageInfoFecha.TextFormatString = "Impreso: {0:dd/MM/yyyy hh:mm tt}";
-            // 
-            // pageInfoNumero
-            // 
-            this.pageInfoNumero.Font = new System.Drawing.Font("Arial", 7F);
-            this.pageInfoNumero.LocationFloat = new DevExpress.Utils.PointFloat(600F, 8F);
-            this.pageInfoNumero.Name = "pageInfoNumero";
-            this.pageInfoNumero.SizeF = new System.Drawing.SizeF(200F, 18F);
-            this.pageInfoNumero.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.pageInfoNumero.TextFormatString = "Página {0} de {1}";
             // 
             // DsPagosVencidos
             // 
@@ -903,7 +794,6 @@
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.TopMargin,
-            this.ReportHeader,
             this.PageHeader,
             this.GroupHeader1,
             this.Detail,
@@ -927,7 +817,6 @@
         #endregion
 
         private DevExpress.XtraReports.UI.TopMarginBand TopMargin;
-        private DevExpress.XtraReports.UI.ReportHeaderBand ReportHeader;
         private DevExpress.XtraReports.UI.PageHeaderBand PageHeader;
         private DevExpress.XtraReports.UI.GroupHeaderBand GroupHeader1;
         private DevExpress.XtraReports.UI.DetailBand Detail;
@@ -937,11 +826,6 @@
         private DevExpress.XtraReports.UI.XRLabel lblEmpresa;
         private DevExpress.XtraReports.UI.XRLabel xrTITULO;
         private DevExpress.XtraReports.UI.XRLabel xrFECHA;
-        private DevExpress.XtraReports.UI.XRLabel tSinVencer;
-        private DevExpress.XtraReports.UI.XRLabel tD1_30;
-        private DevExpress.XtraReports.UI.XRLabel tD31_60;
-        private DevExpress.XtraReports.UI.XRLabel tD61_90;
-        private DevExpress.XtraReports.UI.XRLabel tD91_Mas;
         private DevExpress.XtraReports.UI.XRLine lineEncabezadoArriba;
         private DevExpress.XtraReports.UI.XRLabel hTipo;
         private DevExpress.XtraReports.UI.XRLabel hComprobante;
@@ -967,7 +851,6 @@
         private DevExpress.XtraReports.UI.XRLabel dD61_90;
         private DevExpress.XtraReports.UI.XRLabel dD91_Mas;
         private DevExpress.XtraReports.UI.XRLabel dDias;
-        private DevExpress.XtraReports.UI.XRLabel lblTotalCategoria;
         private DevExpress.XtraReports.UI.XRLabel lblTotalGeneral;
         private DevExpress.XtraReports.UI.XRLabel gfSaldo;
         private DevExpress.XtraReports.UI.XRLabel rfSaldo;

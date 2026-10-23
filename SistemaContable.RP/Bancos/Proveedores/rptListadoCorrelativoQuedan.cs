@@ -5,13 +5,11 @@ using System.Data;
 namespace SistemaContable.RP.Bancos.Proveedores
 {
     public partial class rptListadoCorrelativoQuedan : SistemaContable.RP.ReporteBase
-    {
-        // TODO: confirmar con el procedimiento almacenado que se está desarrollando
-        private const string NombreSP = "SP_QUEDAN_RPT";
-        private const string Accion = "LISTADO_CORRELATIVO_QUEDAN";
-
-        public DateTime FechaInicial { get; set; }
-        public DateTime FechaFinal { get; set; }
+    {       
+        public string Orden { get; set; }
+        public string Desde { get; set; }
+        public string Hasta { get; set; }
+        public bool IncluirYaPagados { get; set; }
 
         public rptListadoCorrelativoQuedan()
         {
@@ -34,12 +32,19 @@ namespace SistemaContable.RP.Bancos.Proveedores
         private DataTable ObtenerDatos()
         {
             var dal = new DALBase();
-            return dal.EjecutarConsulta(NombreSP, new
+            return dal.EjecutarConsulta("SP_RPT_LISTADO_CORRELATIVO_QUEDAN", new
             {
-                ACCION = Accion,
-                FECHA_INI = FechaInicial.Date,
-                FECHA_FIN = FechaFinal.Date
+                ORDEN = Orden,
+                INCLUIR_YA_PAGADOS = IncluirYaPagados,
+                DESDE = Desde,
+                HASTA = Hasta
             });
+        }
+
+        private void GroupHeader1_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+            gPROVEEDOR.Visible = (Orden == "PROVEEDOR");
+            gQUEDAN.Visible = (Orden == "QUEDAN");
         }
     }
 }

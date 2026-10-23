@@ -23,6 +23,8 @@ namespace SistemaContable.RP.Bancos.Proveedores
         public rptListadoDocumentosRecibidos()
         {
             InitializeComponent();
+            NombreArchivoSugerido =
+               "LISTADO_DOCUMENTOS_RECIBIDOS_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
         }
 
         // ============================================================

@@ -6,36 +6,32 @@ namespace SistemaContable.RP.Bancos.Proveedores
 {
     public partial class rptListadoPagosVencidos : SistemaContable.RP.ReporteBase
     {
-        // TODO: confirmar con el procedimiento almacenado que se está desarrollando
-        private const string NombreSP = "SP_QUEDAN_RPT";
-        private const string Accion = "PAGOS_VENCIDOS";
 
-        /// <summary>
-        /// Fecha de corte: se muestra en el título y se envía al procedimiento.
-        /// Usa el parámetro del reporte FechaCorte.
-        /// </summary>
-        public DateTime FechaCorte
-        {
-            get { return prmFechaCorte.Value is DateTime ? (DateTime)prmFechaCorte.Value : DateTime.Today; }
-            set { prmFechaCorte.Value = value.Date; }
-        }
+        public DateTime Fecha { get; set; }
+        public bool IncluirNoVencidos { get; set; }
+        public bool EsResumen { get; set; }
+        public string Desde { get; set; }
+        public string Hasta { get; set; }
 
         public rptListadoPagosVencidos()
         {
             InitializeComponent();
-            FechaCorte = DateTime.Today;
+            NombreArchivoSugerido =
+               "LISTADO_PAGOS_VENCIDOS_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
         }
 
-        public rptListadoPagosVencidos(DateTime fechaCorte) : this()
-        {
-            FechaCorte = fechaCorte;
-        }
-
+        
         // ============================================================
         // Carga de datos para el reporte visual DevExpress
         // ============================================================
         public override void CargarDatos()
         {
+            xrFECHA.Text = Fecha.ToString("dd/MM/yyyy");
+            hQuedan.Visible = !EsResumen;
+            hVence.Visible = !EsResumen;
+            hTipo.Visible = !EsResumen;
+            hComprobante.Text = !EsResumen ? "COMPROBANTE" : "PROVEEDOR";
+
             DataTable dt = ObtenerDatos();
             this.DataSource = dt;
             this.DataMember = "";
@@ -47,11 +43,19 @@ namespace SistemaContable.RP.Bancos.Proveedores
         private DataTable ObtenerDatos()
         {
             var dal = new DALBase();
-            return dal.EjecutarConsulta(NombreSP, new
-            {
-                ACCION = Accion,
-                FECHA_CORTE = FechaCorte.Date
+            return dal.EjecutarConsulta("SP_RPT_PAGOS_VENCIDOS", new
+            {                
+                FECHA = Fecha,
+                INCLUIR_NO_VENCIDOS = IncluirNoVencidos,
+                ES_RESUMEN = EsResumen,
+                DESDE = Desde,
+                HASTA = Hasta
             });
+        }
+
+        private void GroupFooter1_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+            e.Cancel = EsResumen;
         }
     }
 }

@@ -43,8 +43,8 @@ namespace SistemaContable.UI.Forms.Reportes
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.rbtINCLUIR_VENCIDOS_N = new System.Windows.Forms.RadioButton();
-            this.rbtINCLUIR_VENCIDOS_S = new System.Windows.Forms.RadioButton();
+            this.rbtINCLUIR_NO_VENCIDOS_N = new System.Windows.Forms.RadioButton();
+            this.rbtINCLUIR_NO_VENCIDOS_S = new System.Windows.Forms.RadioButton();
             this.txtA = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -133,6 +133,7 @@ namespace SistemaContable.UI.Forms.Reportes
             this.txtHASTA_DESCRIPCION.ReadOnly = true;
             this.txtHASTA_DESCRIPCION.Size = new System.Drawing.Size(295, 24);
             this.txtHASTA_DESCRIPCION.TabIndex = 55;
+            this.txtHASTA_DESCRIPCION.TabStop = false;
             // 
             // txtHASTA
             // 
@@ -141,6 +142,7 @@ namespace SistemaContable.UI.Forms.Reportes
             this.txtHASTA.Name = "txtHASTA";
             this.txtHASTA.Size = new System.Drawing.Size(105, 24);
             this.txtHASTA.TabIndex = 6;
+            this.txtHASTA.Leave += new System.EventHandler(this.txtHASTA_Leave);
             // 
             // txtDESDE_DESCRIPCION
             // 
@@ -150,6 +152,7 @@ namespace SistemaContable.UI.Forms.Reportes
             this.txtDESDE_DESCRIPCION.ReadOnly = true;
             this.txtDESDE_DESCRIPCION.Size = new System.Drawing.Size(295, 24);
             this.txtDESDE_DESCRIPCION.TabIndex = 53;
+            this.txtDESDE_DESCRIPCION.TabStop = false;
             // 
             // txtDESDE
             // 
@@ -158,6 +161,7 @@ namespace SistemaContable.UI.Forms.Reportes
             this.txtDESDE.Name = "txtDESDE";
             this.txtDESDE.Size = new System.Drawing.Size(105, 24);
             this.txtDESDE.TabIndex = 5;
+            this.txtDESDE.Leave += new System.EventHandler(this.txtDESDE_Leave);
             // 
             // label4
             // 
@@ -186,7 +190,7 @@ namespace SistemaContable.UI.Forms.Reportes
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(179, 23);
             this.label3.TabIndex = 48;
-            this.label3.Text = "Incluir los ya vencidos";
+            this.label3.Text = "Incluir los no vencidos";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
@@ -202,36 +206,36 @@ namespace SistemaContable.UI.Forms.Reportes
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel4.Controls.Add(this.rbtINCLUIR_VENCIDOS_N);
-            this.panel4.Controls.Add(this.rbtINCLUIR_VENCIDOS_S);
+            this.panel4.Controls.Add(this.rbtINCLUIR_NO_VENCIDOS_N);
+            this.panel4.Controls.Add(this.rbtINCLUIR_NO_VENCIDOS_S);
             this.panel4.Location = new System.Drawing.Point(280, 186);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(155, 73);
             this.panel4.TabIndex = 3;
             // 
-            // rbtINCLUIR_VENCIDOS_N
+            // rbtINCLUIR_NO_VENCIDOS_N
             // 
-            this.rbtINCLUIR_VENCIDOS_N.AutoSize = true;
-            this.rbtINCLUIR_VENCIDOS_N.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtINCLUIR_VENCIDOS_N.Location = new System.Drawing.Point(57, 37);
-            this.rbtINCLUIR_VENCIDOS_N.Name = "rbtINCLUIR_VENCIDOS_N";
-            this.rbtINCLUIR_VENCIDOS_N.Size = new System.Drawing.Size(46, 21);
-            this.rbtINCLUIR_VENCIDOS_N.TabIndex = 1;
-            this.rbtINCLUIR_VENCIDOS_N.Text = "No";
-            this.rbtINCLUIR_VENCIDOS_N.UseVisualStyleBackColor = true;
+            this.rbtINCLUIR_NO_VENCIDOS_N.AutoSize = true;
+            this.rbtINCLUIR_NO_VENCIDOS_N.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtINCLUIR_NO_VENCIDOS_N.Location = new System.Drawing.Point(57, 37);
+            this.rbtINCLUIR_NO_VENCIDOS_N.Name = "rbtINCLUIR_NO_VENCIDOS_N";
+            this.rbtINCLUIR_NO_VENCIDOS_N.Size = new System.Drawing.Size(47, 22);
+            this.rbtINCLUIR_NO_VENCIDOS_N.TabIndex = 1;
+            this.rbtINCLUIR_NO_VENCIDOS_N.Text = "No";
+            this.rbtINCLUIR_NO_VENCIDOS_N.UseVisualStyleBackColor = true;
             // 
-            // rbtINCLUIR_VENCIDOS_S
+            // rbtINCLUIR_NO_VENCIDOS_S
             // 
-            this.rbtINCLUIR_VENCIDOS_S.AutoSize = true;
-            this.rbtINCLUIR_VENCIDOS_S.Checked = true;
-            this.rbtINCLUIR_VENCIDOS_S.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtINCLUIR_VENCIDOS_S.Location = new System.Drawing.Point(57, 10);
-            this.rbtINCLUIR_VENCIDOS_S.Name = "rbtINCLUIR_VENCIDOS_S";
-            this.rbtINCLUIR_VENCIDOS_S.Size = new System.Drawing.Size(38, 21);
-            this.rbtINCLUIR_VENCIDOS_S.TabIndex = 0;
-            this.rbtINCLUIR_VENCIDOS_S.TabStop = true;
-            this.rbtINCLUIR_VENCIDOS_S.Text = "Si";
-            this.rbtINCLUIR_VENCIDOS_S.UseVisualStyleBackColor = true;
+            this.rbtINCLUIR_NO_VENCIDOS_S.AutoSize = true;
+            this.rbtINCLUIR_NO_VENCIDOS_S.Checked = true;
+            this.rbtINCLUIR_NO_VENCIDOS_S.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtINCLUIR_NO_VENCIDOS_S.Location = new System.Drawing.Point(57, 10);
+            this.rbtINCLUIR_NO_VENCIDOS_S.Name = "rbtINCLUIR_NO_VENCIDOS_S";
+            this.rbtINCLUIR_NO_VENCIDOS_S.Size = new System.Drawing.Size(41, 22);
+            this.rbtINCLUIR_NO_VENCIDOS_S.TabIndex = 0;
+            this.rbtINCLUIR_NO_VENCIDOS_S.TabStop = true;
+            this.rbtINCLUIR_NO_VENCIDOS_S.Text = "Si";
+            this.rbtINCLUIR_NO_VENCIDOS_S.UseVisualStyleBackColor = true;
             // 
             // txtA
             // 
@@ -267,10 +271,10 @@ namespace SistemaContable.UI.Forms.Reportes
             // rbtRESUMEN
             // 
             this.rbtRESUMEN.AutoSize = true;
-            this.rbtRESUMEN.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtRESUMEN.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtRESUMEN.Location = new System.Drawing.Point(21, 39);
             this.rbtRESUMEN.Name = "rbtRESUMEN";
-            this.rbtRESUMEN.Size = new System.Drawing.Size(90, 21);
+            this.rbtRESUMEN.Size = new System.Drawing.Size(94, 22);
             this.rbtRESUMEN.TabIndex = 1;
             this.rbtRESUMEN.Text = "Resumen";
             this.rbtRESUMEN.UseVisualStyleBackColor = true;
@@ -279,10 +283,10 @@ namespace SistemaContable.UI.Forms.Reportes
             // 
             this.rbtDETALLADO.AutoSize = true;
             this.rbtDETALLADO.Checked = true;
-            this.rbtDETALLADO.Font = new System.Drawing.Font("Tahoma", 8.139131F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtDETALLADO.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtDETALLADO.Location = new System.Drawing.Point(21, 12);
             this.rbtDETALLADO.Name = "rbtDETALLADO";
-            this.rbtDETALLADO.Size = new System.Drawing.Size(90, 21);
+            this.rbtDETALLADO.Size = new System.Drawing.Size(98, 22);
             this.rbtDETALLADO.TabIndex = 0;
             this.rbtDETALLADO.TabStop = true;
             this.rbtDETALLADO.Text = "Detallado";
@@ -512,8 +516,8 @@ namespace SistemaContable.UI.Forms.Reportes
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.RadioButton rbtINCLUIR_VENCIDOS_N;
-        private System.Windows.Forms.RadioButton rbtINCLUIR_VENCIDOS_S;
+        private System.Windows.Forms.RadioButton rbtINCLUIR_NO_VENCIDOS_N;
+        private System.Windows.Forms.RadioButton rbtINCLUIR_NO_VENCIDOS_S;
         private DevExpress.XtraEditors.DateEdit dteFECHA;
         private System.Windows.Forms.TextBox txtA;
         private System.Windows.Forms.Label label1;

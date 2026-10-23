@@ -57,8 +57,8 @@ namespace SistemaContable.UI.Forms.Reportes
             this.txtB = new System.Windows.Forms.TextBox();
             this.txtA = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.dteFECHA = new DevExpress.XtraEditors.DateEdit();
+            this.label11 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -383,16 +383,6 @@ namespace SistemaContable.UI.Forms.Reportes
             this.label1.Text = "Períodos Dia:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label11
-            // 
-            this.label11.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(76, 27);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(170, 23);
-            this.label11.TabIndex = 42;
-            this.label11.Text = "Reporte al";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // dteFECHA
             // 
             this.dteFECHA.EditValue = null;
@@ -417,6 +407,16 @@ namespace SistemaContable.UI.Forms.Reportes
             this.dteFECHA.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.DateTimeAdvancingCaret;
             this.dteFECHA.Size = new System.Drawing.Size(123, 24);
             this.dteFECHA.TabIndex = 0;
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(76, 27);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(170, 23);
+            this.label11.TabIndex = 42;
+            this.label11.Text = "Reporte al";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // frmPagosPorVencer
             // 

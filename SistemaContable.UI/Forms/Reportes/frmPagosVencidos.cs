@@ -1,4 +1,8 @@
-﻿using SistemaContable.UI.Helpers;
+﻿using DevExpress.XtraEditors;
+using SistemaContable.DAL;
+using SistemaContable.RP;
+using SistemaContable.RP.Bancos.Proveedores;
+using SistemaContable.UI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +17,7 @@ namespace SistemaContable.UI.Forms.Reportes
 {
     public partial class frmPagosVencidos : Form
     {
+        private readonly DALBase _dal = new DALBase();
         public frmPagosVencidos()
         {
             InitializeComponent();
@@ -93,13 +98,101 @@ namespace SistemaContable.UI.Forms.Reportes
                 "Por Número de Quedan"
             });
             cbxTIPO_ORDEN.SelectedIndex = 0;
-
         }
 
         private void btnProceder_Click(object sender, EventArgs e)
         {
+            if (dteFECHA.EditValue == null)
+            {
+                XtraMessageBox.Show("Debe seleccionar la fecha.",
+                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                var rpt = new rptListadoPagosVencidos
+                {
+                    Fecha = dteFECHA.DateTime,
+                    IncluirNoVencidos = rbtINCLUIR_NO_VENCIDOS_S.Checked ? true : false,
+                    EsResumen = rbtRESUMEN.Checked ? true : false,
+                    Desde = txtDESDE.Text,
+                    Hasta = txtHASTA.Text,
+                    Salida = ObtenerSalidaSeleccionada()
+                };
+
+                rpt.Ejecutar();
+
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Error al imprimir:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
+
+        private void ObtenerProveedor(TextBox txtCODIGO, TextBox txtNOMBRE)
+        {
+            string codigo = txtCODIGO.Text.Trim();
+            if (codigo == "*") return;
+            if (string.IsNullOrWhiteSpace(codigo))
+            {
+                txtNOMBRE.Text = "";
+                return;
+            }
+            try
+            {
+                var dt = _dal.EjecutarConsulta("SP_ENTIDAD", new
+                {
+                    ACCION = "BUSCAR_POR_CODIGO_CONTRIBUYENTE",
+                    FILTRO = codigo,
+                    ROL = "PRO"
+                });
+
+                if (dt.Rows.Count > 0)
+                    AsignarProveedor(dt.Rows[0], txtCODIGO, txtNOMBRE);
+                else
+                {
+                    txtNOMBRE.Text = "";
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        $"No se encontró el proveedor con código '{codigo}'.",
+                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtCODIGO.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    $"Error al buscar proveedor: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private SalidaReporte ObtenerSalidaSeleccionada()
+        {
+            if (rbPDF.Checked) return SalidaReporte.PDF;
+            if (rbEXCEL.Checked) return SalidaReporte.Excel;
+            return SalidaReporte.Pantalla;   // default
+        }
+
+        private void txtDESDE_Leave(object sender, EventArgs e)
+        {
+            ObtenerProveedor(txtDESDE, txtDESDE_DESCRIPCION);
+        }
+
+        private void txtHASTA_Leave(object sender, EventArgs e)
+        {
+            ObtenerProveedor(txtHASTA, txtHASTA_DESCRIPCION);
+        }
+
+       
     }
 
    

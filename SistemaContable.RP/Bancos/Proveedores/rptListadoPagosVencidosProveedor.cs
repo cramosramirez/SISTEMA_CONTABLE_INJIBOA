@@ -1,44 +1,40 @@
 ﻿using SistemaContable.DAL;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace SistemaContable.RP.Bancos.Proveedores
 {
     public partial class rptListadoPagosVencidosProveedor : SistemaContable.RP.ReporteBase
     {
-        // TODO: confirmar con el procedimiento almacenado que se está desarrollando
-        private const string NombreSP = "SP_QUEDAN_RPT";
-        private const string Accion = "PAGOS_VENCIDOS_PROVEEDOR";
-
-        /// <summary>
-        /// Fecha de corte: se muestra en el título y se envía al procedimiento.
-        /// Usa el parámetro del reporte prmFechaCorte.
-        /// </summary>
-        public DateTime FechaCorte
-        {
-            get { return prmFechaCorte.Value is DateTime ? (DateTime)prmFechaCorte.Value : DateTime.Today; }
-            set { prmFechaCorte.Value = value.Date; }
-        }
+        public int Del_dia { get; set; }
+        public int Al_dia { get; set; }
+        public bool EsResumen { get; set; }
+        public string Desde { get; set; }
+        public string Hasta { get; set; }
 
         public rptListadoPagosVencidosProveedor()
         {
             InitializeComponent();
-            FechaCorte = DateTime.Today;
+            NombreArchivoSugerido =
+               "COMPROBANTES_VENCIDOS_A_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
         }
-
-        public rptListadoPagosVencidosProveedor(DateTime fechaCorte) : this()
-        {
-            FechaCorte = fechaCorte;
-        }
-
+       
         // ============================================================
         // Carga de datos para el reporte visual DevExpress
         // ============================================================
         public override void CargarDatos()
         {
+            xrFECHA.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            hD1_30.Text = Del_dia.ToString() + " <=> " + Al_dia.ToString();
             DataTable dt = ObtenerDatos();
             this.DataSource = dt;
             this.DataMember = "";
+
+            RenombrarColumnasExcel = new Dictionary<string, string>
+                {
+                    { "PERIODO", $"{Del_dia} <=> {Al_dia}" }
+                };
         }
 
         // ============================================================
@@ -47,11 +43,19 @@ namespace SistemaContable.RP.Bancos.Proveedores
         private DataTable ObtenerDatos()
         {
             var dal = new DALBase();
-            return dal.EjecutarConsulta(NombreSP, new
+            return dal.EjecutarConsulta("SP_RPT_COMPROBANTES_VENCIDOS_A", new
             {
-                ACCION = Accion,
-                FECHA_CORTE = FechaCorte.Date
+                DEL_DIA = Del_dia,
+                AL_DIA = Al_dia,
+                ES_RESUMEN = EsResumen,
+                ORDEN = "V",
+                DESDE = Desde,
+                HASTA = Hasta
             });
+        }
+        private void GroupFooter1_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+            e.Cancel = EsResumen;
         }
     }
 }

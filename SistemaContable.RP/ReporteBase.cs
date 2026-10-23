@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using SistemaContable.RP.Helpers;
+using System.Collections.Generic;
 
 namespace SistemaContable.RP
 {
@@ -31,6 +32,7 @@ namespace SistemaContable.RP
 
     public class ReporteBase : XtraReport
     {
+        public Dictionary<string, string> RenombrarColumnasExcel { get; set; }
         private TopMarginBand topMarginBand1;
         private DetailBand detailBand1;
         private BottomMarginBand bottomMarginBand1;
@@ -81,22 +83,20 @@ namespace SistemaContable.RP
         /// Reemplaza las llamadas directas a MostrarPreview() cuando se
         /// quiere que el modo (pantalla / PDF / Excel) sea configurable.
         /// </summary>
-        public virtual void Ejecutar()
+        public virtual string Ejecutar()
         {
             switch (Salida)
             {
                 case SalidaReporte.Pantalla:
                     // MostrarPreview() ya llama CargarDatos() internamente
                     MostrarPreview();
-                    break;
+                    return null;
 
                 case SalidaReporte.PDF:
-                    EjecutarPDF();
-                    break;
+                    return EjecutarPDF();
 
                 case SalidaReporte.Excel:
-                    EjecutarExcel();
-                    break;
+                    return EjecutarExcel();
 
                 default:
                     throw new NotImplementedException(
@@ -107,7 +107,7 @@ namespace SistemaContable.RP
         // ============================================================
         // NUEVO: Salida PDF (archivo temporal + abrir con visor del sistema)
         // ============================================================
-        private void EjecutarPDF()
+        private string EjecutarPDF()
         {
             CargarDatos();
 
@@ -124,12 +124,14 @@ namespace SistemaContable.RP
                 UseShellExecute = true
             };
             Process.Start(psi);
+
+            return rutaPdf;
         }
 
         // ============================================================
         // NUEVO: Salida Excel (exporta el DataSource en una sola hoja)
         // ============================================================
-        private void EjecutarExcel()
+        private string EjecutarExcel()
         {
             CargarDatos();
 
@@ -145,14 +147,23 @@ namespace SistemaContable.RP
                 sfd.Title = "Guardar archivo Excel";
                 sfd.FileName = ObtenerNombreArchivoBase() + ".xlsx";
 
-                if (sfd.ShowDialog() != DialogResult.OK) return;
+                if (sfd.ShowDialog() != DialogResult.OK) return null;
 
                 using (var wb = new XLWorkbook())
                 {
                     var ws = wb.Worksheets.Add("Datos");
-                    ws.ExportarDataTable(dt);
+                    ws.ExportarDataTable(dt, renombrarColumnas: RenombrarColumnasExcel);
                     wb.SaveAs(sfd.FileName);
                 }
+
+                var psi = new ProcessStartInfo
+                {
+                    FileName = sfd.FileName,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+
+                return sfd.FileName;
             }
         }
 

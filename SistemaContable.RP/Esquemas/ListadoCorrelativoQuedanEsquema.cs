@@ -12,17 +12,18 @@ namespace SistemaContable.RP.Esquemas
         public static DataTable Crear()
         {
             var dt = new DataTable("ListadoCorrelativoQuedan");
-            dt.Columns.Add("QUEDAN", typeof(string));
-            dt.Columns.Add("NOMBRE", typeof(string));
-            dt.Columns.Add("TIPO_DOC", typeof(string));
-            dt.Columns.Add("NUM_DOC", typeof(string));
-            dt.Columns.Add("FECHA_RECIBIDO", typeof(DateTime));
-            dt.Columns.Add("FECHA_VENCE", typeof(DateTime));
-            dt.Columns.Add("MONTO_ORIGINAL", typeof(decimal));
+            dt.Columns.Add("ORDEN", typeof(int));
+            dt.Columns.Add("QUEDAN", typeof(int));
+            dt.Columns.Add("PROVEEDOR", typeof(string));
+            dt.Columns.Add("TIPO", typeof(string));
+            dt.Columns.Add("COMPROBANTE", typeof(string));
+            dt.Columns.Add("RECIBIDO", typeof(DateTime));
+            dt.Columns.Add("VENCE", typeof(DateTime));
+            dt.Columns.Add("ORIG", typeof(decimal));
             dt.Columns.Add("ABONO", typeof(decimal));
             dt.Columns.Add("SALDO", typeof(decimal));
-            dt.Columns.Add("DIAS_VENCIDO", typeof(int));
-            dt.Columns.Add("SIN_VENCER", typeof(decimal));
+            dt.Columns.Add("DIAS_VENCIDO", typeof(string));
+            dt.Columns.Add("SIN_VENCIMIENTO", typeof(decimal));
             return dt;
         }
     }

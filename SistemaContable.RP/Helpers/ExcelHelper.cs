@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -34,6 +35,10 @@ namespace SistemaContable.RP.Helpers
         /// <summary>Fecha con hora: 20/10/2026 18:30</summary>
         public const string FORMATO_FECHA_HORA = "dd/MM/yyyy HH:mm";
 
+        // ============================================================
+        // Headers
+        // ============================================================
+
         /// <summary>
         /// Escribe los encabezados en la fila 1 con formato bold + fondo gris.
         /// </summary>
@@ -55,9 +60,6 @@ namespace SistemaContable.RP.Helpers
         // Escritura de valores desde DataRow (lectura segura)
         // ============================================================
 
-        /// <summary>
-        /// Escribe el texto de la columna en la celda. Si no existe o es DBNull, deja la celda vacía.
-        /// </summary>
         public static void EscribirTexto(this IXLWorksheet ws, int fila, int col,
             DataRow row, string columna)
         {
@@ -68,9 +70,6 @@ namespace SistemaContable.RP.Helpers
             ws.Cell(fila, col).Value = row[columna].ToString();
         }
 
-        /// <summary>
-        /// Escribe el valor entero de la columna en la celda.
-        /// </summary>
         public static void EscribirEntero(this IXLWorksheet ws, int fila, int col,
             DataRow row, string columna)
         {
@@ -81,9 +80,6 @@ namespace SistemaContable.RP.Helpers
             ws.Cell(fila, col).Value = Convert.ToInt32(row[columna]);
         }
 
-        /// <summary>
-        /// Escribe el valor decimal en la celda con formato "#,##0.00".
-        /// </summary>
         public static void EscribirDecimal(this IXLWorksheet ws, int fila, int col,
             DataRow row, string columna, string formato = FORMATO_CONTABLE)
         {
@@ -96,11 +92,8 @@ namespace SistemaContable.RP.Helpers
             celda.Style.NumberFormat.Format = formato;
         }
 
-        /// <summary>
-        /// Escribe la fecha en la celda con formato "dd/MM/yyyy".
-        /// </summary>
         public static void EscribirFecha(this IXLWorksheet ws, int fila, int col,
-            DataRow row, string columna, string formato = "dd/MM/yyyy")
+            DataRow row, string columna, string formato = FORMATO_FECHA)
         {
             if (ws == null || row == null) return;
             if (!row.Table.Columns.Contains(columna)) return;
@@ -111,9 +104,6 @@ namespace SistemaContable.RP.Helpers
             celda.Style.DateFormat.Format = formato;
         }
 
-        /// <summary>
-        /// Escribe el bool en la celda como "Sí" / "No".
-        /// </summary>
         public static void EscribirBool(this IXLWorksheet ws, int fila, int col,
             DataRow row, string columna, string textoTrue = "Sí", string textoFalse = "No")
         {
@@ -156,14 +146,22 @@ namespace SistemaContable.RP.Helpers
         /// <summary>
         /// Exporta un DataTable completo a una hoja Excel con sus columnas tal cual.
         /// Útil para exportaciones rápidas de un DataSource sin mapeo manual.
+        /// Si agregarTotales = true, agrega una fila al final con SUM() para
+        /// las columnas decimal, double y float.
         /// </summary>
         public static void ExportarDataTable(this IXLWorksheet ws, DataTable dt,
-            bool detectarTipos = true)
+            bool detectarTipos = true, bool agregarTotales = true,            
+            Dictionary<string, string> renombrarColumnas = null)
         {
             if (ws == null || dt == null) return;
 
             // Headers
-            var nombres = dt.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray();
+            // Headers con renombrado opcional
+            var nombres = dt.Columns.Cast<DataColumn>()
+                .Select(c => renombrarColumnas != null && renombrarColumnas.ContainsKey(c.ColumnName)
+                             ? renombrarColumnas[c.ColumnName]
+                             : c.ColumnName)
+                .ToArray();
             ws.EscribirHeaders(nombres);
 
             // Datos
@@ -184,13 +182,12 @@ namespace SistemaContable.RP.Helpers
                         continue;
                     }
 
-                    // Formato según el tipo de la columna
                     Type tipo = columna.DataType;
 
                     if (tipo == typeof(DateTime))
                     {
                         celda.Value = Convert.ToDateTime(valor);
-                        celda.Style.DateFormat.Format = "dd/MM/yyyy";
+                        celda.Style.DateFormat.Format = FORMATO_FECHA;
                     }
                     else if (tipo == typeof(decimal) || tipo == typeof(double) || tipo == typeof(float))
                     {
@@ -213,7 +210,79 @@ namespace SistemaContable.RP.Helpers
                 fila++;
             }
 
+            // ============================================================
+            // Fila de totales para columnas decimal/double/float
+            // ============================================================
+            if (agregarTotales && dt.Rows.Count > 0)
+            {
+                AgregarFilaTotales(ws, dt, fila);
+            }
+
             ws.FinalizarHoja();
+        }
+
+        // ============================================================
+        // Fila de totales (uso interno de ExportarDataTable)
+        // ============================================================
+
+        /// <summary>
+        /// Agrega una fila de totales al final para las columnas decimal/double/float.
+        /// En la primera columna no numérica escribe "TOTAL".
+        /// Las demás columnas no numéricas quedan vacías pero con el mismo estilo.
+        /// Usa fórmulas =SUM() para que se recalculen si el usuario edita.
+        /// </summary>
+        private static void AgregarFilaTotales(IXLWorksheet ws, DataTable dt, int filaTotales)
+        {
+            bool etiquetaColocada = false;
+
+            for (int col = 0; col < dt.Columns.Count; col++)
+            {
+                var columna = dt.Columns[col];
+                Type tipo = columna.DataType;
+                var celda = ws.Cell(filaTotales, col + 1);
+
+                bool esNumericaDecimal = tipo == typeof(decimal) ||
+                                         tipo == typeof(double) ||
+                                         tipo == typeof(float);
+
+                // Estilo común para toda la fila de totales
+                celda.Style.Fill.BackgroundColor = XLColor.LightGray;
+                celda.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                celda.Style.Font.Bold = true;
+
+                if (esNumericaDecimal)
+                {
+                    // Fórmula SUM que abarca de fila 2 hasta la última fila de datos
+                    string letraCol = ObtenerLetraColumna(col + 1);
+                    string rango = $"{letraCol}2:{letraCol}{filaTotales - 1}";
+
+                    celda.FormulaA1 = $"=SUM({rango})";
+                    celda.Style.NumberFormat.Format = FORMATO_CONTABLE;
+                }
+                else if (!etiquetaColocada)
+                {
+                    // Primera columna no numérica → etiqueta "TOTAL"
+                    celda.Value = "TOTAL";
+                    etiquetaColocada = true;
+                }
+                // (las demás columnas no numéricas quedan vacías pero con el estilo)
+            }
+        }
+
+        /// <summary>
+        /// Devuelve la letra de columna de Excel para un índice 1-based.
+        /// 1 → A, 2 → B, ..., 27 → AA, 28 → AB
+        /// </summary>
+        private static string ObtenerLetraColumna(int indice)
+        {
+            string letra = "";
+            while (indice > 0)
+            {
+                indice--;
+                letra = (char)('A' + indice % 26) + letra;
+                indice /= 26;
+            }
+            return letra;
         }
     }
 }
