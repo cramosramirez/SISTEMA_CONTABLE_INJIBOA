@@ -10,7 +10,13 @@ namespace SistemaContable.RP.Bancos.Proveedores
 {
     public partial class rptCheque : SistemaContable.RP.ReporteBase
     {
-        public int IdCheque { get; set; }
+        public int IdCheque { get; set; } = -1;
+
+        public int IdCatorcena { get; set; } = -1;
+
+        public int IdTipoPlanilla { get; set; } = -1;
+
+        public int EsContribuyente { get; set; } = 0;
         public rptCheque()
         {
             InitializeComponent();           
@@ -22,10 +28,36 @@ namespace SistemaContable.RP.Bancos.Proveedores
                 throw new InvalidOperationException(
                     "Debe asignar IdCheque antes de imprimir.");
 
+            if (IdCatorcena == -1 && IdTipoPlanilla == -1)
+            {
+                CargarUnCheque();
+            }
+            else
+            {
+                CargarPlanilla();
+            }           
+        }
+
+        public void CargarUnCheque()
+        {
             DataTable dt = EjecutarSP("SP_CHEQUE_RPT", new
             {
                 ACCION = "CHEQUE_PRINCIPAL",
                 ID_CHEQUE = IdCheque
+            });
+
+            this.DataSource = dt;
+            this.DataMember = "";
+        }
+
+        public void CargarPlanilla()
+        {
+            DataTable dt = EjecutarSP("SP_CHEQUE_RPT", new
+            {
+                ACCION = "CHEQUE_PLANILLA",
+                ID_CATORCENA = IdCatorcena,
+                ID_TIPO_PLANILLA = IdTipoPlanilla,
+                ES_CONTRIBUYENTE = EsContribuyente
             });
 
             this.DataSource = dt;
