@@ -199,6 +199,12 @@
     <Compile Include="Bancos\Proveedores\rptSujetoExcluido.designer.cs">
       <DependentUpon>rptSujetoExcluido.cs</DependentUpon>
     </Compile>
+    <Compile Include="Bancos\Proveedores\rptRemisionChequesAFirma.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptRemisionChequesAFirma.Designer.cs">
+      <DependentUpon>rptRemisionChequesAFirma.cs</DependentUpon>
+    </Compile>
     <Compile Include="Esquemas\ChequeAnexoEsquema.cs" />
     <Compile Include="Esquemas\ChequeEsquema.cs" />
     <Compile Include="Esquemas\CompRetencionEsquema.cs" />
@@ -216,6 +222,7 @@
     <Compile Include="Esquemas\NotaRemisionEsquema.cs" />
     <Compile Include="Esquemas\OrdDespachoEsquema.cs" />
     <Compile Include="Esquemas\QuedanEsquema.cs" />
+    <Compile Include="Esquemas\RemisionChequesAFirmaEsquema.cs" />
     <Compile Include="Esquemas\VentaDiariaEsquema.cs" />
     <Compile Include="Helpers\DataRowHelper.cs" />
     <Compile Include="Helpers\ExcelHelper.cs" />
@@ -374,6 +381,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Bancos\Proveedores\rptListadoSaldoPorProveedor.resx">
       <DependentUpon>rptListadoSaldoPorProveedor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Bancos\Proveedores\rptRemisionChequesAFirma.resx">
+      <DependentUpon>rptRemisionChequesAFirma.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Planilla\RptComprobLQProv.resx">
       <DependentUpon>RptComprobLQProv.cs</DependentUpon>
