@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace SistemaContable.RP.Bancos.Proveedores
 {
-    public partial class rptListadoDocumentosCanceladosPorProveedor :   SistemaContable.RP.ReporteBase
+    public partial class rptListadoDocumentosCanceladosPorProveedor : SistemaContable.RP.ReporteBase
     {
         public rptListadoDocumentosCanceladosPorProveedor()
         {

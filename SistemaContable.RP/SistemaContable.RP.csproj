@@ -121,6 +121,12 @@
     <Compile Include="Bancos\Proveedores\rptCompRetencion.designer.cs">
       <DependentUpon>rptCompRetencion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Bancos\Proveedores\rptDetallePagosRealizadosPorFechas.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Bancos\Proveedores\rptDetallePagosRealizadosPorFechas.Designer.cs">
+      <DependentUpon>rptDetallePagosRealizadosPorFechas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Bancos\Proveedores\rptListadoComprobantesRecibidos.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -197,6 +203,7 @@
     <Compile Include="Esquemas\ChequeEsquema.cs" />
     <Compile Include="Esquemas\CompRetencionEsquema.cs" />
     <Compile Include="Esquemas\CreditoFiscalEsquema.cs" />
+    <Compile Include="Esquemas\DetallePagosRealizadosPorFechaEsquema.cs" />
     <Compile Include="Esquemas\FacturaEsquema.cs" />
     <Compile Include="Esquemas\FacturaSujetoExcluidoEsquema.cs" />
     <Compile Include="Esquemas\ListadoComprobantesRecibidosEsquema.cs" />
@@ -350,6 +357,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Bancos\Proveedores\rptDetallePagosRealizadosPorFechas.resx">
+      <DependentUpon>rptDetallePagosRealizadosPorFechas.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Bancos\Proveedores\rptListadoComprobantesRecibidos.resx">
       <DependentUpon>rptListadoComprobantesRecibidos.cs</DependentUpon>
     </EmbeddedResource>
