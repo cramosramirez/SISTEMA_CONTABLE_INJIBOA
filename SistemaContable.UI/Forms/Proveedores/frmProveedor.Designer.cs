@@ -1,4 +1,4 @@
-
+﻿
 namespace SistemaContable.UI.Forms.Proveedores
 {
     partial class frmProveedor
@@ -143,6 +143,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.btnAgregarTipoProveedor = new DevExpress.XtraEditors.SimpleButton();
             this.gridTiposProveedor = new DevExpress.XtraGrid.GridControl();
             this.gvTiposProveedor = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.grpTipoRol = new System.Windows.Forms.GroupBox();
+            this.txtTIPO_ROL = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
             this.txtDIAS_PLAZO = new System.Windows.Forms.TextBox();
             this.chkRETENER_RENTA = new System.Windows.Forms.CheckBox();
@@ -171,6 +173,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.grpTiposProveedor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridTiposProveedor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvTiposProveedor)).BeginInit();
+            this.grpTipoRol.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderValidacion)).BeginInit();
             this.SuspendLayout();
             // 
@@ -180,6 +183,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel1.Controls.Add(this.gclDatosProveedor);
             this.panel1.Controls.Add(this.gclCuentasProveedor);
             this.panel1.Controls.Add(this.grpTiposProveedor);
+            this.panel1.Controls.Add(this.grpTipoRol);
             this.panel1.Controls.Add(this.label28);
             this.panel1.Controls.Add(this.txtDIAS_PLAZO);
             this.panel1.Controls.Add(this.chkRETENER_RENTA);
@@ -1304,7 +1308,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.grpTiposProveedor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.grpTiposProveedor.Location = new System.Drawing.Point(10, 786);
             this.grpTiposProveedor.Name = "grpTiposProveedor";
-            this.grpTiposProveedor.Size = new System.Drawing.Size(1169, 159);
+            this.grpTiposProveedor.Size = new System.Drawing.Size(959, 159);
             this.grpTiposProveedor.TabIndex = 38;
             this.grpTiposProveedor.TabStop = false;
             this.grpTiposProveedor.Text = "Tipo de Proveedor";
@@ -1326,7 +1330,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gridTiposProveedor.Location = new System.Drawing.Point(6, 61);
             this.gridTiposProveedor.MainView = this.gvTiposProveedor;
             this.gridTiposProveedor.Name = "gridTiposProveedor";
-            this.gridTiposProveedor.Size = new System.Drawing.Size(1157, 92);
+            this.gridTiposProveedor.Size = new System.Drawing.Size(947, 92);
             this.gridTiposProveedor.TabIndex = 1;
             this.gridTiposProveedor.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvTiposProveedor});
@@ -1337,6 +1341,27 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.gvTiposProveedor.Name = "gvTiposProveedor";
             this.gvTiposProveedor.OptionsView.ShowGroupPanel = false;
             this.gvTiposProveedor.OptionsView.ShowIndicator = false;
+            // 
+            // grpTipoRol
+            // 
+            this.grpTipoRol.Controls.Add(this.txtTIPO_ROL);
+            this.grpTipoRol.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.grpTipoRol.Location = new System.Drawing.Point(979, 786);
+            this.grpTipoRol.Name = "grpTipoRol";
+            this.grpTipoRol.Size = new System.Drawing.Size(200, 70);
+            this.grpTipoRol.TabStop = false;
+            this.grpTipoRol.Text = "Tipo Rol";
+            // 
+            // txtTIPO_ROL
+            // 
+            this.txtTIPO_ROL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.txtTIPO_ROL.Location = new System.Drawing.Point(10, 30);
+            this.txtTIPO_ROL.Name = "txtTIPO_ROL";
+            this.txtTIPO_ROL.ReadOnly = true;
+            this.txtTIPO_ROL.Size = new System.Drawing.Size(180, 24);
+            this.txtTIPO_ROL.TabIndex = 0;
+            this.txtTIPO_ROL.TabStop = false;
+            this.txtTIPO_ROL.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label28
             // 
@@ -1509,6 +1534,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.grpTiposProveedor.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridTiposProveedor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvTiposProveedor)).EndInit();
+            this.grpTipoRol.ResumeLayout(false);
+            this.grpTipoRol.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderValidacion)).EndInit();
             this.ResumeLayout(false);
 
@@ -1521,6 +1548,9 @@ namespace SistemaContable.UI.Forms.Proveedores
         private DevExpress.XtraEditors.SimpleButton btnAgregarTipoProveedor;
         private DevExpress.XtraGrid.GridControl gridTiposProveedor;
         private DevExpress.XtraGrid.Views.Grid.GridView gvTiposProveedor;
+        // Tipo Rol (ENTIDAD_ROL)
+        private System.Windows.Forms.GroupBox grpTipoRol;
+        private System.Windows.Forms.TextBox txtTIPO_ROL;
         private DevExpress.XtraEditors.GroupControl gclCuentasProveedor;
         private DevExpress.XtraEditors.GroupControl gclDatosProveedor;
         private DevExpress.XtraTab.XtraTabControl tabCodigosRelacionados;

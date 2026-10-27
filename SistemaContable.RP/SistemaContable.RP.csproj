@@ -207,6 +207,7 @@
     </Compile>
     <Compile Include="Esquemas\ChequeAnexoEsquema.cs" />
     <Compile Include="Esquemas\ChequeEsquema.cs" />
+    <Compile Include="Esquemas\ChequesPlanillaEsquema.cs" />
     <Compile Include="Esquemas\CompRetencionEsquema.cs" />
     <Compile Include="Esquemas\CreditoFiscalEsquema.cs" />
     <Compile Include="Esquemas\DetallePagosRealizadosPorFechaEsquema.cs" />
@@ -307,6 +308,9 @@
     </Compile>
     <Compile Include="Planilla\RptComprobLQTrans.Designer.cs">
       <DependentUpon>RptComprobLQTrans.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Planilla\RptChequesPlanilla.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Traslados\NotaRemision\RptNotaRemision.cs">
       <SubType>Component</SubType>

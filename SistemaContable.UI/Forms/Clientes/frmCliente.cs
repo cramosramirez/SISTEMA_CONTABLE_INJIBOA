@@ -20,6 +20,7 @@ namespace SistemaContable.UI.Forms.Clientes
         private bool _cargando = false;
         private int _topOriginalDatosCliente;
         private int _topOriginalTiposCliente;
+        private int _leftOriginalTipoRol;
         private int _altoOriginalDatosPersonales;
         private int _altoOriginalFormulario;
         private int _desplazamientoCodigosCliente;
@@ -36,6 +37,7 @@ namespace SistemaContable.UI.Forms.Clientes
             InitializeComponent();
             _topOriginalDatosCliente = gclClientes.Top;
             _topOriginalTiposCliente = grpRoles.Top;
+            _leftOriginalTipoRol = grpTipoRol.Left;
             _altoOriginalDatosPersonales = groupControl1.Height;
             _altoOriginalFormulario = ClientSize.Height;
             int topSiguienteControl = groupControl1.Controls.Cast<Control>()
@@ -155,11 +157,18 @@ namespace SistemaContable.UI.Forms.Clientes
                 ? topTiposCliente
                 : topDatosCliente;
 
+            // Tipo Rol siempre visible: comparte fila con Tipo de Cliente y, si
+            // éste se oculta, ocupa su posición a la izquierda.
+            grpTipoRol.Top = grpRoles.Top;
+            grpTipoRol.Left = mostrarTiposCliente
+                ? _leftOriginalTipoRol
+                : grpRoles.Left;
+
             int altoFormulario = _altoOriginalFormulario - desplazamientoSuperior;
             if (!mostrarDatosCliente)
                 altoFormulario -= espacioDatosCliente;
             if (!mostrarTiposCliente)
-                altoFormulario -= espacioTiposCliente;
+                altoFormulario -= espacioTiposCliente - (grpTipoRol.Height + 10);
 
             ClientSize = new Size(
                 ClientSize.Width,
@@ -1370,6 +1379,38 @@ namespace SistemaContable.UI.Forms.Clientes
             view.DeleteRow(fila);
         }
         #endregion
+        #region === TIPO ROL ===
+        /// <summary>
+        /// Muestra (solo lectura) el rol de la entidad en dbo.ENTIDAD_ROL para esta
+        /// pantalla ('CLI'). El rol se registra al guardar mediante [EDTE].[SP_ENTIDAD]
+        /// (parámetro ROL = "CLI"); aquí solo se informa si está inactivo.
+        /// </summary>
+        private void MostrarTipoRol(int idEntidad)
+        {
+            string texto = "CLI - CLIENTE";
+            if (idEntidad > 0)
+            {
+                try
+                {
+                    DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD_ROL]", new
+                    {
+                        ACCION = "CONSULTAR",
+                        ID_ENTIDAD = idEntidad,
+                        ROL = "CLI"
+                    });
+                    if (dt != null && dt.Rows.Count > 0
+                        && dt.Rows[0]["ACTIVO"] != DBNull.Value
+                        && !Convert.ToBoolean(dt.Rows[0]["ACTIVO"]))
+                        texto += " (INACTIVO)";
+                }
+                catch
+                {
+                    // Solo informativo: si falla la consulta se muestra el rol sin estado.
+                }
+            }
+            txtTIPO_ROL.Text = texto;
+        }
+        #endregion
         #region === CARGAR ENTIDAD EXISTENTE ===
         private void CargarEntidadExistente(int idEntidad)
         {
@@ -1442,6 +1483,7 @@ namespace SistemaContable.UI.Forms.Clientes
                 }
                 CargarEntidadClienteExistente(idEntidad);
                 CargarRolesExistentes(idEntidad);
+                MostrarTipoRol(idEntidad);
                 ConfigurarBotones(esNuevo: false);
             }
             catch (Exception ex)
@@ -1510,6 +1552,7 @@ namespace SistemaContable.UI.Forms.Clientes
                     GuardarRolCliente(IdEntidad);
                 GuardarEntidadCliente();
                 GuardarRoles();
+                MostrarTipoRol(IdEntidad);
                 XtraMessageBox.Show("Entidad guardada correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ConfigurarBotones(esNuevo: false);
@@ -2006,6 +2049,7 @@ namespace SistemaContable.UI.Forms.Clientes
             cbxORIGEN.SelectedIndex = 0;
             _dtRoles?.Clear();
             CargarTipoClientePredeterminado();
+            MostrarTipoRol(0);
         }
         #endregion
         #region === BOTONES ===

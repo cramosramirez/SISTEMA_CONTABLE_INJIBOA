@@ -40,11 +40,13 @@ namespace SistemaContable.UI.Forms.Proveedores
         private const int PAIS_EL_SALVADOR = 61;
         private const int DESPLAZAMIENTO_COMPACTO_CODIGOS = 70;
         private const int TIPO_PROVEEDOR_PREDETERMINADO = 4;
+        private int _leftOriginalTipoRol;
         public int IdEntidad { get; set; } = 0;
 
         public frmProveedor()
         {
             InitializeComponent();
+            _leftOriginalTipoRol = grpTipoRol.Left;
             StartPosition = FormStartPosition.CenterScreen;
             ConfigurarContenedorTiposProveedor();
         }
@@ -68,6 +70,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 AplicarReglasOrigen();   // estado inicial según origen seleccionado
                 CargarTipoProveedorPredeterminado();
+                MostrarTipoRol(0);
             }
 
             FormHelper.RegistrarBusqueda(
@@ -282,6 +285,13 @@ namespace SistemaContable.UI.Forms.Proveedores
             grpTiposProveedor.Location = new Point(10,
                 (_permisoCuentasProveedor ? gclCuentasProveedor.Bottom + 5 : gclCuentasProveedor.Top));
 
+            // Tipo Rol siempre visible: comparte fila con Tipo de Proveedor y, si
+            // éste se oculta, ocupa su posición a la izquierda.
+            grpTipoRol.Top = grpTiposProveedor.Top;
+            grpTipoRol.Left = _permisoTipoProveedor
+                ? _leftOriginalTipoRol
+                : grpTiposProveedor.Left;
+
             chkRETENER_RENTA.Visible = false;
             label29.Visible = false;
             txtPORC_RENTA.Visible = false;
@@ -294,6 +304,8 @@ namespace SistemaContable.UI.Forms.Proveedores
                 altoFormulario -= gclCuentasProveedor.Height + 5;
             if (_permisoTipoProveedor)
                 altoFormulario = grpTiposProveedor.Bottom + 20;
+            else
+                altoFormulario = Math.Max(altoFormulario, grpTipoRol.Bottom + 20);
             ClientSize = new Size(1322, altoFormulario);
 
             if (Visible)
@@ -967,6 +979,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 // Aplicar reglas según los valores cargados
                 AplicarReglasOrigen();
                 CargarTiposProveedorExistentes(IdEntidad);
+                MostrarTipoRol(IdEntidad);
             }
             catch (Exception ex)
             {
@@ -1228,6 +1241,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             try
             {
                 Cursor = Cursors.WaitCursor;
+                bool esNuevo = IdEntidad == 0;
 
                 var parametros = new
                 {
@@ -1287,7 +1301,10 @@ namespace SistemaContable.UI.Forms.Proveedores
                     throw new Exception("El SP no devolvió el ID generado.");
 
                 IdEntidad = idGenerado;
+                if (esNuevo)
+                    GuardarRolProveedor(IdEntidad);
                 GuardarTiposProveedor();
+                MostrarTipoRol(IdEntidad);
 
                 var args = new XtraMessageBoxArgs
                 {
@@ -1315,6 +1332,47 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 Cursor = Cursors.Default;
             }
+        }
+
+        /// <summary>
+        /// Garantiza que una entidad creada desde Proveedores tenga activo el rol PRO.
+        /// Si la relación ya existe inactiva, la reactiva en lugar de duplicarla.
+        /// </summary>
+        private void GuardarRolProveedor(int idEntidad)
+        {
+            DataTable roles = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD_ROL]", new
+            {
+                ACCION = "LISTAR",
+                ID_ENTIDAD = idEntidad
+            });
+
+            DataRow filaRolProveedor = roles?.AsEnumerable().FirstOrDefault(fila =>
+                string.Equals(fila["ROL"]?.ToString()?.Trim(), "PRO",
+                    StringComparison.OrdinalIgnoreCase));
+
+            bool rolProveedorActivo = filaRolProveedor != null &&
+                filaRolProveedor.Table.Columns.Contains("ACTIVO") &&
+                filaRolProveedor["ACTIVO"] != DBNull.Value &&
+                Convert.ToBoolean(filaRolProveedor["ACTIVO"]);
+
+            // La combinación ID_ENTIDAD + PRO ya existe y está activa:
+            // no se ejecuta GUARDAR para evitar una inserción duplicada.
+            if (rolProveedorActivo)
+                return;
+
+            int idEntidadRol = filaRolProveedor != null
+                ? Convert.ToInt32(filaRolProveedor["ID_ENTIDAD_ROL"])
+                : 0;
+
+            _dal.EjecutarSinRetorno("[EMH].[SP_ENTIDAD_ROL]", new
+            {
+                ACCION = "GUARDAR",
+                ID_ENTIDAD_ROL = idEntidadRol,
+                ID_ENTIDAD = idEntidad,
+                ROL = "PRO",
+                ACTIVO = true,
+                USUARIO = Configuracion.UsuarioActual
+            });
         }
 
         // ============================================================
@@ -1426,6 +1484,39 @@ namespace SistemaContable.UI.Forms.Proveedores
             }
         }
 
+
+        #region === TIPO ROL ===
+        /// <summary>
+        /// Muestra (solo lectura) el rol de la entidad en dbo.ENTIDAD_ROL para esta
+        /// pantalla ('PRO'). El rol se registra al guardar mediante [EDTE].[SP_ENTIDAD]
+        /// (parámetro ROL = "PRO"); aquí solo se informa si está inactivo.
+        /// </summary>
+        private void MostrarTipoRol(int idEntidad)
+        {
+            string texto = "PRO - PROVEEDOR";
+            if (idEntidad > 0)
+            {
+                try
+                {
+                    DataTable dt = _dal.EjecutarConsulta("[EMH].[SP_ENTIDAD_ROL]", new
+                    {
+                        ACCION = "CONSULTAR",
+                        ID_ENTIDAD = idEntidad,
+                        ROL = "PRO"
+                    });
+                    if (dt != null && dt.Rows.Count > 0
+                        && dt.Rows[0]["ACTIVO"] != DBNull.Value
+                        && !Convert.ToBoolean(dt.Rows[0]["ACTIVO"]))
+                        texto += " (INACTIVO)";
+                }
+                catch
+                {
+                    // Solo informativo: si falla la consulta se muestra el rol sin estado.
+                }
+            }
+            txtTIPO_ROL.Text = texto;
+        }
+        #endregion
 
         private void ConfigurarContenedorTiposProveedor()
         {

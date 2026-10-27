@@ -86,7 +86,6 @@ namespace SistemaContable.UI.Forms
         private void frmLogin_Load(object sender, EventArgs e)
         {
             FormHelper.AplicarEnterComoTab(this);
-            txtCLAVE.KeyDown += txtCLAVE_KeyDown;
             this.pictureBox1.Image = global::SistemaContable.UI.Properties.Resources.login;
         }
 

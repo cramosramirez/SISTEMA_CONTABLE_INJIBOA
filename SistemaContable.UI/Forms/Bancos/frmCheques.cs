@@ -33,6 +33,7 @@ namespace SistemaContable.UI.Forms.Bancos
         /// false = otras operaciones (RM, NA, NC, TE, TR) elegibles por el usuario.
         /// </summary>
         public bool ModoCheque { get; set; } = true;
+        public int IdChequeInicial { get; set; }
         private bool _operacionEsCargoAlaCuenta = true;
         private readonly DALBase _dal = new DALBase();
         private DataTable _dtPartida;  // DataTable que alimenta el grid
@@ -196,7 +197,10 @@ namespace SistemaContable.UI.Forms.Bancos
                 }
             );
 
-            ConfigurarCRUD(EstadoFormulario.Inicializar);                  
+            ConfigurarCRUD(EstadoFormulario.Inicializar);
+
+            if (IdChequeInicial > 0)
+                CargarCheque(IdChequeInicial);
         }
 
         // ============================================================

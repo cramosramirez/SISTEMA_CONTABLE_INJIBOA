@@ -127,6 +127,8 @@
             this.btnAgregarRol = new DevExpress.XtraEditors.SimpleButton();
             this.gridRoles = new DevExpress.XtraGrid.GridControl();
             this.gvRoles = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.grpTipoRol = new System.Windows.Forms.GroupBox();
+            this.txtTIPO_ROL = new System.Windows.Forms.TextBox();
             this.gclClientes = new DevExpress.XtraEditors.GroupControl();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -141,6 +143,7 @@
             this.grpRoles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridRoles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvRoles)).BeginInit();
+            this.grpTipoRol.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gclClientes)).BeginInit();
             this.gclClientes.SuspendLayout();
             this.SuspendLayout();
@@ -1333,7 +1336,7 @@
             this.grpRoles.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.grpRoles.Location = new System.Drawing.Point(10, 618);
             this.grpRoles.Name = "grpRoles";
-            this.grpRoles.Size = new System.Drawing.Size(1114, 159);
+            this.grpRoles.Size = new System.Drawing.Size(904, 159);
             this.grpRoles.TabIndex = 5;
             this.grpRoles.TabStop = false;
             this.grpRoles.Text = "Tipo de Cliente";
@@ -1358,7 +1361,7 @@
             this.gridRoles.Location = new System.Drawing.Point(6, 61);
             this.gridRoles.MainView = this.gvRoles;
             this.gridRoles.Name = "gridRoles";
-            this.gridRoles.Size = new System.Drawing.Size(1102, 92);
+            this.gridRoles.Size = new System.Drawing.Size(892, 92);
             this.gridRoles.TabIndex = 1;
             this.gridRoles.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvRoles});
@@ -1369,6 +1372,27 @@
             this.gvRoles.Name = "gvRoles";
             this.gvRoles.OptionsView.ShowGroupPanel = false;
             this.gvRoles.OptionsView.ShowIndicator = false;
+            // 
+            // grpTipoRol
+            // 
+            this.grpTipoRol.Controls.Add(this.txtTIPO_ROL);
+            this.grpTipoRol.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.grpTipoRol.Location = new System.Drawing.Point(924, 618);
+            this.grpTipoRol.Name = "grpTipoRol";
+            this.grpTipoRol.Size = new System.Drawing.Size(200, 70);
+            this.grpTipoRol.TabStop = false;
+            this.grpTipoRol.Text = "Tipo Rol";
+            // 
+            // txtTIPO_ROL
+            // 
+            this.txtTIPO_ROL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.txtTIPO_ROL.Location = new System.Drawing.Point(10, 30);
+            this.txtTIPO_ROL.Name = "txtTIPO_ROL";
+            this.txtTIPO_ROL.ReadOnly = true;
+            this.txtTIPO_ROL.Size = new System.Drawing.Size(180, 24);
+            this.txtTIPO_ROL.TabIndex = 0;
+            this.txtTIPO_ROL.TabStop = false;
+            this.txtTIPO_ROL.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // gclClientes
             // 
@@ -1398,6 +1422,7 @@
             this.Controls.Add(this.gclClientes);
             this.Controls.Add(this.groupControl1);
             this.Controls.Add(this.grpRoles);
+            this.Controls.Add(this.grpTipoRol);
             this.Controls.Add(this.btnNuevo);
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.btnEliminar);
@@ -1424,6 +1449,8 @@
             this.grpRoles.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridRoles)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvRoles)).EndInit();
+            this.grpTipoRol.ResumeLayout(false);
+            this.grpTipoRol.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gclClientes)).EndInit();
             this.gclClientes.ResumeLayout(false);
             this.gclClientes.PerformLayout();
@@ -1554,6 +1581,9 @@
         private DevExpress.XtraEditors.SimpleButton btnAgregarRol;
         private DevExpress.XtraGrid.GridControl gridRoles;
         private DevExpress.XtraGrid.Views.Grid.GridView gvRoles;
+        // Tipo Rol (ENTIDAD_ROL)
+        private System.Windows.Forms.GroupBox grpTipoRol;
+        private System.Windows.Forms.TextBox txtTIPO_ROL;
         private DevExpress.XtraEditors.GroupControl gclClientes;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtACTIVIDAD_EXT;
