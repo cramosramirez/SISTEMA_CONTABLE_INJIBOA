@@ -224,6 +224,7 @@
     <Compile Include="Esquemas\OrdDespachoEsquema.cs" />
     <Compile Include="Esquemas\QuedanEsquema.cs" />
     <Compile Include="Esquemas\RemisionChequesAFirmaEsquema.cs" />
+    <Compile Include="Esquemas\SaldosPorProveedorEsquema.cs" />
     <Compile Include="Esquemas\VentaDiariaEsquema.cs" />
     <Compile Include="Helpers\DataRowHelper.cs" />
     <Compile Include="Helpers\ExcelHelper.cs" />
