@@ -30,6 +30,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            DevExpress.XtraReports.UI.XRSummary xrSummary1 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary2 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary3 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary4 = new DevExpress.XtraReports.UI.XRSummary();
@@ -39,7 +40,6 @@ namespace SistemaContable.RP.Bancos.Proveedores
             DevExpress.XtraReports.UI.XRSummary xrSummary8 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary9 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary10 = new DevExpress.XtraReports.UI.XRSummary();
-            DevExpress.XtraReports.UI.XRSummary xrSummary1 = new DevExpress.XtraReports.UI.XRSummary();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.lblEmpresa = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTITULO = new DevExpress.XtraReports.UI.XRLabel();
@@ -71,6 +71,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.dDiasV = new DevExpress.XtraReports.UI.XRLabel();
             this.dSinV = new DevExpress.XtraReports.UI.XRLabel();
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
+            this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.lblTotalGeneral = new DevExpress.XtraReports.UI.XRLabel();
             this.rfOriginal = new DevExpress.XtraReports.UI.XRLabel();
             this.rfAbono = new DevExpress.XtraReports.UI.XRLabel();
@@ -80,7 +81,6 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.DsPagosPendFechaRecepcion = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             this.prmFechaInicial = new DevExpress.XtraReports.Parameters.Parameter();
             this.prmFechaFinal = new DevExpress.XtraReports.Parameters.Parameter();
-            this.calculatedField1 = new DevExpress.XtraReports.UI.CalculatedField();
             this.groupHeaderBand1 = new DevExpress.XtraReports.UI.GroupHeaderBand();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
@@ -89,7 +89,6 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
             this.groupFooterBand1 = new DevExpress.XtraReports.UI.GroupFooterBand();
-            this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.DsPagosPendFechaRecepcion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
@@ -526,6 +525,26 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.ReportFooter.HeightF = 34F;
             this.ReportFooter.Name = "ReportFooter";
             // 
+            // xrLabel1
+            // 
+            this.xrLabel1.Borders = DevExpress.XtraPrinting.BorderSide.Top;
+            this.xrLabel1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([SALDO_REAL])")});
+            this.xrLabel1.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
+            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(373.6956F, 6.000021F);
+            this.xrLabel1.Multiline = true;
+            this.xrLabel1.Name = "xrLabel1";
+            this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel1.SizeF = new System.Drawing.SizeF(93.91302F, 20F);
+            this.xrLabel1.StylePriority.UseBorders = false;
+            this.xrLabel1.StylePriority.UseFont = false;
+            this.xrLabel1.StylePriority.UseTextAlignment = false;
+            xrSummary1.Running = DevExpress.XtraReports.UI.SummaryRunning.Report;
+            this.xrLabel1.Summary = xrSummary1;
+            this.xrLabel1.Text = "xrLabel2";
+            this.xrLabel1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
+            this.xrLabel1.TextFormatString = "{0:#,###,##0.00}";
+            // 
             // lblTotalGeneral
             // 
             this.lblTotalGeneral.CanGrow = false;
@@ -624,7 +643,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             // DsPagosPendFechaRecepcion
             // 
             this.DsPagosPendFechaRecepcion.DataMember = "Crear";
-            this.DsPagosPendFechaRecepcion.DataSource = typeof(SistemaContable.RP.Esquemas.ListadoPagosPendFechaRecepcionEsquema);
+            this.DsPagosPendFechaRecepcion.DataSource = typeof(SistemaContable.RP.Esquemas.SaldosPorProveedorEsquema);
             this.DsPagosPendFechaRecepcion.Name = "DsPagosPendFechaRecepcion";
             // 
             // prmFechaInicial
@@ -640,12 +659,6 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.prmFechaFinal.Name = "prmFechaFinal";
             this.prmFechaFinal.Type = typeof(System.DateTime);
             this.prmFechaFinal.Visible = false;
-            // 
-            // calculatedField1
-            // 
-            this.calculatedField1.DisplayName = "SALDO_REAL";
-            this.calculatedField1.Expression = "[SALDO]-[SIN_VENCIMIENTO]";
-            this.calculatedField1.Name = "calculatedField1";
             // 
             // groupHeaderBand1
             // 
@@ -726,7 +739,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             // xrLabel8
             // 
             this.xrLabel8.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([calculatedField1])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([SALDO_REAL])")});
             this.xrLabel8.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
             this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(373.6956F, 23.00004F);
             this.xrLabel8.Multiline = true;
@@ -744,7 +757,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             // xrLabel9
             // 
             this.xrLabel9.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([calculatedField1])")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([SALDO_REAL])")});
             this.xrLabel9.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
             this.xrLabel9.LocationFloat = new DevExpress.Utils.PointFloat(600F, 0F);
             this.xrLabel9.Multiline = true;
@@ -771,26 +784,6 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.groupFooterBand1.HeightF = 53.30439F;
             this.groupFooterBand1.Name = "groupFooterBand1";
             // 
-            // xrLabel1
-            // 
-            this.xrLabel1.Borders = DevExpress.XtraPrinting.BorderSide.Top;
-            this.xrLabel1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "sumSum([calculatedField1])")});
-            this.xrLabel1.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
-            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(373.6956F, 6.000021F);
-            this.xrLabel1.Multiline = true;
-            this.xrLabel1.Name = "xrLabel1";
-            this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel1.SizeF = new System.Drawing.SizeF(93.91302F, 20F);
-            this.xrLabel1.StylePriority.UseBorders = false;
-            this.xrLabel1.StylePriority.UseFont = false;
-            this.xrLabel1.StylePriority.UseTextAlignment = false;
-            xrSummary1.Running = DevExpress.XtraReports.UI.SummaryRunning.Report;
-            this.xrLabel1.Summary = xrSummary1;
-            this.xrLabel1.Text = "xrLabel2";
-            this.xrLabel1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.xrLabel1.TextFormatString = "{0:#,###,##0.00}";
-            // 
             // rptListadoSaldoPorProveedor
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -801,8 +794,6 @@ namespace SistemaContable.RP.Bancos.Proveedores
             this.BottomMargin,
             this.groupHeaderBand1,
             this.groupFooterBand1});
-            this.CalculatedFields.AddRange(new DevExpress.XtraReports.UI.CalculatedField[] {
-            this.calculatedField1});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.DsPagosPendFechaRecepcion});
             this.DataSource = this.DsPagosPendFechaRecepcion;
@@ -860,7 +851,6 @@ namespace SistemaContable.RP.Bancos.Proveedores
         private DevExpress.DataAccess.ObjectBinding.ObjectDataSource DsPagosPendFechaRecepcion;
         private DevExpress.XtraReports.Parameters.Parameter prmFechaInicial;
         private DevExpress.XtraReports.Parameters.Parameter prmFechaFinal;
-        private DevExpress.XtraReports.UI.CalculatedField calculatedField1;
         private DevExpress.XtraReports.UI.GroupHeaderBand groupHeaderBand1;
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
         private DevExpress.XtraReports.UI.XRLabel xrLabel5;

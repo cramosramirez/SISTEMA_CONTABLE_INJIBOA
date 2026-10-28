@@ -986,7 +986,7 @@ namespace SistemaContable.UI.Forms.Proveedores
             // label19
             // 
             this.label19.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(545, 322);
+            this.label19.Location = new System.Drawing.Point(545, 321);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(121, 20);
             this.label19.TabIndex = 56;

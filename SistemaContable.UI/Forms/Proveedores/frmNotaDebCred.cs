@@ -87,7 +87,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 new BusquedaConfig
                 {
                     StoredProcedure = "SP_ENTIDAD",
-                    Accion = "BUSCAR",
+                    Accion = "BUSCAR_CONTRIBUYENTES",
                     Columnas = new Dictionary<string, string>
                     {
                         { "CODIGO_ENTIDAD", "PROVEEDOR" },

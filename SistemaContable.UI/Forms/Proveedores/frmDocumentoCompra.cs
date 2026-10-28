@@ -41,7 +41,8 @@ namespace SistemaContable.UI.Forms.Proveedores
         private string _idTipoContribProveedor = "";
         private string _idTipoPersona = "";
         private bool _validarCompIVAR = false;
-        private bool _guardado = false; 
+        private bool _guardado = false;
+        private int _diasPlazo = 30;
         
         public int IdCcfCompra { get; set; } = 0;
         public bool EsContado { get; set; } = false;
@@ -550,13 +551,16 @@ namespace SistemaContable.UI.Forms.Proveedores
             txtDIRECCION.Text = fila["COMPLEMENTO"].ToString();
             _idTipoContribProveedor = fila["ID_TIPO_CONTRIB"].ToString();
             _idTipoPersona = fila["ID_TIPO_ENTIDAD"].ToString();
+            _diasPlazo = fila["DIAS_PLAZO"] == DBNull.Value ? 30 : Convert.ToInt32(fila["DIAS_PLAZO"]) == 0 ? 30 : Convert.ToInt32(fila["DIAS_PLAZO"]);
             RecalcularTotales();
+            RecalcularFechaVence(); 
 
             return true;
         }
         private void LimpiarProveedor()
         {
             _idEntidad = 0;
+            _diasPlazo = 30; 
             _codigoEntidad = string.Empty;
             txtNOMBRE_PROVEEDOR.Text = string.Empty;
             txtNRC.Text = string.Empty;
@@ -1185,10 +1189,8 @@ namespace SistemaContable.UI.Forms.Proveedores
             {
                 mskFECHA_VENCE.Text = "";   // ← el handler ya limpia solo
                 return;
-            }
-
-            int diasPlazo = 30;   // tu lógica
-            mskFECHA_VENCE.Text = fechaRecibido.AddDays(diasPlazo).ToString("dd/MM/yyyy");
+            }           
+            mskFECHA_VENCE.Text = fechaRecibido.AddDays(_diasPlazo).ToString("dd/MM/yyyy");
         }
 
         private void InicializarHelperMinisterioHacienda()

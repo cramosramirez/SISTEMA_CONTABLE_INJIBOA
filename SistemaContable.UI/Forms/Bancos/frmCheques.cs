@@ -708,53 +708,7 @@ namespace SistemaContable.UI.Forms.Bancos
             gridControl1.Enabled = habilitar;
         }
 
-        /// <summary>
-        /// Verifica si hay CCFs al contado huérfanos del usuario actual y pregunta
-        /// si los quiere retomar. Si acepta, asigna ese UID y abre directamente
-        /// el formulario frmChequeDocumentosContado.
-        /// Retorna true si retomó, false en caso contrario.
-        /// </summary>
-        private bool VerificarDocumentosHuerfanos()
-        {
-            try
-            {
-                var dt = _dal.EjecutarConsulta("SP_CHEQUE_CONTADO", new
-                {
-                    ACCION = "LISTAR_UIDS_HUERFANOS",
-                    USUARIO = Configuracion.UsuarioActual
-                });
-
-                if (dt.Rows.Count == 0) return false;
-
-                // Tomar el más reciente (si hay varios)
-                DataRow rowMasReciente = dt.Rows[0];
-                string uid = rowMasReciente["UID_ENLACE_CHEQUE"].ToString();
-                int cantidad = Convert.ToInt32(rowMasReciente["CANTIDAD_DOCUMENTOS"]);
-
-                var resp = DevExpress.XtraEditors.XtraMessageBox.Show(
-                    $"Existen {cantidad} documento(s) al contado pendiente(s) de un proceso anterior.\n\n" +
-                    "¿Desea retomarlos?",
-                    "Documentos pendientes",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (resp == DialogResult.Yes)
-                {
-                    _uidEnlaceCheque = uid;
-                    // Abrir directamente frmChequeDocumentosContado con el UID
-                    this.BeginInvoke(new Action(() => AbrirContadoConUid()));
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                DevExpress.XtraEditors.XtraMessageBox.Show(
-                    "Error al verificar documentos pendientes:\n\n" + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            return false;
-        }
-
+       
         /// <summary>
         /// Abre frmChequeDocumentosContado con el UID actual (ya asignado).
         /// Reutiliza la misma lógica que el botón CCF Contado, pero sin validar
@@ -980,6 +934,7 @@ namespace SistemaContable.UI.Forms.Bancos
         private void AplicarPartidaPago(decimal totalPago, string cuentaPorPagar)
         {
             if (_dtPartida.Rows.Count == 0) return;
+            if (_estadoActual == EstadoFormulario.Modificar) return;
             _asignandoCuentaPorCodigo = true;
             try
             {
@@ -1167,8 +1122,8 @@ namespace SistemaContable.UI.Forms.Bancos
                 string codOp = txtOPERACION.Text?.Trim().ToUpper() ?? "";
                 string detalle = null;
 
-               
-               detalle = $"{codOp} # {txtNUMERO_CHEQUE.Text.Trim()} " +
+               if (_estadoActual != EstadoFormulario.Modificar) 
+                detalle = $"{codOp} # {txtNUMERO_CHEQUE.Text.Trim()} " +
                          $"{txtNOMBRE_CHEQUE.Text.Trim()}";
                
                 // Para las otras operaciones (RM, NA, TE, TR) no autogenerar
@@ -1525,14 +1480,17 @@ namespace SistemaContable.UI.Forms.Bancos
             //if (codOp != "CH" && codOp != "NC") return;
 
             // Asignar el detalle en la primera fila del grid (cuenta del banco)
-            string detalle;
-            if (codOp == "CH")
-                detalle = $"{codOp} # {txtNUMERO_CHEQUE.Text.Trim()} {txtNOMBRE_CHEQUE.Text.Trim()}";
-            else
-                detalle = $"{txtNOMBRE_CHEQUE.Text.Trim()}";
+            if (_estadoActual != EstadoFormulario.Modificar)
+            {
+                string detalle;
+                if (codOp == "CH")
+                    detalle = $"{codOp} # {txtNUMERO_CHEQUE.Text.Trim()} {txtNOMBRE_CHEQUE.Text.Trim()}";
+                else
+                    detalle = $"{txtNOMBRE_CHEQUE.Text.Trim()}";
 
-            _dtPartida.Rows[0]["DETALLE"] = detalle;
-            gridControl1.RefreshDataSource();
+                _dtPartida.Rows[0]["DETALLE"] = detalle;
+                gridControl1.RefreshDataSource();
+            }          
 
             // Determinar a qué celda debe ir el foco
             bool hayProveedor = !string.IsNullOrWhiteSpace(txtPROVEEDOR.Text);
