@@ -102,10 +102,10 @@ namespace SistemaContable.UI.Forms.Bancos
             try
             {
                 Cursor = Cursors.WaitCursor;
-                _dtPagar = _dal.EjecutarConsulta("SP_QUEDAN",
+                _dtPagar = _dal.EjecutarConsulta("SP_CREDITO_FISCAL_COMPRA",
                     new
                     {
-                        ACCION = "LISTAR_CCF_PENDIENTES_PAGO",
+                        ACCION = "LISTAR_CCF_PENDIENTES_PAGO_QUEDAN",
                         CODIGO_ENTIDAD = CodigoEntidad
                     });
                 _dtPendientes = _dtPagar.Clone();
