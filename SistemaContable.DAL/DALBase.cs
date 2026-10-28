@@ -28,12 +28,22 @@ namespace SistemaContable.DAL
         // CASO 1: Retorna DataTable — BUSCAR, CONSULTAR, LISTAR
         public DataTable EjecutarConsulta(string sp, object parametros = null)
         {
+            return EjecutarConsulta(sp, parametros, null);
+        }
+
+        /// <summary>
+        /// Igual que EjecutarConsulta, pero permite indicar el tiempo máximo de ejecución en segundos
+        /// (por defecto ADO.NET usa 30). Usar para procesos largos, por ejemplo la emisión de cheques de planilla.
+        /// </summary>
+        public DataTable EjecutarConsulta(string sp, object parametros, int? tiempoEsperaSegundos)
+        {
             try
             {
                 using (var cn = new SqlConnection(CadenaConexion))
                 {
                     cn.Open();
                     using (var reader = cn.ExecuteReader(sp, parametros,
+                                            commandTimeout: tiempoEsperaSegundos,
                                             commandType: CommandType.StoredProcedure))
                     {
                         var dt = new DataTable();

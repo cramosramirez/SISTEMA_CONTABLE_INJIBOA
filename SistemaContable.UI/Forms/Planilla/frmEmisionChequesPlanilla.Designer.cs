@@ -40,6 +40,7 @@ namespace SistemaContable.UI.Forms.Planilla
             this.lblAcciones = new System.Windows.Forms.Label();
             this.btnSalir = new DevExpress.XtraEditors.SimpleButton();
             this.btnEliminarPruebas = new DevExpress.XtraEditors.SimpleButton();
+            this.btnImprimirCheques = new DevExpress.XtraEditors.SimpleButton();
             this.btnVerReporte = new DevExpress.XtraEditors.SimpleButton();
             this.btnEmitir = new DevExpress.XtraEditors.SimpleButton();
             this.panelProgreso = new System.Windows.Forms.Panel();
@@ -239,7 +240,7 @@ namespace SistemaContable.UI.Forms.Planilla
             this.labelPartida.Name = "labelPartida";
             this.labelPartida.Size = new System.Drawing.Size(130, 20);
             this.labelPartida.TabIndex = 11;
-            this.labelPartida.Text = "N.º de partida *";
+            this.labelPartida.Text = "Partida inicial *";
             // 
             // labelUltimo
             // 
@@ -304,6 +305,7 @@ namespace SistemaContable.UI.Forms.Planilla
             this.panelBotones.Controls.Add(this.lblAcciones);
             this.panelBotones.Controls.Add(this.btnSalir);
             this.panelBotones.Controls.Add(this.btnEliminarPruebas);
+            this.panelBotones.Controls.Add(this.btnImprimirCheques);
             this.panelBotones.Controls.Add(this.btnVerReporte);
             this.panelBotones.Controls.Add(this.btnEmitir);
             this.panelBotones.Location = new System.Drawing.Point(752, 92);
@@ -327,9 +329,9 @@ namespace SistemaContable.UI.Forms.Planilla
             this.btnSalir.Appearance.Options.UseFont = true;
             this.btnSalir.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnSalir.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.salir32x32;
-            this.btnSalir.Location = new System.Drawing.Point(14, 210);
+            this.btnSalir.Location = new System.Drawing.Point(14, 219);
             this.btnSalir.Name = "btnSalir";
-            this.btnSalir.Size = new System.Drawing.Size(198, 42);
+            this.btnSalir.Size = new System.Drawing.Size(198, 38);
             this.btnSalir.TabIndex = 0;
             this.btnSalir.Text = "Salir";
             this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
@@ -341,22 +343,34 @@ namespace SistemaContable.UI.Forms.Planilla
             this.btnEliminarPruebas.Appearance.Options.UseFont = true;
             this.btnEliminarPruebas.Appearance.Options.UseForeColor = true;
             this.btnEliminarPruebas.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.eliminar32x32;
-            this.btnEliminarPruebas.Location = new System.Drawing.Point(14, 155);
+            this.btnEliminarPruebas.Location = new System.Drawing.Point(14, 175);
             this.btnEliminarPruebas.Name = "btnEliminarPruebas";
-            this.btnEliminarPruebas.Size = new System.Drawing.Size(198, 42);
+            this.btnEliminarPruebas.Size = new System.Drawing.Size(198, 38);
             this.btnEliminarPruebas.TabIndex = 1;
             this.btnEliminarPruebas.Text = "Borrar pruebas";
             this.btnEliminarPruebas.Click += new System.EventHandler(this.btnEliminarPruebas_Click);
+            // 
+            // btnImprimirCheques
+            // 
+            this.btnImprimirCheques.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnImprimirCheques.Appearance.Options.UseFont = true;
+            this.btnImprimirCheques.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.imprimir32x32;
+            this.btnImprimirCheques.Location = new System.Drawing.Point(14, 131);
+            this.btnImprimirCheques.Name = "btnImprimirCheques";
+            this.btnImprimirCheques.Size = new System.Drawing.Size(198, 38);
+            this.btnImprimirCheques.TabIndex = 2;
+            this.btnImprimirCheques.Text = "Imprimir cheques";
+            this.btnImprimirCheques.Click += new System.EventHandler(this.btnImprimirCheques_Click);
             // 
             // btnVerReporte
             // 
             this.btnVerReporte.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnVerReporte.Appearance.Options.UseFont = true;
             this.btnVerReporte.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.imprimir32x32;
-            this.btnVerReporte.Location = new System.Drawing.Point(14, 100);
+            this.btnVerReporte.Location = new System.Drawing.Point(14, 87);
             this.btnVerReporte.Name = "btnVerReporte";
-            this.btnVerReporte.Size = new System.Drawing.Size(198, 42);
-            this.btnVerReporte.TabIndex = 2;
+            this.btnVerReporte.Size = new System.Drawing.Size(198, 38);
+            this.btnVerReporte.TabIndex = 3;
             this.btnVerReporte.Text = "Ver reporte";
             this.btnVerReporte.Click += new System.EventHandler(this.btnVerReporte_Click);
             // 
@@ -369,12 +383,12 @@ namespace SistemaContable.UI.Forms.Planilla
             this.btnEmitir.Appearance.Options.UseFont = true;
             this.btnEmitir.Appearance.Options.UseForeColor = true;
             this.btnEmitir.ImageOptions.Image = global::SistemaContable.UI.Properties.Resources.validar3_32x32;
-            this.btnEmitir.Location = new System.Drawing.Point(14, 45);
+            this.btnEmitir.Location = new System.Drawing.Point(14, 43);
             this.btnEmitir.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.btnEmitir.LookAndFeel.UseDefaultLookAndFeel = false;
             this.btnEmitir.Name = "btnEmitir";
-            this.btnEmitir.Size = new System.Drawing.Size(198, 42);
-            this.btnEmitir.TabIndex = 3;
+            this.btnEmitir.Size = new System.Drawing.Size(198, 38);
+            this.btnEmitir.TabIndex = 4;
             this.btnEmitir.Text = "Emitir cheques";
             this.btnEmitir.Click += new System.EventHandler(this.btnEmitir_Click);
             // 
@@ -517,6 +531,7 @@ namespace SistemaContable.UI.Forms.Planilla
         private System.Windows.Forms.Label lblAcciones;
         private DevExpress.XtraEditors.SimpleButton btnEmitir;
         private DevExpress.XtraEditors.SimpleButton btnVerReporte;
+        private DevExpress.XtraEditors.SimpleButton btnImprimirCheques;
         private DevExpress.XtraEditors.SimpleButton btnEliminarPruebas;
         private DevExpress.XtraEditors.SimpleButton btnSalir;
         private System.Windows.Forms.Panel panelProgreso;

@@ -12,6 +12,8 @@ namespace SistemaContable.RP.Bancos.Proveedores
     {
         public int IdCheque { get; set; } = -1;
 
+        public int IdZafra { get; set; } = -1;
+
         public int IdCatorcena { get; set; } = -1;
 
         public int IdTipoPlanilla { get; set; } = -1;
@@ -56,6 +58,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             {
                 ACCION = "CHEQUE_PLANILLA",
                 ID_CHEQUE = (int?)null,
+                ID_ZAFRA = IdZafra,
                 ID_CATORCENA = IdCatorcena,
                 ID_TIPO_PLANILLA = IdTipoPlanilla,
                 ES_CONTRIBUYENTE = EsContribuyente
