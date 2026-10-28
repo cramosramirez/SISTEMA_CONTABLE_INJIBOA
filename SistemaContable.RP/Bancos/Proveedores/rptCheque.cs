@@ -55,6 +55,7 @@ namespace SistemaContable.RP.Bancos.Proveedores
             DataTable dt = EjecutarSP("SP_CHEQUE_RPT", new
             {
                 ACCION = "CHEQUE_PLANILLA",
+                ID_CHEQUE = (int?)null,
                 ID_CATORCENA = IdCatorcena,
                 ID_TIPO_PLANILLA = IdTipoPlanilla,
                 ES_CONTRIBUYENTE = EsContribuyente
