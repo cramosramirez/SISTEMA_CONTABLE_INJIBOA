@@ -1856,6 +1856,14 @@ namespace SistemaContable.UI.Forms.Bancos
                         reporte.ImprimirConDialogo();
                     }
                 }
+                else
+                {
+                    if (txtOPERACION.Text == "CH")
+                    {
+                        var reporte = new rptCheque { IdCheque = _idCheque };
+                        reporte.ImprimirConDialogo();
+                    }
+                }
 
                 if (txtOPERACION.Text != "CH")               
                 {
@@ -1868,7 +1876,7 @@ namespace SistemaContable.UI.Forms.Bancos
                 btnAnular.Enabled = true;
 
                 // Mostrar en pantalla el anexo del cheque después de imprimir
-                if (_flujoEsQuedan || HayDocumentosContadoVinculados())
+                if (_flujoEsQuedan)
                 {
                     if ((XtraMessageBox.Show("¿Desea emitir anexo de documentos cancelados?",
                         "Validación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes))

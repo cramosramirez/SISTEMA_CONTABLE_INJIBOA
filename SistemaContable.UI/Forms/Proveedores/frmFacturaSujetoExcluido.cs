@@ -491,8 +491,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                 txtCOD_GENERACION.Text = AsString(r["COD_GENERACION"]);
                 txtSELLO_RECIBIDO.Text = AsString(r["SELLO_RECIBIDO"]);
                 mskFECHA_EMISION.Text = AsFecha(r["FECHA_EMISION"]);
-                mskFECHA_RECIBIDO.Text = AsFecha(r["FECHA_RECIBIDO"]);                
-                txtORDEN.Text = AsString(r["ORDEN"]);
+                mskFECHA_RECIBIDO.Text = AsFecha(r["FECHA_RECIBIDO"]);                                
 
                 cbxSUCURSAL.SelectedValue = ToInt(r["ID_SUCURSAL"]);
 
@@ -628,8 +627,7 @@ namespace SistemaContable.UI.Forms.Proveedores
                     COD_GENERACION = txtCOD_GENERACION.Text,  
                     FECHA_EMISION = ParsearFecha(mskFECHA_EMISION.Text),
                     FECHA_RECIBIDO = ParsearFecha(mskFECHA_RECIBIDO.Text),
-                    FECHA_VENCE = ParsearFecha(mskFECHA_RECIBIDO.Text),
-                    ORDEN = NullIfEmpty(txtORDEN.Text),
+                    FECHA_VENCE = ParsearFecha(mskFECHA_RECIBIDO.Text),                    
                     ID_SUCURSAL = Convert.ToInt32(cbxSUCURSAL.SelectedValue),
                     ID_TIPO_SERVI = ObtenerIdCombo(cbxTIPO_SERVICIO),
                     ID_TIPO_OPERA = ObtenerIdCombo(cbxTIPO_OPERACION),

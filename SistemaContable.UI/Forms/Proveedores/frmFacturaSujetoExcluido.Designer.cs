@@ -55,8 +55,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.txtIVA = new System.Windows.Forms.TextBox();
             this.txtMONTO = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
-            this.txtORDEN = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
             this.cbxSUCURSAL = new System.Windows.Forms.ComboBox();
             this.label20 = new System.Windows.Forms.Label();
             this.cbxTIPO_COSTO = new System.Windows.Forms.ComboBox();
@@ -128,8 +126,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.panel1.Controls.Add(this.txtIVA);
             this.panel1.Controls.Add(this.txtMONTO);
             this.panel1.Controls.Add(this.label22);
-            this.panel1.Controls.Add(this.txtORDEN);
-            this.panel1.Controls.Add(this.label21);
             this.panel1.Controls.Add(this.cbxSUCURSAL);
             this.panel1.Controls.Add(this.label20);
             this.panel1.Controls.Add(this.cbxTIPO_COSTO);
@@ -446,24 +442,6 @@ namespace SistemaContable.UI.Forms.Proveedores
             this.label22.TabIndex = 175;
             this.label22.Text = "Monto";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtORDEN
-            // 
-            this.txtORDEN.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtORDEN.Location = new System.Drawing.Point(156, 211);
-            this.txtORDEN.Name = "txtORDEN";
-            this.txtORDEN.Size = new System.Drawing.Size(172, 24);
-            this.txtORDEN.TabIndex = 15;
-            // 
-            // label21
-            // 
-            this.label21.Font = new System.Drawing.Font("Tahoma", 8.765218F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(69, 211);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(80, 24);
-            this.label21.TabIndex = 174;
-            this.label21.Text = "Orden";
-            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // cbxSUCURSAL
             // 
@@ -940,8 +918,6 @@ namespace SistemaContable.UI.Forms.Proveedores
         private System.Windows.Forms.TextBox txtIVA;
         private System.Windows.Forms.TextBox txtMONTO;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.TextBox txtORDEN;
-        private System.Windows.Forms.Label label21;
         private System.Windows.Forms.ComboBox cbxSUCURSAL;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.ComboBox cbxTIPO_COSTO;
