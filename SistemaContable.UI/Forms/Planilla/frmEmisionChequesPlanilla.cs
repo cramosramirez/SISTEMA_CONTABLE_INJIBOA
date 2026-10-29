@@ -20,10 +20,16 @@ namespace SistemaContable.UI.Forms.Planilla
         private const string PROCEDIMIENTO_BORRAR_PRUEBAS = "[dbo].[SP_ELIMINAR_CHEQUES_PLANILLA_PRUEBA]";
         private const string PROCEDIMIENTO_CALCULAR_RANGO = "[dbo].[SP_CALCULAR_RANGO_CHEQUES_PLANILLA]";
         private const string TIPO_PARTIDA_CHEQUE = "CH";
+        private const string PROCEDIMIENTO_PARTIDA_SIGUIENTE = "[dbo].[SP_PARTIDA_SIGUIENTE_CHEQUES_PLANILLA]";
+        private const string PROCEDIMIENTO_CHEQUE_SIGUIENTE = "[dbo].[SP_CHEQUE_SIGUIENTE_CUENTA]";
+        private const int TIEMPO_ESPERA_EMISION_SEGUNDOS = 600; // 10 minutos
         private const string MENSAJE_AYUDA_CUENTA =
             "Sugerencia: en Cuenta bancaria escriba * y presione Enter para seleccionar la cuenta.";
         private readonly DALBase _dal = new DALBase();
         private int _idCuenta;
+        private int? _correlativoCuenta;
+        private int _chequesExistentes;
+        private string _primerChequeCalculado;
         private int _versionCalculoRango;
         private DataTable _chequesGenerados;
 
@@ -79,6 +85,7 @@ namespace SistemaContable.UI.Forms.Planilla
             int anchoBoton = panelBotones.Width - 28;
             btnEmitir.Width = anchoBoton;
             btnVerReporte.Width = anchoBoton;
+            btnImprimirCheques.Width = anchoBoton;
             btnEliminarPruebas.Width = anchoBoton;
             btnSalir.Width = anchoBoton;
             lblAcciones.Width = anchoBoton;
@@ -107,29 +114,44 @@ namespace SistemaContable.UI.Forms.Planilla
             CargarZafra();
             CargarTipoPlanilla();
             CargarContribuyente();
+            cbxEsContribuyente.SelectedIndexChanged -= FiltroRango_SelectedIndexChanged;
+            cbxEsContribuyente.SelectedIndexChanged -= cbxEsContribuyente_SelectedIndexChanged;
+            cbxEsContribuyente.SelectedIndexChanged += cbxEsContribuyente_SelectedIndexChanged;
             ConfigurarBusquedaCuenta();
             AsignarNumeroPartidaSugerido();
             AjustarIcono(btnEmitir, 28);
             AjustarIcono(btnVerReporte, 28);
+            AjustarIcono(btnImprimirCheques, 28);
             AjustarIcono(btnEliminarPruebas, 28);
             AjustarIcono(btnSalir, 28);
             ConfigurarGridResultados();
             MostrarProgreso(false);
         }
 
+        /// <summary>
+        /// Muestra la partida CH inicial que usará el lote. Se calcula con el periodo de
+        /// PLANILLA_BASE.FECHA_PAGO de la catorcena/tipo de planilla (no con la fecha actual),
+        /// igual que SP_EMISION_CHEQUES_PLANILLA, que es quien asigna el número real al emitir.
+        /// </summary>
         private void AsignarNumeroPartidaSugerido()
         {
+            txtNumPartida.Text = string.Empty;
+
+            int? idCatorcena = ValorCombo(cbxCatorcena);
+            int? idTipoPlanilla = ValorCombo(cbxTipoPlanilla);
+            if (!idCatorcena.HasValue || !idTipoPlanilla.HasValue)
+                return;
+
             try
             {
-                DateTime fecha = DateTime.Today;
-                var infoPartida = NumeradorPartidaHelper.Consultar(
-                    TIPO_PARTIDA_CHEQUE,
-                    fecha.Year,
-                    fecha.Month);
+                DataTable dt = _dal.EjecutarConsulta(PROCEDIMIENTO_PARTIDA_SIGUIENTE, new
+                {
+                    ID_CATORCENA = idCatorcena.Value,
+                    ID_TIPO_PLANILLA = idTipoPlanilla.Value
+                });
 
-                txtNumPartida.Text = infoPartida == null
-                    ? string.Empty
-                    : infoPartida.NumSiguienteFormateado;
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0]["NUM_SIGUIENTE_FORMATEADO"] != DBNull.Value)
+                    txtNumPartida.Text = Convert.ToString(dt.Rows[0]["NUM_SIGUIENTE_FORMATEADO"]);
             }
             catch (Exception ex)
             {
@@ -159,7 +181,7 @@ namespace SistemaContable.UI.Forms.Planilla
 
         private void CargarTipoPlanilla()
         {
-            DataTable dt = _dal.EjecutarConsulta("[EGENERALES].[SP_TIPO_PLANILLA]", new { ACCION = "OBTENER" });
+            DataTable dt = _dal.EjecutarConsulta("[EGENERALES].[SP_TIPO_PLANILLA_GENERACION]", new { ACCION = "OBTENER" });
             cbxTipoPlanilla.DataSource = dt;
             cbxTipoPlanilla.ValueMember = "ID_TIPO_PLANILLA";
             cbxTipoPlanilla.DisplayMember = "NOMBRE_TIPO_PLANILLA";
@@ -197,20 +219,59 @@ namespace SistemaContable.UI.Forms.Planilla
                     },
                     AnchoFormulario = 560
                 },
-                fila =>
+                async fila =>
                 {
                     _idCuenta = Convert.ToInt32(fila["ID_CTA_BANCO"]);
                     txtCuenta.Tag = _idCuenta;
                     txtCuenta.Text = Convert.ToString(fila["NUM_CUENTA"]);
                     txtNombreCuenta.Text = Convert.ToString(fila["NOMBRE"]);
+
+                    _correlativoCuenta = null;
                     if (fila.Table.Columns.Contains("CORRELATIVO_CHEQUE") && fila["CORRELATIVO_CHEQUE"] != DBNull.Value)
                     {
                         int correlativo;
                         if (int.TryParse(Convert.ToString(fila["CORRELATIVO_CHEQUE"]), out correlativo))
-                            txtPrimerCheque.Text = (correlativo + 1).ToString();
+                            _correlativoCuenta = correlativo;
                     }
-                    txtPrimerCheque.Focus();
+
+                    SugerirPrimerCheque();
+                    // RegistrarBusqueda envía un TAB al terminar (por eso el nombre de la cuenta
+                    // quedaba seleccionado); EnfocarConDelay deja el foco final en Primer cheque.
+                    FormHelper.EnfocarConDelay(txtPrimerCheque);
+                    await RecalcularRangoAsync();
+                    VerificarChequesExistentes();
                 });
+        }
+
+        /// <summary>
+        /// Sugiere como Primer cheque el siguiente al último cheque CH emitido en la cuenta
+        /// (dbo.SP_CHEQUE_SIGUIENTE_CUENTA). Si la cuenta aún no tiene cheques, usa el
+        /// CORRELATIVO_CHEQUE de la cuenta bancaria. El usuario puede cambiarlo.
+        /// </summary>
+        private void SugerirPrimerCheque()
+        {
+            txtPrimerCheque.Text = string.Empty;
+            if (_idCuenta <= 0)
+                return;
+
+            int? siguiente = null;
+            try
+            {
+                DataTable dt = _dal.EjecutarConsulta(PROCEDIMIENTO_CHEQUE_SIGUIENTE, new { ID_CTA_BANCO = _idCuenta });
+                if (dt != null && dt.Rows.Count > 0 && dt.Rows[0]["SIGUIENTE_CHEQUE"] != DBNull.Value)
+                    siguiente = Convert.ToInt32(dt.Rows[0]["SIGUIENTE_CHEQUE"]);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("No se pudo consultar el último cheque de la cuenta:\n" + ex.Message,
+                    "Primer cheque", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            if (_correlativoCuenta.HasValue && (!siguiente.HasValue || _correlativoCuenta.Value + 1 > siguiente.Value))
+                siguiente = _correlativoCuenta.Value + 1;
+
+            if (siguiente.HasValue)
+                txtPrimerCheque.Text = siguiente.Value.ToString();
         }
 
         private void cbxZafra_SelectedIndexChanged(object sender, EventArgs e)
@@ -221,9 +282,116 @@ namespace SistemaContable.UI.Forms.Planilla
                 CargarCatorcena(id.Value);
         }
 
+        private async void cbxEsContribuyente_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Al cambiar Contribuyente / No contribuyente el rango anterior deja de ser válido:
+            // se sugiere como primer cheque el siguiente al último emitido en la cuenta
+            // y se recalcula el rango. El usuario puede cambiar el número sugerido.
+            LimpiarRangoCalculado();
+            SugerirPrimerCheque();
+            await RecalcularRangoAsync();
+            VerificarChequesExistentes();
+            BeginInvoke(new Action(() => { txtPrimerCheque.Focus(); txtPrimerCheque.SelectAll(); }));
+        }
+
         private async void FiltroRango_SelectedIndexChanged(object sender, EventArgs e)
         {
+            AsignarNumeroPartidaSugerido();
             await RecalcularRangoAsync();
+            VerificarChequesExistentes();
+        }
+
+        /// <summary>
+        /// Al tener seleccionados Zafra, Catorcena, Tipo de planilla y Contribuyente, revisa en la
+        /// base de datos si ya existe una generación de cheques. Si existe, lo indica en la barra
+        /// de ayuda; al pulsar Emitir se mostrará el mensaje y los cheques encontrados.
+        /// </summary>
+        private void VerificarChequesExistentes()
+        {
+            bool estabaBloqueado = txtPrimerCheque.ReadOnly;
+            _chequesExistentes = 0;
+            DataTable existentes = ConsultarChequesExistentes();
+
+            if (existentes == null || existentes.Rows.Count == 0)
+            {
+                txtPrimerCheque.ReadOnly = false;
+                if (estabaBloqueado)
+                {
+                    // Venía de una planilla con cheques: se vuelve a sugerir el rango para emitir.
+                    AsignarNumeroPartidaSugerido();
+                    SugerirPrimerCheque();
+                    _ = RecalcularRangoAsync();
+                }
+                return;
+            }
+
+            _chequesExistentes = existentes.Rows.Count;
+
+            // Mostrar el rango REAL ya emitido (no el sugerido para la cuenta seleccionada).
+            int? minimo = null, maximo = null, partidaMin = null;
+            if (existentes.Columns.Contains("NUM_CHEQUE"))
+            {
+                foreach (DataRow fila in existentes.Rows)
+                {
+                    int partida;
+                    if (existentes.Columns.Contains("NID_PARTIDA") &&
+                        int.TryParse(Convert.ToString(fila["NID_PARTIDA"]), out partida) &&
+                        (!partidaMin.HasValue || partida < partidaMin.Value))
+                        partidaMin = partida;
+
+                    int numero;
+                    if (!int.TryParse(Convert.ToString(fila["NUM_CHEQUE"]), out numero))
+                        continue;
+                    if (!minimo.HasValue || numero < minimo.Value) minimo = numero;
+                    if (!maximo.HasValue || numero > maximo.Value) maximo = numero;
+                }
+            }
+
+            _versionCalculoRango++; // descarta cualquier cálculo de rango en curso
+            txtPrimerCheque.Text = minimo.HasValue ? minimo.Value.ToString() : string.Empty;
+            txtUltimoCheque.Text = maximo.HasValue ? maximo.Value.ToString() : string.Empty;
+            txtPrimerCheque.ReadOnly = true;
+            if (partidaMin.HasValue)
+                txtNumPartida.Text = partidaMin.Value.ToString("000000");
+            lblCantidadCheques.Text = "Cheques emitidos: " + _chequesExistentes;
+
+            string cuenta = existentes.Columns.Contains("NOMBRE_CUENTA")
+                ? Convert.ToString(existentes.Rows[0]["NOMBRE_CUENTA"]) : string.Empty;
+            lblAyuda.Text = string.Format(
+                "Esta planilla ya tiene {0} cheque(s) emitido(s) para {1}{2}: {3} al {4}. Al pulsar Emitir cheques solo se mostrarán.",
+                _chequesExistentes, cbxEsContribuyente.Text,
+                string.IsNullOrWhiteSpace(cuenta) ? "" : " en " + cuenta,
+                txtPrimerCheque.Text, txtUltimoCheque.Text);
+        }
+
+        /// <summary>
+        /// Cheques ya emitidos para la Zafra/Catorcena/Tipo de planilla/Contribuyente seleccionados.
+        /// Devuelve null si falta algún filtro o si la consulta falla.
+        /// </summary>
+        private DataTable ConsultarChequesExistentes()
+        {
+            int? idZafra = ValorCombo(cbxZafra);
+            int? idCatorcena = ValorCombo(cbxCatorcena);
+            int? idTipoPlanilla = ValorCombo(cbxTipoPlanilla);
+            int? esContribuyente = ValorCombo(cbxEsContribuyente);
+            if (!idZafra.HasValue || !idCatorcena.HasValue || !idTipoPlanilla.HasValue || !esContribuyente.HasValue)
+                return null;
+
+            try
+            {
+                return _dal.EjecutarConsulta("SP_CHEQUE_RPT", new
+                {
+                    ACCION = "LISTADO_CHEQUES_PLANILLA",
+                    ID_ZAFRA = idZafra.Value,
+                    ID_CATORCENA = idCatorcena.Value,
+                    ID_TIPO_PLANILLA = idTipoPlanilla.Value,
+                    ES_CONTRIBUYENTE = esContribuyente.Value
+                });
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private void LimpiarRangoCalculado()
@@ -236,6 +404,16 @@ namespace SistemaContable.UI.Forms.Planilla
 
         private async void txtPrimerCheque_Leave(object sender, EventArgs e)
         {
+            if (_chequesExistentes > 0)
+                return; // la planilla ya tiene cheques: se muestra el rango existente, no se recalcula
+
+            // Si el primer cheque no cambió y el rango ya está calculado, no se recalcula.
+            // (Recalcular borra Último cheque mientras consulta; si el usuario pulsó Emitir,
+            // la validación lo veía vacío: "El último cheque debe ser un número entero mayor que cero".)
+            if (txtPrimerCheque.Text.Trim() == _primerChequeCalculado &&
+                !string.IsNullOrWhiteSpace(txtUltimoCheque.Text))
+                return;
+
             await RecalcularRangoAsync();
         }
 
@@ -283,6 +461,7 @@ namespace SistemaContable.UI.Forms.Planilla
 
                 int cantidad = Convert.ToInt32(resultado.Rows[0]["CANTIDAD_CHEQUES"]);
                 txtUltimoCheque.Text = Convert.ToString(resultado.Rows[0]["ULTIMO_CHEQUE"]);
+                _primerChequeCalculado = primerCheque.ToString();
                 lblCantidadCheques.Text = "Cheques a emitir: " + cantidad;
                 lblAyuda.Text = string.Format(
                     "Se emitirán {0} cheque(s). Rango calculado: {1} al {2}.",
@@ -342,6 +521,15 @@ namespace SistemaContable.UI.Forms.Planilla
 
         private async void btnEmitir_Click(object sender, EventArgs e)
         {
+            // Si la planilla ya tiene cheques emitidos, no se genera nada: solo se muestran los existentes.
+            if (MostrarChequesExistentesSiHay())
+                return;
+
+            // Si el rango no está calculado (o se está recalculando), se espera a que termine.
+            if (string.IsNullOrWhiteSpace(txtUltimoCheque.Text) ||
+                txtPrimerCheque.Text.Trim() != _primerChequeCalculado)
+                await RecalcularRangoAsync();
+
             int primerCheque, ultimoCheque, numPartida;
             if (!ValidarDatos(out primerCheque, out ultimoCheque, out numPartida))
                 return;
@@ -376,9 +564,11 @@ namespace SistemaContable.UI.Forms.Planilla
                     ID_RANGO_COMPE = -1
                 };
 
-                DataTable resultado = await Task.Run(() => _dal.EjecutarConsulta(PROCEDIMIENTO, parametros));
+                // La emisión recorre la planilla proveedor por proveedor; un lote grande puede tardar
+                // más de los 30 s por defecto de ADO.NET.
+                DataTable resultado = await Task.Run(() => _dal.EjecutarConsulta(PROCEDIMIENTO, parametros, TIEMPO_ESPERA_EMISION_SEGUNDOS));
                 ValidarResultadoEmision(resultado);
-                _chequesGenerados = await Task.Run(() => ObtenerChequesGenerados(resultado, primerCheque, ultimoCheque));
+                _chequesGenerados = ObtenerChequesGenerados(resultado, ValorCombo(cbxCatorcena).Value, ValorCombo(cbxTipoPlanilla).Value, ValorCombo(cbxEsContribuyente).Value);
                 MostrarChequesGenerados(_chequesGenerados);
 
                 int generados = _chequesGenerados == null ? 0 : _chequesGenerados.Rows.Count;
@@ -391,8 +581,7 @@ namespace SistemaContable.UI.Forms.Planilla
                 int chequesDeLaGeneracion = 0;
                 try
                 {
-                    DataTable chequesExistentes = await Task.Run(() =>
-                        ObtenerChequesGenerados(null, primerCheque, ultimoCheque));
+                    DataTable chequesExistentes = ObtenerChequesGenerados(null, ValorCombo(cbxCatorcena).Value, ValorCombo(cbxTipoPlanilla).Value, ValorCombo(cbxEsContribuyente).Value);
                     _chequesGenerados = chequesExistentes;
                     chequesDeLaGeneracion = chequesExistentes.Rows.Count;
                     MostrarChequesGenerados(_chequesGenerados);
@@ -416,6 +605,8 @@ namespace SistemaContable.UI.Forms.Planilla
                 MostrarProgreso(false);
                 Cursor = Cursors.Default;
                 CambiarEstadoGeneracion(false);
+                AsignarNumeroPartidaSugerido();
+                VerificarChequesExistentes();
             }
         }
 
@@ -440,32 +631,54 @@ namespace SistemaContable.UI.Forms.Planilla
                 mensaje + "\n\nSeleccione un rango de cheques no utilizado o borre primero las pruebas correspondientes.");
         }
 
-        private DataTable ObtenerChequesGenerados(DataTable resultado, int primerCheque, int ultimoCheque)
+        /// <summary>
+        /// Si ya existen cheques para la zafra/catorcena/tipo de planilla/contribuyente seleccionados,
+        /// los muestra en el grid, avisa al usuario y devuelve true (no se debe emitir).
+        /// </summary>
+        private bool MostrarChequesExistentesSiHay()
+        {
+            if (!ValorCombo(cbxZafra).HasValue || !ValorCombo(cbxCatorcena).HasValue ||
+                !ValorCombo(cbxTipoPlanilla).HasValue || !ValorCombo(cbxEsContribuyente).HasValue)
+                return false;
+
+            // Se consulta de nuevo al pulsar Emitir (otro usuario pudo emitir mientras tanto).
+            DataTable existentes = ConsultarChequesExistentes();
+            if (existentes == null)
+            {
+                XtraMessageBox.Show("No se pudo verificar si la planilla ya tiene cheques emitidos. No se generó nada.",
+                    "Emisión de cheques de planilla", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return true; // ante la duda, no emitir
+            }
+
+            if (existentes.Rows.Count == 0)
+                return false;
+
+            XtraMessageBox.Show(
+                string.Format("Ya existe una generación de cheques para esta planilla:\n\n" +
+                              "Zafra: {0}\nCatorcena: {1}\nTipo de planilla: {2}\nContribuyente: {3}\n\n" +
+                              "Cheques encontrados: {4}\n\n" +
+                              "No se generará nada nuevo; a continuación se muestran los cheques existentes.",
+                    cbxZafra.Text, cbxCatorcena.Text, cbxTipoPlanilla.Text, cbxEsContribuyente.Text, existentes.Rows.Count),
+                "Cheques ya emitidos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            _chequesGenerados = existentes;
+            MostrarChequesGenerados(_chequesGenerados);
+            return true;
+        }
+
+        private DataTable ObtenerChequesGenerados(DataTable resultado, int ID_CATORCENA ,int ID_TIPO_PLANILLA,int ES_CONTRIBUYENTE)
         {
             if (resultado != null && resultado.Columns.Contains("ID_CHEQUE"))
                 return resultado;
 
-            DataTable disponibles = _dal.EjecutarConsulta("SP_CHEQUE", new
+            DataTable disponibles = _dal.EjecutarConsulta("SP_CHEQUE_RPT", new
             {
-                ACCION = "BUSCAR",
-                FILTRO = (string)null,
-                ID_CTA_BANCO = _idCuenta,
-                TIPO_PARTIDA = "CH"
+                ACCION = "LISTADO_CHEQUES_PLANILLA",
+                ID_CATORCENA        = ID_CATORCENA,
+                ID_TIPO_PLANILLA    = ID_TIPO_PLANILLA,
+                ES_CONTRIBUYENTE    = ES_CONTRIBUYENTE
             });
-
-            DataTable filtrados = disponibles.Clone();
-            if (!disponibles.Columns.Contains("NUM_CHEQUE"))
-                return filtrados;
-
-            foreach (DataRow fila in disponibles.Rows)
-            {
-                int numero;
-                if (int.TryParse(Convert.ToString(fila["NUM_CHEQUE"]), out numero) &&
-                    numero >= primerCheque && numero <= ultimoCheque)
-                    filtrados.ImportRow(fila);
-            }
-
-            return filtrados;
+            return disponibles;
         }
 
         private void ConfigurarGridResultados()
@@ -645,6 +858,7 @@ namespace SistemaContable.UI.Forms.Planilla
             btnEmitir.Enabled = !generando;
             btnEliminarPruebas.Enabled = !generando;
             btnVerReporte.Enabled = !generando;
+            btnImprimirCheques.Enabled = !generando;
             btnSalir.Enabled = !generando;
             grpDatos.Enabled = !generando;
             gridCheques.Enabled = !generando;
@@ -688,6 +902,50 @@ namespace SistemaContable.UI.Forms.Planilla
                 XtraMessageBox.Show(
                     "No se pudo generar el reporte de cheques de planilla:\n" + ex.Message,
                     "Ver reporte", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnImprimirCheques_Click(object sender, EventArgs e)
+        {
+            int? idZafra = ValorCombo(cbxZafra);
+            int? idCatorcena = ValorCombo(cbxCatorcena);
+            int? idTipoPlanilla = ValorCombo(cbxTipoPlanilla);
+            int? esContribuyente = ValorCombo(cbxEsContribuyente);
+
+            if (!idZafra.HasValue || !idCatorcena.HasValue ||
+                !idTipoPlanilla.HasValue || !esContribuyente.HasValue)
+            {
+                XtraMessageBox.Show(
+                    "Seleccione Zafra, Catorcena, Tipo de planilla y Contribuyente para imprimir los cheques.",
+                    "Imprimir cheques", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                CambiarEstadoGeneracion(true);
+                Cursor = Cursors.WaitCursor;
+                var reporte = new rptCheque
+                {
+                    IdCheque = -1,
+                    IdZafra = idZafra.Value,
+                    IdCatorcena = idCatorcena.Value,
+                    IdTipoPlanilla = idTipoPlanilla.Value,
+                    EsContribuyente = esContribuyente.Value
+                };
+
+                reporte.MostrarPreview();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(
+                    "No se pudieron imprimir los cheques de planilla:\n" + ex.Message,
+                    "Imprimir cheques", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                CambiarEstadoGeneracion(false);
             }
         }
 
@@ -742,7 +1000,7 @@ namespace SistemaContable.UI.Forms.Planilla
                         ES_CONTRIBUYENTE = esContribuyente.Value,
                         ID_CUENTA = _idCuenta,
                         USUARIO = Configuracion.UsuarioActual
-                    }));
+                    }, TIEMPO_ESPERA_EMISION_SEGUNDOS));
 
                 int cheques = 0;
                 int partidas = 0;
@@ -774,6 +1032,8 @@ namespace SistemaContable.UI.Forms.Planilla
                 MostrarProgreso(false);
                 Cursor = Cursors.Default;
                 CambiarEstadoGeneracion(false);
+                AsignarNumeroPartidaSugerido();
+                VerificarChequesExistentes();
             }
         }
 
